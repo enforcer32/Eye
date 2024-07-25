@@ -26,6 +26,7 @@ namespace EYE
 		Token HandleWhitespace();
 		Token HandleNewline();
 		Token MakeNumberToken();
+		Token MakeStringToken(char sdelim, char edelim);
 
 	private:
 		char NextChar();

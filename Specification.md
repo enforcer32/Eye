@@ -29,3 +29,7 @@ Commenting:
 {
 	Single Line -> //,
 }
+
+TODO:
+	Different Number Types (Hex/Binary)
+	Escape Characters

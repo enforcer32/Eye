@@ -1,4 +1,5 @@
 #include "Eye/Lexer/Lexer.h"
+#include "Eye/Util/Logger.h"
 
 namespace EYE
 {
@@ -36,7 +37,7 @@ namespace EYE
 			token = HandleWhitespace();
 			break;
 
-			// New Line
+			// Newline
 		case '\n':
 			token = HandleNewline();
 			break;
@@ -53,6 +54,11 @@ namespace EYE
 		case '8':
 		case '9':
 			token = MakeNumberToken();
+			break;
+
+			// Strings
+		case '"':
+			token = MakeStringToken('"', '"');
 			break;
 
 		case EOF:
@@ -93,6 +99,22 @@ namespace EYE
 		token.Type = TokenType::Number;
 		token.Position = m_Position;
 		token.Number = std::atoi(numbers.c_str());
+		return token;
+	}
+
+	Token Lexer::MakeStringToken(char sdelim, char edelim)
+	{
+		if(NextChar() != sdelim)
+			EYE_LOG_CRITICAL("EYELexer: Bad String Delimiter({})", m_Position.ToString());
+
+		std::string str;
+		for (char c = NextChar(); c != edelim && c != EOF; c = NextChar())
+			str.push_back(c);
+
+		Token token;
+		token.Type = TokenType::String;
+		token.Position = m_Position;
+		token.String = (new std::string(str))->c_str();
 		return token;
 	}
 
