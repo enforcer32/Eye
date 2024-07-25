@@ -1,5 +1,12 @@
 file(GLOB_RECURSE EyeSources
-	"${CMAKE_CURRENT_SOURCE_DIR}/Eye.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Main.cpp"
+	
+	"${CMAKE_CURRENT_SOURCE_DIR}/Common/Eye.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Common/Eye.cpp"
+
+	"${CMAKE_CURRENT_SOURCE_DIR}/Common/Token.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Lexer/Lexer.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Lexer/Lexer.cpp"
 
 	"${CMAKE_CURRENT_SOURCE_DIR}/Util/Platform.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Util/Assertion.h"
