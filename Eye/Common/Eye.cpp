@@ -21,6 +21,7 @@ namespace EYE
 			EYE_LOG_ERROR("JAXLexer Failed!");
 			return EyeResult::Failed;
 		}
+		lexer.DebugPrintTokens();
 
 		// Parser
 		

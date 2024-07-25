@@ -24,3 +24,8 @@ Symbols:
 {
 	;, (, ), {, },
 }
+
+Commenting:
+{
+	Single Line -> //,
+}

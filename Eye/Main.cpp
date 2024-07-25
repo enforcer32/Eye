@@ -7,7 +7,7 @@ int main()
 	EYE_LOG_INFO("Eye");
 
 	EYE::EyeProperties eyeProperties;
-	eyeProperties.FilePath = "..\\..\\..\\..\\Examples\\Variable.eye";
+	eyeProperties.FilePath = "..\\..\\..\\..\\Examples\\Test.eye";
 
 	EYE::Eye eye;
 	if (eye.Run(eyeProperties) != EYE::EyeResult::Successful)
