@@ -30,6 +30,17 @@ namespace EYE
 		char c = PeekChar();
 		switch (c)
 		{
+			// Whitespace
+		case ' ':
+		case '\t':
+			token = HandleWhitespace();
+			break;
+
+			// New Line
+		case '\n':
+			token = HandleNewline();
+			break;
+
 			// Numbers
 		case '0':
 		case '1':
@@ -44,10 +55,28 @@ namespace EYE
 			token = MakeNumberToken();
 			break;
 
+		case EOF:
+			break;
+
 		default:
 			break;
 		}
 
+		return token;
+	}
+
+	Token Lexer::HandleWhitespace()
+	{
+		NextChar();
+		return NextToken();
+	}
+
+	Token Lexer::HandleNewline()
+	{
+		NextChar();
+		Token token;
+		token.Type = TokenType::Newline;
+		token.Position = m_Position;
 		return token;
 	}
 

@@ -23,6 +23,8 @@ namespace EYE
 
 	private:
 		Token NextToken();
+		Token HandleWhitespace();
+		Token HandleNewline();
 		Token MakeNumberToken();
 
 	private:
