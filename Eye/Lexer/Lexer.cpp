@@ -56,6 +56,12 @@ namespace EYE
 			token = MakeNumberToken();
 			break;
 
+			// Numbers other Base Types
+		case 'x':
+		case 'b':
+			token = MakeNumberBaseToken();
+			break;
+
 			// Strings
 		case '"':
 			token = MakeStringToken('"', '"');
@@ -131,6 +137,62 @@ namespace EYE
 		token.Type = TokenType::Number;
 		token.Position = m_Position;
 		token.Number = std::atoi(numbers.c_str());
+		return token;
+	}
+
+	Token Lexer::MakeNumberBaseToken()
+	{
+		if (m_Tokens.empty() || !(m_Tokens.back().Type == TokenType::Number && m_Tokens.back().Number == 0))
+			return {}; // Identifier...
+
+		Token lastToken = m_Tokens.back();
+		m_Tokens.pop_back();
+
+		char baseType = PeekChar();
+		if (baseType == 'x')
+			return MakeHexNumberToken();
+		else if (baseType == 'b')
+			return MakeBinaryNumberToken();
+
+		return {};
+	}
+
+	Token Lexer::MakeHexNumberToken()
+	{
+		NextChar();
+
+		std::string hexStr{};
+		for (char c = PeekChar(); IsValidHexNumber(c); c = PeekChar())
+		{
+			hexStr += c;
+			NextChar();
+		}
+
+		Token token;
+		token.Type = TokenType::Number;
+		token.Position = m_Position;
+		token.Number = std::strtol(hexStr.c_str(), 0, 16);
+		return token;
+	}
+
+	Token Lexer::MakeBinaryNumberToken()
+	{
+		NextChar();
+	
+		std::string binaryStr;
+		for (char c = PeekChar(); c >= '0' && c <= '9'; c = PeekChar())
+		{
+			binaryStr.push_back(c);
+			NextChar();
+		}
+
+		if (!IsValidBinaryNumber(binaryStr))
+			EYE_LOG_CRITICAL("Lexer->Bad Binary Number Format : {}\n on line {}, col {} in file {}", binaryStr, m_Position.Line, m_Position.Col, m_Position.FileName);
+
+		Token token;
+		token.Type = TokenType::Number;
+		token.Position = m_Position;
+		token.Number = std::strtol(binaryStr.c_str(), 0, 2);
 		return token;
 	}
 
@@ -215,6 +277,20 @@ namespace EYE
 			op == "&&" || op == "||" || op == "!" ||
 			op == "&" || op == "|" || op == "^" || op == "<<" || op == ">>" || op == "~" ||
 			op == "(" || op == "[" || op == "?" || op == ",");
+	}
+
+	bool Lexer::IsValidHexNumber(char num) const
+	{
+		num = std::tolower(num);
+		return ((num >= '0' && num <= '9') || (num >= 'a' && num <= 'f'));
+	}
+
+	bool Lexer::IsValidBinaryNumber(const std::string& num) const
+	{
+		for (const auto& n : num)
+			if (n != '0' && n != '1')
+				return false;
+		return true;
 	}
 
 	char Lexer::NextChar()

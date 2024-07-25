@@ -32,8 +32,14 @@ Commenting:
 	Single Line -> //,
 }
 
+Numbers:
+{
+	Decimal->Base 10
+	Hex->Base 15
+	Binary->Base 2
+}
+
 TODO:
-	Different Number Types (Hex/Binary)
 	Escape Characters
 	Include System
 	Macros

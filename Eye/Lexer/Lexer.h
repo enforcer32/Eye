@@ -26,6 +26,9 @@ namespace EYE
 		Token HandleWhitespace();
 		Token HandleNewline();
 		Token MakeNumberToken();
+		Token MakeNumberBaseToken();
+		Token MakeHexNumberToken();
+		Token MakeBinaryNumberToken();
 		Token MakeStringToken(char sdelim, char edelim);
 		Token MakeOperatorToken();
 		Token MakeSymbolToken();
@@ -34,6 +37,8 @@ namespace EYE
 		bool IsOperator(char op) const;
 		bool IsSinglyOperator(char op) const;
 		bool IsValidOperator(const std::string& op) const;
+		bool IsValidHexNumber(char num) const;
+		bool IsValidBinaryNumber(const std::string& num) const;
 
 	private:
 		char NextChar();
