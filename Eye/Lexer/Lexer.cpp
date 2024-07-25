@@ -81,6 +81,17 @@ namespace EYE
 			token = MakeOperatorToken();
 			break;
 
+			// Symbols
+		case '{':
+		case '}':
+		case ':':
+		case ';':
+		case '\\':
+		case ')':
+		case ']':
+			token = MakeSymbolToken();
+			break;
+
 		case EOF:
 			break;
 
@@ -171,6 +182,16 @@ namespace EYE
 		token.Position = m_Position;
 		token.String = (new std::string(opStr))->c_str();
 		return token;		
+	}
+
+	Token Lexer::MakeSymbolToken()
+	{
+		char c = NextChar();
+		Token token;
+		token.Type = TokenType::Symbol;
+		token.Position = m_Position;
+		token.Char = c;
+		return token;
 	}
 
 	bool Lexer::IsOperator(char op) const

@@ -24,7 +24,7 @@ Operators:
 
 Symbols:
 {
-	), ], {, }, ; 
+	), ], {, }, :, ;, \,
 }
 
 Commenting:

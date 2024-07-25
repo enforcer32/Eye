@@ -28,6 +28,7 @@ namespace EYE
 		Token MakeNumberToken();
 		Token MakeStringToken(char sdelim, char edelim);
 		Token MakeOperatorToken();
+		Token MakeSymbolToken();
 
 	private:
 		bool IsOperator(char op) const;
