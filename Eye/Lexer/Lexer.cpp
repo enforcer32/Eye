@@ -208,7 +208,11 @@ namespace EYE
 
 		std::string str;
 		for (char c = NextChar(); c != edelim && c != EOF; c = NextChar())
+		{
+			if (c == '\\')
+				continue;
 			str.push_back(c);
+		}
 
 		Token token;
 		token.Type = TokenType::String;

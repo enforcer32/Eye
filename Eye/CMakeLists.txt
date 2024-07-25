@@ -18,18 +18,10 @@ file(GLOB_RECURSE EyeSources
 )
 
 file(GLOB_RECURSE EyeTestSources
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/*.c"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/*.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/*.cxx"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/*.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/*.hpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/*.inl"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/**/*.c"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/**/*.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/**/*.cxx"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/**/*.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/**/*.hpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Test/**/*.inl"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Lexer/NumberTest.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Lexer/StringTest.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Lexer/OperatorTest.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Lexer/SymbolTest.cpp"
 )
 
 add_definitions(-DEYE_DEBUG)
