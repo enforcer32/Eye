@@ -17,6 +17,7 @@ namespace EYE
 	{
 	public:
 		LexerResult Tokenize(EyeInstance* eyeInstance);
+		std::vector<Token> GetTokens() const;
 
 		// Temporary
 		void DebugPrintTokens() const;

@@ -18,6 +18,11 @@ namespace EYE
 		return LexerResult::Successful;
 	}
 
+	std::vector<Token> Lexer::GetTokens() const
+	{
+		return m_Tokens;
+	}
+
 	void Lexer::DebugPrintTokens() const
 	{
 		for (const auto& token : m_Tokens)

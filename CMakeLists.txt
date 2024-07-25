@@ -23,4 +23,12 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(spdlog)
 
+FetchContent_Declare(
+        googletest
+        GIT_REPOSITORY "https://github.com/google/googletest"
+        GIT_TAG "v1.14.0"
+        GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(googletest)
+
 add_subdirectory(${EYE_TARGET_NAME})
