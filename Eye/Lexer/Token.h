@@ -54,15 +54,19 @@ namespace EYE
 				break;
 			case TokenType::Keyword:
 				type = "Keyword";
+				value = token.String;
 				break;
 			case TokenType::Identifier:
 				type = "Identifier";
+				value = token.String;
 				break;
 			case TokenType::Operator:
 				type = "Operator";
+				value = token.String;
 				break;
 			case TokenType::Symbol:
 				type = "Symbol";
+				value = token.Char;
 				break;
 			case TokenType::Number:
 				type = "Number";
@@ -74,6 +78,7 @@ namespace EYE
 				break;
 			case TokenType::Comment:
 				type = "Comment";
+				value = token.String;
 				break;
 			case TokenType::Newline:
 				type = "Newline";

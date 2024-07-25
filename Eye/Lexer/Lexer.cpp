@@ -61,10 +61,31 @@ namespace EYE
 			token = MakeStringToken('"', '"');
 			break;
 
+			// Operators
+		case '+':
+		case '-':
+		case '*':
+		case '%':
+		case '=':
+		case '<':
+		case '>':
+		case '!':
+		case '&':
+		case '|':
+		case '^':
+		case '~':
+		case '[':
+		case '(':
+		case '?':
+		case ',':
+			token = MakeOperatorToken();
+			break;
+
 		case EOF:
 			break;
 
 		default:
+			EYE_LOG_CRITICAL("Lexer->Unexpected Token : {}\n on line {}, col {} in file {}", c, m_Position.Line, m_Position.Col, m_Position.FileName);
 			break;
 		}
 
@@ -105,7 +126,7 @@ namespace EYE
 	Token Lexer::MakeStringToken(char sdelim, char edelim)
 	{
 		if(NextChar() != sdelim)
-			EYE_LOG_CRITICAL("EYELexer: Bad String Delimiter({})", m_Position.ToString());
+			EYE_LOG_CRITICAL("Lexer->Bad String Delimiter: {}\n on line {}, col {} in file {}", sdelim, m_Position.Line, m_Position.Col, m_Position.FileName);
 
 		std::string str;
 		for (char c = NextChar(); c != edelim && c != EOF; c = NextChar())
@@ -116,6 +137,63 @@ namespace EYE
 		token.Position = m_Position;
 		token.String = (new std::string(str))->c_str();
 		return token;
+	}
+
+	Token Lexer::MakeOperatorToken()
+	{
+		bool singleOperator = true;
+
+		char op = NextChar();
+		std::string opStr{ op };
+
+		if (!IsSinglyOperator(op))
+		{
+			// Stackable Operator: i.e ++
+			op = PeekChar();
+			if (IsOperator(op))
+			{
+				opStr += op;
+				singleOperator = false;
+				NextChar();
+			}
+		}
+
+		// PutBack All Except First One
+		if (!singleOperator && !IsValidOperator(opStr))
+			for (size_t i = opStr.size() - 1; i >= 1; i--)
+				PutBack(opStr[i]);
+
+		if (singleOperator && !IsValidOperator(opStr))
+			EYE_LOG_CRITICAL("Lexer->Invalid Operator: {}\n on line {}, col {} in file {}", opStr, m_Position.Line, m_Position.Col, m_Position.FileName);
+
+		Token token;
+		token.Type = TokenType::Operator;
+		token.Position = m_Position;
+		token.String = (new std::string(opStr))->c_str();
+		return token;		
+	}
+
+	bool Lexer::IsOperator(char op) const
+	{
+		return (op == '+' || op == '-' || op == '*' || op == '/' || op == '%' || 
+			op == '=' || op == '<' || op == '>' || op == '!' || 
+			op == '&' || op == '|' || op == '^' || op == '~' ||
+			op == '[' || op == '(' || op == '?' || op == ',');
+	}
+
+	bool Lexer::IsSinglyOperator(char op) const
+	{
+		return (op == ',' || op == '(' || op == '[' || op == '?' || op == '*');
+	}
+
+	bool Lexer::IsValidOperator(const std::string& op) const
+	{
+		return (op == "+" || op == "-" || op == "*" || op == "/" || op == "%" || op == "++" || op == "--" ||
+			op == "=" || op == "+=" || op == "-=" || op == "*=" || op == "/=" || op == "%=" || op == "&=" || op == "|=" || op == "^=" || op == ">>=" || op == "<<=" ||
+			op == "==" || op == "!=" || op == "<" || op == ">" || op == "<=" || op == ">=" ||
+			op == "&&" || op == "||" || op == "!" ||
+			op == "&" || op == "|" || op == "^" || op == "<<" || op == ">>" || op == "~" ||
+			op == "(" || op == "[" || op == "?" || op == ",");
 	}
 
 	char Lexer::NextChar()

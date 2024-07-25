@@ -27,6 +27,12 @@ namespace EYE
 		Token HandleNewline();
 		Token MakeNumberToken();
 		Token MakeStringToken(char sdelim, char edelim);
+		Token MakeOperatorToken();
+
+	private:
+		bool IsOperator(char op) const;
+		bool IsSinglyOperator(char op) const;
+		bool IsValidOperator(const std::string& op) const;
 
 	private:
 		char NextChar();

@@ -14,15 +14,17 @@ Keywords:
 
 Operators:
 {
-	+, -, *, /, %, =,
-	++, --, +=, -=, *=, /=, %=,
+	+, -, *, /, %, ++, --, 
+	=, +=, -=, *=, /=, %=, &=, |=, ^=, >>=, <<=
 	==, !=, <, >, <=, >=,
 	&&, ||, !,
+	&, |, ^, <<, >>, ~,
+	(, [, ?, ,
 }
 
 Symbols:
 {
-	;, (, ), {, },
+	), ], {, }, ; 
 }
 
 Commenting:
@@ -33,3 +35,5 @@ Commenting:
 TODO:
 	Different Number Types (Hex/Binary)
 	Escape Characters
+	Include System
+	Macros
