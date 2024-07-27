@@ -72,6 +72,11 @@ namespace EYE
 			token = MakeStringToken('"', '"');
 			break;
 
+			// Character
+		case '\'':
+			token = MakeCharacterToken();
+			break;
+
 			// Operators
 		case '+':
 		case '-':
@@ -221,6 +226,29 @@ namespace EYE
 		return token;
 	}
 
+	Token Lexer::MakeCharacterToken()
+	{
+		NextChar();
+
+		bool escapedChar = false;
+		char c = NextChar();
+		if (c == '\\')
+		{
+			c = NextChar();
+			c = CharToEscapedChar(c);
+			escapedChar = true;
+		}
+		
+		if (NextChar() != '\'')
+			EYE_LOG_CRITICAL("Lexer Bad Character Quote Format : {}\n on line {}, col {} in file {}", c, m_Position.Line, m_Position.Col, m_Position.FileName);
+
+		Token token;
+		token.Type = escapedChar ? TokenType::EscapeCharacter : TokenType::Number;
+		token.Position = m_Position;
+		token.Char = c;
+		return token;
+	}
+
 	Token Lexer::MakeOperatorToken()
 	{
 		bool singleOperator = true;
@@ -300,6 +328,27 @@ namespace EYE
 			if (n != '0' && n != '1')
 				return false;
 		return true;
+	}
+
+	char Lexer::CharToEscapedChar(char c) const
+	{
+		char ch = 0;
+		switch (c)
+		{
+		case 'n':
+			ch = '\n';
+			break;
+		case 't':
+			ch = '\t';
+			break;
+		case '\\':
+			ch = '\\';
+			break;
+		case '\'':
+			ch = '\'';
+			break;
+		}
+		return ch;
 	}
 
 	char Lexer::NextChar()

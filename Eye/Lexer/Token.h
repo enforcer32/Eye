@@ -17,6 +17,7 @@ namespace EYE
 		String,
 		Comment,
 		Newline,
+		EscapeCharacter,
 		EndOfFile,
 	};
 
@@ -82,6 +83,10 @@ namespace EYE
 				break;
 			case TokenType::Newline:
 				type = "Newline";
+				break;
+			case TokenType::EscapeCharacter:
+				type = "EscapeCharacter";
+				value = "NotPrintable";
 				break;
 			default:
 				type = "UNKNOWN";

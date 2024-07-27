@@ -22,6 +22,7 @@ file(GLOB_RECURSE EyeTestSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Lexer/StringTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Lexer/OperatorTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Lexer/SymbolTest.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Lexer/CharacterTest.cpp"
 )
 
 add_definitions(-DEYE_DEBUG)

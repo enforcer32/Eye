@@ -39,7 +39,11 @@ Numbers:
 	Binary->Base 2
 }
 
+Escape Characters:
+{
+	\\, \t, \n, \'
+}
+
 TODO:
-	Escape Characters
 	Include System
 	Macros
