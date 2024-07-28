@@ -112,7 +112,9 @@ namespace EYE
 			break;
 
 		default:
-			EYE_LOG_CRITICAL("Lexer->Unexpected Token : {}\n on line {}, col {} in file {}", c, m_Position.Line, m_Position.Col, m_Position.FileName);
+			token = MakeSpecialToken();
+			if (!token)
+				EYE_LOG_CRITICAL("Lexer->Unexpected Token : {}\n on line {}, col {} in file {}", c, m_Position.Line, m_Position.Col, m_Position.FileName);
 			break;
 		}
 
@@ -188,7 +190,7 @@ namespace EYE
 	Token Lexer::MakeBinaryNumberToken()
 	{
 		NextChar();
-	
+
 		std::string binaryStr;
 		for (char c = PeekChar(); c >= '0' && c <= '9'; c = PeekChar())
 		{
@@ -208,7 +210,7 @@ namespace EYE
 
 	Token Lexer::MakeStringToken(char sdelim, char edelim)
 	{
-		if(NextChar() != sdelim)
+		if (NextChar() != sdelim)
 			EYE_LOG_CRITICAL("Lexer->Bad String Delimiter: {}\n on line {}, col {} in file {}", sdelim, m_Position.Line, m_Position.Col, m_Position.FileName);
 
 		std::string str;
@@ -238,7 +240,7 @@ namespace EYE
 			c = CharToEscapedChar(c);
 			escapedChar = true;
 		}
-		
+
 		if (NextChar() != '\'')
 			EYE_LOG_CRITICAL("Lexer Bad Character Quote Format : {}\n on line {}, col {} in file {}", c, m_Position.Line, m_Position.Col, m_Position.FileName);
 
@@ -280,7 +282,7 @@ namespace EYE
 		token.Type = TokenType::Operator;
 		token.Position = m_Position;
 		token.String = (new std::string(opStr))->c_str();
-		return token;		
+		return token;
 	}
 
 	Token Lexer::MakeSymbolToken()
@@ -293,10 +295,35 @@ namespace EYE
 		return token;
 	}
 
+	Token Lexer::MakeSpecialToken()
+	{
+		char c = PeekChar();
+		if (std::isalpha(c) || c == '_')
+			return MakeIdentifierToken();
+		return {};
+	}
+
+	Token Lexer::MakeIdentifierToken()
+	{
+		std::string identifier;
+
+		for (char c = PeekChar(); ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_'); c = PeekChar())
+		{
+			identifier += c;
+			c = NextChar();
+		}
+
+		Token token;
+		token.Type = (IsKeyword(identifier) ? TokenType::Keyword : TokenType::Identifier);
+		token.Position = m_Position;
+		token.String = (new std::string(identifier))->c_str();
+		return token;
+	}
+
 	bool Lexer::IsOperator(char op) const
 	{
-		return (op == '+' || op == '-' || op == '*' || op == '/' || op == '%' || 
-			op == '=' || op == '<' || op == '>' || op == '!' || 
+		return (op == '+' || op == '-' || op == '*' || op == '/' || op == '%' ||
+			op == '=' || op == '<' || op == '>' || op == '!' ||
 			op == '&' || op == '|' || op == '^' || op == '~' ||
 			op == '[' || op == '(' || op == '?' || op == ',');
 	}
@@ -328,6 +355,18 @@ namespace EYE
 			if (n != '0' && n != '1')
 				return false;
 		return true;
+	}
+
+	bool Lexer::IsKeyword(const std::string& str) const
+	{
+		static const std::vector keywords = {
+			"var", "const", "true", "false"
+			"if",	"elif", "else",
+			"for", "while", "continue", "break",
+			"function", "return" 
+		};
+
+		return (std::find(keywords.begin(), keywords.end(), str) != keywords.end());
 	}
 
 	char Lexer::CharToEscapedChar(char c) const

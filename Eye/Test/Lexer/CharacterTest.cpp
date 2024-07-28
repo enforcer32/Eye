@@ -29,8 +29,6 @@ namespace EYE
 		Lexer lexer;
 		lexer.Tokenize(eyeInstance);
 
-		lexer.DebugPrintTokens();
-
 		ASSERT_EQ(lexer.GetTokens()[7].Char, '\n');
 		ASSERT_EQ(lexer.GetTokens()[8].Char, '\t');
 	}

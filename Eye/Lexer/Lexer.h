@@ -4,6 +4,7 @@
 #include "Eye/Lexer/Token.h"
 
 #include <vector>
+#include <string>
 
 namespace EYE
 {
@@ -34,6 +35,8 @@ namespace EYE
 		Token MakeCharacterToken();
 		Token MakeOperatorToken();
 		Token MakeSymbolToken();
+		Token MakeSpecialToken();
+		Token MakeIdentifierToken();
 
 	private:
 		bool IsOperator(char op) const;
@@ -41,6 +44,7 @@ namespace EYE
 		bool IsValidOperator(const std::string& op) const;
 		bool IsValidHexNumber(char num) const;
 		bool IsValidBinaryNumber(const std::string& num) const;
+		bool IsKeyword(const std::string& str) const;
 		char CharToEscapedChar(char c) const;
 
 	private:
