@@ -3,18 +3,27 @@
 
 #include <gtest/gtest.h>
 
+int RunTests(int argc, char** argv)
+{
+	testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
+}
+
 int main(int argc, char** argv)
 {
 	EYE::Logger::Init();
 	EYE_LOG_INFO("Eye");
 
-	/*EYE::EyeProperties eyeProperties;
+	bool tests = true;
+	if (tests)
+		return RunTests(argc, argv);
+
+	EYE::EyeProperties eyeProperties;
 	eyeProperties.FilePath = "..\\..\\..\\..\\Examples\\Test.eye";
 
 	EYE::Eye eye;
 	if (eye.Run(eyeProperties) != EYE::EyeResult::Successful)
-		EYE_LOG_CRITICAL("Failed to Run: File({})", eyeProperties.FilePath);*/
+		EYE_LOG_CRITICAL("Failed to Run: File({})", eyeProperties.FilePath);
 
-	testing::InitGoogleTest(&argc, argv);
-	return RUN_ALL_TESTS();
+	return 0;
 }

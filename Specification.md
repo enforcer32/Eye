@@ -29,7 +29,8 @@ Symbols:
 
 Commenting:
 {
-	Single Line -> //,
+	Single Line -> // Comment
+	Multi Line -> /* Comment */
 }
 
 Numbers:
@@ -45,5 +46,6 @@ Escape Characters:
 }
 
 TODO:
-	Include System
+	Module/Include System
 	Macros
+	Namespace

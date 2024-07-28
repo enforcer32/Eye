@@ -37,6 +37,9 @@ namespace EYE
 		Token MakeSymbolToken();
 		Token MakeSpecialToken();
 		Token MakeIdentifierToken();
+		Token HandleSlashOperator();
+		Token MakeSingleLineCommentToken();
+		Token MakeMultiLineCommentToken();
 
 	private:
 		bool IsOperator(char op) const;

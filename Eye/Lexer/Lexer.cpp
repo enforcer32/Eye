@@ -108,6 +108,11 @@ namespace EYE
 			token = MakeSymbolToken();
 			break;
 
+			// Slash Operator
+		case '/':
+			token = HandleSlashOperator();
+			break;
+
 		case EOF:
 			break;
 
@@ -317,6 +322,83 @@ namespace EYE
 		token.Type = (IsKeyword(identifier) ? TokenType::Keyword : TokenType::Identifier);
 		token.Position = m_Position;
 		token.String = (new std::string(identifier))->c_str();
+		return token;
+	}
+
+	Token Lexer::HandleSlashOperator()
+	{
+		char c = PeekChar();
+		if (c == '/')
+		{
+			NextChar();
+
+			if (PeekChar() == '/')
+			{
+				NextChar();
+				return MakeSingleLineCommentToken();
+			}
+			else if (PeekChar() == '*')
+			{
+				NextChar();
+				return MakeMultiLineCommentToken();
+			}
+
+			PutBack('/');
+			return MakeOperatorToken();
+		}
+
+		return {};
+	}
+
+	Token Lexer::MakeSingleLineCommentToken()
+	{
+		std::string comment;
+
+		for (char c = PeekChar(); (c != '\n' && c != EOF); c = PeekChar())
+		{
+			comment += c;
+			c = NextChar();
+		}
+
+		Token token;
+		token.Type = TokenType::Comment;
+		token.Position = m_Position;
+		token.String = (new std::string(comment))->c_str();
+		return token;
+	}
+
+	Token Lexer::MakeMultiLineCommentToken()
+	{
+		std::string comment;
+
+		while (true)
+		{
+			char c;
+			for (c = PeekChar(); (c != '*' && c != EOF); c = PeekChar())
+			{
+				comment += c;
+				c = NextChar();
+			}
+
+			if (c == EOF)
+			{
+				EYE_LOG_CRITICAL("Lexer->Bad MultiLine Comment Format : {}\n on line {}, col {} in file {}", comment, m_Position.Line, m_Position.Col, m_Position.FileName);
+			}
+			else if (c == '*')
+			{
+				NextChar();
+				if (PeekChar() == '/')
+				{
+					NextChar();
+					break;
+				}
+			}
+		}
+
+		Token token;
+		token.Type = TokenType::Comment;
+		token.Position = m_Position;
+		token.String = (new std::string(comment))->c_str();
 		return token;
 	}
 
