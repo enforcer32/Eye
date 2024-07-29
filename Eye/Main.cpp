@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 	EYE::Logger::Init();
 	EYE_LOG_INFO("Eye");
 
-	bool tests = true;
+	bool tests = false;
 	if (tests)
 		return RunTests(argc, argv);
 

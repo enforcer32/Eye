@@ -1,7 +1,10 @@
 #pragma once
 
+#include "Eye/Lexer/Token.h"
+
 #include <string>
 #include <sstream>
+#include <vector>
 
 namespace EYE
 {
@@ -14,6 +17,7 @@ namespace EYE
 	{
 		std::string InFilePath;
 		std::istringstream InFileStream;
+		std::vector<Token> LexerTokens;
 	};
 
 	enum class EyeResult

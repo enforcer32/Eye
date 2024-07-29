@@ -9,6 +9,10 @@ file(GLOB_RECURSE EyeSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/Lexer/Lexer.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Lexer/Lexer.cpp"
 
+	"${CMAKE_CURRENT_SOURCE_DIR}/Parser/Node.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Parser/Parser.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Parser/Parser.cpp"
+
 	"${CMAKE_CURRENT_SOURCE_DIR}/Util/Platform.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Util/Assertion.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Util/Logger.h"

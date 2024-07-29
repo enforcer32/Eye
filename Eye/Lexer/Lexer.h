@@ -27,6 +27,7 @@ namespace EYE
 		Token NextToken();
 		Token HandleWhitespace();
 		Token HandleNewline();
+		Token MakeEOFToken();
 		Token MakeNumberToken();
 		Token MakeNumberBaseToken();
 		Token MakeHexNumberToken();

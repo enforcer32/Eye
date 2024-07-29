@@ -84,6 +84,9 @@ namespace EYE
 			case TokenType::Newline:
 				type = "Newline";
 				break;
+			case TokenType::EndOfFile:
+				type = "EndOfFile";
+				break;
 			case TokenType::EscapeCharacter:
 				type = "EscapeCharacter";
 				value = "NotPrintable";

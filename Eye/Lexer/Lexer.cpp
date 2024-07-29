@@ -15,6 +15,10 @@ namespace EYE
 			token = NextToken();
 		}
 
+		Token eofToken = MakeEOFToken();
+		m_Tokens.push_back(eofToken);
+
+		m_EyeInstance->LexerTokens = m_Tokens;
 		return LexerResult::Successful;
 	}
 
@@ -137,6 +141,14 @@ namespace EYE
 		NextChar();
 		Token token;
 		token.Type = TokenType::Newline;
+		token.Position = m_Position;
+		return token;
+	}
+
+	Token Lexer::MakeEOFToken()
+	{
+		Token token;
+		token.Type = TokenType::EndOfFile;
 		token.Position = m_Position;
 		return token;
 	}
