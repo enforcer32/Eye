@@ -22,13 +22,11 @@ namespace EYE
 		void DebugPrintNodes();
 
 	private:
-		Node Program();
-		Node Literal();
-		Node NumericLiteral();
-		Node StringLiteral();
+		Node* Program();
+		Node* Literal();
+		Node* NumericLiteral();
+		Node* StringLiteral();
 		
-		//Node NextNode();
-
 	private:
 		Token NextToken();
 		Token PeekToken();
@@ -39,7 +37,8 @@ namespace EYE
 
 	private:
 		EyeInstance* m_EyeInstance;
-		std::vector<Node> m_Nodes;
+		Node* m_Root;
+		//std::vector<Node*> m_Nodes;
 		size_t m_CurrentTokenIndex;
 		Token m_LookAhead;
 	};

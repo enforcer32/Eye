@@ -9,20 +9,13 @@ namespace EYE
 		m_CurrentTokenIndex = 0;
 		m_LookAhead = NextToken();
 
-		
-		while (HasToken())
-		{
-			Node node = Program();
-			m_Nodes.push_back(node);
-		}
-
+		m_Root = Program();
 		return ParserResult::Successful;
 	}
 
 	void Parser::DebugPrintNodes()
 	{
-		for (const auto& node : m_Nodes)
-			std::cout << node << std::endl;
+		std::cout << *m_Root << std::endl;
 	}
 
 	/*
@@ -30,9 +23,12 @@ namespace EYE
 			: Literal
 			;
 	*/
-	Node Parser::Program()
+	Node* Parser::Program()
 	{
-		return Literal();
+		Node* node = new Node;
+		node->Type = NodeType::Program;
+		node->Metadata.Body = Literal();
+		return node;
 	}
 
 	/*
@@ -41,7 +37,7 @@ namespace EYE
 			| StringLiteral
 			;
 	*/
-	Node Parser::Literal()
+	Node* Parser::Literal()
 	{
 		switch (m_LookAhead.Type)
 		{
@@ -62,13 +58,13 @@ namespace EYE
 			: NUMBER
 			;
 	*/
-	Node Parser::NumericLiteral()
+	Node* Parser::NumericLiteral()
 	{
 		Token token = EatToken(TokenType::Number);
-		Node node;
-		node.Type = NodeType::Number;
-		node.Position = token.Position;
-		node.Number = token.Number;
+		Node* node = new Node;
+		node->Type = NodeType::Number;
+		node->Position = token.Position;
+		node->Number = token.Number;
 		return node;
 	}
 
@@ -77,13 +73,13 @@ namespace EYE
 			: STRING
 			;
 	*/
-	Node Parser::StringLiteral()
+	Node* Parser::StringLiteral()
 	{
 		Token token = EatToken(TokenType::String);
-		Node node;
-		node.Type = NodeType::String;
-		node.Position = token.Position;
-		node.String = token.String;
+		Node* node = new Node;
+		node->Type = NodeType::String;
+		node->Position = token.Position;
+		node->String = token.String;
 		return node;
 	}
 
