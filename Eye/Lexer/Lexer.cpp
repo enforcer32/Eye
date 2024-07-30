@@ -15,8 +15,8 @@ namespace EYE
 			token = NextToken();
 		}
 
-		Token eofToken = MakeEOFToken();
-		m_Tokens.push_back(eofToken);
+		/*Token eofToken = MakeEOFToken();
+		m_Tokens.push_back(eofToken);*/
 
 		m_EyeInstance->LexerTokens = m_Tokens;
 		return LexerResult::Successful;

@@ -1,4 +1,21 @@
 Program
+	: StatementList
+	;
+
+StatementList
+	: Statement
+	| StatementList Statement
+	;
+
+Statement
+	: ExpressionStatement
+	;
+
+ExpressionStatement
+	: Expression ';'
+	;
+
+Expression
 	: Literal
 	;
 

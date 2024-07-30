@@ -3,19 +3,28 @@
 #include "Eye/Common/Common.h"
 
 #include <iostream>
+#include <vector>
 
 namespace EYE
 {
+	/*
+	struct Node;
+	struct ProgramNode;
+	struct StatementNode;
+	struct ExpressionStatementNode;
+	struct ExpressionNode;
+	struct LiteralNode;
+
 	enum class NodeType
 	{
 		Invalid,
 		Program,
-		Number,
-		String,
-		Body,
+		ExpressionStatement,
+		NumberLiteral,
+		StringLiteral,
 	};
 
-	struct Node
+	struct Node2
 	{
 		NodeType Type = NodeType::Invalid;
 		Position Position;
@@ -33,7 +42,7 @@ namespace EYE
 			void* Any;
 		};
 
-		Node()
+		Node2()
 			: Any(nullptr)
 		{
 		}
@@ -110,5 +119,5 @@ namespace EYE
 			else
 				return "Node{Type: " + type + ", Value: " + value + "}";
 		}
-	};
+	};*/
 }

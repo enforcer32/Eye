@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Eye/Common/Eye.h"
-#include "Eye/Parser/Node.h"
+#include "Eye/Parser/Ast/ProgramNode.h"
+#include "Eye/Parser/Ast/StatementNode.h"
+#include "Eye/Parser/Ast/LiteralNode.h"
 
 #include <vector>
 
@@ -22,23 +24,28 @@ namespace EYE
 		void DebugPrintNodes();
 
 	private:
-		Node* Program();
-		Node* Literal();
-		Node* NumericLiteral();
-		Node* StringLiteral();
+		ProgramNode* Program();
+		std::vector<StatementNode*> StatementList();
+		StatementNode* Statement();
+		ExpressionStatementNode* ExpressionStatement();
+		ExpressionNode* Expression();
+		LiteralNode* Literal();
+		LiteralNode* NumericLiteral();
+		LiteralNode* StringLiteral();
 		
 	private:
 		Token NextToken();
 		Token PeekToken();
 		Token EatToken(TokenType type);
+		Token EatToken(TokenType type, const std::string& value);
+		Token EatToken(TokenType type, char value);
 
 		bool HasToken() const;
 		bool IsLastToken() const;
 
 	private:
 		EyeInstance* m_EyeInstance;
-		Node* m_Root;
-		//std::vector<Node*> m_Nodes;
+		ProgramNode* m_Program;
 		size_t m_CurrentTokenIndex;
 		Token m_LookAhead;
 	};

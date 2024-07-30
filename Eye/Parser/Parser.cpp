@@ -9,26 +9,70 @@ namespace EYE
 		m_CurrentTokenIndex = 0;
 		m_LookAhead = NextToken();
 
-		m_Root = Program();
+		m_Program = Program();
 		return ParserResult::Successful;
 	}
 
 	void Parser::DebugPrintNodes()
 	{
-		std::cout << *m_Root << std::endl;
+		std::cout << m_Program << std::endl;
 	}
 
 	/*
 		Program
+			: StatementList
+			;
+	*/
+	ProgramNode* Parser::Program()
+	{
+		ProgramNode* program = new ProgramNode(StatementList());
+		return program;
+	}
+
+	/*
+		StatementList
+			: Statement
+			| StatementList Statement
+			;
+	*/
+	std::vector<StatementNode*> Parser::StatementList()
+	{
+		std::vector<StatementNode*> statementList;
+		while (m_LookAhead)
+			statementList.push_back(Statement());
+		return statementList;
+	}
+
+	/*
+		Statement
+			: ExpressionStatement
+			;
+	*/
+	StatementNode* Parser::Statement()
+	{
+		return ExpressionStatement();
+	}
+
+	/*
+		ExpressionStatement
+			: Expression ';'
+			;
+	*/
+	ExpressionStatementNode* Parser::ExpressionStatement()
+	{
+		ExpressionStatementNode* expressionStatement = new ExpressionStatementNode(Expression());
+		EatToken(TokenType::Symbol, ';');
+		return expressionStatement;
+	}
+
+	/*
+		Expression
 			: Literal
 			;
 	*/
-	Node* Parser::Program()
+	ExpressionNode* Parser::Expression()
 	{
-		Node* node = new Node;
-		node->Type = NodeType::Program;
-		node->Metadata.Body = Literal();
-		return node;
+		return Literal();
 	}
 
 	/*
@@ -37,7 +81,7 @@ namespace EYE
 			| StringLiteral
 			;
 	*/
-	Node* Parser::Literal()
+	LiteralNode* Parser::Literal()
 	{
 		switch (m_LookAhead.Type)
 		{
@@ -58,13 +102,10 @@ namespace EYE
 			: NUMBER
 			;
 	*/
-	Node* Parser::NumericLiteral()
+	LiteralNode* Parser::NumericLiteral()
 	{
 		Token token = EatToken(TokenType::Number);
-		Node* node = new Node;
-		node->Type = NodeType::Number;
-		node->Position = token.Position;
-		node->Number = token.Number;
+		LiteralNode* node = new LiteralNode(LiteralNodeType::Number, (void*)token.Number);
 		return node;
 	}
 
@@ -73,13 +114,10 @@ namespace EYE
 			: STRING
 			;
 	*/
-	Node* Parser::StringLiteral()
+	LiteralNode* Parser::StringLiteral()
 	{
 		Token token = EatToken(TokenType::String);
-		Node* node = new Node;
-		node->Type = NodeType::String;
-		node->Position = token.Position;
-		node->String = token.String;
+		LiteralNode* node = new LiteralNode(LiteralNodeType::String, (void*)token.String);
 		return node;
 	}
 
@@ -127,6 +165,34 @@ namespace EYE
 		if (token.Type != type)
 			EYE_LOG_CRITICAL("Parser->Unexpected Token Type: {}, Expected: {}", (int)token.Type, (int)type);
 		
+		m_LookAhead = NextToken();
+		return token;
+	}
+
+	Token Parser::EatToken(TokenType type, const std::string& value)
+	{
+		Token token = m_LookAhead;
+
+		if (!token)
+			EYE_LOG_CRITICAL("Parser->Unexpected LookAhead TokenType: {}, Expected: {}", (int)token.Type, value);
+
+		if (token.Type != type && value != token.String)
+			EYE_LOG_CRITICAL("Parser->Unexpected Operator Token Type: {}, Expected: {}", (int)token.Type, value);
+
+		m_LookAhead = NextToken();
+		return token;
+	}
+
+	Token Parser::EatToken(TokenType type, char value)
+	{
+		Token token = m_LookAhead;
+
+		if (!token)
+			EYE_LOG_CRITICAL("Parser->Unexpected LookAhead TokenType: {}, Expected: {}", (int)token.Type, value);
+
+		if (token.Type != type && value != token.Char)
+			EYE_LOG_CRITICAL("Parser->Unexpected Operator Token Type: {}, Expected: {}", (int)token.Type, value);
+
 		m_LookAhead = NextToken();
 		return token;
 	}
