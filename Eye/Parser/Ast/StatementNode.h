@@ -49,14 +49,14 @@ namespace EYE
 		{
 		}
 
-		std::string ToString() const
+		std::string ToJSON() const
 		{
 			std::ostringstream oss;
-			oss << "\tExpressionStatement {\n";
-			oss << "\t\t\ttype: ExpressionStatement\n";
+			oss << "ExpressionStatement {\n";
+			oss << "\"type\": \"ExpressionStatement\",\n";
 			if (m_Expression->GetType() == ExpressionNodeType::Literal)
-				oss << "\t\t\texpression: " << ((LiteralNode*)m_Expression)->ToString() << std::endl;
-			oss << "\t\t}\n";
+				oss << "\"expression\": " << ((LiteralNode*)m_Expression)->ToJSON() << std::endl;
+			oss << "}\n";
 			return oss.str();
 		}
 
@@ -77,23 +77,23 @@ namespace EYE
 		{
 		}
 
-		std::string ToString() const
+		std::string ToJSON() const
 		{
 			std::ostringstream oss;
-			oss << "\tBlockStatement {\n";
-			oss << "\t\t\ttype: BlockStatement\n";
-			oss << "\t\t\tbodySize: " << m_StatementList.size() << std::endl;
+			oss << "BlockStatement {\n";
+			oss << "\"type\": \"BlockStatement\",\n";
+			oss << "\"bodySize\": " << m_StatementList.size() << ",\n";
 
-			oss << "\t\t\tbody: [\n";
+			oss << "\"body\": [\n";
 			for (const auto& stmt : m_StatementList)
 			{
 				if (stmt->GetType() == StatementNodeType::Expression)
-					oss << "\t\t\t\t" << ((ExpressionStatementNode*)stmt)->ToString();
+					oss << "" << ((ExpressionStatementNode*)stmt)->ToJSON();
 				else if (stmt->GetType() == StatementNodeType::Block)
-					oss << "\t\t\t\t" << ((BlockStatementNode*)stmt)->ToString();
+					oss << "" << ((BlockStatementNode*)stmt)->ToJSON();
 			}
-			oss << "\t\t]\n";
-			oss << "\t\t}\n";
+			oss << "]\n";
+			oss << "}\n";
 			return oss.str();
 		}
 
