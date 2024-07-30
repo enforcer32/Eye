@@ -21,8 +21,11 @@ BlockStatement
 	;
 
 Expression
-	: Literal
 	: AdditiveBinaryExpression
+	;
+
+PrimaryExpression
+	: Literal
 	;
 
 Literal
@@ -30,13 +33,16 @@ Literal
 	| StringLiteral
 	;
 
-BinaryExpression
-	: Literal Operator Literal
+AdditiveBinaryExpression
+	: MultiplicativeBinaryExpression
+	| AdditiveBinaryExpression '+' MultiplicativeBinaryExpression
+	| AdditiveBinaryExpression '-' MultiplicativeBinaryExpression
 	;
 
-AdditiveBinaryExpression
-	: Expression '+' Literal
-	: Expression '-' Literal
+MultiplicativeBinaryExpression
+	: PrimaryExpression
+	| MultiplicativeBinaryExpression '*' PrimaryExpression
+	| MultiplicativeBinaryExpression '/' PrimaryExpression
 	;
 
 NumericLiteral

@@ -15,10 +15,14 @@ namespace EYE
 		return ParserResult::Successful;
 	}
 
-	void Parser::DebugPrintNodes()
+	void Parser::DebugPrintJSON()
 	{
-		//nlohmann::json data = nlohmann::json::parse(m_Program->ToJSON());
-		//std::cout << data.dump(2) << std::endl;
+		nlohmann::json data = nlohmann::json::parse(m_Program->ToJSON());
+		std::cout << data.dump(2) << std::endl;
+	}
+
+	void Parser::DebugPrintString()
+	{
 		std::cout << m_Program->ToJSON() << std::endl;
 	}
 
@@ -101,29 +105,68 @@ namespace EYE
 
 	/*
 		Expression
-			: Literal
 			: AdditiveBinaryExpression
 			;
-
-		AdditiveBinaryExpression
-			: Expression '+' Literal
-			: Expression '-' Literal
-			;
 	*/
+	//2+3+4
 	ExpressionNode* Parser::Expression()
 	{
-		ExpressionNode* left = Literal();
+		return AdditiveBinaryExpression();
+	}
+
+	/*
+		AdditiveBinaryExpression
+			: MultiplicativeBinaryExpression
+			| AdditiveBinaryExpression '+' MultiplicativeBinaryExpression
+			| AdditiveBinaryExpression '-' MultiplicativeBinaryExpression
+			;
+	*/
+	ExpressionNode* Parser::AdditiveBinaryExpression()
+	{
+		ExpressionNode* left = MultiplicativeBinaryExpression();
 
 		// AdditiveBinaryExpression
 		while (m_LookAhead.Type == TokenType::Operator && (!std::strcmp(m_LookAhead.String, "+") || !std::strcmp(m_LookAhead.String, "-")))
 		{
 			Token op = EatToken(TokenType::Operator, m_LookAhead.String);
-			LiteralNode* right = Literal();
+			ExpressionNode* right = MultiplicativeBinaryExpression();
 
 			left = new BinaryExpressionNode(left, op, right);
 		}
 
 		return left;
+	}
+
+	/*
+	MultiplicativeBinaryExpression
+		: PrimaryExpression
+		| MultiplicativeBinaryExpression '*' PrimaryExpression
+		| MultiplicativeBinaryExpression '/' PrimaryExpression
+		;
+	*/
+	ExpressionNode* Parser::MultiplicativeBinaryExpression()
+	{
+		ExpressionNode* left = PrimaryExpression();
+
+		while (m_LookAhead.Type == TokenType::Operator && (!std::strcmp(m_LookAhead.String, "*") || !std::strcmp(m_LookAhead.String, "/")))
+		{
+			Token op = EatToken(TokenType::Operator, m_LookAhead.String);
+			ExpressionNode* right = PrimaryExpression();
+
+			left = new BinaryExpressionNode(left, op, right);
+		}
+
+		return left;
+	}
+
+	/*
+		PrimaryExpression
+			: Literal
+			;
+	*/
+	ExpressionNode* Parser::PrimaryExpression()
+	{
+		return Literal();
 	}
 
 	/*

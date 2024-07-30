@@ -22,7 +22,8 @@ namespace EYE
 		ParserResult Parse(EyeInstance* eyeInstance);
 
 		// Temporary
-		void DebugPrintNodes();
+		void DebugPrintJSON();
+		void DebugPrintString();
 
 	private:
 		ProgramNode* Program();
@@ -31,6 +32,9 @@ namespace EYE
 		ExpressionStatementNode* ExpressionStatement();
 		BlockStatementNode* BlockStatement();
 		ExpressionNode* Expression();
+		ExpressionNode* AdditiveBinaryExpression();
+		ExpressionNode* MultiplicativeBinaryExpression();
+		ExpressionNode* PrimaryExpression();
 		LiteralNode* Literal();
 		LiteralNode* NumericLiteral();
 		LiteralNode* StringLiteral();

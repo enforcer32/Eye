@@ -31,7 +31,7 @@ namespace EYE
 			EYE_LOG_ERROR("EYEParser Failed!");
 			return EyeResult::Failed;
 		}
-		parser.DebugPrintNodes();
+		parser.DebugPrintJSON();
 
 		return EyeResult::Successful;
 	}
