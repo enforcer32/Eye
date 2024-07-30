@@ -102,16 +102,28 @@ namespace EYE
 	/*
 		Expression
 			: Literal
-			: BinaryExpression
+			: AdditiveBinaryExpression
+			;
+
+		AdditiveBinaryExpression
+			: Expression '+' Literal
+			: Expression '-' Literal
 			;
 	*/
 	ExpressionNode* Parser::Expression()
 	{
-		LiteralNode* left = Literal();
-		if (m_LookAhead.Type != TokenType::Operator)
-			return left;
+		ExpressionNode* left = Literal();
 
-		return BinaryExpression(left);
+		// AdditiveBinaryExpression
+		while (m_LookAhead.Type == TokenType::Operator && (!std::strcmp(m_LookAhead.String, "+") || !std::strcmp(m_LookAhead.String, "-")))
+		{
+			Token op = EatToken(TokenType::Operator, m_LookAhead.String);
+			LiteralNode* right = Literal();
+
+			left = new BinaryExpressionNode(left, op, right);
+		}
+
+		return left;
 	}
 
 	/*
@@ -134,22 +146,6 @@ namespace EYE
 		}
 
 		return {};
-	}
-
-	/*
-		BinaryExpression
-			: Literal Operator Literal
-			;
-	*/
-	BinaryExpressionNode* Parser::BinaryExpression(LiteralNode* left)
-	{
-		if (m_LookAhead.Type == TokenType::Operator && !std::strcmp(m_LookAhead.String, "+"))
-		{
-			Token op = m_LookAhead;
-			EatToken(TokenType::Operator, "+");
-			BinaryExpressionNode* binaryExpressionNode = new BinaryExpressionNode(left, op, Literal());
-			return binaryExpressionNode;
-		}
 	}
 
 	/*

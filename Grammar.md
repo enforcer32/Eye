@@ -22,7 +22,7 @@ BlockStatement
 
 Expression
 	: Literal
-	: BinaryExpression
+	: AdditiveBinaryExpression
 	;
 
 Literal
@@ -32,6 +32,11 @@ Literal
 
 BinaryExpression
 	: Literal Operator Literal
+	;
+
+AdditiveBinaryExpression
+	: Expression '+' Literal
+	: Expression '-' Literal
 	;
 
 NumericLiteral

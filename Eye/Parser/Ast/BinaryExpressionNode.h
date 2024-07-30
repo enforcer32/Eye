@@ -15,7 +15,7 @@ namespace EYE
 	class BinaryExpressionNode : public ExpressionNode
 	{
 	public:
-		BinaryExpressionNode(LiteralNode* left, Token op, LiteralNode* right)
+		BinaryExpressionNode(ExpressionNode* left, Token op, LiteralNode* right)
 			: ExpressionNode(ExpressionNodeType::Binary), m_Left(left), m_Operator(op), m_Right(right)
 		{
 		}
@@ -25,7 +25,11 @@ namespace EYE
 			std::ostringstream oss;
 			oss << "{\"BinaryExpression\": {\n";
 			oss << "\"type\": \"BinaryExpression\",\n";
-			oss << "\"left\": " << m_Left->ToJSON() << ",\n";
+
+			if(m_Left->GetType() == ExpressionNodeType::Literal)
+				oss << "\"left\": " << ((LiteralNode*)(m_Left))->ToJSON() << ",\n";
+			else if(m_Left->GetType() == ExpressionNodeType::Binary)
+				oss << "\"left\": " << ((BinaryExpressionNode*)(m_Left))->ToJSON() << ",\n";
 			oss << "\"operator\": \"" << m_Operator.String << "\",\n";
 			oss << "\"right\": " << m_Right->ToJSON() << "\n";
 			oss << "}\n}";
@@ -33,7 +37,7 @@ namespace EYE
 		}
 
 	private:
-		LiteralNode* m_Left;
+		ExpressionNode* m_Left;
 		Token m_Operator;
 		LiteralNode* m_Right;
 	};

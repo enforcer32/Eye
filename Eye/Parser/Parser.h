@@ -32,7 +32,6 @@ namespace EYE
 		BlockStatementNode* BlockStatement();
 		ExpressionNode* Expression();
 		LiteralNode* Literal();
-		BinaryExpressionNode* BinaryExpression(LiteralNode* left);
 		LiteralNode* NumericLiteral();
 		LiteralNode* StringLiteral();
 		
