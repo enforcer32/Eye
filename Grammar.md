@@ -9,10 +9,15 @@ StatementList
 
 Statement
 	: ExpressionStatement
+	| BlockStatement
 	;
 
 ExpressionStatement
 	: Expression ';'
+	;
+
+BlockStatement
+	: '{' OptionalStatementList '}'
 	;
 
 Expression

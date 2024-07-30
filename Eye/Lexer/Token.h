@@ -43,6 +43,39 @@ namespace EYE
 			return Type != TokenType::Invalid;
 		}
 
+		bool operator==(const Token& token)
+		{
+			if (Type != token.Type)
+				return false;
+
+			switch (token.Type)
+			{
+			case TokenType::Keyword:
+			case TokenType::Identifier:
+			case TokenType::Operator:
+			case TokenType::String:
+			case TokenType::Comment:
+				return !std::strcmp(String, token.String);
+
+			case TokenType::Number:
+				return Number == token.Number;
+
+			case TokenType::Symbol:
+			case TokenType::EscapeCharacter:
+				return Char == token.Char;
+				
+			default:
+				break;
+			}
+
+			return true;
+		}
+
+		bool operator!=(const Token& token)
+		{
+			return !(*this == token);
+		}
+
 		friend std::ostream& operator<<(std::ostream& os, const Token& token)
 		{
 			std::string type;

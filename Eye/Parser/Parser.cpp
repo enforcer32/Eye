@@ -16,7 +16,6 @@ namespace EYE
 	void Parser::DebugPrintNodes()
 	{
 		std::cout << m_Program->ToString() << std::endl;
-
 	}
 
 	/*
@@ -36,10 +35,10 @@ namespace EYE
 			| StatementList Statement
 			;
 	*/
-	std::vector<StatementNode*> Parser::StatementList()
+	std::vector<StatementNode*> Parser::StatementList(Token stopAt)
 	{
 		std::vector<StatementNode*> statementList;
-		while (m_LookAhead)
+		while (m_LookAhead && m_LookAhead != stopAt)
 			statementList.push_back(Statement());
 		return statementList;
 	}
@@ -47,10 +46,19 @@ namespace EYE
 	/*
 		Statement
 			: ExpressionStatement
+			| BlockStatement
 			;
 	*/
 	StatementNode* Parser::Statement()
 	{
+		switch (m_LookAhead.Type)
+		{
+		case TokenType::Symbol:
+			if (m_LookAhead.Char == '{')
+				return BlockStatement();
+		default:
+			break;
+		}
 		return ExpressionStatement();
 	}
 
@@ -64,6 +72,27 @@ namespace EYE
 		ExpressionStatementNode* expressionStatement = new ExpressionStatementNode(Expression());
 		EatToken(TokenType::Symbol, ';');
 		return expressionStatement;
+	}
+
+	/*
+		BlockStatement
+			: '{' OptionalStatementList '}'
+			;
+	*/
+	BlockStatementNode* Parser::BlockStatement()
+	{
+		Token stopAtToken;
+		stopAtToken.Type = TokenType::Symbol;
+		stopAtToken.Char = '}';
+
+		EatToken(TokenType::Symbol, '{');
+		std::vector<StatementNode*> statementList;
+		if (m_LookAhead.Type != TokenType::Symbol || m_LookAhead.Char != '}')
+			statementList = StatementList(stopAtToken);
+		EatToken(TokenType::Symbol, '}');
+
+		BlockStatementNode* blockStatement = new BlockStatementNode(statementList);
+		return blockStatement;
 	}
 
 	/*

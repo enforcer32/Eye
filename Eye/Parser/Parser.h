@@ -25,9 +25,10 @@ namespace EYE
 
 	private:
 		ProgramNode* Program();
-		std::vector<StatementNode*> StatementList();
+		std::vector<StatementNode*> StatementList(Token stopAt = {});
 		StatementNode* Statement();
 		ExpressionStatementNode* ExpressionStatement();
+		BlockStatementNode* BlockStatement();
 		ExpressionNode* Expression();
 		LiteralNode* Literal();
 		LiteralNode* NumericLiteral();

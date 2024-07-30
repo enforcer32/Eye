@@ -7,6 +7,11 @@ namespace EYE
 		Literal
 	};
 
+	/*
+		Expression
+			: Literal
+			;
+	*/
 	class ExpressionNode
 	{
 	public:

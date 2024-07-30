@@ -10,9 +10,16 @@ namespace EYE
 {
 	enum class StatementNodeType
 	{
-		Expression
+		Expression,
+		Block
 	};
 
+	/*
+		Statement
+			: ExpressionStatement
+			| BlockStatement
+			;
+	*/
 	class StatementNode
 	{
 	public:
@@ -29,6 +36,11 @@ namespace EYE
 		StatementNodeType m_Type;
 	};
 
+	/*
+		ExpressionStatement
+			: Expression ';'
+			;
+	*/
 	class ExpressionStatementNode : public StatementNode
 	{
 	public:
@@ -50,5 +62,42 @@ namespace EYE
 
 	private:
 		ExpressionNode* m_Expression;
+	};
+
+	/*
+		BlockStatement
+			: '{' OptionalStatementList '}'
+			;
+	*/
+	class BlockStatementNode : public StatementNode
+	{
+	public:
+		BlockStatementNode(std::vector<StatementNode*> statements)
+			: StatementNode(StatementNodeType::Block), m_StatementList(statements)
+		{
+		}
+
+		std::string ToString() const
+		{
+			std::ostringstream oss;
+			oss << "\tBlockStatement {\n";
+			oss << "\t\t\ttype: BlockStatement\n";
+			oss << "\t\t\tbodySize: " << m_StatementList.size() << std::endl;
+
+			oss << "\t\t\tbody: [\n";
+			for (const auto& stmt : m_StatementList)
+			{
+				if (stmt->GetType() == StatementNodeType::Expression)
+					oss << "\t\t\t\t" << ((ExpressionStatementNode*)stmt)->ToString();
+				else if (stmt->GetType() == StatementNodeType::Block)
+					oss << "\t\t\t\t" << ((BlockStatementNode*)stmt)->ToString();
+			}
+			oss << "\t\t]\n";
+			oss << "\t\t}\n";
+			return oss.str();
+		}
+
+	private:
+		std::vector<StatementNode*> m_StatementList;
 	};
 }

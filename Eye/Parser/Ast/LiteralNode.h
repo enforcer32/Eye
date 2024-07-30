@@ -10,6 +10,20 @@ namespace EYE
 		String
 	};
 
+	/*
+		Literal
+			: NumericLiteral
+			| StringLiteral
+			;
+
+		NumericLiteral
+			: NUMBER
+			;
+
+		StringLiteral
+			: STRING
+			;
+	*/
 	class LiteralNode : public ExpressionNode
 	{
 	public:
