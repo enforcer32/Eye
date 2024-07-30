@@ -29,19 +29,23 @@ namespace EYE
 		std::string ToJSON() const
 		{
 			std::ostringstream oss;
-			oss << "Program {\n";
+			oss << "{\"Program\": {\n";
 			oss << "\"type\": \"Program\",\n";
 			oss << "\"bodySize\": " << m_StatementList.size() << ",\n";
 			oss << "\"body\": [\n";
+			size_t i = 0;
 			for (const auto& stmt : m_StatementList)
 			{
 				if (stmt->GetType() == StatementNodeType::Expression)
 					oss << ((ExpressionStatementNode*)stmt)->ToJSON();
 				else if (stmt->GetType() == StatementNodeType::Block)
 					oss << ((BlockStatementNode*)stmt)->ToJSON();
+				i++;
+				if ((i + 1) <= m_StatementList.size())
+					oss << ",";
 			}
 			oss << "]\n";
-			oss << "}";
+			oss << "}\n}";
 			return oss.str();
 		}
 

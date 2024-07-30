@@ -1,6 +1,8 @@
 #include "Eye/Parser/Parser.h"
 #include "Eye/Util/Logger.h"
 
+#include <nlohmann/json.hpp>
+
 namespace EYE
 {
 	ParserResult Parser::Parse(EyeInstance* eyeInstance)
@@ -15,7 +17,8 @@ namespace EYE
 
 	void Parser::DebugPrintNodes()
 	{
-		std::cout << m_Program->ToJSON() << std::endl;
+		nlohmann::json data = nlohmann::json::parse(m_Program->ToJSON());
+		std::cout << data.dump(2) << std::endl;
 	}
 
 	/*

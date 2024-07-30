@@ -42,3 +42,4 @@ target_include_directories(${EYE_TARGET_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DI
 target_include_directories(${EYE_TARGET_NAME} PRIVATE GTest::gtest_main)
 target_link_libraries(${EYE_TARGET_NAME} PRIVATE spdlog)
 target_link_libraries(${EYE_TARGET_NAME} PRIVATE GTest::gtest_main)
+target_link_libraries(${EYE_TARGET_NAME} PRIVATE nlohmann_json::nlohmann_json)

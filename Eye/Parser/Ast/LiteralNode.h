@@ -35,7 +35,7 @@ namespace EYE
 		std::string ToJSON() const
 		{
 			std::ostringstream oss;
-			oss << "Literal {\n";
+			oss << "{\"Literal\": {\n";
 			if (m_Type == LiteralNodeType::Number)
 			{
 				oss << "\"type\": \"Number\",\n";
@@ -46,7 +46,7 @@ namespace EYE
 				oss << "\"type\": \"String\",\n";
 				oss << "\"value\": " << "\"" << m_String << "\"\n";
 			}
-			oss << "}";
+			oss << "}\n}";
 			return oss.str();
 		}
 
