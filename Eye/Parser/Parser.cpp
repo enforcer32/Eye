@@ -17,8 +17,9 @@ namespace EYE
 
 	void Parser::DebugPrintNodes()
 	{
-		nlohmann::json data = nlohmann::json::parse(m_Program->ToJSON());
-		std::cout << data.dump(2) << std::endl;
+		//nlohmann::json data = nlohmann::json::parse(m_Program->ToJSON());
+		//std::cout << data.dump(2) << std::endl;
+		std::cout << m_Program->ToJSON() << std::endl;
 	}
 
 	/*
@@ -101,11 +102,16 @@ namespace EYE
 	/*
 		Expression
 			: Literal
+			: BinaryExpression
 			;
 	*/
 	ExpressionNode* Parser::Expression()
 	{
-		return Literal();
+		LiteralNode* left = Literal();
+		if (m_LookAhead.Type != TokenType::Operator)
+			return left;
+
+		return BinaryExpression(left);
 	}
 
 	/*
@@ -128,6 +134,22 @@ namespace EYE
 		}
 
 		return {};
+	}
+
+	/*
+		BinaryExpression
+			: Literal Operator Literal
+			;
+	*/
+	BinaryExpressionNode* Parser::BinaryExpression(LiteralNode* left)
+	{
+		if (m_LookAhead.Type == TokenType::Operator && !std::strcmp(m_LookAhead.String, "+"))
+		{
+			Token op = m_LookAhead;
+			EatToken(TokenType::Operator, "+");
+			BinaryExpressionNode* binaryExpressionNode = new BinaryExpressionNode(left, op, Literal());
+			return binaryExpressionNode;
+		}
 	}
 
 	/*

@@ -4,7 +4,8 @@ namespace EYE
 {
 	enum class ExpressionNodeType
 	{
-		Literal
+		Literal,
+		Binary
 	};
 
 	/*

@@ -22,11 +22,16 @@ BlockStatement
 
 Expression
 	: Literal
+	: BinaryExpression
 	;
 
 Literal
 	: NumericLiteral
 	| StringLiteral
+	;
+
+BinaryExpression
+	: Literal Operator Literal
 	;
 
 NumericLiteral

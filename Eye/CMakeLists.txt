@@ -15,6 +15,7 @@ file(GLOB_RECURSE EyeSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/Parser/Ast/ProgramNode.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Parser/Ast/ExpressionNode.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Parser/Ast/LiteralNode.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Parser/Ast/BinaryExpressionNode.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Parser/Ast/StatementNode.h"
 
 	"${CMAKE_CURRENT_SOURCE_DIR}/Util/Platform.h"
