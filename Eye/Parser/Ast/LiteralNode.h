@@ -18,6 +18,24 @@ namespace EYE
 		{
 		}
 
+		std::string ToString() const
+		{
+			std::ostringstream oss;
+			oss << "Literal {\n";
+			if (m_Type == LiteralNodeType::Number)
+			{
+				oss << "\t\t\t\ttype: Number\n";
+				oss << "\t\t\t\tvalue: " << m_Number << std::endl;
+			}
+			else if (m_Type == LiteralNodeType::String)
+			{
+				oss << "\t\t\t\ttype: String\n";
+				oss << "\t\t\t\tvalue: " << m_String << std::endl;
+			}
+			oss << "\t\t\t}\n";
+			return oss.str();
+		}
+
 	private:
 		LiteralNodeType m_Type;
 		union

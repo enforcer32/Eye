@@ -3,6 +3,8 @@
 #include "Eye/Parser/Ast/StatementNode.h"
 
 #include <vector>
+#include <string>
+#include <iostream>
 
 namespace EYE
 {
@@ -12,6 +14,21 @@ namespace EYE
 		ProgramNode(std::vector<StatementNode*> statements)
 			: m_StatementList(statements)
 		{
+		}
+
+		std::string ToString() const
+		{
+			std::ostringstream oss;
+			oss << "Program {\n";
+			oss << "\ttype: Program\n";
+			oss << "\tbodySize: " << m_StatementList.size() << std::endl;
+			oss << "\tbody: [\n";
+			for (const auto& stmt : m_StatementList)
+				if (stmt->GetType() == StatementNodeType::Expression)
+					oss << "\t" << ((ExpressionStatementNode*)stmt)->ToString();
+			oss << "\t]\n";
+			oss << "}";
+			return oss.str();
 		}
 
 	private:

@@ -15,7 +15,8 @@ namespace EYE
 
 	void Parser::DebugPrintNodes()
 	{
-		std::cout << m_Program << std::endl;
+		std::cout << m_Program->ToString() << std::endl;
+
 	}
 
 	/*
