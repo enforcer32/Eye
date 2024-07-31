@@ -26,11 +26,7 @@ Expression
 
 PrimaryExpression
 	: Literal
-	;
-
-Literal
-	: NumericLiteral
-	| StringLiteral
+	| ParenthesizedExpression
 	;
 
 AdditiveBinaryExpression
@@ -43,6 +39,15 @@ MultiplicativeBinaryExpression
 	: PrimaryExpression
 	| MultiplicativeBinaryExpression '*' PrimaryExpression
 	| MultiplicativeBinaryExpression '/' PrimaryExpression
+	;
+
+ParenthesizedExpression
+	: '(' Expression ')'
+	;
+
+Literal
+	: NumericLiteral
+	| StringLiteral
 	;
 
 NumericLiteral

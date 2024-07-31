@@ -108,7 +108,6 @@ namespace EYE
 			: AdditiveBinaryExpression
 			;
 	*/
-	//2+3+4
 	ExpressionNode* Parser::Expression()
 	{
 		return AdditiveBinaryExpression();
@@ -144,6 +143,8 @@ namespace EYE
 		| MultiplicativeBinaryExpression '/' PrimaryExpression
 		;
 	*/
+
+	//(2+3)*5;
 	ExpressionNode* Parser::MultiplicativeBinaryExpression()
 	{
 		ExpressionNode* left = PrimaryExpression();
@@ -162,11 +163,28 @@ namespace EYE
 	/*
 		PrimaryExpression
 			: Literal
+			| ParenthesizedExpression
 			;
 	*/
 	ExpressionNode* Parser::PrimaryExpression()
 	{
+		if (m_LookAhead.Type == TokenType::Operator && !std::strcmp(m_LookAhead.String, "("))
+			return ParenthesizedExpression();
+
 		return Literal();
+	}
+
+	/*
+		ParenthesizedExpression
+			: '(' Expression ')'
+			;
+	*/
+	ExpressionNode* Parser::ParenthesizedExpression()
+	{
+		EatToken(TokenType::Operator, "(");
+		ExpressionNode* expression = Expression();
+		EatToken(TokenType::Symbol, ')');
+		return expression;
 	}
 
 	/*

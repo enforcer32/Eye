@@ -35,6 +35,7 @@ namespace EYE
 		ExpressionNode* AdditiveBinaryExpression();
 		ExpressionNode* MultiplicativeBinaryExpression();
 		ExpressionNode* PrimaryExpression();
+		ExpressionNode* ParenthesizedExpression();
 		LiteralNode* Literal();
 		LiteralNode* NumericLiteral();
 		LiteralNode* StringLiteral();
