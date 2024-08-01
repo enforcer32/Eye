@@ -8,7 +8,7 @@ namespace EYE
 {
 	/*
 		BinaryExpression
-			: Literal Operator Literal
+			: Expression Operator Expression
 			;
 
 	*/

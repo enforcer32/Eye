@@ -3,6 +3,8 @@
 #include "Eye/Parser/Ast/ExpressionNode.h"
 #include "Eye/Parser/Ast/LiteralNode.h"
 #include "Eye/Parser/Ast/BinaryExpressionNode.h"
+#include "Eye/Parser/Ast/AssignmentExpressionNode.h"
+#include "Eye/Parser/Ast/LHSExpressionNode.h"
 
 #include <string>
 #include <iostream>
@@ -59,6 +61,10 @@ namespace EYE
 				oss << "\"expression\": " << ((LiteralNode*)m_Expression)->ToJSON() << std::endl;
 			else if(m_Expression->GetType() == ExpressionNodeType::Binary)
 				oss << "\"expression\": " << ((BinaryExpressionNode*)m_Expression)->ToJSON() << std::endl;
+			else if(m_Expression->GetType() == ExpressionNodeType::Assignment)
+				oss << "\"expression\": " << ((AssignmentExpressionNode*)m_Expression)->ToJSON() << std::endl;
+			else if (m_Expression->GetType() == ExpressionNodeType::LHSExpression) // Valid Statement?
+				oss << "\"expression\": " << ((LHSExpressionNode*)m_Expression)->ToJSON() << std::endl;
 			oss << "}\n}\n";
 			return oss.str();
 		}

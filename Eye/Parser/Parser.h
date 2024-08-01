@@ -5,6 +5,8 @@
 #include "Eye/Parser/Ast/StatementNode.h"
 #include "Eye/Parser/Ast/LiteralNode.h"
 #include "Eye/Parser/Ast/BinaryExpressionNode.h"
+#include "Eye/Parser/Ast/AssignmentExpressionNode.h"
+#include "Eye/Parser/Ast/LHSExpressionNode.h"
 
 #include <vector>
 
@@ -32,6 +34,8 @@ namespace EYE
 		ExpressionStatementNode* ExpressionStatement();
 		BlockStatementNode* BlockStatement();
 		ExpressionNode* Expression();
+		ExpressionNode* AssignmentExpression();
+		ExpressionNode* LHSExpression();
 		ExpressionNode* AdditiveBinaryExpression();
 		ExpressionNode* MultiplicativeBinaryExpression();
 		ExpressionNode* PrimaryExpression();

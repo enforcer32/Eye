@@ -105,12 +105,48 @@ namespace EYE
 
 	/*
 		Expression
-			: AdditiveBinaryExpression
+			: AssignmentExpression
 			;
 	*/
 	ExpressionNode* Parser::Expression()
 	{
-		return AdditiveBinaryExpression();
+		return AssignmentExpression();
+	}
+
+	/*
+		AssignmentExpression
+			: AdditiveBinaryExpression
+			| LHSExpression '=' AssignmentExpression
+			;
+	*/
+	ExpressionNode* Parser::AssignmentExpression()
+	{
+		ExpressionNode* left = AdditiveBinaryExpression();
+		if (m_LookAhead.Type != TokenType::Operator || std::strcmp(m_LookAhead.String, "="))
+			return left;
+
+		// Validate LHS
+		if (left->GetType() != ExpressionNodeType::LHSExpression || ((LHSExpressionNode*)left)->GetLHSType() != LHSExpressionType::Identifier)
+			EYE_LOG_CRITICAL("Parser->Bad LHSType: {}, Expected: {}", (int)((LHSExpressionNode*)left)->GetLHSType(), (int)((LHSExpressionNode*)left)->GetLHSType());
+
+		Token op = EatToken(TokenType::Operator, "=");
+		AssignmentExpressionNode* assignmentExpression = new AssignmentExpressionNode((LHSExpressionNode*)left, op, AssignmentExpression());
+		return assignmentExpression;
+	}
+
+	/*
+		LHSExpression
+			: Identifier
+			;
+
+		Identifier
+			: IDENTIFIER
+			;
+	*/
+	ExpressionNode* Parser::LHSExpression()
+	{
+		LHSExpressionNode* lhsExpression = new LHSExpressionNode(EatToken(TokenType::Identifier));
+		return lhsExpression;
 	}
 
 	/*
@@ -164,14 +200,18 @@ namespace EYE
 		PrimaryExpression
 			: Literal
 			| ParenthesizedExpression
+			| LHSExpression
 			;
 	*/
 	ExpressionNode* Parser::PrimaryExpression()
 	{
+		if (m_LookAhead.Type == TokenType::Number || m_LookAhead.Type == TokenType::String)
+			return Literal();
+
 		if (m_LookAhead.Type == TokenType::Operator && !std::strcmp(m_LookAhead.String, "("))
 			return ParenthesizedExpression();
 
-		return Literal();
+		return LHSExpression();
 	}
 
 	/*
@@ -202,7 +242,7 @@ namespace EYE
 		case TokenType::String:
 			return StringLiteral();
 		default:
-			EYE_LOG_CRITICAL("Unexpected Literal Type: {}", (int)m_LookAhead.Type);
+			EYE_LOG_CRITICAL("Parser->Unexpected Literal Type: {}", (int)m_LookAhead.Type);
 			break;
 		}
 

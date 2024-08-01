@@ -5,7 +5,9 @@ namespace EYE
 	enum class ExpressionNodeType
 	{
 		Literal,
-		Binary
+		Binary,
+		Assignment,
+		LHSExpression
 	};
 
 	/*

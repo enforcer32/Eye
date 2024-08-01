@@ -51,7 +51,7 @@ namespace EYE
 		}
 
 	private:
-		LiteralNodeType m_Type;
+		LiteralNodeType m_Type; // BUG (m_Type also defined in Superclass)
 		union
 		{
 			unsigned long long m_Number;

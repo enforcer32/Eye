@@ -21,12 +21,26 @@ BlockStatement
 	;
 
 Expression
+	: AssignmentExpression
+	;
+
+AssignmentExpression
 	: AdditiveBinaryExpression
+	| LHSExpression '=' AssignmentExpression
+	;
+
+LHSExpression
+	: Identifier
+	;
+
+Identifier
+	: IDENTIFIER
 	;
 
 PrimaryExpression
 	: Literal
 	| ParenthesizedExpression
+	| LHSExpression
 	;
 
 AdditiveBinaryExpression
