@@ -19,22 +19,14 @@ namespace EYE
 		{
 		}
 
-		std::string ToJSON() const
+		virtual std::string ToJSON() const override
 		{
 			std::ostringstream oss;
 			oss << "{\"AssignmentExpression\": {\n";
 			oss << "\"type\": \"AssignmentExpression\",\n";
-
 			oss << "\"left\": " << m_Left->ToJSON() << ",\n";
 			oss << "\"operator\": \"" << m_Operator.String << "\",\n";
-
-			if (m_Right->GetType() == ExpressionNodeType::Assignment)
-				oss << "\"right\": " << ((AssignmentExpressionNode*)(m_Right))->ToJSON() << "\n";
-			else if (m_Right->GetType() == ExpressionNodeType::Literal)
-				oss << "\"right\": " << ((LiteralNode*)(m_Right))->ToJSON() << "\n";
-			else if (m_Right->GetType() == ExpressionNodeType::Binary)
-				oss << "\"right\": " << ((BinaryExpressionNode*)(m_Right))->ToJSON() << "\n";
-
+			oss << "\"right\": " << m_Right->ToJSON() << "\n";
 			oss << "}\n}";
 			return oss.str();
 		}

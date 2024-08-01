@@ -37,20 +37,9 @@ namespace EYE
 			oss << "\"identifier\":" << m_Identifier->ToJSON() << ",\n";
 
 			if (m_Initializer)
-			{
-				if (m_Initializer->GetType() == ExpressionNodeType::Literal) // Virtual ToJSON() for ExpressionNode Class?
-					oss << "\"initializer\":" << ((LiteralNode*)m_Initializer)->ToJSON() << "\n";
-				else if (m_Initializer->GetType() == ExpressionNodeType::Binary)
-					oss << "\"initializer\":" << ((BinaryExpressionNode*)m_Initializer)->ToJSON() << "\n";
-				else if (m_Initializer->GetType() == ExpressionNodeType::LHSExpression)
-					oss << "\"initializer\":" << ((LHSExpressionNode*)m_Initializer)->ToJSON() << "\n";
-				else if (m_Initializer->GetType() == ExpressionNodeType::Assignment)
-					oss << "\"initializer\":" << ((AssignmentExpressionNode*)m_Initializer)->ToJSON() << "\n";
-			}
+				oss << "\"initializer\":" << m_Initializer->ToJSON() << "\n";
 			else
-			{
 				oss << "\"initializer\":" << "null" << "\n";
-			}
 
 			oss << "}\n}";
 			return oss.str();

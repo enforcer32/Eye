@@ -29,6 +29,7 @@ namespace EYE
 	{
 	public:
 		virtual ~StatementNode() = default;
+		virtual std::string ToJSON() const = 0;
 		inline StatementNodeType GetType() const { return m_Type; }
 
 	protected:
@@ -54,19 +55,12 @@ namespace EYE
 		{
 		}
 
-		std::string ToJSON() const
+		virtual std::string ToJSON() const override
 		{
 			std::ostringstream oss;
 			oss << "{\"ExpressionStatement\": {\n";
 			oss << "\"type\": \"ExpressionStatement\",\n";
-			if (m_Expression->GetType() == ExpressionNodeType::Literal)
-				oss << "\"expression\": " << ((LiteralNode*)m_Expression)->ToJSON() << std::endl;
-			else if(m_Expression->GetType() == ExpressionNodeType::Binary)
-				oss << "\"expression\": " << ((BinaryExpressionNode*)m_Expression)->ToJSON() << std::endl;
-			else if(m_Expression->GetType() == ExpressionNodeType::Assignment)
-				oss << "\"expression\": " << ((AssignmentExpressionNode*)m_Expression)->ToJSON() << std::endl;
-			else if (m_Expression->GetType() == ExpressionNodeType::LHSExpression) // Valid Statement?
-				oss << "\"expression\": " << ((LHSExpressionNode*)m_Expression)->ToJSON() << std::endl;
+			oss << "\"expression\": " << m_Expression->ToJSON() << std::endl;			
 			oss << "}\n}\n";
 			return oss.str();
 		}
@@ -88,21 +82,17 @@ namespace EYE
 		{
 		}
 
-		std::string ToJSON() const
+		virtual std::string ToJSON() const override
 		{
 			std::ostringstream oss;
 			oss << "{\"BlockStatement\": {\n";
 			oss << "\"type\": \"BlockStatement\",\n";
 			oss << "\"bodySize\": " << m_StatementList.size() << ",\n";
-
 			oss << "\"body\": [\n";
 			size_t i = 0;
 			for (const auto& stmt : m_StatementList)
 			{
-				if (stmt->GetType() == StatementNodeType::Expression)
-					oss << "" << ((ExpressionStatementNode*)stmt)->ToJSON();
-				else if (stmt->GetType() == StatementNodeType::Block)
-					oss << "" << ((BlockStatementNode*)stmt)->ToJSON();
+				oss << "" << stmt->ToJSON();
 
 				i++;
 				if ((i + 1) <= m_StatementList.size())
@@ -136,7 +126,7 @@ namespace EYE
 		{
 		}
 
-		std::string ToJSON() const
+		virtual std::string ToJSON() const override
 		{
 			std::ostringstream oss;
 			oss << "{\"VariableStatement\": {\n";

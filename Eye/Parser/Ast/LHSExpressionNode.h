@@ -30,7 +30,7 @@ namespace EYE
 
 		inline LHSExpressionType GetLHSType() const { return m_LHSType; }
 
-		std::string ToJSON() const
+		virtual std::string ToJSON() const override
 		{
 			std::ostringstream oss;
 			if (m_LHSType == LHSExpressionType::Identifier)

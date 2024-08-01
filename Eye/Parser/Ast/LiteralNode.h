@@ -32,7 +32,7 @@ namespace EYE
 		{
 		}
 
-		std::string ToJSON() const
+		virtual std::string ToJSON() const override
 		{
 			std::ostringstream oss;
 			oss << "{\"Literal\": {\n";

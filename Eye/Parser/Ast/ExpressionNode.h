@@ -19,6 +19,7 @@ namespace EYE
 	{
 	public:
 		virtual ~ExpressionNode() = default;
+		virtual std::string ToJSON() const = 0;
 		inline ExpressionNodeType GetType() const { return m_Type; }
 
 	protected:
@@ -26,8 +27,6 @@ namespace EYE
 			: m_Type(type)
 		{
 		}
-
-		// Virtual ToJSON()?
 
 	private:
 		ExpressionNodeType m_Type;
