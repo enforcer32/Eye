@@ -172,7 +172,7 @@ namespace EYE
 	Token Lexer::MakeNumberBaseToken()
 	{
 		if (m_Tokens.empty() || !(m_Tokens.back().Type == TokenType::Number && m_Tokens.back().Number == 0))
-			return {}; // Identifier...
+			return MakeIdentifierToken();
 
 		Token lastToken = m_Tokens.back();
 		m_Tokens.pop_back();
