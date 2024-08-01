@@ -55,6 +55,7 @@ namespace EYE
 		Statement
 			: ExpressionStatement
 			| BlockStatement
+			| VariableStatement
 			;
 	*/
 	StatementNode* Parser::Statement()
@@ -64,6 +65,9 @@ namespace EYE
 		case TokenType::Symbol:
 			if (m_LookAhead.Char == '{')
 				return BlockStatement();
+		case TokenType::Keyword:
+			if (!std::strcmp(m_LookAhead.String, "auto"))
+				return VariableStatement();
 		default:
 			break;
 		}
@@ -101,6 +105,65 @@ namespace EYE
 
 		BlockStatementNode* blockStatement = new BlockStatementNode(statementList);
 		return blockStatement;
+	}
+
+	/*
+		VariableStatement
+			: 'auto' VariableDeclarationList ';'
+			;
+	*/
+	VariableStatementNode* Parser::VariableStatement()
+	{
+		EatToken(TokenType::Keyword, "auto");
+		VariableStatementNode* variableStatementNode = new VariableStatementNode(VariableDeclarationList());
+		EatToken(TokenType::Symbol, ';');
+		return variableStatementNode;
+	}
+
+	/*
+		VariableDeclarationList
+			: VariableDeclaration
+			| VariableDeclarationList ',' VariableDeclaration
+			;
+	*/
+	std::vector<VariableDeclarationNode*> Parser::VariableDeclarationList()
+	{
+		std::vector<VariableDeclarationNode*> variableDeclarationList;
+		do
+		{
+			variableDeclarationList.push_back(VariableDeclaration());
+		} while (m_LookAhead.Type == TokenType::Operator && !std::strcmp(m_LookAhead.String, ",") && EatToken(TokenType::Operator, ","));
+		return variableDeclarationList;
+	}
+
+	/*
+		VariableDeclaration
+			: Identifier OptionalVariableInitializer
+			;
+
+		VariableInitializer
+			: '=' AssignmentExpression
+			;
+	*/
+	VariableDeclarationNode* Parser::VariableDeclaration()
+	{
+		IdentifierNode* identifier = Identifier();
+
+		VariableDeclarationNode* variableDeclarationNode;
+		if ((m_LookAhead.Type != TokenType::Symbol || m_LookAhead.Char != ';') && (m_LookAhead.Type != TokenType::Operator || std::strcmp(m_LookAhead.String, ",")))
+			return new VariableDeclarationNode(identifier, VariableInitializer());
+		return new VariableDeclarationNode(identifier, nullptr);
+	}
+
+	/*
+		VariableInitializer
+			: '=' AssignmentExpression
+			;
+	*/
+	ExpressionNode* Parser::VariableInitializer()
+	{
+		EatToken(TokenType::Operator, "=");
+		return AssignmentExpression();
 	}
 
 	/*
@@ -145,8 +208,18 @@ namespace EYE
 	*/
 	ExpressionNode* Parser::LHSExpression()
 	{
-		LHSExpressionNode* lhsExpression = new LHSExpressionNode(EatToken(TokenType::Identifier));
+		LHSExpressionNode* lhsExpression = new LHSExpressionNode(Identifier());
 		return lhsExpression;
+	}
+
+	/*
+		Identifier
+			: IDENTIFIER
+			;
+	*/
+	IdentifierNode* Parser::Identifier()
+	{
+		return new IdentifierNode(EatToken(TokenType::Identifier));
 	}
 
 	/*

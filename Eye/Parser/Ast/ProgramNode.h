@@ -40,6 +40,8 @@ namespace EYE
 					oss << ((ExpressionStatementNode*)stmt)->ToJSON();
 				else if (stmt->GetType() == StatementNodeType::Block)
 					oss << ((BlockStatementNode*)stmt)->ToJSON();
+				else if (stmt->GetType() == StatementNodeType::Variable)
+					oss << ((VariableStatementNode*)stmt)->ToJSON();
 				i++;
 				if ((i + 1) <= m_StatementList.size())
 					oss << ",";

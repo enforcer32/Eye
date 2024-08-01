@@ -5,6 +5,7 @@
 #include "Eye/Parser/Ast/BinaryExpressionNode.h"
 #include "Eye/Parser/Ast/AssignmentExpressionNode.h"
 #include "Eye/Parser/Ast/LHSExpressionNode.h"
+#include "Eye/Parser/Ast/VariableDeclarationNode.h"
 
 #include <string>
 #include <iostream>
@@ -14,7 +15,8 @@ namespace EYE
 	enum class StatementNodeType
 	{
 		Expression,
-		Block
+		Block,
+		Variable
 	};
 
 	/*
@@ -113,5 +115,48 @@ namespace EYE
 
 	private:
 		std::vector<StatementNode*> m_StatementList;
+	};
+
+
+	/*
+		VariableStatement
+			: 'auto' VariableDeclarationList ';'
+			;
+
+		VariableDeclarationList
+			: VariableDeclaration
+			| VariableDeclarationList ',' VariableDeclaration
+			;
+	*/
+	class VariableStatementNode : public StatementNode
+	{
+	public:
+		VariableStatementNode(const std::vector<VariableDeclarationNode*>& variableDeclarationList)
+			: StatementNode(StatementNodeType::Variable), m_VariableDeclarationList(variableDeclarationList)
+		{
+		}
+
+		std::string ToJSON() const
+		{
+			std::ostringstream oss;
+			oss << "{\"VariableStatement\": {\n";
+			oss << "\"type\": \"VariableStatement\",\n";
+			oss << "\"declarationSize\": " << m_VariableDeclarationList.size() << ",\n";
+			oss << "\"declarations\": [\n";
+			size_t i = 0;
+			for (const auto& variable : m_VariableDeclarationList)
+			{
+				oss << variable->ToJSON();
+				i++;
+				if ((i + 1) <= m_VariableDeclarationList.size())
+					oss << ",";
+			}
+			oss << "]\n";
+			oss << "}\n}";
+			return oss.str();
+		}
+
+	private:
+		std::vector<VariableDeclarationNode*> m_VariableDeclarationList;
 	};
 }

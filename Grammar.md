@@ -10,6 +10,7 @@ StatementList
 Statement
 	: ExpressionStatement
 	| BlockStatement
+	| VariableStatement
 	;
 
 ExpressionStatement
@@ -18,6 +19,23 @@ ExpressionStatement
 
 BlockStatement
 	: '{' OptionalStatementList '}'
+	;
+
+VariableStatement
+	: 'auto' VariableDeclarationList ';'
+	;
+
+VariableDeclarationList
+	: VariableDeclaration
+	| VariableDeclarationList ',' VariableDeclaration
+	;
+
+VariableDeclaration
+	: Identifier OptionalVariableInitializer
+	;
+
+VariableInitializer
+	: '=' AssignmentExpression
 	;
 
 Expression

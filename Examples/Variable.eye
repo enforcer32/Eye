@@ -1,3 +1,3 @@
-var number = 12;
-const var dontChange = "Example.eye";
-var available = true;
+auto number = 12;
+const auto dontChange = "Example.eye";
+auto available = true;

@@ -7,6 +7,8 @@
 #include "Eye/Parser/Ast/BinaryExpressionNode.h"
 #include "Eye/Parser/Ast/AssignmentExpressionNode.h"
 #include "Eye/Parser/Ast/LHSExpressionNode.h"
+#include "Eye/Parser/Ast/VariableDeclarationNode.h"
+#include "Eye/Parser/Ast/Identifier.h"
 
 #include <vector>
 
@@ -33,9 +35,14 @@ namespace EYE
 		StatementNode* Statement();
 		ExpressionStatementNode* ExpressionStatement();
 		BlockStatementNode* BlockStatement();
+		VariableStatementNode* VariableStatement();
+		std::vector<VariableDeclarationNode*> VariableDeclarationList();
+		VariableDeclarationNode* VariableDeclaration();
+		ExpressionNode* VariableInitializer();
 		ExpressionNode* Expression();
 		ExpressionNode* AssignmentExpression();
 		ExpressionNode* LHSExpression();
+		IdentifierNode* Identifier();
 		ExpressionNode* AdditiveBinaryExpression();
 		ExpressionNode* MultiplicativeBinaryExpression();
 		ExpressionNode* PrimaryExpression();

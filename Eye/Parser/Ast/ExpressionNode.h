@@ -27,6 +27,8 @@ namespace EYE
 		{
 		}
 
+		// Virtual ToJSON()?
+
 	private:
 		ExpressionNodeType m_Type;
 	};

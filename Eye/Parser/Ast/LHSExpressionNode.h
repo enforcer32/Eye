@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Eye/Parser/Ast/ExpressionNode.h"
-#include "Eye/Lexer/Token.h"
+#include "Eye/Parser/Ast/Identifier.h"
 
 namespace EYE
 {
@@ -23,7 +23,7 @@ namespace EYE
 	class LHSExpressionNode : public ExpressionNode
 	{
 	public:
-		LHSExpressionNode(Token identifier)
+		LHSExpressionNode(IdentifierNode* identifier)
 			: ExpressionNode(ExpressionNodeType::LHSExpression), m_Identifier(identifier), m_LHSType(LHSExpressionType::Identifier)
 		{
 		}
@@ -34,17 +34,12 @@ namespace EYE
 		{
 			std::ostringstream oss;
 			if (m_LHSType == LHSExpressionType::Identifier)
-			{
-				oss << "{\"Identifier\": {\n";
-				oss << "\"type\": \"Identifier\",\n";
-				oss << "\"value\": \"" << m_Identifier.String << "\"\n";
-			}
-			oss << "}\n}";
+				oss << m_Identifier->ToJSON();
 			return oss.str();
 		}
 
 	private:
-		Token m_Identifier;
+		IdentifierNode* m_Identifier;
 		LHSExpressionType m_LHSType;
 	};
 }
