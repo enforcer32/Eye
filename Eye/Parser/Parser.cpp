@@ -185,14 +185,15 @@ namespace EYE
 	ExpressionNode* Parser::AssignmentExpression()
 	{
 		ExpressionNode* left = AdditiveBinaryExpression();
-		if (m_LookAhead.Type != TokenType::Operator || std::strcmp(m_LookAhead.String, "="))
+		
+		if (!IsValidAssignmentOperator(m_LookAhead))
 			return left;
 
 		// Validate LHS
 		if (left->GetType() != ExpressionNodeType::LHSExpression || ((LHSExpressionNode*)left)->GetLHSType() != LHSExpressionType::Identifier)
 			EYE_LOG_CRITICAL("Parser->Bad LHSType: {}, Expected: {}", (int)((LHSExpressionNode*)left)->GetLHSType(), (int)((LHSExpressionNode*)left)->GetLHSType());
 
-		Token op = EatToken(TokenType::Operator, "=");
+		Token op = EatToken(TokenType::Operator, m_LookAhead.String);
 		AssignmentExpressionNode* assignmentExpression = new AssignmentExpressionNode((LHSExpressionNode*)left, op, AssignmentExpression());
 		return assignmentExpression;
 	}
@@ -344,6 +345,17 @@ namespace EYE
 		Token token = EatToken(TokenType::String);
 		LiteralNode* node = new LiteralNode(LiteralNodeType::String, (void*)token.String);
 		return node;
+	}
+
+	// =, *=, /=, +=, -=, %=
+	bool Parser::IsValidAssignmentOperator(Token token)
+	{
+		return (m_LookAhead.Type == TokenType::Operator && (!std::strcmp(m_LookAhead.String, "=") 
+			|| !std::strcmp(m_LookAhead.String, "+=")
+			|| !std::strcmp(m_LookAhead.String, "-=")
+			|| !std::strcmp(m_LookAhead.String, "*=")
+			|| !std::strcmp(m_LookAhead.String, "/=")
+			|| !std::strcmp(m_LookAhead.String, "%=")));
 	}
 
 	Token Parser::NextToken()

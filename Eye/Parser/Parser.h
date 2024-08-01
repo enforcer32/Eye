@@ -52,6 +52,9 @@ namespace EYE
 		LiteralNode* StringLiteral();
 		
 	private:
+		bool IsValidAssignmentOperator(Token token);
+
+	private:
 		Token NextToken();
 		Token PeekToken();
 		Token EatToken(TokenType type);
