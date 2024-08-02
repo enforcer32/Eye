@@ -16,13 +16,16 @@ namespace EYE
 	{
 		Expression,
 		Block,
-		Variable
+		Variable,
+		IfStatement,
 	};
 
 	/*
 		Statement
 			: ExpressionStatement
 			| BlockStatement
+			| VariableStatement
+			| IfStatement
 			;
 	*/
 	class StatementNode
@@ -148,5 +151,40 @@ namespace EYE
 
 	private:
 		std::vector<VariableDeclarationNode*> m_VariableDeclarationList;
+	};
+
+	/*
+		IfStatement
+			: 'if' '(' Expression ')' Statement
+			| 'if' '(' Expression ')' Statement 'else' Statement
+			;
+	*/
+	class IfStatementNode : public StatementNode
+	{
+	public:
+		IfStatementNode(ExpressionNode* condition, StatementNode* consequent, StatementNode* alternate)
+			: StatementNode(StatementNodeType::IfStatement), m_Condition(condition), m_Consequent(consequent), m_Alternate(alternate)
+		{
+		}
+
+		virtual std::string ToJSON() const override
+		{
+			std::ostringstream oss;
+			oss << "{\"IfStatement\": {\n";
+			oss << "\"type\": \"IfStatement\",\n";
+			oss << "\"condition\": " << m_Condition->ToJSON() << ",\n";
+			oss << "\"consequent\": " << m_Consequent->ToJSON() << ",\n";
+			if(m_Alternate)
+				oss << "\"alternate\": " << m_Alternate->ToJSON() << "\n";
+			else
+				oss << "\"alternate\": null\n";
+			oss << "}\n}\n";
+			return oss.str();
+		}
+
+	private:
+		ExpressionNode* m_Condition;
+		StatementNode* m_Consequent;
+		StatementNode* m_Alternate;
 	};
 }

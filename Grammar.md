@@ -11,6 +11,7 @@ Statement
 	: ExpressionStatement
 	| BlockStatement
 	| VariableStatement
+	| IfStatement
 	;
 
 ExpressionStatement
@@ -36,6 +37,11 @@ VariableDeclaration
 
 VariableInitializer
 	: '=' AssignmentExpression
+	;
+
+IfStatement
+	: 'if' '(' Expression ')' Statement
+	| 'if' '(' Expression ')' Statement 'else' Statement
 	;
 
 Expression

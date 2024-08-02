@@ -454,8 +454,8 @@ namespace EYE
 	bool Lexer::IsKeyword(const std::string& str) const
 	{
 		static const std::vector keywords = {
-			"auto", "const", "true", "false"
-			"if",	"elif", "else",
+			"auto", "const", "true", "false",
+			"if",	"else",
 			"for", "while", "continue", "break",
 			"function", "return" 
 		};

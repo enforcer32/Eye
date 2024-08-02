@@ -1,8 +1,8 @@
-auto num=15;
-auto none;
-
+if(cond)
 {
-	auto pest = test = 12;
+	num = 10;
 }
-
-none = 33;
+else
+{
+	num = 20;
+}

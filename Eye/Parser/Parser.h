@@ -36,6 +36,7 @@ namespace EYE
 		ExpressionStatementNode* ExpressionStatement();
 		BlockStatementNode* BlockStatement();
 		VariableStatementNode* VariableStatement();
+		IfStatementNode* IfStatement();
 		std::vector<VariableDeclarationNode*> VariableDeclarationList();
 		VariableDeclarationNode* VariableDeclaration();
 		ExpressionNode* VariableInitializer();

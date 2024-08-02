@@ -56,6 +56,7 @@ namespace EYE
 			: ExpressionStatement
 			| BlockStatement
 			| VariableStatement
+			| IfStatement
 			;
 	*/
 	StatementNode* Parser::Statement()
@@ -68,6 +69,8 @@ namespace EYE
 		case TokenType::Keyword:
 			if (!std::strcmp(m_LookAhead.String, "auto"))
 				return VariableStatement();
+			else if (!std::strcmp(m_LookAhead.String, "if"))
+				return IfStatement();
 		default:
 			break;
 		}
@@ -164,6 +167,29 @@ namespace EYE
 	{
 		EatToken(TokenType::Operator, "=");
 		return AssignmentExpression();
+	}
+
+	/*
+		IfStatement
+			: 'if' '(' Expression ')' Statement
+			| 'if' '(' Expression ')' Statement 'else' Statement
+			;
+	*/
+	IfStatementNode* Parser::IfStatement()
+	{
+		EatToken(TokenType::Keyword, "if");
+		EatToken(TokenType::Operator, "(");
+		ExpressionNode* condition = Expression();
+		EatToken(TokenType::Symbol, ')');
+		StatementNode* consequent = Statement();
+		StatementNode* alternate = nullptr;
+		if (m_LookAhead.Type == TokenType::Keyword && !std::strcmp(m_LookAhead.String, "else"))
+		{
+			EatToken(TokenType::Keyword, "else");
+			alternate = Statement();
+		}
+		IfStatementNode* ifStatementNode = new IfStatementNode(condition, consequent, alternate);
+		return ifStatementNode;
 	}
 
 	/*
@@ -413,7 +439,7 @@ namespace EYE
 		if (!token)
 			EYE_LOG_CRITICAL("Parser->Unexpected LookAhead TokenType: {}, Expected: {}", (int)token.Type, value);
 
-		if (token.Type != type && value != token.String)
+		if (token.Type != type || value != token.String)
 			EYE_LOG_CRITICAL("Parser->Unexpected Operator Token Type: {}, Expected: {}", (int)token.Type, value);
 
 		m_LookAhead = NextToken();
@@ -427,7 +453,7 @@ namespace EYE
 		if (!token)
 			EYE_LOG_CRITICAL("Parser->Unexpected LookAhead TokenType: {}, Expected: {}", (int)token.Type, value);
 
-		if (token.Type != type && value != token.Char)
+		if (token.Type != type || value != token.Char)
 			EYE_LOG_CRITICAL("Parser->Unexpected Operator Token Type: {}, Expected: {}", (int)token.Type, value);
 
 		m_LookAhead = NextToken();

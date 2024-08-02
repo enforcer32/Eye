@@ -7,7 +7,7 @@ Grammar:
 Keywords:
 {
 	auto, const, true, false
-	if,	elif, else,
+	if,	else,
 	for, while, continue, break,
 	function, return,
 }
