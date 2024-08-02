@@ -1,4 +1,4 @@
-if(cond)
+if(num)
 {
 	num = 10;
 }

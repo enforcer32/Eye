@@ -275,6 +275,11 @@ namespace EYE
 		char op = NextChar();
 		std::string opStr{ op };
 
+		if (op == '*' && PeekChar() == '=')
+		{
+			opStr += NextChar();
+			singleOperator = false;
+		}
 		if (!IsSinglyOperator(op))
 		{
 			// Stackable Operator: i.e ++
