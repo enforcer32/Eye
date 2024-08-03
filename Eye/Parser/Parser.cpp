@@ -204,15 +204,15 @@ namespace EYE
 
 	/*
 		AssignmentExpression
-			: AdditiveBinaryExpression
-			| LHSExpression '=' AssignmentExpression
+			: RelationalExpression
+			| LHSExpression AssignmentOperator AssignmentExpression
 			;
 	*/
 	ExpressionNode* Parser::AssignmentExpression()
 	{
-		ExpressionNode* left = AdditiveBinaryExpression();
+		ExpressionNode* left = RelationalExpression();
 		
-		if (!IsValidAssignmentOperator(m_LookAhead))
+		if (!IsAssignmentOperator(m_LookAhead))
 			return left;
 
 		// Validate LHS
@@ -222,6 +222,27 @@ namespace EYE
 		Token op = EatToken(TokenType::Operator, m_LookAhead.String);
 		AssignmentExpressionNode* assignmentExpression = new AssignmentExpressionNode((LHSExpressionNode*)left, op, AssignmentExpression());
 		return assignmentExpression;
+	}
+
+	/*
+		RelationalExpression
+			: AdditiveBinaryExpression
+			| AdditiveBinaryExpression RelationalOperator RelationalExpression
+			;
+	*/
+	ExpressionNode* Parser::RelationalExpression()
+	{
+		ExpressionNode* left = AdditiveBinaryExpression();
+
+		while (IsRelationalOperator(m_LookAhead))
+		{
+			Token op = EatToken(TokenType::Operator, m_LookAhead.String);
+			ExpressionNode* right = AdditiveBinaryExpression();
+
+			left = new BinaryExpressionNode(left, op, right);
+		}
+
+		return left;
 	}
 
 	/*
@@ -373,15 +394,40 @@ namespace EYE
 		return node;
 	}
 
-	// =, *=, /=, +=, -=, %=
-	bool Parser::IsValidAssignmentOperator(Token token)
+	/*
+		AssignmentOperator
+			: '='
+			| '+='
+			| '-='
+			| '**='
+			| '/='
+			| '%='
+			;
+	*/
+	bool Parser::IsAssignmentOperator(Token token)
 	{
-		return (m_LookAhead.Type == TokenType::Operator && (!std::strcmp(m_LookAhead.String, "=") 
-			|| !std::strcmp(m_LookAhead.String, "+=")
-			|| !std::strcmp(m_LookAhead.String, "-=")
-			|| !std::strcmp(m_LookAhead.String, "*=")
-			|| !std::strcmp(m_LookAhead.String, "/=")
-			|| !std::strcmp(m_LookAhead.String, "%=")));
+		return (token.Type == TokenType::Operator && (!std::strcmp(token.String, "=")
+			|| !std::strcmp(token.String, "+=")
+			|| !std::strcmp(token.String, "-=")
+			|| !std::strcmp(token.String, "*=")
+			|| !std::strcmp(token.String, "/=")
+			|| !std::strcmp(token.String, "%=")));
+	}
+
+	/*
+		RelationalOperator
+			: '<'
+			| '<='
+			| '>'
+			| '>='
+			;
+	*/
+	bool Parser::IsRelationalOperator(Token token)
+	{
+		return (token.Type == TokenType::Operator && (!std::strcmp(token.String, "<")
+			|| !std::strcmp(token.String, "<=")
+			|| !std::strcmp(token.String, ">")
+			|| !std::strcmp(token.String, ">=")));
 	}
 
 	Token Parser::NextToken()

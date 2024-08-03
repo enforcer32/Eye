@@ -49,8 +49,13 @@ Expression
 	;
 
 AssignmentExpression
+	: RelationalExpression
+	| LHSExpression AssignmentOperator AssignmentExpression
+	;
+
+RelationalExpression
 	: AdditiveBinaryExpression
-	| LHSExpression '=' AssignmentExpression
+	| AdditiveBinaryExpression RelationalOperator RelationalExpression
 	;
 
 LHSExpression
@@ -94,4 +99,20 @@ NumericLiteral
 
 StringLiteral
 	: STRING
+	;
+
+AssignmentOperator
+	: '='
+	| '+='
+	| '-='
+	| '**='
+	| '/='
+	| '%='
+	;
+
+RelationalOperator
+	: '<'
+	| '>'
+	| '<='
+	| '>='
 	;
