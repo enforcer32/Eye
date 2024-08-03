@@ -204,13 +204,13 @@ namespace EYE
 
 	/*
 		AssignmentExpression
-			: RelationalExpression
+			: EqualityExpression
 			| LHSExpression AssignmentOperator AssignmentExpression
 			;
 	*/
 	ExpressionNode* Parser::AssignmentExpression()
 	{
-		ExpressionNode* left = RelationalExpression();
+		ExpressionNode* left = EqualityExpression();
 		
 		if (!IsAssignmentOperator(m_LookAhead))
 			return left;
@@ -222,6 +222,27 @@ namespace EYE
 		Token op = EatToken(TokenType::Operator, m_LookAhead.String);
 		AssignmentExpressionNode* assignmentExpression = new AssignmentExpressionNode((LHSExpressionNode*)left, op, AssignmentExpression());
 		return assignmentExpression;
+	}
+
+	/*
+		EqualityExpression
+			: RelationalExpression EqualityOperator EqualityExpression
+			| RelationalExpression
+			;
+	*/
+	ExpressionNode* Parser::EqualityExpression()
+	{
+		ExpressionNode* left = RelationalExpression();
+
+		while (IsEqualityOperator(m_LookAhead))
+		{
+			Token op = EatToken(TokenType::Operator, m_LookAhead.String);
+			ExpressionNode* right = RelationalExpression();
+
+			left = new BinaryExpressionNode(left, op, right);
+		}
+
+		return left;
 	}
 
 	/*
@@ -326,7 +347,7 @@ namespace EYE
 	*/
 	ExpressionNode* Parser::PrimaryExpression()
 	{
-		if (m_LookAhead.Type == TokenType::Number || m_LookAhead.Type == TokenType::String)
+		if (m_LookAhead.Type == TokenType::Number || m_LookAhead.Type == TokenType::String || m_LookAhead.Type == TokenType::Boolean || m_LookAhead.Type == TokenType::Null)
 			return Literal();
 
 		if (m_LookAhead.Type == TokenType::Operator && !std::strcmp(m_LookAhead.String, "("))
@@ -352,6 +373,8 @@ namespace EYE
 		Literal
 			: NumericLiteral
 			| StringLiteral
+			| BooleanLiteral
+			| NullLiteral
 			;
 	*/
 	LiteralNode* Parser::Literal()
@@ -362,6 +385,10 @@ namespace EYE
 			return NumericLiteral();
 		case TokenType::String:
 			return StringLiteral();
+		case TokenType::Boolean:
+			return BooleanLiteral();
+		case TokenType::Null:
+			return NullLiteral();
 		default:
 			EYE_LOG_CRITICAL("Parser->Unexpected Literal Type: {}", (int)m_LookAhead.Type);
 			break;
@@ -395,6 +422,30 @@ namespace EYE
 	}
 
 	/*
+		BooleanLiteral
+			: BOOL
+			;
+	*/
+	LiteralNode* Parser::BooleanLiteral()
+	{
+		Token token = EatToken(TokenType::Boolean);
+		LiteralNode* node = new LiteralNode(LiteralNodeType::Boolean, (void*)token.Boolean);
+		return node;
+	}
+
+	/*
+		NullLiteral
+			: NULL
+			;
+	*/
+	LiteralNode* Parser::NullLiteral()
+	{
+		Token token = EatToken(TokenType::Null);
+		LiteralNode* node = new LiteralNode(LiteralNodeType::Null, nullptr);
+		return node;
+	}
+
+	/*
 		AssignmentOperator
 			: '='
 			| '+='
@@ -404,7 +455,7 @@ namespace EYE
 			| '%='
 			;
 	*/
-	bool Parser::IsAssignmentOperator(Token token)
+	bool Parser::IsAssignmentOperator(Token token) const
 	{
 		return (token.Type == TokenType::Operator && (!std::strcmp(token.String, "=")
 			|| !std::strcmp(token.String, "+=")
@@ -422,12 +473,25 @@ namespace EYE
 			| '>='
 			;
 	*/
-	bool Parser::IsRelationalOperator(Token token)
+	bool Parser::IsRelationalOperator(Token token) const
 	{
 		return (token.Type == TokenType::Operator && (!std::strcmp(token.String, "<")
 			|| !std::strcmp(token.String, "<=")
 			|| !std::strcmp(token.String, ">")
 			|| !std::strcmp(token.String, ">=")));
+	}
+
+	/*
+		EqualityOperator
+			: '=='
+			| '!=
+			;
+	*/
+	bool Parser::IsEqualityOperator(Token token) const
+	{
+		return (token.Type == TokenType::Operator && (!std::strcmp(token.String, "<")
+			|| !std::strcmp(token.String, "==")
+			|| !std::strcmp(token.String, "!=")));
 	}
 
 	Token Parser::NextToken()

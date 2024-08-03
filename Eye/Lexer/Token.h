@@ -15,6 +15,8 @@ namespace EYE
 		Symbol,
 		Number,
 		String,
+		Boolean,
+		Null,
 		Comment,
 		Newline,
 		EscapeCharacter,
@@ -28,8 +30,9 @@ namespace EYE
 		union
 		{
 			char Char;
-			const char* String;
 			unsigned long long Number;
+			const char* String;
+			bool Boolean;
 			void* Any;
 		};
 
@@ -109,6 +112,14 @@ namespace EYE
 			case TokenType::String:
 				type = "String";
 				value = token.String;
+				break;
+			case TokenType::Boolean:
+				type = "Boolean";
+				value = token.Boolean;
+				break;
+			case TokenType::Null:
+				type = "Null";
+				value = "null";
 				break;
 			case TokenType::Comment:
 				type = "Comment";

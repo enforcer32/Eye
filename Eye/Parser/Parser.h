@@ -42,6 +42,7 @@ namespace EYE
 		ExpressionNode* VariableInitializer();
 		ExpressionNode* Expression();
 		ExpressionNode* AssignmentExpression();
+		ExpressionNode* EqualityExpression();
 		ExpressionNode* RelationalExpression();
 		ExpressionNode* LHSExpression();
 		IdentifierNode* Identifier();
@@ -52,10 +53,13 @@ namespace EYE
 		LiteralNode* Literal();
 		LiteralNode* NumericLiteral();
 		LiteralNode* StringLiteral();
+		LiteralNode* BooleanLiteral();
+		LiteralNode* NullLiteral();
 		
 	private:
-		bool IsAssignmentOperator(Token token);
-		bool IsRelationalOperator(Token token);
+		bool IsAssignmentOperator(Token token) const;
+		bool IsRelationalOperator(Token token) const;
+		bool IsEqualityOperator(Token token) const;
 
 	private:
 		Token NextToken();

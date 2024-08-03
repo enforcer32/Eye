@@ -336,9 +336,22 @@ namespace EYE
 		}
 
 		Token token;
-		token.Type = (IsKeyword(identifier) ? TokenType::Keyword : TokenType::Identifier);
+		if (IsKeyword(identifier) && (identifier == "true" || identifier == "false"))
+		{
+			token.Type = TokenType::Boolean;
+			token.Boolean = (identifier == "true" ? true : false);
+		}
+		else if (IsKeyword(identifier) && identifier == "null")
+		{
+			token.Type = TokenType::Null;
+			token.Any = nullptr;
+		}
+		else
+		{
+			token.Type = (IsKeyword(identifier) ? TokenType::Keyword : TokenType::Identifier);
+			token.String = (new std::string(identifier))->c_str();
+		}
 		token.Position = m_Position;
-		token.String = (new std::string(identifier))->c_str();
 		return token;
 	}
 
@@ -462,7 +475,8 @@ namespace EYE
 			"auto", "const", "true", "false",
 			"if",	"else",
 			"for", "while", "continue", "break",
-			"function", "return" 
+			"function", "return",
+			"null",
 		};
 
 		return (std::find(keywords.begin(), keywords.end(), str) != keywords.end());

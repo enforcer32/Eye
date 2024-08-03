@@ -10,6 +10,7 @@ Keywords:
 	if,	else,
 	for, while, continue, break,
 	function, return,
+	null,
 }
 
 Operators:
