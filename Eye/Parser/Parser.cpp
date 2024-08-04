@@ -204,13 +204,13 @@ namespace EYE
 
 	/*
 		AssignmentExpression
-			: EqualityExpression
+			: LogicalORExpression
 			| LHSExpression AssignmentOperator AssignmentExpression
 			;
 	*/
 	ExpressionNode* Parser::AssignmentExpression()
 	{
-		ExpressionNode* left = EqualityExpression();
+		ExpressionNode* left = LogicalORExpression();
 		
 		if (!IsAssignmentOperator(m_LookAhead))
 			return left;
@@ -259,6 +259,48 @@ namespace EYE
 		{
 			Token op = EatToken(TokenType::Operator, m_LookAhead.String);
 			ExpressionNode* right = AdditiveBinaryExpression();
+
+			left = new BinaryExpressionNode(left, op, right);
+		}
+
+		return left;
+	}
+
+	/*
+		LogicalANDExpression
+			: EqualityExpression '&&' LogicalANDExpression
+			| EqualityExpression
+			;
+	*/
+	ExpressionNode* Parser::LogicalANDExpression()
+	{
+		ExpressionNode* left = EqualityExpression();
+
+		while (IsOperator(m_LookAhead, "&&"))
+		{
+			Token op = EatToken(TokenType::Operator, m_LookAhead.String);
+			ExpressionNode* right = EqualityExpression();
+
+			left = new BinaryExpressionNode(left, op, right);
+		}
+
+		return left;
+	}
+
+	/*
+		LogicalORExpression
+			: LogicalANDExpression '||' LogicalORExpression
+			| LogicalORExpression
+			;
+	*/
+	ExpressionNode* Parser::LogicalORExpression()
+	{
+		ExpressionNode* left = LogicalANDExpression();
+
+		while (IsOperator(m_LookAhead, "||"))
+		{
+			Token op = EatToken(TokenType::Operator, m_LookAhead.String);
+			ExpressionNode* right = LogicalANDExpression();
 
 			left = new BinaryExpressionNode(left, op, right);
 		}
@@ -443,6 +485,11 @@ namespace EYE
 		Token token = EatToken(TokenType::Null);
 		LiteralNode* node = new LiteralNode(LiteralNodeType::Null, nullptr);
 		return node;
+	}
+
+	bool Parser::IsOperator(Token token, const std::string& type) const
+	{
+		return token.Type == TokenType::Operator && !std::strcmp(token.String, type.c_str());
 	}
 
 	/*

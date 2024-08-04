@@ -44,6 +44,8 @@ namespace EYE
 		ExpressionNode* AssignmentExpression();
 		ExpressionNode* EqualityExpression();
 		ExpressionNode* RelationalExpression();
+		ExpressionNode* LogicalANDExpression();
+		ExpressionNode* LogicalORExpression();
 		ExpressionNode* LHSExpression();
 		IdentifierNode* Identifier();
 		ExpressionNode* AdditiveBinaryExpression();
@@ -57,6 +59,7 @@ namespace EYE
 		LiteralNode* NullLiteral();
 		
 	private:
+		bool IsOperator(Token token, const std::string& type) const;
 		bool IsAssignmentOperator(Token token) const;
 		bool IsRelationalOperator(Token token) const;
 		bool IsEqualityOperator(Token token) const;

@@ -49,7 +49,7 @@ Expression
 	;
 
 AssignmentExpression
-	: EqualityExpression
+	: LogicalORExpression
 	| LHSExpression AssignmentOperator AssignmentExpression
 	;
 
@@ -61,6 +61,16 @@ RelationalExpression
 EqualityExpression
 	: RelationalExpression EqualityOperator EqualityExpression
 	| RelationalExpression
+	;
+
+LogicalANDExpression
+	: EqualityExpression '&&' LogicalANDExpression
+	| EqualityExpression
+	;
+
+LogicalORExpression
+	: LogicalANDExpression '||' LogicalORExpression
+	| LogicalORExpression
 	;
 
 LHSExpression
@@ -135,4 +145,9 @@ RelationalOperator
 EqualityOperator
 	: '=='
 	| '!=
+	;
+
+LogicalOperator
+	: '&&'
+	| '||'
 	;
