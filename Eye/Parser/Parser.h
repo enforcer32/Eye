@@ -5,6 +5,7 @@
 #include "Eye/Parser/Ast/StatementNode.h"
 #include "Eye/Parser/Ast/LiteralNode.h"
 #include "Eye/Parser/Ast/BinaryExpressionNode.h"
+#include "Eye/Parser/Ast/UnaryExpressionNode.h"
 #include "Eye/Parser/Ast/AssignmentExpressionNode.h"
 #include "Eye/Parser/Ast/LHSExpressionNode.h"
 #include "Eye/Parser/Ast/VariableDeclarationNode.h"
@@ -48,6 +49,7 @@ namespace EYE
 		ExpressionNode* LogicalORExpression();
 		ExpressionNode* LHSExpression();
 		IdentifierNode* Identifier();
+		ExpressionNode* UnaryExpression();
 		ExpressionNode* AdditiveBinaryExpression();
 		ExpressionNode* MultiplicativeBinaryExpression();
 		ExpressionNode* PrimaryExpression();
@@ -63,6 +65,7 @@ namespace EYE
 		bool IsAssignmentOperator(Token token) const;
 		bool IsRelationalOperator(Token token) const;
 		bool IsEqualityOperator(Token token) const;
+		bool IsUnaryOperator(Token token) const;
 
 	private:
 		Token NextToken();

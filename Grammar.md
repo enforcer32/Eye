@@ -74,7 +74,7 @@ LogicalORExpression
 	;
 
 LHSExpression
-	: Identifier
+	: PrimaryExpression
 	;
 
 Identifier
@@ -84,19 +84,22 @@ Identifier
 PrimaryExpression
 	: Literal
 	| ParenthesizedExpression
-	| LHSExpression
+	| Identifier
+	;
+
+UnaryExpression
+	: LHSExpression
+	| UnaryOperator UnaryExpression
 	;
 
 AdditiveBinaryExpression
 	: MultiplicativeBinaryExpression
-	| AdditiveBinaryExpression '+' MultiplicativeBinaryExpression
-	| AdditiveBinaryExpression '-' MultiplicativeBinaryExpression
+	| AdditiveBinaryExpression AdditiveOperator MultiplicativeBinaryExpression
 	;
 
 MultiplicativeBinaryExpression
-	: PrimaryExpression
-	| MultiplicativeBinaryExpression '*' PrimaryExpression
-	| MultiplicativeBinaryExpression '/' PrimaryExpression
+	: UnaryExpression
+	| MultiplicativeBinaryExpression MultiplicativeOperator UnaryExpression
 	;
 
 ParenthesizedExpression
@@ -126,6 +129,16 @@ NullLiteral
 	: NULL
 	;
 
+AdditiveOperator
+	: '+'
+	| '-'
+	;
+
+MultiplicativeOperator
+	: '*'
+	| '/'
+	;
+
 AssignmentOperator
 	: '='
 	| '+='
@@ -150,4 +163,10 @@ EqualityOperator
 LogicalOperator
 	: '&&'
 	| '||'
+	;
+
+UnaryOperator
+	: '1'
+	| '+'
+	| '-'
 	;

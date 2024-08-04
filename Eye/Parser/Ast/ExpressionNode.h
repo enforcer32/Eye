@@ -6,6 +6,7 @@ namespace EYE
 	{
 		Literal,
 		Binary,
+		Unary,
 		Assignment,
 		LHSExpression
 	};

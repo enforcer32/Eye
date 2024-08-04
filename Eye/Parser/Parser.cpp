@@ -310,17 +310,12 @@ namespace EYE
 
 	/*
 		LHSExpression
-			: Identifier
-			;
-
-		Identifier
-			: IDENTIFIER
+			: PrimaryExpression
 			;
 	*/
 	ExpressionNode* Parser::LHSExpression()
 	{
-		LHSExpressionNode* lhsExpression = new LHSExpressionNode(Identifier());
-		return lhsExpression;
+		return PrimaryExpression();
 	}
 
 	/*
@@ -334,10 +329,27 @@ namespace EYE
 	}
 
 	/*
+		UnaryExpression
+			: LHSExpression
+			| UnaryOperator UnaryExpression
+			;
+	*/
+	ExpressionNode* Parser::UnaryExpression()
+	{
+		if (IsUnaryOperator(m_LookAhead))
+		{
+			Token op = EatToken(TokenType::Operator);
+			UnaryExpressionNode* unaryExpression = new UnaryExpressionNode(op, UnaryExpression());
+			return unaryExpression;
+		}
+
+		return LHSExpression();
+	}
+
+	/*
 		AdditiveBinaryExpression
 			: MultiplicativeBinaryExpression
-			| AdditiveBinaryExpression '+' MultiplicativeBinaryExpression
-			| AdditiveBinaryExpression '-' MultiplicativeBinaryExpression
+			| AdditiveBinaryExpression AdditiveOperator MultiplicativeBinaryExpression
 			;
 	*/
 	ExpressionNode* Parser::AdditiveBinaryExpression()
@@ -358,21 +370,18 @@ namespace EYE
 
 	/*
 	MultiplicativeBinaryExpression
-		: PrimaryExpression
-		| MultiplicativeBinaryExpression '*' PrimaryExpression
-		| MultiplicativeBinaryExpression '/' PrimaryExpression
+		: UnaryExpression
+		| MultiplicativeBinaryExpression MultiplicativeOperator UnaryExpression
 		;
 	*/
-
-	//(2+3)*5;
 	ExpressionNode* Parser::MultiplicativeBinaryExpression()
 	{
-		ExpressionNode* left = PrimaryExpression();
+		ExpressionNode* left = UnaryExpression();
 
 		while (m_LookAhead.Type == TokenType::Operator && (!std::strcmp(m_LookAhead.String, "*") || !std::strcmp(m_LookAhead.String, "/")))
 		{
 			Token op = EatToken(TokenType::Operator, m_LookAhead.String);
-			ExpressionNode* right = PrimaryExpression();
+			ExpressionNode* right = UnaryExpression();
 
 			left = new BinaryExpressionNode(left, op, right);
 		}
@@ -384,7 +393,7 @@ namespace EYE
 		PrimaryExpression
 			: Literal
 			| ParenthesizedExpression
-			| LHSExpression
+			| Identifier
 			;
 	*/
 	ExpressionNode* Parser::PrimaryExpression()
@@ -394,6 +403,9 @@ namespace EYE
 
 		if (m_LookAhead.Type == TokenType::Operator && !std::strcmp(m_LookAhead.String, "("))
 			return ParenthesizedExpression();
+
+		if (m_LookAhead.Type == TokenType::Identifier)
+			return new LHSExpressionNode(Identifier());
 
 		return LHSExpression();
 	}
@@ -539,6 +551,19 @@ namespace EYE
 		return (token.Type == TokenType::Operator && (!std::strcmp(token.String, "<")
 			|| !std::strcmp(token.String, "==")
 			|| !std::strcmp(token.String, "!=")));
+	}
+
+	/*
+		UnaryOperator
+			: '!'
+			| '+'
+			| '-'
+			;
+	*/
+	bool Parser::IsUnaryOperator(Token token) const
+	{
+		return (token.Type == TokenType::Operator && (!std::strcmp(token.String, "!")
+			|| !std::strcmp(token.String, "+") || !std::strcmp(token.String, "-")));
 	}
 
 	Token Parser::NextToken()
