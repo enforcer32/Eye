@@ -9,7 +9,6 @@ file(GLOB_RECURSE EyeSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/Lexer/Lexer.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Lexer/Lexer.cpp"
 
-	"${CMAKE_CURRENT_SOURCE_DIR}/Parser/Node.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Parser/Parser.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Parser/Parser.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Parser/Ast/ProgramNode.h"
@@ -38,6 +37,10 @@ file(GLOB_RECURSE EyeTestSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Lexer/CharacterTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Lexer/SpecialTokenTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Lexer/CommentTest.cpp"
+
+	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Parser/LiteralTest.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Parser/StatementTest.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Test/Parser/ExpressionTest.cpp"
 )
 
 add_definitions(-DEYE_DEBUG)

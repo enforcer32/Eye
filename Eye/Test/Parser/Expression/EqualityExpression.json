@@ -1,0 +1,150 @@
+{
+  "Program": {
+	"type": "Program",
+	"bodySize": 6,
+	"body": [
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "left": {
+				"Literal": {
+				  "type": "Number",
+				  "value": 10
+				}
+			  },
+			  "operator": "==",
+			  "right": {
+				"Literal": {
+				  "type": "Number",
+				  "value": 20
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "left": {
+				"Literal": {
+				  "type": "Number",
+				  "value": 5
+				}
+			  },
+			  "operator": "!=",
+			  "right": {
+				"Literal": {
+				  "type": "Number",
+				  "value": 30
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "Identifier": {
+					"type": "Identifier",
+					"value": "num"
+				  }
+				},
+				"initializer": {
+				  "Literal": {
+					"type": "Number",
+					"value": 5
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "Identifier": {
+					"type": "Identifier",
+					"value": "num"
+				  }
+				},
+				"initializer": {
+				  "Literal": {
+					"type": "Number",
+					"value": 10
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "left": {
+				"Identifier": {
+				  "type": "Identifier",
+				  "value": "num"
+				}
+			  },
+			  "operator": "!=",
+			  "right": {
+				"Identifier": {
+				  "type": "Identifier",
+				  "value": "num2"
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "left": {
+				"Identifier": {
+				  "type": "Identifier",
+				  "value": "num"
+				}
+			  },
+			  "operator": "==",
+			  "right": {
+				"Literal": {
+				  "type": "Number",
+				  "value": 5
+				}
+			  }
+			}
+		  }
+		}
+	  }
+	]
+  }
+}

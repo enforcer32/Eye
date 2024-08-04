@@ -1,0 +1,19 @@
+{
+  "Program": {
+	"type": "Program",
+	"bodySize": 1,
+	"body": [
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"Literal": {
+			  "type": "Null",
+			  "value": null
+			}
+		  }
+		}
+	  }
+	]
+  }
+}

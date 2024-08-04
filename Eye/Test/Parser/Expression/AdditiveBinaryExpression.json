@@ -1,0 +1,54 @@
+{
+  "Program": {
+	"type": "Program",
+	"bodySize": 2,
+	"body": [
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "left": {
+				"Literal": {
+				  "type": "Number",
+				  "value": 10
+				}
+			  },
+			  "operator": "+",
+			  "right": {
+				"Literal": {
+				  "type": "Number",
+				  "value": 20
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "left": {
+				"Literal": {
+				  "type": "Number",
+				  "value": 40
+				}
+			  },
+			  "operator": "-",
+			  "right": {
+				"Literal": {
+				  "type": "Number",
+				  "value": 30
+				}
+			  }
+			}
+		  }
+		}
+	  }
+	]
+  }
+}

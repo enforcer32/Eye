@@ -1,0 +1,251 @@
+{
+  "Program": {
+	"type": "Program",
+	"bodySize": 7,
+	"body": [
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "Identifier": {
+					"type": "Identifier",
+					"value": "number"
+				  }
+				},
+				"initializer": {
+				  "Literal": {
+					"type": "Number",
+					"value": 0
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "Identifier": {
+					"type": "Identifier",
+					"value": "cond1"
+				  }
+				},
+				"initializer": {
+				  "Literal": {
+					"type": "Boolean",
+					"value": true
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "Identifier": {
+					"type": "Identifier",
+					"value": "cond2"
+				  }
+				},
+				"initializer": {
+				  "Literal": {
+					"type": "Boolean",
+					"value": false
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "Identifier": {
+					"type": "Identifier",
+					"value": "flag"
+				  }
+				},
+				"initializer": {
+				  "BinaryExpression": {
+					"type": "BinaryExpression",
+					"left": {
+					  "Identifier": {
+						"type": "Identifier",
+						"value": "cond1"
+					  }
+					},
+					"operator": "&&",
+					"right": {
+					  "Identifier": {
+						"type": "Identifier",
+						"value": "cond2"
+					  }
+					}
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "Identifier": {
+					"type": "Identifier",
+					"value": "flag2"
+				  }
+				},
+				"initializer": {
+				  "BinaryExpression": {
+					"type": "BinaryExpression",
+					"left": {
+					  "Identifier": {
+						"type": "Identifier",
+						"value": "cond1"
+					  }
+					},
+					"operator": "||",
+					"right": {
+					  "Identifier": {
+						"type": "Identifier",
+						"value": "cond2"
+					  }
+					}
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"IfStatement": {
+		  "type": "IfStatement",
+		  "condition": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "left": {
+				"Identifier": {
+				  "type": "Identifier",
+				  "value": "cond1"
+				}
+			  },
+			  "operator": "&&",
+			  "right": {
+				"Identifier": {
+				  "type": "Identifier",
+				  "value": "cond2"
+				}
+			  }
+			}
+		  },
+		  "consequent": {
+			"ExpressionStatement": {
+			  "type": "ExpressionStatement",
+			  "expression": {
+				"AssignmentExpression": {
+				  "type": "AssignmentExpression",
+				  "left": {
+					"Identifier": {
+					  "type": "Identifier",
+					  "value": "number"
+					}
+				  },
+				  "operator": "=",
+				  "right": {
+					"Literal": {
+					  "type": "Number",
+					  "value": 5
+					}
+				  }
+				}
+			  }
+			}
+		  },
+		  "alternate": null
+		}
+	  },
+	  {
+		"IfStatement": {
+		  "type": "IfStatement",
+		  "condition": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "left": {
+				"Identifier": {
+				  "type": "Identifier",
+				  "value": "cond1"
+				}
+			  },
+			  "operator": "||",
+			  "right": {
+				"Identifier": {
+				  "type": "Identifier",
+				  "value": "cond2"
+				}
+			  }
+			}
+		  },
+		  "consequent": {
+			"ExpressionStatement": {
+			  "type": "ExpressionStatement",
+			  "expression": {
+				"AssignmentExpression": {
+				  "type": "AssignmentExpression",
+				  "left": {
+					"Identifier": {
+					  "type": "Identifier",
+					  "value": "number"
+					}
+				  },
+				  "operator": "=",
+				  "right": {
+					"Literal": {
+					  "type": "Number",
+					  "value": 10
+					}
+				  }
+				}
+			  }
+			}
+		  },
+		  "alternate": null
+		}
+	  }
+	]
+  }
+}

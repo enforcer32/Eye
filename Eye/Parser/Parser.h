@@ -27,8 +27,9 @@ namespace EYE
 		ParserResult Parse(EyeInstance* eyeInstance);
 
 		// Temporary
-		void DebugPrintJSON();
-		void DebugPrintString();
+		void DebugPrintJSON() const;
+		void DebugPrintString() const;
+		std::string ToJSONString() const;
 
 	private:
 		ProgramNode* Program();

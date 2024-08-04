@@ -1,0 +1,162 @@
+{
+  "Program": {
+	"type": "Program",
+	"bodySize": 5,
+	"body": [
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "Identifier": {
+					"type": "Identifier",
+					"value": "number"
+				  }
+				},
+				"initializer": null
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "Identifier": {
+					"type": "Identifier",
+					"value": "num"
+				  }
+				},
+				"initializer": {
+				  "Literal": {
+					"type": "Number",
+					"value": 55
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "Identifier": {
+					"type": "Identifier",
+					"value": "num2"
+				  }
+				},
+				"initializer": {
+				  "Identifier": {
+					"type": "Identifier",
+					"value": "number"
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "declarationSize": 4,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "Identifier": {
+					"type": "Identifier",
+					"value": "x1"
+				  }
+				},
+				"initializer": null
+			  }
+			},
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "Identifier": {
+					"type": "Identifier",
+					"value": "x2"
+				  }
+				},
+				"initializer": null
+			  }
+			},
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "Identifier": {
+					"type": "Identifier",
+					"value": "x3"
+				  }
+				},
+				"initializer": null
+			  }
+			},
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "Identifier": {
+					"type": "Identifier",
+					"value": "x4"
+				  }
+				},
+				"initializer": {
+				  "Literal": {
+					"type": "Number",
+					"value": 55
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "left": {
+				"Identifier": {
+				  "type": "Identifier",
+				  "value": "x3"
+				}
+			  },
+			  "operator": "=",
+			  "right": {
+				"Identifier": {
+				  "type": "Identifier",
+				  "value": "num"
+				}
+			  }
+			}
+		  }
+		}
+	  }
+	]
+  }
+}

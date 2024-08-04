@@ -15,15 +15,20 @@ namespace EYE
 		return ParserResult::Successful;
 	}
 
-	void Parser::DebugPrintJSON()
+	void Parser::DebugPrintJSON() const
 	{
 		nlohmann::json data = nlohmann::json::parse(m_Program->ToJSON());
 		std::cout << data.dump(2) << std::endl;
 	}
 
-	void Parser::DebugPrintString()
+	void Parser::DebugPrintString() const
 	{
 		std::cout << m_Program->ToJSON() << std::endl;
+	}
+
+	std::string Parser::ToJSONString() const
+	{
+		return m_Program->ToJSON();
 	}
 
 	/*

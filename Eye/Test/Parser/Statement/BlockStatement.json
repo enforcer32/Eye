@@ -1,0 +1,57 @@
+{
+  "Program": {
+	"type": "Program",
+	"bodySize": 2,
+	"body": [
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"Literal": {
+			  "type": "Number",
+			  "value": 123
+			}
+		  }
+		}
+	  },
+	  {
+		"BlockStatement": {
+		  "type": "BlockStatement",
+		  "bodySize": 2,
+		  "body": [
+			{
+			  "ExpressionStatement": {
+				"type": "ExpressionStatement",
+				"expression": {
+				  "Literal": {
+					"type": "Number",
+					"value": 456
+				  }
+				}
+			  }
+			},
+			{
+			  "BlockStatement": {
+				"type": "BlockStatement",
+				"bodySize": 1,
+				"body": [
+				  {
+					"ExpressionStatement": {
+					  "type": "ExpressionStatement",
+					  "expression": {
+						"Literal": {
+						  "type": "Number",
+						  "value": 78910
+						}
+					  }
+					}
+				  }
+				]
+			  }
+			}
+		  ]
+		}
+	  }
+	]
+  }
+}

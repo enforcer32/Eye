@@ -1,0 +1,30 @@
+{
+  "Program": {
+	"type": "Program",
+	"bodySize": 2,
+	"body": [
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"Literal": {
+			  "type": "String",
+			  "value": "hello world"
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"Literal": {
+			  "type": "String",
+			  "value": "Morning"
+			}
+		  }
+		}
+	  }
+	]
+  }
+}
