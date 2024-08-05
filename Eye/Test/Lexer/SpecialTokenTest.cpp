@@ -7,7 +7,7 @@
 
 namespace EYE
 {
-	TEST(SpecialTokenTest, Identifier)
+	TEST(LexerSpecialTokenTest, Identifier)
 	{
 		EyeInstance* eyeInstance = new EyeInstance;
 		eyeInstance->InFilePath = "..\\..\\..\\..\\Examples\\SpecialToken.eye";
@@ -21,7 +21,7 @@ namespace EYE
 		ASSERT_EQ(std::string(lexer.GetTokens()[4].String), "_IdentifierHere");
 	}
 
-	TEST(SpecialTokenTest, Keyword)
+	TEST(LexerSpecialTokenTest, Keyword)
 	{
 		EyeInstance* eyeInstance = new EyeInstance;
 		eyeInstance->InFilePath = "..\\..\\..\\..\\Examples\\SpecialToken.eye";

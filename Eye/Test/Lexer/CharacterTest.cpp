@@ -7,7 +7,7 @@
 
 namespace EYE
 {
-	TEST(CharacterTest, Character)
+	TEST(LexerCharacterTest, Character)
 	{
 		EyeInstance* eyeInstance = new EyeInstance;
 		eyeInstance->InFilePath = "..\\..\\..\\..\\Examples\\Character.eye";
@@ -20,7 +20,7 @@ namespace EYE
 		ASSERT_EQ(lexer.GetTokens()[3].Char, 'A');
 	}
 
-	TEST(CharacterTest, EscapeCharacter)
+	TEST(LexerCharacterTest, EscapeCharacter)
 	{
 		EyeInstance* eyeInstance = new EyeInstance;
 		eyeInstance->InFilePath = "..\\..\\..\\..\\Examples\\Character.eye";

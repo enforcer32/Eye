@@ -7,7 +7,7 @@
 
 namespace EYE
 {
-	TEST(StringTest, String)
+	TEST(LexerStringTest, String)
 	{
 		EyeInstance* eyeInstance = new EyeInstance;
 		eyeInstance->InFilePath = "..\\..\\..\\..\\Examples\\String.eye";

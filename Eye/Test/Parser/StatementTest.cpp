@@ -10,7 +10,7 @@
 
 namespace EYE
 {
-	TEST(StatementTest, ExpressionStatement)
+	TEST(ParserStatementTest, ExpressionStatement)
 	{
 		std::string eyeFile = "ExpressionStatement.eye";
 		std::string testFile = "ExpressionStatement.json";
@@ -30,7 +30,7 @@ namespace EYE
 		ASSERT_EQ(testFileData, parserData);
 	}
 
-	TEST(StatementTest, BlockStatement)
+	TEST(ParserStatementTest, BlockStatement)
 	{
 		std::string eyeFile = "BlockStatement.eye";
 		std::string testFile = "BlockStatement.json";
@@ -50,7 +50,7 @@ namespace EYE
 		ASSERT_EQ(testFileData, parserData);
 	}
 
-	TEST(StatementTest, VariableStatement)
+	TEST(ParserStatementTest, VariableStatement)
 	{
 		std::string eyeFile = "VariableStatement.eye";
 		std::string testFile = "VariableStatement.json";
@@ -70,7 +70,7 @@ namespace EYE
 		ASSERT_EQ(testFileData, parserData);
 	}
 
-	TEST(StatementTest, IfStatement)
+	TEST(ParserStatementTest, IfStatement)
 	{
 		std::string eyeFile = "IfStatement.eye";
 		std::string testFile = "IfStatement.json";

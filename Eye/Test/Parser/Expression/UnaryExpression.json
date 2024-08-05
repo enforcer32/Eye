@@ -1,0 +1,203 @@
+{
+  "Program": {
+	"type": "Program",
+	"bodySize": 9,
+	"body": [
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "!",
+			  "expr": {
+				"Identifier": {
+				  "type": "Identifier",
+				  "value": "number"
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "-",
+			  "expr": {
+				"Identifier": {
+				  "type": "Identifier",
+				  "value": "number"
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "-",
+			  "expr": {
+				"UnaryExpression": {
+				  "type": "UnaryExpression",
+				  "operator": "-",
+				  "expr": {
+					"Identifier": {
+					  "type": "Identifier",
+					  "value": "number"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "-",
+			  "expr": {
+				"UnaryExpression": {
+				  "type": "UnaryExpression",
+				  "operator": "+",
+				  "expr": {
+					"Identifier": {
+					  "type": "Identifier",
+					  "value": "number"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "+",
+			  "expr": {
+				"UnaryExpression": {
+				  "type": "UnaryExpression",
+				  "operator": "+",
+				  "expr": {
+					"Identifier": {
+					  "type": "Identifier",
+					  "value": "number"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "+",
+			  "expr": {
+				"UnaryExpression": {
+				  "type": "UnaryExpression",
+				  "operator": "-",
+				  "expr": {
+					"Identifier": {
+					  "type": "Identifier",
+					  "value": "number"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "!",
+			  "expr": {
+				"UnaryExpression": {
+				  "type": "UnaryExpression",
+				  "operator": "!",
+				  "expr": {
+					"Identifier": {
+					  "type": "Identifier",
+					  "value": "number"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "!",
+			  "expr": {
+				"UnaryExpression": {
+				  "type": "UnaryExpression",
+				  "operator": "+",
+				  "expr": {
+					"Identifier": {
+					  "type": "Identifier",
+					  "value": "number"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "-",
+			  "expr": {
+				"UnaryExpression": {
+				  "type": "UnaryExpression",
+				  "operator": "!",
+				  "expr": {
+					"Identifier": {
+					  "type": "Identifier",
+					  "value": "number"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  }
+	]
+  }
+}

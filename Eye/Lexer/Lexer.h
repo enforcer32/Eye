@@ -48,7 +48,7 @@ namespace EYE
 		bool IsValidOperator(const std::string& op) const;
 		bool IsValidHexNumber(char num) const;
 		bool IsValidBinaryNumber(const std::string& num) const;
-		bool IsKeyword(const std::string& str) const;
+		bool IsKeyword(const std::string& op) const;
 		char CharToEscapedChar(char c) const;
 
 	private:

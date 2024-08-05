@@ -7,7 +7,7 @@
 
 namespace EYE
 {
-	TEST(OperatorTest, Operator)
+	TEST(LexerOperatorTest, Operator)
 	{
 		EyeInstance* eyeInstance = new EyeInstance;
 		eyeInstance->InFilePath = "..\\..\\..\\..\\Examples\\Operator.eye";
@@ -16,7 +16,7 @@ namespace EYE
 		Lexer lexer;
 		lexer.Tokenize(eyeInstance);
 
-		ASSERT_EQ(std::string{ lexer.GetTokens()[0].String }, "++");
+		ASSERT_EQ(std::string{ lexer.GetTokens()[0].String }, "+");
 		ASSERT_EQ(std::string{ lexer.GetTokens()[3].String }, "+=");
 	}
 }
