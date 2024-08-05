@@ -7,7 +7,7 @@
 
 namespace EYE
 {
-	TEST(CommentTest, SingeLineComment)
+	TEST(LexerCommentTest, SingeLineComment)
 	{
 		EyeInstance* eyeInstance = new EyeInstance;
 		eyeInstance->InFilePath = "..\\..\\..\\..\\Examples\\Comment.eye";
@@ -20,7 +20,7 @@ namespace EYE
 		ASSERT_EQ(std::string{ lexer.GetTokens()[6].String }, " 2 Second Comment");
 	}
 
-	TEST(CommentTest, MultiLineComment)
+	TEST(LexerCommentTest, MultiLineComment)
 	{
 		EyeInstance* eyeInstance = new EyeInstance;
 		eyeInstance->InFilePath = "..\\..\\..\\..\\Examples\\Comment.eye";

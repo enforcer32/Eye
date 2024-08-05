@@ -410,7 +410,7 @@ namespace EYE
 			return ParenthesizedExpression();
 
 		if (m_LookAhead.Type == TokenType::Identifier)
-			return new LHSExpressionNode(Identifier());
+			return new LHSExpressionNode(Identifier()); // RHS?
 
 		return LHSExpression();
 	}

@@ -10,7 +10,7 @@
 
 namespace EYE
 {
-	TEST(ExpressionTest, AdditiveBinaryExpression)
+	TEST(ParserExpressionTest, AdditiveBinaryExpression)
 	{
 		std::string eyeFile = "AdditiveBinaryExpression.eye";
 		std::string testFile = "AdditiveBinaryExpression.json";
@@ -30,7 +30,7 @@ namespace EYE
 		ASSERT_EQ(testFileData, parserData);
 	}
 
-	TEST(ExpressionTest, MultiplicativeBinaryExpression)
+	TEST(ParserExpressionTest, MultiplicativeBinaryExpression)
 	{
 		std::string eyeFile = "MultiplicativeBinaryExpression.eye";
 		std::string testFile = "MultiplicativeBinaryExpression.json";
@@ -50,7 +50,7 @@ namespace EYE
 		ASSERT_EQ(testFileData, parserData);
 	}
 
-	TEST(ExpressionTest, ParenthesizedExpression)
+	TEST(ParserExpressionTest, ParenthesizedExpression)
 	{
 		std::string eyeFile = "ParenthesizedExpression.eye";
 		std::string testFile = "ParenthesizedExpression.json";
@@ -70,7 +70,7 @@ namespace EYE
 		ASSERT_EQ(testFileData, parserData);
 	}
 
-	TEST(ExpressionTest, AssignmentExpression)
+	TEST(ParserExpressionTest, AssignmentExpression)
 	{
 		std::string eyeFile = "AssignmentExpression.eye";
 		std::string testFile = "AssignmentExpression.json";
@@ -90,7 +90,7 @@ namespace EYE
 		ASSERT_EQ(testFileData, parserData);
 	}
 
-	TEST(ExpressionTest, RelationalExpression)
+	TEST(ParserExpressionTest, RelationalExpression)
 	{
 		std::string eyeFile = "RelationalExpression.eye";
 		std::string testFile = "RelationalExpression.json";
@@ -110,7 +110,7 @@ namespace EYE
 		ASSERT_EQ(testFileData, parserData);
 	}
 
-	TEST(ExpressionTest, EqualityExpression)
+	TEST(ParserExpressionTest, EqualityExpression)
 	{
 		std::string eyeFile = "EqualityExpression.eye";
 		std::string testFile = "EqualityExpression.json";
@@ -130,10 +130,30 @@ namespace EYE
 		ASSERT_EQ(testFileData, parserData);
 	}
 
-	TEST(ExpressionTest, LogicalExpression)
+	TEST(ParserExpressionTest, LogicalExpression)
 	{
 		std::string eyeFile = "LogicalExpression.eye";
 		std::string testFile = "LogicalExpression.json";
+
+		EyeInstance* eyeInstance = new EyeInstance;
+		eyeInstance->InFilePath = "..\\..\\..\\..\\Eye\\Test\\Parser\\Expression\\" + eyeFile;
+		eyeInstance->InFileStream = std::istringstream(FileIO::ReadFileContent(eyeInstance->InFilePath));
+
+		Lexer lexer;
+		lexer.Tokenize(eyeInstance);
+
+		Parser parser;
+		parser.Parse(eyeInstance);
+
+		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream("..\\..\\..\\..\\Eye\\Test\\Parser\\Expression\\" + testFile));
+		nlohmann::json parserData = nlohmann::json::parse(parser.ToJSONString());
+		ASSERT_EQ(testFileData, parserData);
+	}
+
+	TEST(ParserExpressionTest, UnaryExpression)
+	{
+		std::string eyeFile = "UnaryExpression.eye";
+		std::string testFile = "UnaryExpression.json";
 
 		EyeInstance* eyeInstance = new EyeInstance;
 		eyeInstance->InFilePath = "..\\..\\..\\..\\Eye\\Test\\Parser\\Expression\\" + eyeFile;

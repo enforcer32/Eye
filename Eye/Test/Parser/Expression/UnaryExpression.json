@@ -1,0 +1,151 @@
+{
+  "Program": {
+	"body": [
+	  {
+		"ExpressionStatement": {
+		  "expression": {
+			"UnaryExpression": {
+			  "expr": {
+				"Identifier": {
+				  "type": "Identifier",
+				  "value": "number"
+				}
+			  },
+			  "operator": "!",
+			  "type": "UnaryExpression"
+			}
+		  },
+		  "type": "ExpressionStatement"
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "expression": {
+			"UnaryExpression": {
+			  "expr": {
+				"Identifier": {
+				  "type": "Identifier",
+				  "value": "number"
+				}
+			  },
+			  "operator": "-",
+			  "type": "UnaryExpression"
+			}
+		  },
+		  "type": "ExpressionStatement"
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "expression": {
+			"UnaryExpression": {
+			  "expr": {
+				"Identifier": {
+				  "type": "Identifier",
+				  "value": "number"
+				}
+			  },
+			  "operator": "+",
+			  "type": "UnaryExpression"
+			}
+		  },
+		  "type": "ExpressionStatement"
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "expression": {
+			"UnaryExpression": {
+			  "expr": {
+				"UnaryExpression": {
+				  "expr": {
+					"Identifier": {
+					  "type": "Identifier",
+					  "value": "number"
+					}
+				  },
+				  "operator": "-",
+				  "type": "UnaryExpression"
+				}
+			  },
+			  "operator": "!",
+			  "type": "UnaryExpression"
+			}
+		  },
+		  "type": "ExpressionStatement"
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "expression": {
+			"UnaryExpression": {
+			  "expr": {
+				"UnaryExpression": {
+				  "expr": {
+					"Identifier": {
+					  "type": "Identifier",
+					  "value": "number"
+					}
+				  },
+				  "operator": "!",
+				  "type": "UnaryExpression"
+				}
+			  },
+			  "operator": "!",
+			  "type": "UnaryExpression"
+			}
+		  },
+		  "type": "ExpressionStatement"
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "expression": {
+			"UnaryExpression": {
+			  "expr": {
+				"UnaryExpression": {
+				  "expr": {
+					"Identifier": {
+					  "type": "Identifier",
+					  "value": "number"
+					}
+				  },
+				  "operator": "+",
+				  "type": "UnaryExpression"
+				}
+			  },
+			  "operator": "-",
+			  "type": "UnaryExpression"
+			}
+		  },
+		  "type": "ExpressionStatement"
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "expression": {
+			"UnaryExpression": {
+			  "expr": {
+				"UnaryExpression": {
+				  "expr": {
+					"Identifier": {
+					  "type": "Identifier",
+					  "value": "number"
+					}
+				  },
+				  "operator": "+",
+				  "type": "UnaryExpression"
+				}
+			  },
+			  "operator": "!",
+			  "type": "UnaryExpression"
+			}
+		  },
+		  "type": "ExpressionStatement"
+		}
+	  }
+	],
+	"bodySize": 7,
+	"type": "Program"
+  }
+}

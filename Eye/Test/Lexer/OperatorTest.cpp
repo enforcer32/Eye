@@ -7,7 +7,7 @@
 
 namespace EYE
 {
-	TEST(OperatorTest, Operator)
+	TEST(LexerOperatorTest, Operator)
 	{
 		EyeInstance* eyeInstance = new EyeInstance;
 		eyeInstance->InFilePath = "..\\..\\..\\..\\Examples\\Operator.eye";

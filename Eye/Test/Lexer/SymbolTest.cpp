@@ -7,7 +7,7 @@
 
 namespace EYE
 {
-	TEST(SymbolTest, Symbol)
+	TEST(LexerSymbolTest, Symbol)
 	{
 		EyeInstance* eyeInstance = new EyeInstance;
 		eyeInstance->InFilePath = "..\\..\\..\\..\\Examples\\Symbol.eye";

@@ -8,7 +8,8 @@ namespace EYE
 {
 	/*
 		AssignmentExpression
-			: LHSExpression AssignmentOperator AssignmentExpression
+			: LogicalORExpression
+			| LHSExpression AssignmentOperator AssignmentExpression
 			;
 	*/
 	class AssignmentExpressionNode : public ExpressionNode

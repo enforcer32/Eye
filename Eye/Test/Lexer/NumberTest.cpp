@@ -7,7 +7,7 @@
 
 namespace EYE
 {
-	TEST(NumberTest, Decimal)
+	TEST(LexerNumberTest, Decimal)
 	{
 		EyeInstance* eyeInstance = new EyeInstance;
 		eyeInstance->InFilePath = "..\\..\\..\\..\\Examples\\Number.eye";
@@ -20,7 +20,7 @@ namespace EYE
 		ASSERT_EQ(lexer.GetTokens()[3].Number, 456);
 	}
 
-	TEST(NumberTest, Hex)
+	TEST(LexerNumberTest, Hex)
 	{
 		EyeInstance* eyeInstance = new EyeInstance;
 		eyeInstance->InFilePath = "..\\..\\..\\..\\Examples\\Number2.eye";
@@ -32,7 +32,7 @@ namespace EYE
 		ASSERT_EQ(lexer.GetTokens()[0].Number, 4660);
 	}
 
-	TEST(NumberTest, Binary)
+	TEST(LexerNumberTest, Binary)
 	{
 		EyeInstance* eyeInstance = new EyeInstance;
 		eyeInstance->InFilePath = "..\\..\\..\\..\\Examples\\Number2.eye";

@@ -294,8 +294,13 @@ namespace EYE
 
 		// PutBack All Except First One
 		if (!singleOperator && !IsValidOperator(opStr))
+		{
 			for (size_t i = opStr.size() - 1; i >= 1; i--)
+			{
 				PutBack(opStr[i]);
+				opStr[1] = '\0';
+			}
+		}
 
 		if (singleOperator && !IsValidOperator(opStr))
 			EYE_LOG_CRITICAL("Lexer->Invalid Operator: {}\n on line {}, col {} in file {}", opStr, m_Position.Line, m_Position.Col, m_Position.FileName);

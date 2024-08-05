@@ -10,7 +10,7 @@
 
 namespace EYE
 {
-	TEST(LiteralTest, Number)
+	TEST(ParserLiteralTest, Number)
 	{
 		std::string eyeFile = "Number.eye";
 		std::string testFile = "Number.json";
@@ -30,7 +30,7 @@ namespace EYE
 		ASSERT_EQ(testFileData, parserData);
 	}
 
-	TEST(LiteralTest, String)
+	TEST(ParserLiteralTest, String)
 	{
 		std::string eyeFile = "String.eye";
 		std::string testFile = "String.json";
@@ -50,7 +50,7 @@ namespace EYE
 		ASSERT_EQ(testFileData, parserData);
 	}
 
-	TEST(LiteralTest, Boolean)
+	TEST(ParserLiteralTest, Boolean)
 	{
 		std::string eyeFile = "Boolean.eye";
 		std::string testFile = "Boolean.json";
@@ -70,7 +70,7 @@ namespace EYE
 		ASSERT_EQ(testFileData, parserData);
 	}
 
-	TEST(LiteralTest, Null)
+	TEST(ParserLiteralTest, Null)
 	{
 		std::string eyeFile = "Null.eye";
 		std::string testFile = "Null.json";
