@@ -1,0 +1,8 @@
+file(GLOB_RECURSE EYELexerSources
+	"${CMAKE_CURRENT_SOURCE_DIR}/Token.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Token.cpp"
+)
+
+add_library(${EYELEXER_TARGET_NAME} STATIC ${EYELexerSources})
+target_include_directories(${EYELEXER_TARGET_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../")
+target_link_libraries(${EYELEXER_TARGET_NAME} PRIVATE ${EYEUTILITY_TARGET_NAME})

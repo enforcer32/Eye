@@ -5,8 +5,8 @@ Current:
 Todo General:
 Lexer
 Parser
-AST
-Interpreter
+AST Generator(Lexer + Parser)
+ASTGen->Interpreter
 Module/Include System
 Macros
 Namespace

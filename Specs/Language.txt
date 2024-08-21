@@ -3,17 +3,17 @@ Types:
 	int,
 	str,
 	float,
-	null,
+	bool,
 	auto,
 }
 
 Keywords:
 {
-	auto, int, str, float,
+	auto, int, str, float, bool,
 	const, true, false, null,
 	if,	else,
 	while, do, for, continue, break,
-	return, struct, new,
+	return, new, function, struct,
 }
 
 Operators:
@@ -22,8 +22,8 @@ Operators:
 	=, +=, -=, *=, /=, %=, &=, |=, ^=, >>=, <<=
 	==, !=, <, >, <=, >=,
 	&&, ||, !,
-	&, |, ^, <<, >>, ~,
-	(, [, ?, ,
+	&, |, ^, >>, <<, ~,
+	(, [, ?, ., ,
 }
 
 Symbols:

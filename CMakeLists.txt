@@ -12,6 +12,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(EYEUTILITY_TARGET_NAME EYEUtility)
 set(EYESANDBOX_TARGET_NAME EYESandbox)
+set(EYELEXER_TARGET_NAME EYELexer)
 
 # Extensions
 include(FetchContent)
@@ -45,3 +46,4 @@ FetchContent_MakeAvailable(cpplinenoise)
 
 add_subdirectory(${EYEUTILITY_TARGET_NAME})
 add_subdirectory(${EYESANDBOX_TARGET_NAME})
+add_subdirectory(${EYELEXER_TARGET_NAME})

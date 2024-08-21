@@ -5,3 +5,4 @@ file(GLOB_RECURSE EYESandboxSources
 add_executable(${EYESANDBOX_TARGET_NAME} ${EYESandboxSources})
 target_include_directories(${EYESANDBOX_TARGET_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../")
 target_link_libraries(${EYESANDBOX_TARGET_NAME} PRIVATE ${EYEUTILITY_TARGET_NAME})
+target_link_libraries(${EYESANDBOX_TARGET_NAME} PRIVATE ${EYELEXER_TARGET_NAME})
