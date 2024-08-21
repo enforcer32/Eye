@@ -1,0 +1,22 @@
+LiteralExpression
+	: NumericLiteralExpression
+	| StringLiteralExpression
+	| BooleanLiteralExpression
+	| NullLiteralExpression
+	;
+
+NumericLiteralExpression
+	: NUMBER
+	;
+
+StringLiteralExpression
+	: STRING
+	;
+
+BooleanLiteralExpression
+	: BOOL
+	;
+
+NullLiteralExpression
+	: NULL
+	;

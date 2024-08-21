@@ -1,0 +1,27 @@
+# CONFIG
+.env
+config.json
+
+# Folders
+Build/
+out/
+
+# VS
+.vscode/
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+
+# Others
+*.tmp
+*.log
+*.expand
+*.bin
+*.o
+*.d
+*.a
+*.so
+*.dll
+*.exe

@@ -1,0 +1,23 @@
+Program
+	: StatementList
+	;
+
+StatementList
+	: Statement
+	| StatementList Statement
+	;
+
+Statement
+	: ExpressionStatement
+	| BlockStatement
+	| VariableStatement
+	| ControlStatement
+	| IterationStatement
+	| FunctionStatement
+	| ReturnStatement
+	| StructStatement
+	;
+
+Expression
+	: AssignmentExpression
+	;

@@ -1,0 +1,50 @@
+Types:
+{
+	int,
+	str,
+	float,
+	null,
+	auto,
+}
+
+Keywords:
+{
+	auto, int, str, float,
+	const, true, false, null,
+	if,	else,
+	while, do, for, continue, break,
+	return, struct, new,
+}
+
+Operators:
+{
+	+, -, *, /, %, ++, --, 
+	=, +=, -=, *=, /=, %=, &=, |=, ^=, >>=, <<=
+	==, !=, <, >, <=, >=,
+	&&, ||, !,
+	&, |, ^, <<, >>, ~,
+	(, [, ?, ,
+}
+
+Symbols:
+{
+	), ], {, }, :, ;, \,
+}
+
+Commenting:
+{
+	Single Line -> // Comment
+	Multi Line -> /* Comment */
+}
+
+Numbers:
+{
+	Decimal->Base 10
+	Hex->Base 16
+	Binary->Base 2
+}
+
+Escape Characters:
+{
+	\\, \t, \n, \'
+}

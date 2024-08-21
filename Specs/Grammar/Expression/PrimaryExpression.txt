@@ -1,0 +1,19 @@
+PrimaryExpression
+	: LiteralExpression
+	| ParenthesizedExpression
+	| IdentifierExpression
+	| NewExpression
+	;
+
+ParenthesizedExpression
+	: '(' Expression ')'
+	;
+
+IdentifierExpression
+	: IdentifierNode
+	;
+
+NewExpression
+	: 'new' MemberExpression
+	;
+

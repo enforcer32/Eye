@@ -1,0 +1,264 @@
+Program
+	: StatementList
+	;
+
+StatementList
+	: Statement
+	| StatementList Statement
+	;
+
+Statement
+	: ExpressionStatement
+	| BlockStatement
+	| VariableStatement
+	| IfStatement
+	| IterationStatement
+	| FunctionStatement
+	| ReturnStatement
+	| StructStatement
+	;
+
+ExpressionStatement
+	: Expression ';'
+	;
+
+BlockStatement
+	: '{' OptionalStatementList '}'
+	;
+
+VariableStatement
+	: 'auto' VariableDeclarationList ';'
+	;
+
+VariableDeclarationList
+	: VariableDeclaration
+	| VariableDeclarationList ',' VariableDeclaration
+	;
+
+VariableDeclaration
+	: Identifier OptionalVariableInitializer
+	;
+
+VariableInitializer
+	: '=' AssignmentExpression
+	;
+
+IfStatement
+	: 'if' '(' Expression ')' Statement
+	| 'if' '(' Expression ')' Statement 'else' Statement
+	;
+
+IterationStatement
+	: WhileStatement
+	| DoWhileStatement
+	| ForStatement
+	;
+
+WhileStatement
+	: 'while' '(' Expression ')' Statement
+	;
+
+DoWhileStatement
+	: 'do' Statement 'while' '(' Expression ')' ';'
+	;
+
+ForStatement
+	: 'for' '(' OptionalForVariableInitializer ';' OptionalExpression ';' OptionalExpression ')' Statement
+	;
+
+ForVariableInitializer
+	: VariableStatement
+	| Expression
+	;
+
+FunctionStatement
+	: 'function' Identifier '(' OptionalParameterList ')' BlockStatement
+	;
+
+ReturnStatement
+	: 'return' OptionalExpression ';'
+	;
+
+StructStatement
+	: 'struct' Identifier StructBlockStatement ';'
+	;
+
+StructBlockStatement
+	: '{' OptionalVariableStatementList '}'
+	;
+
+VariableStatementList
+	: VariableStatement
+	| VariableStatementList VariableStatement
+	;
+
+ParameterList
+	: Identifier
+	| ParameterList ',' Identifier
+	;
+
+Expression
+	: AssignmentExpression
+	;
+
+AssignmentExpression
+	: LogicalORExpression
+	| LHSExpression AssignmentOperator AssignmentExpression
+	;
+
+RelationalExpression
+	: AdditiveBinaryExpression
+	| AdditiveBinaryExpression RelationalOperator RelationalExpression
+	;
+
+EqualityExpression
+	: RelationalExpression EqualityOperator EqualityExpression
+	| RelationalExpression
+	;
+
+LogicalANDExpression
+	: EqualityExpression '&&' LogicalANDExpression
+	| EqualityExpression
+	;
+
+LogicalORExpression
+	: LogicalANDExpression '||' LogicalORExpression
+	| LogicalORExpression
+	;
+
+LHSExpression
+	: FunctionCallMemberExpression
+	;
+
+FunctionCallMemberExpression
+	: MemberExpression
+	| FunctionCallExpression
+	;
+
+FunctionCallExpression
+	: Callee FunctionCallArguments
+	;
+
+Callee
+	: MemberExpression
+	| FunctionCallExpression
+	;
+
+FunctionCallArguments
+	: '(' OptionalFunctionCallArgumentList ')'
+	;
+
+FunctionCallArgumentList
+	: AssignmentExpression
+	| FunctionCallArgumentList ',' AssignmentExpression
+	;
+
+MemberExpression
+	: PrimaryExpression
+	| MemberExpression '.' Identifier
+	| MemberExpression '[' Expression ']'
+	;
+
+Identifier
+	: IdentifierNode
+	;
+
+PrimaryExpression
+	: Literal
+	| ParenthesizedExpression
+	| Identifier
+	| NewExpression
+	;
+
+NewExpression
+	: 'new' MemberExpression
+	;
+
+UnaryExpression
+	: LHSExpression
+	| UnaryOperator UnaryExpression
+	;
+
+AdditiveBinaryExpression
+	: MultiplicativeBinaryExpression
+	| AdditiveBinaryExpression AdditiveOperator MultiplicativeBinaryExpression
+	;
+
+MultiplicativeBinaryExpression
+	: UnaryExpression
+	| MultiplicativeBinaryExpression MultiplicativeOperator UnaryExpression
+	;
+
+ParenthesizedExpression
+	: '(' Expression ')'
+	;
+
+Literal
+	: NumericLiteral
+	| StringLiteral
+	| BooleanLiteral
+	| NullLiteral
+	;
+
+NumericLiteral
+	: NUMBER
+	;
+
+StringLiteral
+	: STRING
+	;
+
+BooleanLiteral
+	: BOOL
+	;
+
+NullLiteral
+	: NULL
+	;
+
+AdditiveOperator
+	: '+'
+	| '-'
+	;
+
+MultiplicativeOperator
+	: '*'
+	| '/'
+	;
+
+AssignmentOperator
+	: '='
+	| '+='
+	| '-='
+	| '*='
+	| '/='
+	| '%='
+	| '&='
+	| '|='
+	| '^='
+	| '>>='
+	| '<<='
+	;
+
+RelationalOperator
+	: '<'
+	| '<='
+	| '>'
+	| '>='
+	;
+
+EqualityOperator
+	: '=='
+	| '!=
+	;
+
+LogicalOperator
+	: '&&'
+	| '||'
+	;
+
+UnaryOperator
+	: '!'
+	| '+'
+	| '-'
+	;

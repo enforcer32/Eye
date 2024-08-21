@@ -1,0 +1,9 @@
+LogicalORExpression
+	: LogicalANDExpression '||' LogicalORExpression
+	| LogicalORExpression
+	;
+
+LogicalOperator
+	: '&&'
+	| '||'
+	;

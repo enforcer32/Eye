@@ -1,0 +1,12 @@
+StructStatement
+	: 'struct' Identifier StructBlockStatement ';'
+	;
+
+StructBlockStatement
+	: '{' OptionalVariableStatementList '}'
+	;
+
+VariableStatementList
+	: VariableStatement
+	| VariableStatementList VariableStatement
+	;

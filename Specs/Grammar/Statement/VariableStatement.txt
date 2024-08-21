@@ -1,0 +1,16 @@
+VariableStatement
+	: 'auto' VariableDeclarationList ';'
+	;
+
+VariableDeclarationList
+	: VariableDeclaration
+	| VariableDeclarationList ',' VariableDeclaration
+	;
+
+VariableDeclaration
+	: Identifier OptionalVariableInitializer
+	;
+
+VariableInitializer
+	: '=' AssignmentExpression
+	;

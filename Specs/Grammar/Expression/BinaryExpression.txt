@@ -1,0 +1,20 @@
+AdditiveBinaryExpression
+	: MultiplicativeBinaryExpression
+	| AdditiveBinaryExpression AdditiveOperator MultiplicativeBinaryExpression
+	;
+
+MultiplicativeBinaryExpression
+	: UnaryExpression
+	| MultiplicativeBinaryExpression MultiplicativeOperator UnaryExpression
+	;
+
+AdditiveOperator
+	: '+'
+	| '-'
+	;
+
+MultiplicativeOperator
+	: '*'
+	| '/'
+	;
+

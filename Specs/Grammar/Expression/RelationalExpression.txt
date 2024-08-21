@@ -1,0 +1,11 @@
+RelationalExpression
+	: AdditiveBinaryExpression
+	| AdditiveBinaryExpression RelationalOperator RelationalExpression
+	;
+
+RelationalOperator
+	: '<'
+	| '<='
+	| '>'
+	| '>='
+	;

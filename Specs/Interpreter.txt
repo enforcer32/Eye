@@ -1,0 +1,28 @@
+TODO:
+Statements:
+	Const/VariableStatement
+	Functions
+	Iteration
+	Struct
+	Block
+	ControlStatement
+
+Expressions:
+	BitwiseExpression: (Operators: &, |, ^, <<, >>, ~,)
+	UnaryExpressions: (Operators: !, -, +,)
+	ParenthesizedExpression: (Operatosr: (, [,)
+	MemberExpression: ([], .,)
+	NewExpression: (new)
+
+Others:
+	Escape Char
+	Type Checker
+
+Expressions:
+	Literals: Number, String, Boolean, Null
+	AdditiveExpression: (Operators: +,-,)
+	MultiplicativeExpression: (Operators: *,/,)
+	RelationalExpression: (Operators: <, >, <=, >=,)
+	LogicalExpression: (Operators: &&, ||,)
+	EqualityExpression: (Operators: ==, !=)
+	AssignmentExpression: (Operators: =, +=, -=, *=, /=, %=, &=, |=, ^=, >>=, <<=)

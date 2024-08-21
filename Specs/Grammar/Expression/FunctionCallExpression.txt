@@ -1,0 +1,17 @@
+FunctionCallExpression
+	: Callee FunctionCallArguments
+	;
+
+Callee
+	: MemberExpression
+	| FunctionCallExpression
+	;
+
+FunctionCallArguments
+	: '(' OptionalFunctionCallArgumentList ')'
+	;
+
+FunctionCallArgumentList
+	: AssignmentExpression
+	| FunctionCallArgumentList ',' AssignmentExpression
+	;

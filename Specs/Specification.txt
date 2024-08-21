@@ -1,0 +1,7 @@
+Eye Programming Language Specification
+
+Syntax: 
+Function Options: (Closures)
+Language: Language.md
+Grammar: /Grammar/
+Todo: Plans.md

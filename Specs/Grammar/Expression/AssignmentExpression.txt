@@ -1,0 +1,18 @@
+AssignmentExpression
+	: LogicalORExpression
+	| LHSExpression AssignmentOperator AssignmentExpression
+	;
+
+AssignmentOperator
+	: '='
+	| '+='
+	| '-='
+	| '*='
+	| '/='
+	| '%='
+	| '&='
+	| '|='
+	| '^='
+	| '>>='
+	| '<<='
+	;

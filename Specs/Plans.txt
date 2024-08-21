@@ -1,0 +1,15 @@
+DONE:
+
+Current:
+
+Todo General:
+Lexer
+Parser
+AST
+Interpreter
+Module/Include System
+Macros
+Namespace
+Virtual Machine
+Bytecode
+Native Code Generator

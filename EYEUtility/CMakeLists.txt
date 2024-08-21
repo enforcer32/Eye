@@ -1,0 +1,12 @@
+file(GLOB_RECURSE EYEUtilitySources
+	"${CMAKE_CURRENT_SOURCE_DIR}/Platform.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Assertion.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Logger.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Logger.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/FileIO.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/FileIO.cpp"
+)
+
+add_library(${EYEUTILITY_TARGET_NAME} STATIC ${EYEUtilitySources})
+target_include_directories(${EYEUTILITY_TARGET_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../")
+target_link_libraries(${EYEUTILITY_TARGET_NAME} PUBLIC spdlog)

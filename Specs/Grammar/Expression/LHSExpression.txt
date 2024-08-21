@@ -1,0 +1,8 @@
+LHSExpression
+	: FunctionCallMemberExpression
+	;
+
+FunctionCallMemberExpression
+	: MemberExpression
+	| FunctionCallExpression
+	;
