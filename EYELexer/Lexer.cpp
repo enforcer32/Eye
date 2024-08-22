@@ -19,8 +19,7 @@ namespace Eye
 				token = NextToken();
 			}
 
-			/*Token eofToken = MakeEOFToken();
-			m_Tokens.push_back(eofToken);*/
+			m_Tokens.push_back(MakeEOFToken());
 			return true;
 		}
 
