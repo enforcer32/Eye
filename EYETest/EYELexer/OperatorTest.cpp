@@ -130,5 +130,24 @@ namespace Eye
 			ASSERT_EQ(lexer.GetTokens()[9].GetType(), TokenType::OperatorDot);
 			ASSERT_EQ(lexer.GetTokens()[12].GetType(), TokenType::OperatorComma);
 		}
+
+		TEST(LexerOperatorTest, Chained)
+		{
+			std::string testType = "Operator";
+			std::string eyeFile = "Chained.eye";
+			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
+
+			Lexer lexer;
+			if (!lexer.Tokenize(filePath))
+				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerOperatorTest->Chained Failed to Tokenize()");
+
+			ASSERT_EQ(lexer.GetTokens()[0].GetType(), TokenType::OperatorAssignmentBitwiseLeftShift);
+			ASSERT_EQ(lexer.GetTokens()[1].GetType(), TokenType::OperatorArithmeticIncrement);
+			ASSERT_EQ(lexer.GetTokens()[2].GetType(), TokenType::OperatorBinaryPlus);
+			ASSERT_EQ(lexer.GetTokens()[3].GetType(), TokenType::OperatorBinaryMinus);
+			ASSERT_EQ(lexer.GetTokens()[4].GetType(), TokenType::OperatorBinaryPlus);
+			ASSERT_EQ(lexer.GetTokens()[5].GetType(), TokenType::OperatorRelationalSmaller);
+			ASSERT_EQ(lexer.GetTokens()[6].GetType(), TokenType::OperatorBinaryPlus);
+		}
 	}
 }

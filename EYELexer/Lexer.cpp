@@ -253,10 +253,8 @@ namespace Eye
 			if (!singleOperator && !IsValidOperator(opStr))
 			{
 				for (size_t i = opStr.size() - 1; i >= 1; i--)
-				{
 					PutBack(opStr[i]);
-					opStr[1] = '\0';
-				}
+				opStr = opStr[0];
 			}
 
 			if (singleOperator && !IsValidOperator(opStr))
