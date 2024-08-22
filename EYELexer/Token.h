@@ -8,10 +8,10 @@ namespace Eye
 {
 	namespace Lexer
 	{
-		using Integer = unsigned long long;
-		using Float = double;
-		using String = const char*;
-		using Boolean = bool;
+		using IntegerType = unsigned long long;
+		using FloatType = double;
+		using StringType = const char*;
+		using BooleanType = bool;
 
 		struct Position
 		{
@@ -193,12 +193,12 @@ namespace Eye
 		{
 		public:
 			Token();
-			Token(Integer value, Position position);
-			Token(Float value, Position position);
-			Token(String value, Position position);
-			Token(Boolean value, Position position);
+			Token(IntegerType value, Position position);
+			Token(FloatType value, Position position);
+			Token(StringType value, Position position);
+			Token(BooleanType value, Position position);
 			Token(TokenType type, Position position);
-			Token(TokenType type, String value, Position position);
+			Token(TokenType type, StringType value, Position position);
 
 			bool operator==(const Token& token) const;
 			bool operator!=(const Token& token) const;
@@ -209,7 +209,7 @@ namespace Eye
 			template<typename T>
 			T GetValue() const
 			{
-				static_assert(std::is_same_v<T, Integer> || std::is_same_v<T, Float> || std::is_same_v<T, String> || std::is_same_v<T, Boolean>, "EYELexerToken->Error GetValue() Invalid Typename");
+				static_assert(std::is_same_v<T, IntegerType> || std::is_same_v<T, FloatType> || std::is_same_v<T, StringType> || std::is_same_v<T, BooleanType>, "EYELexerToken->Error GetValue() Invalid Typename");
 				return std::get<T>(m_Value);
 			}
 
@@ -218,7 +218,7 @@ namespace Eye
 		private:
 			TokenType m_Type;
 			Position m_Position;
-			std::variant<Integer, Float, String, Boolean> m_Value;
+			std::variant<IntegerType, FloatType, StringType, BooleanType> m_Value;
 		};
 	}
 }

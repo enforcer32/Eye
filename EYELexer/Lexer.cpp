@@ -148,12 +148,12 @@ namespace Eye
 				NextChar();
 			}
 
-			return Token((Integer)std::atoll(numbers.c_str()), m_Position);
+			return Token((IntegerType)std::atoll(numbers.c_str()), m_Position);
 		}
 
 		Token Lexer::MakeNumberBaseToken()
 		{
-			if (m_Tokens.empty() || !(m_Tokens.back().GetType() == TokenType::LiteralInteger && m_Tokens.back().GetValue<Integer>() == 0))
+			if (m_Tokens.empty() || !(m_Tokens.back().GetType() == TokenType::LiteralInteger && m_Tokens.back().GetValue<IntegerType>() == 0))
 				return MakeIdentifierToken();
 
 			Token lastToken = m_Tokens.back();
@@ -179,7 +179,7 @@ namespace Eye
 				NextChar();
 			}
 
-			return Token((Integer)std::strtol(hexStr.c_str(), 0, 16), m_Position);
+			return Token((IntegerType)std::strtol(hexStr.c_str(), 0, 16), m_Position);
 		}
 
 		Token Lexer::MakeBinaryNumberToken()
@@ -196,7 +196,7 @@ namespace Eye
 			if (!IsValidBinaryNumber(binaryStr))
 				EYE_LOG_CRITICAL("Lexer->Bad Binary Number Format : {}\n on line {}, col {} in file {}", binaryStr, m_Position.Line, m_Position.Col, m_Position.FileName);
 
-			return Token((Integer)std::strtol(binaryStr.c_str(), 0, 2), m_Position);
+			return Token((IntegerType)std::strtol(binaryStr.c_str(), 0, 2), m_Position);
 		}
 
 		Token Lexer::MakeStringToken(char sdelim, char edelim)
@@ -206,11 +206,7 @@ namespace Eye
 
 			std::string str;
 			for (char c = NextChar(); c != edelim && c != EOF; c = NextChar())
-			{
-				if (c == '\\')
-					continue;
 				str.push_back(c);
-			}
 
 			return Token((new std::string(str))->c_str(), m_Position);
 		}

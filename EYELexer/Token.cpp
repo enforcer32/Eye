@@ -9,22 +9,22 @@ namespace Eye
 		{
 		}
 
-		Token::Token(Integer value, Position position)
+		Token::Token(IntegerType value, Position position)
 			: m_Type(TokenType::LiteralInteger), m_Value(value), m_Position(position)
 		{
 		}
 
-		Token::Token(Float value, Position position)
+		Token::Token(FloatType value, Position position)
 			: m_Type(TokenType::LiteralFloat), m_Value(value), m_Position(position)
 		{
 		}
 
-		Token::Token(String value, Position position)
+		Token::Token(StringType value, Position position)
 			: m_Type(TokenType::LiteralString), m_Value(value), m_Position(position)
 		{
 		}
 
-		Token::Token(Boolean value, Position position)
+		Token::Token(BooleanType value, Position position)
 			: m_Type(TokenType::LiteralBoolean), m_Value(value), m_Position(position)
 		{
 		}
@@ -34,7 +34,7 @@ namespace Eye
 		{
 		}
 
-		Token::Token(TokenType type, String value, Position position)
+		Token::Token(TokenType type, StringType value, Position position)
 			: m_Type(type), m_Value(value), m_Position(position)
 		{
 		}
@@ -47,15 +47,15 @@ namespace Eye
 			switch (token.m_Type)
 			{
 			case TokenType::LiteralInteger:
-				return std::get<Integer>(m_Value) == std::get<Integer>(token.m_Value);
+				return std::get<IntegerType>(m_Value) == std::get<IntegerType>(token.m_Value);
 			case TokenType::LiteralFloat:
-				return std::get<Float>(m_Value) == std::get<Float>(token.m_Value);
+				return std::get<FloatType>(m_Value) == std::get<FloatType>(token.m_Value);
 			case TokenType::LiteralString:
-				return std::get<String>(m_Value) == std::get<String>(token.m_Value);
+				return std::get<StringType>(m_Value) == std::get<StringType>(token.m_Value);
 			case TokenType::LiteralBoolean:
-				return std::get<Boolean>(m_Value) == std::get<Boolean>(token.m_Value);
+				return std::get<BooleanType>(m_Value) == std::get<BooleanType>(token.m_Value);
 			case TokenType::Comment:
-				return std::get<String>(m_Value) == std::get<String>(token.m_Value);
+				return std::get<StringType>(m_Value) == std::get<StringType>(token.m_Value);
 			default:
 				break;
 			}
@@ -87,19 +87,19 @@ namespace Eye
 			{
 			case TokenType::LiteralInteger:
 				type = "LiteralInteger";
-				value = std::to_string(std::get<Integer>(m_Value));
+				value = std::to_string(std::get<IntegerType>(m_Value));
 				break;
 			case TokenType::LiteralFloat:
 				type = "LiteralFloat";
-				value = std::to_string(std::get<Float>(m_Value));
+				value = std::to_string(std::get<FloatType>(m_Value));
 				break;
 			case TokenType::LiteralString:
 				type = "LiteralString";
-				value = std::get<String>(m_Value);
+				value = std::get<StringType>(m_Value);
 				break;
 			case TokenType::LiteralBoolean:
 				type = "LiteralBoolean";
-				value = (std::get<Boolean>(m_Value) ? "true" : "false");
+				value = (std::get<BooleanType>(m_Value) ? "true" : "false");
 				break;
 			case TokenType::LiteralNull:
 				type = "LiteralNull";
@@ -107,7 +107,7 @@ namespace Eye
 				break;
 			case TokenType::Identifier:
 				type = "Identifier";
-				value = std::get<String>(m_Value);
+				value = std::get<StringType>(m_Value);
 				break;
 			case TokenType::KeywordAuto:
 			case TokenType::KeywordInt:
