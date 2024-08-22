@@ -9,11 +9,11 @@ Types:
 
 Keywords:
 {
-	auto, int, str, float, bool,
+	auto, int, float, str, bool,
 	const, true, false, null,
 	if,	else,
 	while, do, for, continue, break,
-	return, new, function, struct,
+	return, function, struct, new
 }
 
 Operators:

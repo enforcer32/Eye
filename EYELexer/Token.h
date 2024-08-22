@@ -25,7 +25,7 @@ namespace Eye
 			}
 		};
 
-		const char* TokenTypeStr[]
+		static const char* TokenTypeStr[]
 		{
 			"Invalid",
 			// Literals
@@ -42,9 +42,6 @@ namespace Eye
 			"str",
 			"bool",
 			"const",
-			"true",
-			"false",
-			"null",
 			"If",
 			"else",
 			"while",
@@ -112,7 +109,7 @@ namespace Eye
 
 		enum class TokenType
 		{
-			Invalid,
+			Invalid = 0,
 			// Literals
 			LiteralInteger,
 			LiteralFloat,
@@ -127,9 +124,6 @@ namespace Eye
 			KeywordStr,
 			KeywordBool,
 			KeywordConst,
-			KeywordTrue,
-			KeywordFalse,
-			KeywordNull,
 			KeywordIf,
 			KeywordElse,
 			KeywordWhile,
@@ -195,194 +189,36 @@ namespace Eye
 			EndOfFile,
 		};
 
-		struct Token
+		class Token
 		{
-			TokenType Type;
-			Position Pos;
-			std::variant<Integer, Float, String, Boolean> Value;
-		
-			Token(Integer value, Position pos)
-				: Type(TokenType::LiteralInteger), Value(value), Pos(pos)
+		public:
+			Token();
+			Token(Integer value, Position position);
+			Token(Float value, Position position);
+			Token(String value, Position position);
+			Token(Boolean value, Position position);
+			Token(TokenType type, Position position);
+			Token(TokenType type, String value, Position position);
+
+			bool operator==(const Token& token) const;
+			bool operator!=(const Token& token) const;
+			operator bool() const;
+
+			TokenType GetType() const;
+
+			template<typename T>
+			T GetValue() const
 			{
+				static_assert(std::is_same_v<T, Integer> || std::is_same_v<T, Float> || std::is_same_v<T, String> || std::is_same_v<T, Boolean>, "EYELexerToken->Error GetValue() Invalid Typename");
+				return std::get<T>(m_Value);
 			}
 
-			Token(Float value, Position pos)
-				: Type(TokenType::LiteralFloat), Value(value), Pos(pos)
-			{
-			}
+			std::string ToString() const;
 
-			Token(String value, Position pos)
-				: Type(TokenType::LiteralString), Value(value), Pos(pos)
-			{
-			}
-
-			Token(Boolean value, Position pos)
-				: Type(TokenType::LiteralBoolean), Value(value), Pos(pos)
-			{
-			}
-
-			Token(TokenType type, Position pos)
-				: Type(type), Pos(pos)
-			{
-			}
-
-			bool operator==(const Token& token) const
-			{
-				if (Type != token.Type)
-					return false;
-
-				switch (token.Type)
-				{
-				case TokenType::LiteralInteger:
-					return std::get<Integer>(Value) == std::get<Integer>(token.Value);
-				case TokenType::LiteralFloat:
-					return std::get<Float>(Value) == std::get<Float>(token.Value);
-				case TokenType::LiteralString:
-					return std::get<String>(Value) == std::get<String>(token.Value);
-				case TokenType::LiteralBoolean:
-					return std::get<Boolean>(Value) == std::get<Boolean>(token.Value);
-				case TokenType::Comment:
-					return std::get<String>(Value) == std::get<String>(token.Value);
-				default:
-					break;
-				}
-
-				return true;
-			}
-
-			bool operator!=(const Token& token)
-			{
-				return !(*this == token);
-			}
-
-			operator bool() const
-			{
-				return Type != TokenType::Invalid;
-			}
-
-			std::string ToString() const
-			{
-				std::string type = "Invalid";
-				std::string value = "None";
-
-				switch (Type)
-				{
-				case TokenType::LiteralInteger:
-					type = "LiteralInteger";
-					value = std::to_string(std::get<Integer>(Value));
-					break;
-				case TokenType::LiteralFloat:
-					type = "LiteralFloat";
-					value = std::to_string(std::get<Float>(Value));
-					break;
-				case TokenType::LiteralString:
-					type = "LiteralString";
-					value = std::get<String>(Value);
-					break;
-				case TokenType::LiteralBoolean:
-					type = "LiteralBoolean";
-					value = std::to_string(std::get<Boolean>(Value));
-					break;
-				case TokenType::LiteralNull:
-					type = "LiteralNull";
-					value = "null";
-					break;
-				case TokenType::Identifier:
-					type = "Identifier";
-					value = std::get<String>(Value);
-					break;
-				case TokenType::KeywordAuto:
-				case TokenType::KeywordInt:
-				case TokenType::KeywordFloat:
-				case TokenType::KeywordStr:
-				case TokenType::KeywordBool:
-				case TokenType::KeywordConst:
-				case TokenType::KeywordTrue:
-				case TokenType::KeywordFalse:
-				case TokenType::KeywordNull:
-				case TokenType::KeywordIf:
-				case TokenType::KeywordElse:
-				case TokenType::KeywordWhile:
-				case TokenType::KeywordDo:
-				case TokenType::KeywordFor:
-				case TokenType::KeywordContinue:
-				case TokenType::KeywordBreak:
-				case TokenType::KeywordReturn:
-				case TokenType::KeywordNew:
-				case TokenType::KeywordFunction:
-				case TokenType::KeywordStruct:
-					type = "Keyword";
-					value = TokenTypeStr[(int)Type];
-					break;
-				case TokenType::OperatorPlus:
-				case TokenType::OperatorMinus:
-				case TokenType::OperatorStar:
-				case TokenType::OperatorSlash:
-				case TokenType::OperatorModulo:
-				case TokenType::OperatorIncrement:
-				case TokenType::OperatorDecrement:
-				case TokenType::OperatorAssignment:
-				case TokenType::OperatorAssignmentPlus:
-				case TokenType::OperatorAssignmentMinus:
-				case TokenType::OperatorAssignmentStar:
-				case TokenType::OperatorAssignmentSlash:
-				case TokenType::OperatorAssignmentModulo:
-				case TokenType::OperatorAssignmentBitwiseAND:
-				case TokenType::OperatorAssignmentBitwiseOR:
-				case TokenType::OperatorAssignmentBitwiseXOR:
-				case TokenType::OperatorAssignmentBitshiftRight:
-				case TokenType::OperatorAssignmentBitshiftLeft:
-				case TokenType::OperatorEquals:
-				case TokenType::OperatorNotEquals:
-				case TokenType::OperatorSmaller:
-				case TokenType::OperatorGreater:
-				case TokenType::OperatorSmallerEquals:
-				case TokenType::OperatorGreaterEquals:
-				case TokenType::OperatorLogicalAND:
-				case TokenType::OperatorLogicalOR:
-				case TokenType::OperatorNegate:
-				case TokenType::OperatorBitwiseAND:
-				case TokenType::OperatorBitwiseOR:
-				case TokenType::OperatorBitwiseXOR:
-				case TokenType::OperatorBitshiftRight:
-				case TokenType::OperatorBitshiftLeft:
-				case TokenType::OperatorBitwiseNOT:
-				case TokenType::OperatorLeftParenthesis:
-				case TokenType::OperatorLeftBracket:
-				case TokenType::OperatorQuestionMark:
-				case TokenType::OperatorDot:
-				case TokenType::OperatorComma:
-					type = "Operator";
-					value = TokenTypeStr[(int)Type];
-					break;
-				case TokenType::SymbolRightParenthesis:
-				case TokenType::SymbolRightBracket:
-				case TokenType::SymbolLeftBrace:
-				case TokenType::SymbolRightBrace:
-				case TokenType::SymbolColon:
-				case TokenType::SymbolSemiColon:
-				case TokenType::SymbolBackslash:
-					type = "Symbol";
-					value = TokenTypeStr[(int)Type];
-					break;
-				case TokenType::Comment:
-					type = "Comment";
-					break;
-				case TokenType::Newline:
-					type = "Newline";
-					break;
-				case TokenType::EscapeCharacter:
-					type = "EscapeCharacter";
-					break;
-				case TokenType::EndOfFile:
-					type = "EndOfFile";
-					break;
-				default:
-					break;
-				}
-				
-				return "Token{Type: " + type + ", Value: " + value + ", " + Pos.ToString() + "}";
-			}
+		private:
+			TokenType m_Type;
+			Position m_Position;
+			std::variant<Integer, Float, String, Boolean> m_Value;
 		};
 	}
 }
