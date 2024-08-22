@@ -141,14 +141,21 @@ namespace Eye
 
 		Token Lexer::MakeNumberToken()
 		{
+			bool floatNumber = false;
+
 			std::string numbers;
-			for (char c = PeekChar(); c >= '0' && c <= '9'; c = PeekChar())
+			for (char c = PeekChar(); IsDecimalNumber(c); c = PeekChar())
 			{
 				numbers.push_back(c);
 				NextChar();
+				if (!floatNumber && PeekChar() == '.')
+				{
+					numbers.push_back(NextChar());
+					floatNumber = true;
+				}
 			}
 
-			return Token((IntegerType)std::atoll(numbers.c_str()), m_Position);
+			return (floatNumber ? Token((FloatType)std::atof(numbers.c_str()), m_Position) : Token((IntegerType)std::atoll(numbers.c_str()), m_Position));
 		}
 
 		Token Lexer::MakeNumberBaseToken()
@@ -173,7 +180,7 @@ namespace Eye
 			NextChar();
 
 			std::string hexStr{};
-			for (char c = PeekChar(); IsValidHexNumber(c); c = PeekChar())
+			for (char c = PeekChar(); IsHexNumber(c); c = PeekChar())
 			{
 				hexStr += c;
 				NextChar();
@@ -193,7 +200,7 @@ namespace Eye
 				NextChar();
 			}
 
-			if (!IsValidBinaryNumber(binaryStr))
+			if (!IsBinaryNumber(binaryStr))
 				EYE_LOG_CRITICAL("Lexer->Bad Binary Number Format : {}\n on line {}, col {} in file {}", binaryStr, m_Position.Line, m_Position.Col, m_Position.FileName);
 
 			return Token((IntegerType)std::strtol(binaryStr.c_str(), 0, 2), m_Position);
@@ -373,13 +380,18 @@ namespace Eye
 				op == "(" || op == "[" || op == "?" || op == "," || op == ".");
 		}
 
-		bool Lexer::IsValidHexNumber(char num) const
+		bool Lexer::IsDecimalNumber(char num)
+		{
+			return (num >= '0' && num <= '9');
+		}
+
+		bool Lexer::IsHexNumber(char num) const
 		{
 			num = std::tolower(num);
 			return ((num >= '0' && num <= '9') || (num >= 'a' && num <= 'f'));
 		}
 
-		bool Lexer::IsValidBinaryNumber(const std::string& num) const
+		bool Lexer::IsBinaryNumber(const std::string& num) const
 		{
 			for (const auto& n : num)
 				if (n != '0' && n != '1')

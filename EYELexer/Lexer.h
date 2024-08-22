@@ -37,8 +37,9 @@ namespace Eye
 			bool IsOperator(char op) const;
 			bool IsSinglyOperator(char op) const;
 			bool IsValidOperator(const std::string& op) const;
-			bool IsValidHexNumber(char num) const;
-			bool IsValidBinaryNumber(const std::string& num) const;
+			bool IsDecimalNumber(char num);
+			bool IsHexNumber(char num) const;
+			bool IsBinaryNumber(const std::string& num) const;
 			bool IsKeyword(const std::string& op) const;
 			char CharToEscapedChar(char c) const;
 			TokenType OperatorToTokenType(const std::string& op) const;

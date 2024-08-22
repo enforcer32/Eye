@@ -54,6 +54,21 @@ namespace Eye
 			ASSERT_EQ(lexer.GetTokens()[5].GetValue<IntegerType>(), 1256);
 		}
 
+		TEST(LexerLiteralTest, Float)
+		{
+			std::string testType = "Literal";
+			std::string eyeFile = "Float.eye";
+			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
+
+			Lexer lexer;
+			if (!lexer.Tokenize(filePath))
+				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerLiteralTest->Float Failed to Tokenize()");
+
+			ASSERT_EQ(lexer.GetTokens()[0].GetValue<FloatType>(), 123.456);
+			ASSERT_EQ(lexer.GetTokens()[2].GetValue<FloatType>(), 12.3356);
+			ASSERT_EQ(lexer.GetTokens()[5].GetValue<FloatType>(), 8510.1457);
+		}
+
 		TEST(LexerLiteralTest, String)
 		{
 			std::string testType = "Literal";

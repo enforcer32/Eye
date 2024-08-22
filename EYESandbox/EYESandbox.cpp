@@ -9,7 +9,7 @@ int main(int argc, char** argv)
 	EYE_LOG_INFO("EYESandbox");
 
 	std::string testType = "Literal";
-	std::string eyeFile = "String.eye";
+	std::string eyeFile = "Float.eye";
 	std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 	Eye::Lexer::Lexer lexer;
