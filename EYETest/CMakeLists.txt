@@ -5,6 +5,7 @@ file(GLOB_RECURSE EYETestSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYELexer/LiteralTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYELexer/KeywordTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYELexer/SymbolTest.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/EYELexer/OperatorTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYELexer/OtherTest.cpp"
 )
 

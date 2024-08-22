@@ -37,11 +37,11 @@ namespace Eye
 			if (!lexer.Tokenize(filePath))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerKeywordTest->Datatype Failed to Tokenize()");
 
-			ASSERT_EQ(lexer.GetTokens()[0].GetType(), TokenType::KeywordAuto);
-			ASSERT_EQ(lexer.GetTokens()[6].GetType(), TokenType::KeywordInt);
-			ASSERT_EQ(lexer.GetTokens()[12].GetType(), TokenType::KeywordFloat);
-			ASSERT_EQ(lexer.GetTokens()[18].GetType(), TokenType::KeywordStr);
-			ASSERT_EQ(lexer.GetTokens()[24].GetType(), TokenType::KeywordBool);
+			ASSERT_EQ(lexer.GetTokens()[0].GetType(), TokenType::KeywordDataTypeAuto);
+			ASSERT_EQ(lexer.GetTokens()[6].GetType(), TokenType::KeywordDataTypeInt);
+			ASSERT_EQ(lexer.GetTokens()[12].GetType(), TokenType::KeywordDataTypeFloat);
+			ASSERT_EQ(lexer.GetTokens()[18].GetType(), TokenType::KeywordDataTypeStr);
+			ASSERT_EQ(lexer.GetTokens()[24].GetType(), TokenType::KeywordDataTypeBool);
 			ASSERT_EQ(lexer.GetTokens()[30].GetType(), TokenType::KeywordConst);
 		}
 
@@ -55,8 +55,8 @@ namespace Eye
 			if (!lexer.Tokenize(filePath))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerKeywordTest->Control Failed to Tokenize()");
 
-			ASSERT_EQ(lexer.GetTokens()[0].GetType(), TokenType::KeywordIf);
-			ASSERT_EQ(lexer.GetTokens()[9].GetType(), TokenType::KeywordElse);
+			ASSERT_EQ(lexer.GetTokens()[0].GetType(), TokenType::KeywordControlIf);
+			ASSERT_EQ(lexer.GetTokens()[9].GetType(), TokenType::KeywordControlElse);
 		}
 
 		TEST(LexerKeywordTest, Iteration)
@@ -69,11 +69,11 @@ namespace Eye
 			if (!lexer.Tokenize(filePath))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerKeywordTest->Iteration Failed to Tokenize()");
 
-			ASSERT_EQ(lexer.GetTokens()[0].GetType(), TokenType::KeywordWhile);
-			ASSERT_EQ(lexer.GetTokens()[7].GetType(), TokenType::KeywordBreak);
-			ASSERT_EQ(lexer.GetTokens()[13].GetType(), TokenType::KeywordDo);
-			ASSERT_EQ(lexer.GetTokens()[17].GetType(), TokenType::KeywordContinue);
-			ASSERT_EQ(lexer.GetTokens()[28].GetType(), TokenType::KeywordFor);
+			ASSERT_EQ(lexer.GetTokens()[0].GetType(), TokenType::KeywordIterationWhile);
+			ASSERT_EQ(lexer.GetTokens()[7].GetType(), TokenType::KeywordIterationBreak);
+			ASSERT_EQ(lexer.GetTokens()[13].GetType(), TokenType::KeywordIterationDo);
+			ASSERT_EQ(lexer.GetTokens()[17].GetType(), TokenType::KeywordIterationContinue);
+			ASSERT_EQ(lexer.GetTokens()[28].GetType(), TokenType::KeywordIterationFor);
 		}
 
 		TEST(LexerKeywordTest, Function)
@@ -87,9 +87,9 @@ namespace Eye
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerKeywordTest->Function Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0].GetType(), TokenType::KeywordFunction);
-			ASSERT_EQ(lexer.GetTokens()[1].GetType(), TokenType::KeywordInt);
+			ASSERT_EQ(lexer.GetTokens()[1].GetType(), TokenType::KeywordDataTypeInt);
 			ASSERT_EQ(lexer.GetTokens()[2].GetType(), TokenType::Identifier);
-			ASSERT_EQ(lexer.GetTokens()[4].GetType(), TokenType::KeywordInt);
+			ASSERT_EQ(lexer.GetTokens()[4].GetType(), TokenType::KeywordDataTypeInt);
 			ASSERT_EQ(lexer.GetTokens()[13].GetType(), TokenType::KeywordReturn);
 		}
 

@@ -109,19 +109,19 @@ namespace Eye
 				type = "Identifier";
 				value = std::get<StringType>(m_Value);
 				break;
-			case TokenType::KeywordAuto:
-			case TokenType::KeywordInt:
-			case TokenType::KeywordFloat:
-			case TokenType::KeywordStr:
-			case TokenType::KeywordBool:
+			case TokenType::KeywordDataTypeAuto:
+			case TokenType::KeywordDataTypeInt:
+			case TokenType::KeywordDataTypeFloat:
+			case TokenType::KeywordDataTypeStr:
+			case TokenType::KeywordDataTypeBool:
 			case TokenType::KeywordConst:
-			case TokenType::KeywordIf:
-			case TokenType::KeywordElse:
-			case TokenType::KeywordWhile:
-			case TokenType::KeywordDo:
-			case TokenType::KeywordFor:
-			case TokenType::KeywordContinue:
-			case TokenType::KeywordBreak:
+			case TokenType::KeywordControlIf:
+			case TokenType::KeywordControlElse:
+			case TokenType::KeywordIterationWhile:
+			case TokenType::KeywordIterationDo:
+			case TokenType::KeywordIterationFor:
+			case TokenType::KeywordIterationContinue:
+			case TokenType::KeywordIterationBreak:
 			case TokenType::KeywordReturn:
 			case TokenType::KeywordNew:
 			case TokenType::KeywordFunction:
@@ -129,13 +129,13 @@ namespace Eye
 				type = "Keyword";
 				value = TokenTypeStr[(int)m_Type];
 				break;
-			case TokenType::OperatorPlus:
-			case TokenType::OperatorMinus:
-			case TokenType::OperatorStar:
-			case TokenType::OperatorSlash:
-			case TokenType::OperatorModulo:
-			case TokenType::OperatorIncrement:
-			case TokenType::OperatorDecrement:
+			case TokenType::OperatorBinaryPlus:
+			case TokenType::OperatorBinaryMinus:
+			case TokenType::OperatorBinaryStar:
+			case TokenType::OperatorBinarySlash:
+			case TokenType::OperatorBinaryModulo:
+			case TokenType::OperatorArithmeticIncrement:
+			case TokenType::OperatorArithmeticDecrement:
 			case TokenType::OperatorAssignment:
 			case TokenType::OperatorAssignmentPlus:
 			case TokenType::OperatorAssignmentMinus:
@@ -145,22 +145,22 @@ namespace Eye
 			case TokenType::OperatorAssignmentBitwiseAND:
 			case TokenType::OperatorAssignmentBitwiseOR:
 			case TokenType::OperatorAssignmentBitwiseXOR:
-			case TokenType::OperatorAssignmentBitshiftRight:
-			case TokenType::OperatorAssignmentBitshiftLeft:
-			case TokenType::OperatorEquals:
-			case TokenType::OperatorNotEquals:
-			case TokenType::OperatorSmaller:
-			case TokenType::OperatorGreater:
-			case TokenType::OperatorSmallerEquals:
-			case TokenType::OperatorGreaterEquals:
+			case TokenType::OperatorAssignmentBitwiseLeftShift:
+			case TokenType::OperatorAssignmentBitwiseRightShift:
+			case TokenType::OperatorRelationalEquals:
+			case TokenType::OperatorRelationalNotEquals:
+			case TokenType::OperatorRelationalSmaller:
+			case TokenType::OperatorRelationalGreater:
+			case TokenType::OperatorRelationalSmallerEquals:
+			case TokenType::OperatorRelationalGreaterEquals:
 			case TokenType::OperatorLogicalAND:
 			case TokenType::OperatorLogicalOR:
-			case TokenType::OperatorNegate:
-			case TokenType::OperatorBitwiseAND:
-			case TokenType::OperatorBitwiseOR:
-			case TokenType::OperatorBitwiseXOR:
-			case TokenType::OperatorBitshiftRight:
-			case TokenType::OperatorBitshiftLeft:
+			case TokenType::OperatorLogicalNOT:
+			case TokenType::OperatorBitwiseBinaryAND:
+			case TokenType::OperatorBitwiseBinaryOR:
+			case TokenType::OperatorBitwiseBinaryXOR:
+			case TokenType::OperatorBitwiseLeftShift:
+			case TokenType::OperatorBitwiseRightShift:
 			case TokenType::OperatorBitwiseNOT:
 			case TokenType::OperatorLeftParenthesis:
 			case TokenType::OperatorLeftBracket:
