@@ -3,6 +3,7 @@ file(GLOB_RECURSE EYETestSources
 
 	# EYELexer
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYELexer/LiteralTest.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/EYELexer/KeywordTest.cpp"
 )
 
 add_executable(${EYETEST_TARGET_NAME} ${EYETestSources})

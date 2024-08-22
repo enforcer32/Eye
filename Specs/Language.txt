@@ -13,7 +13,7 @@ Keywords:
 	const, true, false, null,
 	if,	else,
 	while, do, for, continue, break,
-	return, function, struct, new
+	function, return, struct, new, 
 }
 
 Operators:

@@ -1,4 +1,4 @@
-function test(args)
+function int test(args)
 {
 	if(args == 12)
 	{

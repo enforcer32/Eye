@@ -8,8 +8,8 @@ int main(int argc, char** argv)
 	Eye::Logger::Init();
 	EYE_LOG_INFO("EYESandbox");
 
-	std::string testType = "Literal";
-	std::string eyeFile = "Float.eye";
+	std::string testType = "Keyword";
+	std::string eyeFile = "Control.eye";
 	std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 	Eye::Lexer::Lexer lexer;

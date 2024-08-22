@@ -406,7 +406,7 @@ namespace Eye
 				"const", "true", "false", "null",
 				"if",	"else",
 				"while", "do", "for", "continue", "break",
-				"return", "function", "struct", "new",
+				"function", "return", "struct", "new",
 			};
 
 			return (std::find(keywords.begin(), keywords.end(), str) != keywords.end());
