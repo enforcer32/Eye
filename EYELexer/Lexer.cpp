@@ -229,7 +229,7 @@ namespace Eye
 				opStr += NextChar();
 				singleOperator = false;
 			}
-			if (!IsSinglyOperator(op))
+			else if (!IsSinglyOperator(op))
 			{
 				// Stackable Operator: i.e ++
 				op = PeekChar();
@@ -239,6 +239,12 @@ namespace Eye
 					singleOperator = false;
 					NextChar();
 				}
+			}
+
+			if ((opStr == "<<" || opStr == ">>") && PeekChar() == '=')
+			{
+				char eq = NextChar();
+				opStr += eq;
 			}
 
 			// PutBack All Except First One
@@ -372,7 +378,7 @@ namespace Eye
 		bool Lexer::IsValidOperator(const std::string& op) const
 		{
 			return (op == "+" || op == "-" || op == "*" || op == "/" || op == "%" || op == "++" || op == "--" ||
-				op == "=" || op == "+=" || op == "-=" || op == "*=" || op == "/=" || op == "%=" || op == "&=" || op == "|=" || op == "^=" || op == ">>=" || op == "<<=" ||
+				op == "=" || op == "+=" || op == "-=" || op == "*=" || op == "/=" || op == "%=" || op == "&=" || op == "|=" || op == "^=" || op == "<<=" || op == ">>=" ||
 				op == "==" || op == "!=" || op == "<" || op == ">" || op == "<=" || op == ">=" ||
 				op == "&&" || op == "||" || op == "!" ||
 				op == "&" || op == "|" || op == "^" || op == "<<" || op == ">>" || op == "~" ||

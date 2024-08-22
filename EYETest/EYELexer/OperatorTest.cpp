@@ -59,8 +59,8 @@ namespace Eye
 			ASSERT_EQ(lexer.GetTokens()[18].GetType(), TokenType::OperatorAssignmentBitwiseAND);
 			ASSERT_EQ(lexer.GetTokens()[21].GetType(), TokenType::OperatorAssignmentBitwiseOR);
 			ASSERT_EQ(lexer.GetTokens()[24].GetType(), TokenType::OperatorAssignmentBitwiseXOR);
-			/*ASSERT_EQ(lexer.GetTokens()[27].GetType(), TokenType::OperatorAssignmentBitwiseLeftShift);
-			ASSERT_EQ(lexer.GetTokens()[30].GetType(), TokenType::OperatorAssignmentBitwiseRightShift);*/
+			ASSERT_EQ(lexer.GetTokens()[27].GetType(), TokenType::OperatorAssignmentBitwiseLeftShift);
+			ASSERT_EQ(lexer.GetTokens()[30].GetType(), TokenType::OperatorAssignmentBitwiseRightShift);
 		}
 
 		TEST(LexerOperatorTest, Relational)

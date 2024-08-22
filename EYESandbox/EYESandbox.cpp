@@ -8,12 +8,12 @@ int main(int argc, char** argv)
 	Eye::Logger::Init();
 	EYE_LOG_INFO("EYESandbox");
 
-	std::string testType = "Keyword";
-	std::string eyeFile = "Control.eye";
+	std::string testType = "Operator";
+	std::string eyeFile = "Assignment.eye";
 	std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 	Eye::Lexer::Lexer lexer;
-	if (!lexer.Tokenize(filePath))
+	if (!lexer.Tokenize("..\\..\\..\\..\\Examples\\Test.eye"))
 	{
 		EYE_LOG_CRITICAL("Lexer Failed!");
 		return -1;
