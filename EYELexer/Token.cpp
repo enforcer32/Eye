@@ -182,6 +182,7 @@ namespace Eye
 				break;
 			case TokenType::Comment:
 				type = "Comment";
+				value = std::get<StringType>(m_Value);
 				break;
 			case TokenType::Newline:
 				type = "Newline";

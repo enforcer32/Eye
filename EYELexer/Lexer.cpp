@@ -1,7 +1,9 @@
 #include "EYELexer/Lexer.h"
 
-#include <EYEUtility/Logger.h>
 #include <EYEUtility/FileIO.h>
+#include <EYEUtility/Logger.h>
+
+#define EYELEXER_THROW_UNEXPECTED_TOKEN(token, line, col, filename) EYE_LOG_CRITICAL("EYELexer->Unexpected Token : {}\n\t on line {}, col {} in file {}", token, line, col, filename);
 
 namespace Eye
 {
@@ -114,7 +116,7 @@ namespace Eye
 			default:
 				token = MakeSpecialToken();
 				if (!token)
-					EYE_LOG_CRITICAL("Lexer->Unexpected Token : {}\n on line {}, col {} in file {}", c, m_Position.Line, m_Position.Col, m_Position.FileName);
+					EYELEXER_THROW_UNEXPECTED_TOKEN(c, m_Position.Line, m_Position.Col, m_Position.FileName);
 				break;
 			}
 
@@ -200,7 +202,7 @@ namespace Eye
 			}
 
 			if (!IsBinaryNumber(binaryStr))
-				EYE_LOG_CRITICAL("Lexer->Bad Binary Number Format : {}\n on line {}, col {} in file {}", binaryStr, m_Position.Line, m_Position.Col, m_Position.FileName);
+				EYELEXER_THROW_UNEXPECTED_TOKEN(("0b" + binaryStr), m_Position.Line, m_Position.Col, m_Position.FileName);
 
 			return Token((IntegerType)std::strtol(binaryStr.c_str(), 0, 2), m_Position);
 		}
@@ -208,7 +210,7 @@ namespace Eye
 		Token Lexer::MakeStringToken(char sdelim, char edelim)
 		{
 			if (NextChar() != sdelim)
-				EYE_LOG_CRITICAL("Lexer->Bad String Delimiter: {}\n on line {}, col {} in file {}", sdelim, m_Position.Line, m_Position.Col, m_Position.FileName);
+				EYELEXER_THROW_UNEXPECTED_TOKEN(sdelim, m_Position.Line, m_Position.Col, m_Position.FileName);
 
 			std::string str;
 			for (char c = NextChar(); c != edelim && c != EOF; c = NextChar())
@@ -258,7 +260,7 @@ namespace Eye
 			}
 
 			if (singleOperator && !IsValidOperator(opStr))
-				EYE_LOG_CRITICAL("Lexer->Invalid Operator: {}\n on line {}, col {} in file {}", opStr, m_Position.Line, m_Position.Col, m_Position.FileName);
+				EYELEXER_THROW_UNEXPECTED_TOKEN(opStr, m_Position.Line, m_Position.Col, m_Position.FileName);
 
 			return Token(OperatorToTokenType(opStr), m_Position);
 		}
@@ -346,7 +348,7 @@ namespace Eye
 
 				if (c == EOF)
 				{
-					EYE_LOG_CRITICAL("Lexer->Bad MultiLine Comment Format : {}\n on line {}, col {} in file {}", comment, m_Position.Line, m_Position.Col, m_Position.FileName);
+					EYELEXER_THROW_UNEXPECTED_TOKEN(comment, m_Position.Line, m_Position.Col, m_Position.FileName);
 				}
 				else if (c == '*')
 				{
