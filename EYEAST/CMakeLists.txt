@@ -1,0 +1,9 @@
+file(GLOB_RECURSE EYEASTSources
+	"${CMAKE_CURRENT_SOURCE_DIR}/Program.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Program.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Statement.h"
+)
+
+add_library(${EYEAST_TARGET_NAME} STATIC ${EYEASTSources})
+target_include_directories(${EYEAST_TARGET_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../")
+target_link_libraries(${EYEAST_TARGET_NAME} PRIVATE ${EYEUTILITY_TARGET_NAME})

@@ -11,7 +11,7 @@ Statement
 	: ExpressionStatement
 	| BlockStatement
 	| VariableStatement
-	| IfStatement
+	| ControlStatement
 	| IterationStatement
 	| FunctionStatement
 	| ReturnStatement
@@ -43,7 +43,7 @@ VariableInitializer
 	: '=' AssignmentExpression
 	;
 
-IfStatement
+ControlStatement
 	: 'if' '(' Expression ')' Statement
 	| 'if' '(' Expression ')' Statement 'else' Statement
 	;

@@ -1,5 +1,6 @@
 #include <EYEUtility/Logger.h>
 #include <EYELexer/Lexer.h>
+#include <EYEParser/Parser.h>
 
 #include <iostream>
 
@@ -19,8 +20,12 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	for (const auto& tok : lexer.GetTokens())
-		std::cout << tok.ToString() << std::endl;
+	Eye::Parser::Parser parser;
+	if (!parser.Parse(lexer.GetTokens()))
+	{
+		EYE_LOG_CRITICAL("Parser Failed!");
+		return -1;
+	}
 
 	return 0;
 }
