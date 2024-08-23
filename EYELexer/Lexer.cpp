@@ -216,7 +216,7 @@ namespace Eye
 			for (char c = NextChar(); c != edelim && c != EOF; c = NextChar())
 				str.push_back(c);
 
-			return Token((new std::string(str))->c_str(), m_Position);
+			return Token(str, m_Position);
 		}
 
 		Token Lexer::MakeOperatorToken()
@@ -292,7 +292,7 @@ namespace Eye
 			else if (IsKeyword(identifier) && identifier == "null")
 				return Token(TokenType::LiteralNull, m_Position);
 
-			return Token((IsKeyword(identifier) ? KeywordToTokenType(identifier) : TokenType::Identifier), (new std::string(identifier))->c_str(), m_Position);
+			return Token((IsKeyword(identifier) ? KeywordToTokenType(identifier) : TokenType::Identifier), identifier, m_Position);
 		}
 
 		Token Lexer::HandleSlashOperator()
@@ -328,7 +328,7 @@ namespace Eye
 				comment += c;
 				c = NextChar();
 			}
-			return Token(TokenType::Comment, (new std::string(comment))->c_str(), m_Position);
+			return Token(TokenType::Comment, comment, m_Position);
 		}
 
 		Token Lexer::MakeMultiLineCommentToken()
@@ -359,7 +359,7 @@ namespace Eye
 				}
 			}
 
-			return Token(TokenType::Comment, (new std::string(comment))->c_str(), m_Position);
+			return Token(TokenType::Comment, comment, m_Position);
 		}
 
 		bool Lexer::IsOperator(char op) const

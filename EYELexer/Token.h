@@ -10,7 +10,7 @@ namespace Eye
 	{
 		using IntegerType = unsigned long long;
 		using FloatType = double;
-		using StringType = const char*;
+		using StringType = std::string;
 		using BooleanType = bool;
 
 		struct Position
