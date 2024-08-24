@@ -155,18 +155,18 @@ FunctionCallArgumentList
 
 MemberExpression
 	: PrimaryExpression
-	| MemberExpression '.' Identifier
+	| MemberExpression '.' IdentifierExpression
 	| MemberExpression '[' Expression ']'
 	;
 
-Identifier
-	: IdentifierNode
+IdentifierExpression
+	: IdentifierToken
 	;
 
 PrimaryExpression
 	: LiteralExpression
 	| ParenthesizedExpression
-	| Identifier
+	| IdentifierExpression
 	| NewExpression
 	;
 

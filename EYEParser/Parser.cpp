@@ -2,7 +2,8 @@
 
 #include <EYEUtility/Logger.h>
 
-#define EYEPARSER_THROW_UNEXPECTED_TOKEN(unexpectedToken, expectedToken, line, col, filename) EYE_LOG_CRITICAL("EYEParser->Unexpected Token : {}\n\t on line {}, col {} in file {}\n\tExpected Token: {}", unexpectedToken, line, col, filename, expectedToken)
+#define EYEPARSER_THROW_UNEXPECTED_TOKEN(unexpectedToken, expectedToken, line, col, filename) EYE_LOG_CRITICAL("EYEParser->Unexpected Token : {}\n\t on line {}, col {} in file {}\n\tExpected Token : {}", unexpectedToken, line, col, filename, expectedToken)
+#define EYEPARSER_THROW_UNEXPECTED(unexpecteD, expected, line, col, filename) EYE_LOG_CRITICAL("EYEParser->Unexpected : {}\n\t on line {}, col {} in file {}\n\tExpected : {}", unexpecteD, line, col, filename, expected)
 
 namespace Eye
 {
@@ -87,7 +88,26 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::Expression> Parser::Expression()
 		{
-			return AdditiveBinaryExpression();
+			return AssignmentExpression();
+		}
+
+		/*
+			AssignmentExpression
+				: AdditiveBinaryExpression
+				| IdentifierExpression AssignmentOperator AssignmentExpression
+		*/
+		std::shared_ptr<AST::Expression> Parser::AssignmentExpression()
+		{
+			std::shared_ptr<AST::Expression> left = AdditiveBinaryExpression();
+
+			if (!IsAssignmentOperator(m_LookAhead))
+				return left;
+
+			if (!IsLHSExpression(left))
+				EYEPARSER_THROW_UNEXPECTED(Lexer::TokenTypeStr[(int)left->GetType()], "Identifier", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
+
+			Lexer::Token op = EatToken(m_LookAhead.GetType());
+			return std::make_shared<AST::AssignmentExpression>(op, std::static_pointer_cast<AST::IdentifierExpression>(left), AssignmentExpression());
 		}
 
 		/*
@@ -129,12 +149,15 @@ namespace Eye
 		/*
 			PrimaryExpression
 				: LiteralExpression
+				| IdentifierExpression
 				;
 		*/
 		std::shared_ptr<AST::Expression> Parser::PrimaryExpression()
 		{
 			if (IsLookAheadLiteral())
 				return LiteralExpression();
+			else if (IsLookAhead(Lexer::TokenType::Identifier))
+				return IdentifierExpression();
 			return nullptr;
 		}
 
@@ -224,12 +247,22 @@ namespace Eye
 			return std::make_shared<AST::LiteralExpression>(AST::LiteralType::Null);
 		}
 
-		bool Parser::IsLookAhead(Lexer::TokenType type)
+		/*
+			IdentifierExpression
+				: IdentifierToken
+				;
+		*/
+		std::shared_ptr<AST::IdentifierExpression> Parser::IdentifierExpression()
+		{
+			return std::make_shared<AST::IdentifierExpression>(EatToken(Lexer::TokenType::Identifier));
+		}
+
+		bool Parser::IsLookAhead(Lexer::TokenType type) const
 		{
 			return (m_LookAhead.GetType() == type);
 		}
 
-		bool Parser::IsLookAheadLiteral()
+		bool Parser::IsLookAheadLiteral() const
 		{
 			return (IsLookAhead(Lexer::TokenType::LiteralInteger) || IsLookAhead(Lexer::TokenType::LiteralFloat) || IsLookAhead(Lexer::TokenType::LiteralString) || IsLookAhead(Lexer::TokenType::LiteralBoolean) || IsLookAhead(Lexer::TokenType::LiteralNull));
 		}
@@ -240,7 +273,7 @@ namespace Eye
 				| '-'
 				;
 		*/
-		bool Parser::IsAdditiveOperator(Lexer::Token token)
+		bool Parser::IsAdditiveOperator(Lexer::Token token) const
 		{
 			return (IsLookAhead(Lexer::TokenType::OperatorBinaryPlus) || IsLookAhead(Lexer::TokenType::OperatorBinaryMinus));
 		}
@@ -252,9 +285,42 @@ namespace Eye
 				| '%'
 				;
 		*/
-		bool Parser::IsMultiplicativeOperator(Lexer::Token token)
+		bool Parser::IsMultiplicativeOperator(Lexer::Token token) const
 		{
 			return (IsLookAhead(Lexer::TokenType::OperatorBinaryStar) || IsLookAhead(Lexer::TokenType::OperatorBinarySlash) || IsLookAhead(Lexer::TokenType::OperatorBinaryModulo));
+		}
+
+		/*
+			AssignmentOperator
+				: '='
+				| '+='
+				| '-='
+				| '*='
+				| '/='
+				| '%='
+				| '&='
+				| '|='
+				| '^='
+				| '>>='
+				| '<<='
+				;
+		*/
+		bool Parser::IsAssignmentOperator(Lexer::Token token) const
+		{
+			return (IsLookAhead(Lexer::TokenType::OperatorAssignment) || IsLookAhead(Lexer::TokenType::OperatorAssignmentPlus) || IsLookAhead(Lexer::TokenType::OperatorAssignmentMinus) ||
+				IsLookAhead(Lexer::TokenType::OperatorAssignmentStar) || IsLookAhead(Lexer::TokenType::OperatorAssignmentSlash) || IsLookAhead(Lexer::TokenType::OperatorAssignmentModulo) ||
+				IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseAND) || IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseOR) || IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseXOR)
+				|| IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseLeftShift) || IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseRightShift) || IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseXOR));
+		}
+
+		/*
+			LHSExpression
+				: IdentifierExpression
+				;
+		*/
+		bool Parser::IsLHSExpression(const std::shared_ptr<AST::Expression>& expression) const
+		{
+			return (expression->GetType() == AST::ExpressionType::IdentifierExpression);
 		}
 
 		bool Parser::HasToken() const

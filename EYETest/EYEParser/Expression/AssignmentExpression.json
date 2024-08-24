@@ -1,0 +1,402 @@
+{
+  "Program": {
+	"type": "Program",
+	"StatementListSize": 14,
+	"StatementList": [
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "=",
+			  "identifier": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "number"
+				}
+			  },
+			  "expression": {
+				"LiteralExpression": {
+				  "type": "Integer",
+				  "value": 20
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "=",
+			  "identifier": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "num2"
+				}
+			  },
+			  "expression": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "number"
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "+=",
+			  "identifier": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "num2"
+				}
+			  },
+			  "expression": {
+				"LiteralExpression": {
+				  "type": "Integer",
+				  "value": 10
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "-=",
+			  "identifier": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "number"
+				}
+			  },
+			  "expression": {
+				"LiteralExpression": {
+				  "type": "Float",
+				  "value": 5.7
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "/=",
+			  "identifier": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "number"
+				}
+			  },
+			  "expression": {
+				"LiteralExpression": {
+				  "type": "Float",
+				  "value": 4.1
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "=",
+			  "identifier": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "number"
+				}
+			  },
+			  "expression": {
+				"BinaryExpression": {
+				  "type": "BinaryExpression",
+				  "operator": "*",
+				  "left": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "num2"
+					}
+				  },
+				  "right": {
+					"LiteralExpression": {
+					  "type": "Float",
+					  "value": 3.9
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "=",
+			  "identifier": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "num2"
+				}
+			  },
+			  "expression": {
+				"AssignmentExpression": {
+				  "type": "AssignmentExpression",
+				  "operator": "%=",
+				  "identifier": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "number"
+					}
+				  },
+				  "expression": {
+					"LiteralExpression": {
+					  "type": "Integer",
+					  "value": 55
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "=",
+			  "identifier": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "num2"
+				}
+			  },
+			  "expression": {
+				"BinaryExpression": {
+				  "type": "BinaryExpression",
+				  "operator": "%",
+				  "left": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "number"
+					}
+				  },
+				  "right": {
+					"LiteralExpression": {
+					  "type": "Integer",
+					  "value": 55
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "=",
+			  "identifier": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "num4"
+				}
+			  },
+			  "expression": {
+				"AssignmentExpression": {
+				  "type": "AssignmentExpression",
+				  "operator": "*=",
+				  "identifier": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "num2"
+					}
+				  },
+				  "expression": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "number"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "=",
+			  "identifier": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "bit1"
+				}
+			  },
+			  "expression": {
+				"AssignmentExpression": {
+				  "type": "AssignmentExpression",
+				  "operator": "&=",
+				  "identifier": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "num2"
+					}
+				  },
+				  "expression": {
+					"LiteralExpression": {
+					  "type": "Integer",
+					  "value": 4
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "=",
+			  "identifier": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "bit2"
+				}
+			  },
+			  "expression": {
+				"AssignmentExpression": {
+				  "type": "AssignmentExpression",
+				  "operator": "|=",
+				  "identifier": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "bit1"
+					}
+				  },
+				  "expression": {
+					"LiteralExpression": {
+					  "type": "Integer",
+					  "value": 4
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "^=",
+			  "identifier": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "bit3"
+				}
+			  },
+			  "expression": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "bit1"
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "<<=",
+			  "identifier": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "bit1"
+				}
+			  },
+			  "expression": {
+				"LiteralExpression": {
+				  "type": "Integer",
+				  "value": 10
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": ">>=",
+			  "identifier": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "bit2"
+				}
+			  },
+			  "expression": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "bit2"
+				}
+			  }
+			}
+		  }
+		}
+	  }
+	]
+  }
+}

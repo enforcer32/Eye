@@ -7,6 +7,7 @@
 #include <EYEAST/Expressions/Expression.h>
 #include <EYEAST/Expressions/LiteralExpression.h>
 #include <EYEAST/Expressions/BinaryExpression.h>
+#include <EYEAST/Expressions/AssignmentExpression.h>
 
 namespace Eye
 {
@@ -28,6 +29,7 @@ namespace Eye
 
 			// Expressions
 			std::shared_ptr<AST::Expression> Expression();
+			std::shared_ptr<AST::Expression> AssignmentExpression();
 			std::shared_ptr<AST::Expression> AdditiveBinaryExpression();
 			std::shared_ptr<AST::Expression> MultiplicativeBinaryExpression();
 			std::shared_ptr<AST::Expression> PrimaryExpression();
@@ -37,12 +39,15 @@ namespace Eye
 			std::shared_ptr<AST::LiteralExpression> StringLiteral();
 			std::shared_ptr<AST::LiteralExpression> BooleanLiteral();
 			std::shared_ptr<AST::LiteralExpression> NullLiteral();
+			std::shared_ptr<AST::IdentifierExpression> IdentifierExpression();
 
 		private:
-			bool IsLookAhead(Lexer::TokenType type);
-			bool IsLookAheadLiteral();
-			bool IsAdditiveOperator(Lexer::Token token);
-			bool IsMultiplicativeOperator(Lexer::Token token);
+			bool IsLookAhead(Lexer::TokenType type) const;
+			bool IsLookAheadLiteral() const;
+			bool IsAdditiveOperator(Lexer::Token token) const;
+			bool IsMultiplicativeOperator(Lexer::Token token) const;
+			bool IsAssignmentOperator(Lexer::Token token) const;
+			bool IsLHSExpression(const std::shared_ptr<AST::Expression>& expression) const;
 
 		private:
 			bool HasToken() const;

@@ -1,0 +1,41 @@
+{
+  "Program": {
+	"type": "Program",
+	"StatementListSize": 3,
+	"StatementList": [
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"IdentifierExpression": {
+			  "type": "IdentifierExpression",
+			  "value": "numbers1"
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"IdentifierExpression": {
+			  "type": "IdentifierExpression",
+			  "value": "_var2"
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"IdentifierExpression": {
+			  "type": "IdentifierExpression",
+			  "value": "var33"
+			}
+		  }
+		}
+	  }
+	]
+  }
+}

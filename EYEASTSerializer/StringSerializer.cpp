@@ -48,6 +48,10 @@ namespace Eye
 				return SerializeLiteralExpression(std::static_pointer_cast<AST::LiteralExpression>(expr));
 			else if (expr->GetType() == AST::ExpressionType::BinaryExpression)
 				return SerializeBinaryExpression(std::static_pointer_cast<AST::BinaryExpression>(expr));
+			else if (expr->GetType() == AST::ExpressionType::IdentifierExpression)
+				return SerializeIdentifierExpression(std::static_pointer_cast<AST::IdentifierExpression>(expr));
+			else if(expr->GetType() == AST::ExpressionType::AssignmentExpression)
+				return SerializeAssignmentExpression(std::static_pointer_cast<AST::AssignmentExpression>(expr));
 		}
 
 		std::string StringSerializer::SerializeLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr)
@@ -91,6 +95,28 @@ namespace Eye
 			oss << "\"operator\": \"" << Lexer::TokenTypeStr[(int)binaryExpr->GetOperator().GetType()] << "\",\n";
 			oss << "\"left\": " << SerializeExpression(binaryExpr->GetLeft()) << ",\n";
 			oss << "\"right\": " << SerializeExpression(binaryExpr->GetRight()) << "\n";
+			oss << "}\n}";
+			return oss.str();
+		}
+
+		std::string StringSerializer::SerializeIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr)
+		{
+			std::ostringstream oss;
+			oss << "{\"IdentifierExpression\": {\n";
+			oss << "\"type\": \"IdentifierExpression\",\n";
+			oss << "\"value\": \"" << identifierExpr->GetValue() << "\"\n";
+			oss << "}\n}";
+			return oss.str();
+		}
+
+		std::string StringSerializer::SerializeAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignmentExpr)
+		{
+			std::ostringstream oss;
+			oss << "{\"AssignmentExpression\": {\n";
+			oss << "\"type\": \"AssignmentExpression\",\n";
+			oss << "\"operator\": \"" << Lexer::TokenTypeStr[(int)assignmentExpr->GetOperator().GetType()] << "\",\n";
+			oss << "\"identifier\": " << SerializeIdentifierExpression(assignmentExpr->GetIdentifier()) << ",\n";
+			oss << "\"expression\": " << SerializeExpression(assignmentExpr->GetExpression()) << "\n";
 			oss << "}\n}";
 			return oss.str();
 		}
