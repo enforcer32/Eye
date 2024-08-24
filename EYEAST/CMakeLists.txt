@@ -6,6 +6,7 @@ file(GLOB_RECURSE EYEASTSources
 
 	"${CMAKE_CURRENT_SOURCE_DIR}/Expressions/Expression.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Expressions/LiteralExpression.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Expressions/BinaryExpression.h"
 )
 
 add_library(${EYEAST_TARGET_NAME} STATIC ${EYEASTSources})

@@ -82,12 +82,48 @@ namespace Eye
 
 		/*
 			Expression
-				: PrimaryExpression
+				: AdditiveBinaryExpression
 				;
 		*/
 		std::shared_ptr<AST::Expression> Parser::Expression()
 		{
-			return PrimaryExpression();
+			return AdditiveBinaryExpression();
+		}
+
+		/*
+			AdditiveBinaryExpression
+				: MultiplicativeBinaryExpression
+				| AdditiveBinaryExpression AdditiveOperator MultiplicativeBinaryExpression
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::AdditiveBinaryExpression()
+		{
+			std::shared_ptr<AST::Expression> left = MultiplicativeBinaryExpression();
+			while (IsAdditiveOperator(m_LookAhead))
+			{
+				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				std::shared_ptr<AST::Expression> right = MultiplicativeBinaryExpression();
+				left = std::make_shared<AST::BinaryExpression>(op, left, right);
+			}
+			return left;
+		}
+
+		/*
+			MultiplicativeBinaryExpression
+				: PrimaryExpression
+				| MultiplicativeBinaryExpression MultiplicativeOperator PrimaryExpression
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::MultiplicativeBinaryExpression()
+		{
+			std::shared_ptr<AST::Expression> left = PrimaryExpression();
+			while (IsMultiplicativeOperator(m_LookAhead))
+			{
+				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				std::shared_ptr<AST::Expression> right = PrimaryExpression();
+				left = std::make_shared<AST::BinaryExpression>(op, left, right);
+			}
+			return left;
 		}
 
 		/*
@@ -196,6 +232,29 @@ namespace Eye
 		bool Parser::IsLookAheadLiteral()
 		{
 			return (IsLookAhead(Lexer::TokenType::LiteralInteger) || IsLookAhead(Lexer::TokenType::LiteralFloat) || IsLookAhead(Lexer::TokenType::LiteralString) || IsLookAhead(Lexer::TokenType::LiteralBoolean) || IsLookAhead(Lexer::TokenType::LiteralNull));
+		}
+
+		/*
+			AdditiveOperator
+				: '+'
+				| '-'
+				;
+		*/
+		bool Parser::IsAdditiveOperator(Lexer::Token token)
+		{
+			return (IsLookAhead(Lexer::TokenType::OperatorBinaryPlus) || IsLookAhead(Lexer::TokenType::OperatorBinaryMinus));
+		}
+
+		/*
+			MultiplicativeOperator
+				: '*'
+				| '/'
+				| '%'
+				;
+		*/
+		bool Parser::IsMultiplicativeOperator(Lexer::Token token)
+		{
+			return (IsLookAhead(Lexer::TokenType::OperatorBinaryStar) || IsLookAhead(Lexer::TokenType::OperatorBinarySlash) || IsLookAhead(Lexer::TokenType::OperatorBinaryModulo));
 		}
 
 		bool Parser::HasToken() const

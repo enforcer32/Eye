@@ -46,6 +46,8 @@ namespace Eye
 		{
 			if (expr->GetType() == AST::ExpressionType::LiteralExpression)
 				return SerializeLiteralExpression(std::static_pointer_cast<AST::LiteralExpression>(expr));
+			else if (expr->GetType() == AST::ExpressionType::BinaryExpression)
+				return SerializeBinaryExpression(std::static_pointer_cast<AST::BinaryExpression>(expr));
 		}
 
 		std::string StringSerializer::SerializeLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr)
@@ -77,6 +79,18 @@ namespace Eye
 				oss << "\"type\": \"Null\",\n";
 				oss << "\"value\": null\n";
 			}
+			oss << "}\n}";
+			return oss.str();
+		}
+
+		std::string StringSerializer::SerializeBinaryExpression(const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
+		{
+			std::ostringstream oss;
+			oss << "{\"BinaryExpression\": {\n";
+			oss << "\"type\": \"BinaryExpression\",\n";
+			oss << "\"operator\": \"" << Lexer::TokenTypeStr[(int)binaryExpr->GetOperator().GetType()] << "\",\n";
+			oss << "\"left\": " << SerializeExpression(binaryExpr->GetLeft()) << ",\n";
+			oss << "\"right\": " << SerializeExpression(binaryExpr->GetRight()) << "\n";
 			oss << "}\n}";
 			return oss.str();
 		}
