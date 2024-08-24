@@ -1,7 +1,11 @@
 file(GLOB_RECURSE EYEASTSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/Program.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Program.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Statement.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Statements/Statement.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Statements/ExpressionStatement.h"
+
+	"${CMAKE_CURRENT_SOURCE_DIR}/Expressions/Expression.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Expressions/LiteralExpression.h"
 )
 
 add_library(${EYEAST_TARGET_NAME} STATIC ${EYEASTSources})

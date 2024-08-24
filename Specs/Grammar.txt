@@ -164,7 +164,7 @@ Identifier
 	;
 
 PrimaryExpression
-	: Literal
+	: LiteralExpression
 	| ParenthesizedExpression
 	| Identifier
 	| NewExpression
@@ -193,15 +193,20 @@ ParenthesizedExpression
 	: '(' Expression ')'
 	;
 
-Literal
-	: NumericLiteral
+LiteralExpression
+	: IntegerLiteral
+	| FloatLiteral
 	| StringLiteral
 	| BooleanLiteral
 	| NullLiteral
 	;
 
-NumericLiteral
-	: NUMBER
+IntegerLiteral
+	: INTEGER
+	;
+
+FloatLiteral
+	: FLOAT
 	;
 
 StringLiteral

@@ -1,22 +1,20 @@
 #pragma once
 
-#include <memory>
-
 namespace Eye
 {
 	namespace AST
 	{
 		enum class StatementType
 		{
-			Expression,
-			Block,
-			Variable,
-			Control,
-			Iteration,
-			Function,
-			Return,
-			Struct,
-			StructBlock,
+			ExpressionStatement,
+			BlockStatement,
+			VariableStatement,
+			ControlStatement,
+			IterationStatement,
+			FunctionStatement,
+			ReturnStatement,
+			StructStatement,
+			StructBlockStatement,
 		};
 
 		/*
@@ -34,7 +32,6 @@ namespace Eye
 		class Statement
 		{
 		public:
-			virtual ~Statement() = default;
 			inline StatementType GetType() const { return m_Type; }
 
 		protected:

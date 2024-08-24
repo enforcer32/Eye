@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EYEAST/Statement.h"
+#include "EYEAST/Statements/Statement.h"
 
 #include <vector>
 #include <memory>

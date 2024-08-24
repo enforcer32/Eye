@@ -205,6 +205,7 @@ namespace Eye
 			operator bool() const;
 
 			TokenType GetType() const;
+			const Position& GetPosition() const;
 
 			template<typename T>
 			T GetValue() const

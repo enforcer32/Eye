@@ -78,6 +78,11 @@ namespace Eye
 			return m_Type;
 		}
 
+		const Position& Token::GetPosition() const
+		{
+			return m_Position;
+		}
+
 		std::string Token::ToString() const
 		{
 			std::string type = "Invalid";
