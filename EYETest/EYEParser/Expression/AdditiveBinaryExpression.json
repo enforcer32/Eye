@@ -1,0 +1,89 @@
+{
+  "Program": {
+	"type": "Program",
+	"StatementListSize": 3,
+	"StatementList": [
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "operator": "+",
+			  "left": {
+				"LiteralExpression": {
+				  "type": "Float",
+				  "value": 1
+				}
+			  },
+			  "right": {
+				"LiteralExpression": {
+				  "type": "Integer",
+				  "value": 25
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "operator": "-",
+			  "left": {
+				"LiteralExpression": {
+				  "type": "Integer",
+				  "value": 40
+				}
+			  },
+			  "right": {
+				"LiteralExpression": {
+				  "type": "Float",
+				  "value": 3.5
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "operator": "-",
+			  "left": {
+				"BinaryExpression": {
+				  "type": "BinaryExpression",
+				  "operator": "+",
+				  "left": {
+					"LiteralExpression": {
+					  "type": "Integer",
+					  "value": 295
+					}
+				  },
+				  "right": {
+					"LiteralExpression": {
+					  "type": "Float",
+					  "value": 215.45
+					}
+				  }
+				}
+			  },
+			  "right": {
+				"LiteralExpression": {
+				  "type": "Integer",
+				  "value": 5601
+				}
+			  }
+			}
+		  }
+		}
+	  }
+	]
+  }
+}

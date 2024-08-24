@@ -53,7 +53,7 @@ namespace Eye
 		std::string StringSerializer::SerializeLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr)
 		{
 			std::ostringstream oss;
-			oss << "{\"Literal\": {\n";
+			oss << "{\"LiteralExpression\": {\n";
 			if (literalExpr->GetLiteralType() == AST::LiteralType::Integer)
 			{
 				oss << "\"type\": \"Integer\",\n";

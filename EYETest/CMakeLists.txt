@@ -7,10 +7,17 @@ file(GLOB_RECURSE EYETestSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYELexer/SymbolTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYELexer/OperatorTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYELexer/OtherTest.cpp"
+
+	#EYEParser
+	"${CMAKE_CURRENT_SOURCE_DIR}/EYEParser/StatementTest.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/EYEParser/ExpressionTest.cpp"
 )
 
 add_executable(${EYETEST_TARGET_NAME} ${EYETestSources})
 target_include_directories(${EYETEST_TARGET_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../")
 target_link_libraries(${EYETEST_TARGET_NAME} PRIVATE ${EYEUTILITY_TARGET_NAME})
 target_link_libraries(${EYETEST_TARGET_NAME} PRIVATE ${EYELEXER_TARGET_NAME})
+target_link_libraries(${EYETEST_TARGET_NAME} PRIVATE ${EYEPARSER_TARGET_NAME})
+target_link_libraries(${EYETEST_TARGET_NAME} PRIVATE ${EYEASTSERIALIZER_TARGET_NAME})
 target_link_libraries(${EYETEST_TARGET_NAME} PRIVATE GTest::gtest_main)
+target_link_libraries(${EYETEST_TARGET_NAME} PRIVATE nlohmann_json::nlohmann_json)
