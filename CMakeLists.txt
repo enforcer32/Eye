@@ -15,6 +15,7 @@ set(EYESANDBOX_TARGET_NAME EYESandbox)
 set(EYELEXER_TARGET_NAME EYELexer)
 set(EYEPARSER_TARGET_NAME EYEParser)
 set(EYEAST_TARGET_NAME EYEAST)
+set(EYEASTSERIALIZER_TARGET_NAME EYEASTSerializer)
 set(EYETEST_TARGET_NAME EYETest)
 
 # Extensions
@@ -52,4 +53,5 @@ add_subdirectory(${EYESANDBOX_TARGET_NAME})
 add_subdirectory(${EYELEXER_TARGET_NAME})
 add_subdirectory(${EYEPARSER_TARGET_NAME})
 add_subdirectory(${EYEAST_TARGET_NAME})
+add_subdirectory(${EYEASTSERIALIZER_TARGET_NAME})
 add_subdirectory(${EYETEST_TARGET_NAME})

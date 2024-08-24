@@ -17,6 +17,11 @@ namespace Eye
 			return true;
 		}
 
+		std::shared_ptr<AST::Program> Parser::GetAST() const
+		{
+			return m_Program;
+		}
+
 		/*
 			Program
 				: StatementList

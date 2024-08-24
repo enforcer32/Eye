@@ -15,6 +15,7 @@ namespace Eye
 		{
 		public:
 			bool Parse(const std::vector<Lexer::Token>& tokens);
+			std::shared_ptr<AST::Program> GetAST() const;
 
 		private:
 			std::shared_ptr<AST::Program> Program();
