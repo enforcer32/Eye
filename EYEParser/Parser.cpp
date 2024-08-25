@@ -93,12 +93,12 @@ namespace Eye
 
 		/*
 			AssignmentExpression
-				: EqualityExpression
+				: LogicalORExpression
 				| IdentifierExpression AssignmentOperator AssignmentExpression
 		*/
 		std::shared_ptr<AST::Expression> Parser::AssignmentExpression()
 		{
-			std::shared_ptr<AST::Expression> left = EqualityExpression();
+			std::shared_ptr<AST::Expression> left = LogicalORExpression();
 
 			if (!IsAssignmentOperator(m_LookAhead))
 				return left;
@@ -108,6 +108,42 @@ namespace Eye
 
 			Lexer::Token op = EatToken(m_LookAhead.GetType());
 			return std::make_shared<AST::AssignmentExpression>(op, std::static_pointer_cast<AST::IdentifierExpression>(left), AssignmentExpression());
+		}
+
+		/*
+			LogicalORExpression
+				: LogicalANDExpression '||' LogicalORExpression
+				| LogicalORExpression
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::LogicalORExpression()
+		{
+			std::shared_ptr<AST::Expression> left = LogicalANDExpression();
+			while (IsLookAhead(Lexer::TokenType::OperatorLogicalOR))
+			{
+				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				std::shared_ptr<AST::Expression> right = LogicalANDExpression();
+				left = std::make_shared<AST::BinaryExpression>(op, left, right);
+			}
+			return left;
+		}
+
+		/*
+			LogicalANDExpression
+				: EqualityExpression '&&' LogicalANDExpression
+				| EqualityExpression
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::LogicalANDExpression()
+		{
+			std::shared_ptr<AST::Expression> left = EqualityExpression();
+			while (IsLookAhead(Lexer::TokenType::OperatorLogicalAND))
+			{
+				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				std::shared_ptr<AST::Expression> right = EqualityExpression();
+				left = std::make_shared<AST::BinaryExpression>(op, left, right);
+			}
+			return left;
 		}
 
 		/*

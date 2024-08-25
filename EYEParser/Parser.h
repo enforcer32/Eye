@@ -30,6 +30,8 @@ namespace Eye
 			// Expressions
 			std::shared_ptr<AST::Expression> Expression();
 			std::shared_ptr<AST::Expression> AssignmentExpression();
+			std::shared_ptr<AST::Expression> LogicalORExpression();
+			std::shared_ptr<AST::Expression> LogicalANDExpression();
 			std::shared_ptr<AST::Expression> EqualityExpression();
 			std::shared_ptr<AST::Expression> RelationalExpression();
 			std::shared_ptr<AST::Expression> AdditiveBinaryExpression();
