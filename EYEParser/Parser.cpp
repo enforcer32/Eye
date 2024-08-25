@@ -93,12 +93,12 @@ namespace Eye
 
 		/*
 			AssignmentExpression
-				: RelationalExpression
+				: EqualityExpression
 				| IdentifierExpression AssignmentOperator AssignmentExpression
 		*/
 		std::shared_ptr<AST::Expression> Parser::AssignmentExpression()
 		{
-			std::shared_ptr<AST::Expression> left = RelationalExpression();
+			std::shared_ptr<AST::Expression> left = EqualityExpression();
 
 			if (!IsAssignmentOperator(m_LookAhead))
 				return left;
@@ -108,6 +108,24 @@ namespace Eye
 
 			Lexer::Token op = EatToken(m_LookAhead.GetType());
 			return std::make_shared<AST::AssignmentExpression>(op, std::static_pointer_cast<AST::IdentifierExpression>(left), AssignmentExpression());
+		}
+
+		/*
+			EqualityExpression
+				: RelationalExpression EqualityOperator EqualityExpression
+				| RelationalExpression
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::EqualityExpression()
+		{
+			std::shared_ptr<AST::Expression> left = RelationalExpression();
+			while (IsEqualityOperator(m_LookAhead))
+			{
+				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				std::shared_ptr<AST::Expression> right = RelationalExpression();
+				left = std::make_shared<AST::BinaryExpression>(op, left, right);
+			}
+			return left;
 		}
 
 		/*
@@ -306,6 +324,17 @@ namespace Eye
 		bool Parser::IsMultiplicativeOperator(Lexer::Token token) const
 		{
 			return (IsLookAhead(Lexer::TokenType::OperatorBinaryStar) || IsLookAhead(Lexer::TokenType::OperatorBinarySlash) || IsLookAhead(Lexer::TokenType::OperatorBinaryModulo));
+		}
+
+		/*
+			EqualityOperator
+				: '=='
+				| '!=
+				;
+		*/
+		bool Parser::IsEqualityOperator(Lexer::Token token) const
+		{
+			return (IsLookAhead(Lexer::TokenType::OperatorRelationalEquals) || IsLookAhead(Lexer::TokenType::OperatorRelationalNotEquals));
 		}
 
 		/*
