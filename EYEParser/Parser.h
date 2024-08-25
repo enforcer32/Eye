@@ -30,6 +30,7 @@ namespace Eye
 			// Expressions
 			std::shared_ptr<AST::Expression> Expression();
 			std::shared_ptr<AST::Expression> AssignmentExpression();
+			std::shared_ptr<AST::Expression> RelationalExpression();
 			std::shared_ptr<AST::Expression> AdditiveBinaryExpression();
 			std::shared_ptr<AST::Expression> MultiplicativeBinaryExpression();
 			std::shared_ptr<AST::Expression> PrimaryExpression();
@@ -44,9 +45,10 @@ namespace Eye
 		private:
 			bool IsLookAhead(Lexer::TokenType type) const;
 			bool IsLookAheadLiteral() const;
+			bool IsAssignmentOperator(Lexer::Token token) const;
+			bool IsRelationalOperator(Lexer::Token token) const;
 			bool IsAdditiveOperator(Lexer::Token token) const;
 			bool IsMultiplicativeOperator(Lexer::Token token) const;
-			bool IsAssignmentOperator(Lexer::Token token) const;
 			bool IsLHSExpression(const std::shared_ptr<AST::Expression>& expression) const;
 
 		private:

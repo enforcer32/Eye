@@ -93,12 +93,12 @@ namespace Eye
 
 		/*
 			AssignmentExpression
-				: AdditiveBinaryExpression
+				: RelationalExpression
 				| IdentifierExpression AssignmentOperator AssignmentExpression
 		*/
 		std::shared_ptr<AST::Expression> Parser::AssignmentExpression()
 		{
-			std::shared_ptr<AST::Expression> left = AdditiveBinaryExpression();
+			std::shared_ptr<AST::Expression> left = RelationalExpression();
 
 			if (!IsAssignmentOperator(m_LookAhead))
 				return left;
@@ -108,6 +108,24 @@ namespace Eye
 
 			Lexer::Token op = EatToken(m_LookAhead.GetType());
 			return std::make_shared<AST::AssignmentExpression>(op, std::static_pointer_cast<AST::IdentifierExpression>(left), AssignmentExpression());
+		}
+
+		/*
+			RelationalExpression
+				: AdditiveBinaryExpression
+				| AdditiveBinaryExpression RelationalOperator RelationalExpression
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::RelationalExpression()
+		{
+			std::shared_ptr<AST::Expression> left = AdditiveBinaryExpression();
+			while (IsRelationalOperator(m_LookAhead))
+			{
+				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				std::shared_ptr<AST::Expression> right = AdditiveBinaryExpression();
+				left = std::make_shared<AST::BinaryExpression>(op, left, right);
+			}
+			return left;
 		}
 
 		/*
@@ -311,6 +329,20 @@ namespace Eye
 				IsLookAhead(Lexer::TokenType::OperatorAssignmentStar) || IsLookAhead(Lexer::TokenType::OperatorAssignmentSlash) || IsLookAhead(Lexer::TokenType::OperatorAssignmentModulo) ||
 				IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseAND) || IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseOR) || IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseXOR)
 				|| IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseLeftShift) || IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseRightShift) || IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseXOR));
+		}
+
+		/*
+			RelationalOperator
+				: '<'
+				| '<='
+				| '>'
+				| '>='
+				;
+		*/
+		bool Parser::IsRelationalOperator(Lexer::Token token) const
+		{
+			return (IsLookAhead(Lexer::TokenType::OperatorRelationalSmaller) || IsLookAhead(Lexer::TokenType::OperatorRelationalSmallerEquals) || IsLookAhead(Lexer::TokenType::OperatorRelationalGreater) ||
+				IsLookAhead(Lexer::TokenType::OperatorRelationalGreaterEquals));
 		}
 
 		/*
