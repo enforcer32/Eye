@@ -202,20 +202,37 @@ namespace Eye
 
 		/*
 			MultiplicativeBinaryExpression
-				: LHSExpression
-				| MultiplicativeBinaryExpression MultiplicativeOperator LHSExpression
+				: UnaryExpression
+				| MultiplicativeBinaryExpression MultiplicativeOperator UnaryExpression
 				;
 		*/
 		std::shared_ptr<AST::Expression> Parser::MultiplicativeBinaryExpression()
 		{
-			std::shared_ptr<AST::Expression> left = LHSExpression();
+			std::shared_ptr<AST::Expression> left = UnaryExpression();
 			while (IsMultiplicativeOperator(m_LookAhead))
 			{
 				Lexer::Token op = EatToken(m_LookAhead.GetType());
-				std::shared_ptr<AST::Expression> right = LHSExpression();
+				std::shared_ptr<AST::Expression> right = UnaryExpression();
 				left = std::make_shared<AST::BinaryExpression>(op, left, right);
 			}
 			return left;
+		}
+
+		/*
+			UnaryExpression
+				: LHSExpression
+				| UnaryOperator UnaryExpression
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::UnaryExpression()
+		{
+			if (IsUnaryOperator(m_LookAhead))
+			{
+				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				return std::make_shared<AST::UnaryExpression>(op, UnaryExpression());
+			}
+
+			return LHSExpression();
 		}
 
 		/*
@@ -426,6 +443,18 @@ namespace Eye
 		bool Parser::IsMultiplicativeOperator(Lexer::Token token) const
 		{
 			return (token.GetType() == Lexer::TokenType::OperatorBinaryStar || token.GetType() == Lexer::TokenType::OperatorBinarySlash || token.GetType() == Lexer::TokenType::OperatorBinaryModulo);
+		}
+
+		/*
+			UnaryOperator
+				: '+'
+				| '-'
+				| '!'
+				;
+		*/
+		bool Parser::IsUnaryOperator(Lexer::Token token) const
+		{
+			return (token.GetType() == Lexer::TokenType::OperatorBinaryPlus || token.GetType() == Lexer::TokenType::OperatorBinaryMinus || token.GetType() == Lexer::TokenType::OperatorLogicalNOT);
 		}
 
 		/*

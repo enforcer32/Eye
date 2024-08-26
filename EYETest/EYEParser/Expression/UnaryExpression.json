@@ -1,0 +1,111 @@
+{
+  "Program": {
+	"type": "Program",
+	"StatementListSize": 5,
+	"StatementList": [
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "!",
+			  "expression": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "number"
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "-",
+			  "expression": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "number"
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "+",
+			  "expression": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "number"
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "!",
+			  "expression": {
+				"UnaryExpression": {
+				  "type": "UnaryExpression",
+				  "operator": "-",
+				  "expression": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "number"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "operator": "*",
+			  "left": {
+				"UnaryExpression": {
+				  "type": "UnaryExpression",
+				  "operator": "-",
+				  "expression": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "number"
+					}
+				  }
+				}
+			  },
+			  "right": {
+				"LiteralExpression": {
+				  "type": "Integer",
+				  "value": 10
+				}
+			  }
+			}
+		  }
+		}
+	  }
+	]
+  }
+}

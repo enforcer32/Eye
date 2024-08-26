@@ -7,6 +7,7 @@
 #include <EYEAST/Expressions/BinaryExpression.h>
 #include <EYEAST/Expressions/IdentifierExpression.h>
 #include <EYEAST/Expressions/AssignmentExpression.h>
+#include <EYEAST/Expressions/UnaryExpression.h>
 
 namespace Eye
 {
@@ -26,6 +27,7 @@ namespace Eye
 			std::string SerializeBinaryExpression(const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
 			std::string SerializeIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr);
 			std::string SerializeAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignmentExpr);
+			std::string SerializeUnaryExpression(const std::shared_ptr<AST::UnaryExpression>& unaryExpr);
 		};
 	}
 }

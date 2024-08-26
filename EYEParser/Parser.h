@@ -8,6 +8,7 @@
 #include <EYEAST/Expressions/LiteralExpression.h>
 #include <EYEAST/Expressions/BinaryExpression.h>
 #include <EYEAST/Expressions/AssignmentExpression.h>
+#include <EYEAST/Expressions/UnaryExpression.h>
 
 namespace Eye
 {
@@ -36,6 +37,7 @@ namespace Eye
 			std::shared_ptr<AST::Expression> RelationalExpression();
 			std::shared_ptr<AST::Expression> AdditiveBinaryExpression();
 			std::shared_ptr<AST::Expression> MultiplicativeBinaryExpression();
+			std::shared_ptr<AST::Expression> UnaryExpression();
 			std::shared_ptr<AST::Expression> LHSExpression();
 			std::shared_ptr<AST::Expression> PrimaryExpression();
 			std::shared_ptr<AST::LiteralExpression> LiteralExpression();
@@ -54,6 +56,7 @@ namespace Eye
 			bool IsRelationalOperator(Lexer::Token token) const;
 			bool IsAdditiveOperator(Lexer::Token token) const;
 			bool IsMultiplicativeOperator(Lexer::Token token) const;
+			bool IsUnaryOperator(Lexer::Token token) const;
 			bool IsLHSExpression(const std::shared_ptr<AST::Expression>& expression) const;
 
 		private:
