@@ -226,7 +226,7 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::Expression> Parser::PrimaryExpression()
 		{
-			if (IsLookAheadLiteral())
+			if (IsLiteral(m_LookAhead))
 				return LiteralExpression();
 			else if (IsLookAhead(Lexer::TokenType::Identifier))
 				return IdentifierExpression();
@@ -334,43 +334,18 @@ namespace Eye
 			return (m_LookAhead.GetType() == type);
 		}
 
-		bool Parser::IsLookAheadLiteral() const
-		{
-			return (IsLookAhead(Lexer::TokenType::LiteralInteger) || IsLookAhead(Lexer::TokenType::LiteralFloat) || IsLookAhead(Lexer::TokenType::LiteralString) || IsLookAhead(Lexer::TokenType::LiteralBoolean) || IsLookAhead(Lexer::TokenType::LiteralNull));
-		}
-
 		/*
-			AdditiveOperator
-				: '+'
-				| '-'
+			LiteralExpression
+				: IntegerLiteral
+				| FloatLiteral
+				| StringLiteral
+				| BooleanLiteral
+				| NullLiteral
 				;
 		*/
-		bool Parser::IsAdditiveOperator(Lexer::Token token) const
+		bool Parser::IsLiteral(Lexer::Token token) const
 		{
-			return (IsLookAhead(Lexer::TokenType::OperatorBinaryPlus) || IsLookAhead(Lexer::TokenType::OperatorBinaryMinus));
-		}
-
-		/*
-			MultiplicativeOperator
-				: '*'
-				| '/'
-				| '%'
-				;
-		*/
-		bool Parser::IsMultiplicativeOperator(Lexer::Token token) const
-		{
-			return (IsLookAhead(Lexer::TokenType::OperatorBinaryStar) || IsLookAhead(Lexer::TokenType::OperatorBinarySlash) || IsLookAhead(Lexer::TokenType::OperatorBinaryModulo));
-		}
-
-		/*
-			EqualityOperator
-				: '=='
-				| '!=
-				;
-		*/
-		bool Parser::IsEqualityOperator(Lexer::Token token) const
-		{
-			return (IsLookAhead(Lexer::TokenType::OperatorRelationalEquals) || IsLookAhead(Lexer::TokenType::OperatorRelationalNotEquals));
+			return (token.GetType() == Lexer::TokenType::LiteralInteger || token.GetType() == Lexer::TokenType::LiteralFloat || token.GetType() == Lexer::TokenType::LiteralString || token.GetType() == Lexer::TokenType::LiteralBoolean || token.GetType() == Lexer::TokenType::LiteralNull);
 		}
 
 		/*
@@ -382,18 +357,28 @@ namespace Eye
 				| '/='
 				| '%='
 				| '&='
-				| '|='
-				| '^='
+				| '|='				| '^='
 				| '>>='
 				| '<<='
 				;
 		*/
 		bool Parser::IsAssignmentOperator(Lexer::Token token) const
 		{
-			return (IsLookAhead(Lexer::TokenType::OperatorAssignment) || IsLookAhead(Lexer::TokenType::OperatorAssignmentPlus) || IsLookAhead(Lexer::TokenType::OperatorAssignmentMinus) ||
-				IsLookAhead(Lexer::TokenType::OperatorAssignmentStar) || IsLookAhead(Lexer::TokenType::OperatorAssignmentSlash) || IsLookAhead(Lexer::TokenType::OperatorAssignmentModulo) ||
-				IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseAND) || IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseOR) || IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseXOR)
-				|| IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseLeftShift) || IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseRightShift) || IsLookAhead(Lexer::TokenType::OperatorAssignmentBitwiseXOR));
+			return (token.GetType() == Lexer::TokenType::OperatorAssignment || token.GetType() == Lexer::TokenType::OperatorAssignmentPlus || token.GetType() == Lexer::TokenType::OperatorAssignmentMinus ||
+				token.GetType() == Lexer::TokenType::OperatorAssignmentStar || token.GetType() == Lexer::TokenType::OperatorAssignmentSlash || token.GetType() == Lexer::TokenType::OperatorAssignmentModulo ||
+				token.GetType() == Lexer::TokenType::OperatorAssignmentBitwiseAND || token.GetType() == Lexer::TokenType::OperatorAssignmentBitwiseOR || token.GetType() == Lexer::TokenType::OperatorAssignmentBitwiseXOR
+				|| token.GetType() == Lexer::TokenType::OperatorAssignmentBitwiseLeftShift || token.GetType() == Lexer::TokenType::OperatorAssignmentBitwiseRightShift || token.GetType() == Lexer::TokenType::OperatorAssignmentBitwiseXOR);
+		}
+
+		/*
+			EqualityOperator
+				: '=='
+				| '!=
+				;
+		*/
+		bool Parser::IsEqualityOperator(Lexer::Token token) const
+		{
+			return (token.GetType() == Lexer::TokenType::OperatorRelationalEquals || token.GetType() == Lexer::TokenType::OperatorRelationalNotEquals);
 		}
 
 		/*
@@ -406,8 +391,31 @@ namespace Eye
 		*/
 		bool Parser::IsRelationalOperator(Lexer::Token token) const
 		{
-			return (IsLookAhead(Lexer::TokenType::OperatorRelationalSmaller) || IsLookAhead(Lexer::TokenType::OperatorRelationalSmallerEquals) || IsLookAhead(Lexer::TokenType::OperatorRelationalGreater) ||
-				IsLookAhead(Lexer::TokenType::OperatorRelationalGreaterEquals));
+			return (token.GetType() == Lexer::TokenType::OperatorRelationalSmaller || token.GetType() == Lexer::TokenType::OperatorRelationalSmallerEquals || token.GetType() == Lexer::TokenType::OperatorRelationalGreater ||
+				token.GetType() == Lexer::TokenType::OperatorRelationalGreaterEquals);
+		}
+
+		/*
+			AdditiveOperator
+				: '+'
+				| '-'
+				;
+		*/
+		bool Parser::IsAdditiveOperator(Lexer::Token token) const
+		{
+			return (token.GetType() == Lexer::TokenType::OperatorBinaryPlus || token.GetType() == Lexer::TokenType::OperatorBinaryMinus);
+		}
+
+		/*
+			MultiplicativeOperator
+				: '*'
+				| '/'
+				| '%'
+				;
+		*/
+		bool Parser::IsMultiplicativeOperator(Lexer::Token token) const
+		{
+			return (token.GetType() == Lexer::TokenType::OperatorBinaryStar || token.GetType() == Lexer::TokenType::OperatorBinarySlash || token.GetType() == Lexer::TokenType::OperatorBinaryModulo);
 		}
 
 		/*

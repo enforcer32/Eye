@@ -47,7 +47,7 @@ namespace Eye
 
 		private:
 			bool IsLookAhead(Lexer::TokenType type) const;
-			bool IsLookAheadLiteral() const;
+			bool IsLiteral(Lexer::Token token) const;
 			bool IsAssignmentOperator(Lexer::Token token) const;
 			bool IsEqualityOperator(Lexer::Token token) const;
 			bool IsRelationalOperator(Lexer::Token token) const;
