@@ -46,6 +46,7 @@ namespace Eye
 			std::shared_ptr<AST::LiteralExpression> StringLiteral();
 			std::shared_ptr<AST::LiteralExpression> BooleanLiteral();
 			std::shared_ptr<AST::LiteralExpression> NullLiteral();
+			std::shared_ptr<AST::Expression> ParenthesizedExpression();
 			std::shared_ptr<AST::IdentifierExpression> IdentifierExpression();
 
 		private:

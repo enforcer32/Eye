@@ -248,6 +248,7 @@ namespace Eye
 		/*
 			PrimaryExpression
 				: LiteralExpression
+				| ParenthesizedExpression
 				| IdentifierExpression
 				;
 		*/
@@ -255,6 +256,8 @@ namespace Eye
 		{
 			if (IsLiteral(m_LookAhead))
 				return LiteralExpression();
+			else if (IsLookAhead(Lexer::TokenType::OperatorLeftParenthesis))
+				return ParenthesizedExpression();
 			else if (IsLookAhead(Lexer::TokenType::Identifier))
 				return IdentifierExpression();
 			return nullptr;
@@ -344,6 +347,19 @@ namespace Eye
 		{
 			Lexer::Token token = EatToken(Lexer::TokenType::LiteralNull);
 			return std::make_shared<AST::LiteralExpression>(AST::LiteralType::Null);
+		}
+
+		/*
+			ParenthesizedExpression
+				: '(' Expression ')'
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::ParenthesizedExpression()
+		{
+			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
+			std::shared_ptr<AST::Expression> expression = Expression();
+			EatToken(Lexer::TokenType::SymbolRightParenthesis);
+			return expression;
 		}
 
 		/*
