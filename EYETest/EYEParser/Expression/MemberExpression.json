@@ -1,0 +1,381 @@
+{
+  "Program": {
+	"type": "Program",
+	"StatementListSize": 11,
+	"StatementList": [
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"MemberExpression": {
+			  "type": "MemberExpression",
+			  "object": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "array"
+				}
+			  },
+			  "property": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "idx"
+				}
+			  },
+			  "computed": true
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"MemberExpression": {
+			  "type": "MemberExpression",
+			  "object": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "array2"
+				}
+			  },
+			  "property": {
+				"LiteralExpression": {
+				  "type": "Integer",
+				  "value": 1
+				}
+			  },
+			  "computed": true
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "=",
+			  "lhsExpression": {
+				"MemberExpression": {
+				  "type": "MemberExpression",
+				  "object": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "numbers"
+					}
+				  },
+				  "property": {
+					"LiteralExpression": {
+					  "type": "Integer",
+					  "value": 5
+					}
+				  },
+				  "computed": true
+				}
+			  },
+			  "expression": {
+				"LiteralExpression": {
+				  "type": "Float",
+				  "value": 6.6
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"MemberExpression": {
+			  "type": "MemberExpression",
+			  "object": {
+				"MemberExpression": {
+				  "type": "MemberExpression",
+				  "object": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "array2d"
+					}
+				  },
+				  "property": {
+					"LiteralExpression": {
+					  "type": "Integer",
+					  "value": 0
+					}
+				  },
+				  "computed": true
+				}
+			  },
+			  "property": {
+				"LiteralExpression": {
+				  "type": "Integer",
+				  "value": 1
+				}
+			  },
+			  "computed": true
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"MemberExpression": {
+			  "type": "MemberExpression",
+			  "object": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "arr"
+				}
+			  },
+			  "property": {
+				"MemberExpression": {
+				  "type": "MemberExpression",
+				  "object": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "nums"
+					}
+				  },
+				  "property": {
+					"LiteralExpression": {
+					  "type": "Integer",
+					  "value": 1
+					}
+				  },
+				  "computed": true
+				}
+			  },
+			  "computed": true
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"MemberExpression": {
+			  "type": "MemberExpression",
+			  "object": {
+				"MemberExpression": {
+				  "type": "MemberExpression",
+				  "object": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "arr"
+					}
+				  },
+				  "property": {
+					"LiteralExpression": {
+					  "type": "Integer",
+					  "value": 1
+					}
+				  },
+				  "computed": true
+				}
+			  },
+			  "property": {
+				"MemberExpression": {
+				  "type": "MemberExpression",
+				  "object": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "nums"
+					}
+				  },
+				  "property": {
+					"LiteralExpression": {
+					  "type": "Integer",
+					  "value": 1
+					}
+				  },
+				  "computed": true
+				}
+			  },
+			  "computed": true
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"MemberExpression": {
+			  "type": "MemberExpression",
+			  "object": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "person"
+				}
+			  },
+			  "property": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "name"
+				}
+			  },
+			  "computed": false
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"MemberExpression": {
+			  "type": "MemberExpression",
+			  "object": {
+				"MemberExpression": {
+				  "type": "MemberExpression",
+				  "object": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "person"
+					}
+				  },
+				  "property": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "id"
+					}
+				  },
+				  "computed": false
+				}
+			  },
+			  "property": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "number"
+				}
+			  },
+			  "computed": false
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"MemberExpression": {
+			  "type": "MemberExpression",
+			  "object": {
+				"MemberExpression": {
+				  "type": "MemberExpression",
+				  "object": {
+					"MemberExpression": {
+					  "type": "MemberExpression",
+					  "object": {
+						"IdentifierExpression": {
+						  "type": "IdentifierExpression",
+						  "value": "manager"
+						}
+					  },
+					  "property": {
+						"IdentifierExpression": {
+						  "type": "IdentifierExpression",
+						  "value": "people"
+						}
+					  },
+					  "computed": false
+					}
+				  },
+				  "property": {
+					"LiteralExpression": {
+					  "type": "Integer",
+					  "value": 5
+					}
+				  },
+				  "computed": true
+				}
+			  },
+			  "property": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "name"
+				}
+			  },
+			  "computed": false
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "=",
+			  "lhsExpression": {
+				"MemberExpression": {
+				  "type": "MemberExpression",
+				  "object": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "person"
+					}
+				  },
+				  "property": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "name"
+					}
+				  },
+				  "computed": false
+				}
+			  },
+			  "expression": {
+				"LiteralExpression": {
+				  "type": "String",
+				  "value": "Tester"
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "=",
+			  "lhsExpression": {
+				"MemberExpression": {
+				  "type": "MemberExpression",
+				  "object": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "person2"
+					}
+				  },
+				  "property": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "age"
+					}
+				  },
+				  "computed": false
+				}
+			  },
+			  "expression": {
+				"LiteralExpression": {
+				  "type": "Float",
+				  "value": 2.2
+				}
+			  }
+			}
+		  }
+		}
+	  }
+	]
+  }
+}

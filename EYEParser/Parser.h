@@ -9,6 +9,7 @@
 #include <EYEAST/Expressions/BinaryExpression.h>
 #include <EYEAST/Expressions/AssignmentExpression.h>
 #include <EYEAST/Expressions/UnaryExpression.h>
+#include <EYEAST/Expressions/MemberExpression.h>
 
 namespace Eye
 {
@@ -39,6 +40,7 @@ namespace Eye
 			std::shared_ptr<AST::Expression> MultiplicativeBinaryExpression();
 			std::shared_ptr<AST::Expression> UnaryExpression();
 			std::shared_ptr<AST::Expression> LHSExpression();
+			std::shared_ptr<AST::Expression> MemberExpression();
 			std::shared_ptr<AST::Expression> PrimaryExpression();
 			std::shared_ptr<AST::LiteralExpression> LiteralExpression();
 			std::shared_ptr<AST::LiteralExpression> IntegerLiteral();

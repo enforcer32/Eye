@@ -54,6 +54,8 @@ namespace Eye
 				return SerializeAssignmentExpression(std::static_pointer_cast<AST::AssignmentExpression>(expr));
 			else if (expr->GetType() == AST::ExpressionType::UnaryExpression)
 				return SerializeUnaryExpression(std::static_pointer_cast<AST::UnaryExpression>(expr));
+			else if (expr->GetType() == AST::ExpressionType::MemberExpression)
+				return SerializeMemberExpression(std::static_pointer_cast<AST::MemberExpression>(expr));
 		}
 
 		std::string StringSerializer::SerializeLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr)
@@ -130,6 +132,18 @@ namespace Eye
 			oss << "\"type\": \"UnaryExpression\",\n";
 			oss << "\"operator\": \"" << Lexer::TokenTypeStr[(int)unaryExpr->GetOperator().GetType()] << "\",\n";
 			oss << "\"expression\": " << SerializeExpression(unaryExpr->GetExpression()) << "\n";
+			oss << "}\n}";
+			return oss.str();
+		}
+
+		std::string StringSerializer::SerializeMemberExpression(const std::shared_ptr<AST::MemberExpression>& memberExpr)
+		{
+			std::ostringstream oss;
+			oss << "{\"MemberExpression\": {\n";
+			oss << "\"type\": \"MemberExpression\",\n";
+			oss << "\"object\":" << SerializeExpression(memberExpr->GetObject()) << ",\n";
+			oss << "\"property\":" << SerializeExpression(memberExpr->GetProperty()) << ",\n";
+			oss << "\"computed\": " << (memberExpr->IsComputed() ? "true" : "false") << "\n";
 			oss << "}\n}";
 			return oss.str();
 		}

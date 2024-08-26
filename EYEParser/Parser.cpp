@@ -237,12 +237,40 @@ namespace Eye
 
 		/*
 			LHSExpression
-				: PrimaryExpression
+				: MemberExpression
 				;
 		*/
 		std::shared_ptr<AST::Expression> Parser::LHSExpression()
 		{
-			return PrimaryExpression();
+			return MemberExpression();
+		}
+
+		/*
+			MemberExpression
+				: PrimaryExpression
+				| MemberExpression '.' Identifier
+				| MemberExpression '[' Expression ']'
+		*/
+		std::shared_ptr<AST::Expression> Parser::MemberExpression()
+		{
+			std::shared_ptr<AST::Expression> obj = PrimaryExpression();
+			while (IsLookAhead(Lexer::TokenType::OperatorDot) || IsLookAhead(Lexer::TokenType::OperatorLeftBracket))
+			{
+				if (IsLookAhead(Lexer::TokenType::OperatorDot))
+				{
+					EatToken(Lexer::TokenType::OperatorDot);
+					std::shared_ptr<AST::IdentifierExpression> prop = IdentifierExpression();
+					obj = std::make_shared<AST::MemberExpression>(obj, prop, false);
+				}
+				else if (IsLookAhead(Lexer::TokenType::OperatorLeftBracket))
+				{
+					EatToken(Lexer::TokenType::OperatorLeftBracket);
+					std::shared_ptr<AST::Expression> prop = Expression();
+					EatToken(Lexer::TokenType::SymbolRightBracket);
+					obj = std::make_shared<AST::MemberExpression>(obj, prop, true);
+				}
+			}
+			return obj;
 		}
 
 		/*
@@ -480,7 +508,7 @@ namespace Eye
 		*/
 		bool Parser::IsLHSExpression(const std::shared_ptr<AST::Expression>& expression) const
 		{
-			return (expression->GetType() == AST::ExpressionType::IdentifierExpression);
+			return (expression->GetType() == AST::ExpressionType::IdentifierExpression || expression->GetType() == AST::ExpressionType::MemberExpression);
 		}
 
 		bool Parser::HasToken() const
