@@ -36,6 +36,7 @@ namespace Eye
 			std::shared_ptr<AST::Expression> RelationalExpression();
 			std::shared_ptr<AST::Expression> AdditiveBinaryExpression();
 			std::shared_ptr<AST::Expression> MultiplicativeBinaryExpression();
+			std::shared_ptr<AST::Expression> LHSExpression();
 			std::shared_ptr<AST::Expression> PrimaryExpression();
 			std::shared_ptr<AST::LiteralExpression> LiteralExpression();
 			std::shared_ptr<AST::LiteralExpression> IntegerLiteral();

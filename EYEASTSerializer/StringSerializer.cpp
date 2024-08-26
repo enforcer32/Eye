@@ -115,7 +115,7 @@ namespace Eye
 			oss << "{\"AssignmentExpression\": {\n";
 			oss << "\"type\": \"AssignmentExpression\",\n";
 			oss << "\"operator\": \"" << Lexer::TokenTypeStr[(int)assignmentExpr->GetOperator().GetType()] << "\",\n";
-			oss << "\"identifier\": " << SerializeIdentifierExpression(assignmentExpr->GetIdentifier()) << ",\n";
+			oss << "\"lhsExpression\": " << SerializeExpression(assignmentExpr->GetLHSExpression()) << ",\n";
 			oss << "\"expression\": " << SerializeExpression(assignmentExpr->GetExpression()) << "\n";
 			oss << "}\n}";
 			return oss.str();

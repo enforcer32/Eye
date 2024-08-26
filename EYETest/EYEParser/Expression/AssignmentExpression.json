@@ -10,7 +10,7 @@
 			"AssignmentExpression": {
 			  "type": "AssignmentExpression",
 			  "operator": "=",
-			  "identifier": {
+			  "lhsExpression": {
 				"IdentifierExpression": {
 				  "type": "IdentifierExpression",
 				  "value": "number"
@@ -33,7 +33,7 @@
 			"AssignmentExpression": {
 			  "type": "AssignmentExpression",
 			  "operator": "=",
-			  "identifier": {
+			  "lhsExpression": {
 				"IdentifierExpression": {
 				  "type": "IdentifierExpression",
 				  "value": "num2"
@@ -56,7 +56,7 @@
 			"AssignmentExpression": {
 			  "type": "AssignmentExpression",
 			  "operator": "+=",
-			  "identifier": {
+			  "lhsExpression": {
 				"IdentifierExpression": {
 				  "type": "IdentifierExpression",
 				  "value": "num2"
@@ -79,7 +79,7 @@
 			"AssignmentExpression": {
 			  "type": "AssignmentExpression",
 			  "operator": "-=",
-			  "identifier": {
+			  "lhsExpression": {
 				"IdentifierExpression": {
 				  "type": "IdentifierExpression",
 				  "value": "number"
@@ -102,7 +102,7 @@
 			"AssignmentExpression": {
 			  "type": "AssignmentExpression",
 			  "operator": "/=",
-			  "identifier": {
+			  "lhsExpression": {
 				"IdentifierExpression": {
 				  "type": "IdentifierExpression",
 				  "value": "number"
@@ -125,7 +125,7 @@
 			"AssignmentExpression": {
 			  "type": "AssignmentExpression",
 			  "operator": "=",
-			  "identifier": {
+			  "lhsExpression": {
 				"IdentifierExpression": {
 				  "type": "IdentifierExpression",
 				  "value": "number"
@@ -160,7 +160,7 @@
 			"AssignmentExpression": {
 			  "type": "AssignmentExpression",
 			  "operator": "=",
-			  "identifier": {
+			  "lhsExpression": {
 				"IdentifierExpression": {
 				  "type": "IdentifierExpression",
 				  "value": "num2"
@@ -170,7 +170,7 @@
 				"AssignmentExpression": {
 				  "type": "AssignmentExpression",
 				  "operator": "%=",
-				  "identifier": {
+				  "lhsExpression": {
 					"IdentifierExpression": {
 					  "type": "IdentifierExpression",
 					  "value": "number"
@@ -195,7 +195,7 @@
 			"AssignmentExpression": {
 			  "type": "AssignmentExpression",
 			  "operator": "=",
-			  "identifier": {
+			  "lhsExpression": {
 				"IdentifierExpression": {
 				  "type": "IdentifierExpression",
 				  "value": "num2"
@@ -230,7 +230,7 @@
 			"AssignmentExpression": {
 			  "type": "AssignmentExpression",
 			  "operator": "=",
-			  "identifier": {
+			  "lhsExpression": {
 				"IdentifierExpression": {
 				  "type": "IdentifierExpression",
 				  "value": "num4"
@@ -240,7 +240,7 @@
 				"AssignmentExpression": {
 				  "type": "AssignmentExpression",
 				  "operator": "*=",
-				  "identifier": {
+				  "lhsExpression": {
 					"IdentifierExpression": {
 					  "type": "IdentifierExpression",
 					  "value": "num2"
@@ -265,7 +265,7 @@
 			"AssignmentExpression": {
 			  "type": "AssignmentExpression",
 			  "operator": "=",
-			  "identifier": {
+			  "lhsExpression": {
 				"IdentifierExpression": {
 				  "type": "IdentifierExpression",
 				  "value": "bit1"
@@ -275,7 +275,7 @@
 				"AssignmentExpression": {
 				  "type": "AssignmentExpression",
 				  "operator": "&=",
-				  "identifier": {
+				  "lhsExpression": {
 					"IdentifierExpression": {
 					  "type": "IdentifierExpression",
 					  "value": "num2"
@@ -300,7 +300,7 @@
 			"AssignmentExpression": {
 			  "type": "AssignmentExpression",
 			  "operator": "=",
-			  "identifier": {
+			  "lhsExpression": {
 				"IdentifierExpression": {
 				  "type": "IdentifierExpression",
 				  "value": "bit2"
@@ -310,7 +310,7 @@
 				"AssignmentExpression": {
 				  "type": "AssignmentExpression",
 				  "operator": "|=",
-				  "identifier": {
+				  "lhsExpression": {
 					"IdentifierExpression": {
 					  "type": "IdentifierExpression",
 					  "value": "bit1"
@@ -335,7 +335,7 @@
 			"AssignmentExpression": {
 			  "type": "AssignmentExpression",
 			  "operator": "^=",
-			  "identifier": {
+			  "lhsExpression": {
 				"IdentifierExpression": {
 				  "type": "IdentifierExpression",
 				  "value": "bit3"
@@ -358,7 +358,7 @@
 			"AssignmentExpression": {
 			  "type": "AssignmentExpression",
 			  "operator": "<<=",
-			  "identifier": {
+			  "lhsExpression": {
 				"IdentifierExpression": {
 				  "type": "IdentifierExpression",
 				  "value": "bit1"
@@ -381,7 +381,7 @@
 			"AssignmentExpression": {
 			  "type": "AssignmentExpression",
 			  "operator": ">>=",
-			  "identifier": {
+			  "lhsExpression": {
 				"IdentifierExpression": {
 				  "type": "IdentifierExpression",
 				  "value": "bit2"

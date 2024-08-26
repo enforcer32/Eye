@@ -10,7 +10,7 @@
 			"AssignmentExpression": {
 			  "type": "AssignmentExpression",
 			  "operator": "=",
-			  "identifier": {
+			  "lhsExpression": {
 				"IdentifierExpression": {
 				  "type": "IdentifierExpression",
 				  "value": "flag"

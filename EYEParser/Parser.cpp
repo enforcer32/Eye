@@ -94,7 +94,7 @@ namespace Eye
 		/*
 			AssignmentExpression
 				: LogicalORExpression
-				| IdentifierExpression AssignmentOperator AssignmentExpression
+				| LHSExpression AssignmentOperator AssignmentExpression
 		*/
 		std::shared_ptr<AST::Expression> Parser::AssignmentExpression()
 		{
@@ -107,7 +107,7 @@ namespace Eye
 				EYEPARSER_THROW_UNEXPECTED(Lexer::TokenTypeStr[(int)left->GetType()], "Identifier", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
 
 			Lexer::Token op = EatToken(m_LookAhead.GetType());
-			return std::make_shared<AST::AssignmentExpression>(op, std::static_pointer_cast<AST::IdentifierExpression>(left), AssignmentExpression());
+			return std::make_shared<AST::AssignmentExpression>(op, left, AssignmentExpression());
 		}
 
 		/*
@@ -202,20 +202,30 @@ namespace Eye
 
 		/*
 			MultiplicativeBinaryExpression
-				: PrimaryExpression
-				| MultiplicativeBinaryExpression MultiplicativeOperator PrimaryExpression
+				: LHSExpression
+				| MultiplicativeBinaryExpression MultiplicativeOperator LHSExpression
 				;
 		*/
 		std::shared_ptr<AST::Expression> Parser::MultiplicativeBinaryExpression()
 		{
-			std::shared_ptr<AST::Expression> left = PrimaryExpression();
+			std::shared_ptr<AST::Expression> left = LHSExpression();
 			while (IsMultiplicativeOperator(m_LookAhead))
 			{
 				Lexer::Token op = EatToken(m_LookAhead.GetType());
-				std::shared_ptr<AST::Expression> right = PrimaryExpression();
+				std::shared_ptr<AST::Expression> right = LHSExpression();
 				left = std::make_shared<AST::BinaryExpression>(op, left, right);
 			}
 			return left;
+		}
+
+		/*
+			LHSExpression
+				: PrimaryExpression
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::LHSExpression()
+		{
+			return PrimaryExpression();
 		}
 
 		/*
