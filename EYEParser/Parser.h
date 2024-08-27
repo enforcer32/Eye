@@ -4,6 +4,8 @@
 #include <EYEAST/Program.h>
 #include <EYEAST/Statements/Statement.h>
 #include <EYEAST/Statements/ExpressionStatement.h>
+#include <EYEAST/Statements/BlockStatement.h>
+
 #include <EYEAST/Expressions/Expression.h>
 #include <EYEAST/Expressions/LiteralExpression.h>
 #include <EYEAST/Expressions/BinaryExpression.h>
@@ -26,9 +28,11 @@ namespace Eye
 			std::shared_ptr<AST::Program> Program();
 			
 			// Statements
-			std::vector<std::shared_ptr<AST::Statement>> StatementList();
+			std::vector<std::shared_ptr<AST::Statement>> StatementList(Lexer::TokenType stopAt = Lexer::TokenType::Invalid);
 			std::shared_ptr<AST::Statement> Statement();
 			std::shared_ptr<AST::ExpressionStatement> ExpressionStatement();
+			std::shared_ptr<AST::BlockStatement> BlockStatement();
+
 
 			// Expressions
 			std::shared_ptr<AST::Expression> Expression();

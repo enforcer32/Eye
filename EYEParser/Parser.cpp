@@ -39,10 +39,10 @@ namespace Eye
 				| StatementList Statement
 				;
 		*/
-		std::vector<std::shared_ptr<AST::Statement>> Parser::StatementList()
+		std::vector<std::shared_ptr<AST::Statement>> Parser::StatementList(Lexer::TokenType stopAt)
 		{
 			std::vector<std::shared_ptr<AST::Statement>> statementList;
-			while (m_LookAhead && m_LookAhead.GetType() != Lexer::TokenType::EndOfFile)
+			while (m_LookAhead && m_LookAhead.GetType() != Lexer::TokenType::EndOfFile && m_LookAhead.GetType() != stopAt)
 				statementList.push_back(Statement());
 			return statementList;
 		}
@@ -63,6 +63,8 @@ namespace Eye
 		{
 			switch (m_LookAhead.GetType())
 			{
+			case Lexer::TokenType::SymbolLeftBrace:
+				return BlockStatement();
 			default:
 				break;
 			}
@@ -79,6 +81,21 @@ namespace Eye
 			std::shared_ptr<AST::Expression> expression = Expression();
 			EatToken(Lexer::TokenType::SymbolSemiColon);
 			return std::make_shared<AST::ExpressionStatement>(expression);
+		}
+
+		/*
+			BlockStatement
+				: '{' OptionalStatementList '}'
+				;
+		*/
+		std::shared_ptr<AST::BlockStatement> Parser::BlockStatement()
+		{
+			EatToken(Lexer::TokenType::SymbolLeftBrace);
+			std::vector<std::shared_ptr<AST::Statement>> statementList;
+			if (!IsLookAhead(Lexer::TokenType::SymbolRightBrace))
+				statementList = StatementList(Lexer::TokenType::SymbolRightBrace);
+			EatToken(Lexer::TokenType::SymbolRightBrace);
+			return std::make_shared<AST::BlockStatement>(statementList);
 		}
 
 		/*

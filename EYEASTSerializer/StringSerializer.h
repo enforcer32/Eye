@@ -2,7 +2,11 @@
 
 #include "EYEASTSerializer/ASTSerializer.h"
 
+#include <EYEAST/Statements/Statement.h>
 #include <EYEAST/Statements/ExpressionStatement.h>
+#include <EYEAST/Statements/BlockStatement.h>
+
+#include <EYEAST/Expressions/Expression.h>
 #include <EYEAST/Expressions/LiteralExpression.h>
 #include <EYEAST/Expressions/BinaryExpression.h>
 #include <EYEAST/Expressions/IdentifierExpression.h>
@@ -23,6 +27,7 @@ namespace Eye
 		private:
 			std::string SerializeStatement(const std::shared_ptr<AST::Statement>& stmt);
 			std::string SerializeExpressionStatement(const std::shared_ptr<AST::ExpressionStatement>& exprStmt);
+			std::string SerializeBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt);
 
 			std::string SerializeExpression(const std::shared_ptr<AST::Expression>& expr);
 			std::string SerializeLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);

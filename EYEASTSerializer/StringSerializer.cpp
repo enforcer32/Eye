@@ -28,8 +28,15 @@ namespace Eye
 
 		std::string StringSerializer::SerializeStatement(const std::shared_ptr<AST::Statement>& stmt)
 		{
-			if (stmt->GetType() == AST::StatementType::ExpressionStatement)
+			switch (stmt->GetType())
+			{
+			case AST::StatementType::ExpressionStatement:
 				return SerializeExpressionStatement(std::static_pointer_cast<AST::ExpressionStatement>(stmt));
+			case AST::StatementType::BlockStatement:
+				return SerializeBlockStatement(std::static_pointer_cast<AST::BlockStatement>(stmt));
+			default:
+				break;
+			}
 		}
 
 		std::string StringSerializer::SerializeExpressionStatement(const std::shared_ptr<AST::ExpressionStatement>& exprStmt)
@@ -38,6 +45,27 @@ namespace Eye
 			oss << "{\"ExpressionStatement\": {\n";
 			oss << "\"type\": \"ExpressionStatement\",\n";
 			oss << "\"expression\": " << SerializeExpression(exprStmt->GetExpression()) << std::endl;
+			oss << "}\n}\n";
+			return oss.str();
+		}
+
+		std::string StringSerializer::SerializeBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt)
+		{
+			std::ostringstream oss;
+			oss << "{\"BlockStatement\": {\n";
+			oss << "\"type\": \"BlockStatement\",\n";
+			oss << "\"StatementListSize\": " << blockStmt->GetStatementList().size() << ",\n";
+			oss << "\"StatementList\": [\n";
+			size_t i = 0;
+			for (const auto& stmt : blockStmt->GetStatementList())
+			{
+				oss << "" << SerializeStatement(stmt);
+
+				i++;
+				if ((i + 1) <= blockStmt->GetStatementList().size())
+					oss << ",";
+			}
+			oss << "]\n";
 			oss << "}\n}\n";
 			return oss.str();
 		}
