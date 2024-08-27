@@ -6,6 +6,7 @@
 #include <EYEAST/Statements/ExpressionStatement.h>
 #include <EYEAST/Statements/BlockStatement.h>
 #include <EYEAST/Statements/VariableStatement.h>
+#include <EYEAST/Statements/ControlStatement.h>
 
 #include <EYEAST/Expressions/Expression.h>
 #include <EYEAST/Expressions/LiteralExpression.h>
@@ -31,6 +32,7 @@ namespace Eye
 			std::string SerializeBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt);
 			std::string SerializeVariableStatement(const std::shared_ptr<AST::VariableStatement>& variableStmt);
 			std::string SerializeVariableDeclaration(const std::shared_ptr<AST::VariableDeclaration>& variableDeclaration);
+			std::string SerializeControlStatement(const std::shared_ptr<AST::ControlStatement>& controlStmt);
 
 			std::string SerializeExpression(const std::shared_ptr<AST::Expression>& expr);
 			std::string SerializeLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);

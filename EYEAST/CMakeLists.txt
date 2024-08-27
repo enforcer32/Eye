@@ -5,6 +5,7 @@ file(GLOB_RECURSE EYEASTSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/Statements/ExpressionStatement.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Statements/BlockStatement.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Statements/VariableStatement.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Statements/ControlStatement.h"
 
 	"${CMAKE_CURRENT_SOURCE_DIR}/Expressions/Expression.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Expressions/LiteralExpression.h"

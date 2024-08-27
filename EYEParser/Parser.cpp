@@ -71,6 +71,8 @@ namespace Eye
 			case Lexer::TokenType::KeywordDataTypeStr:
 			case Lexer::TokenType::KeywordDataTypeBool:
 				return VariableStatement();
+			case Lexer::TokenType::KeywordControlIf:
+				return ControlStatement();
 			default:
 				break;
 			}
@@ -163,6 +165,28 @@ namespace Eye
 		{
 			EatToken(Lexer::TokenType::OperatorAssignment);
 			return AssignmentExpression();
+		}
+
+		/*
+			ControlStatement
+				: 'if' '(' Expression ')' Statement
+				| 'if' '(' Expression ')' Statement 'else' Statement
+				;
+		*/
+		std::shared_ptr<AST::ControlStatement> Parser::ControlStatement()
+		{
+			EatToken(Lexer::TokenType::KeywordControlIf);
+			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
+			std::shared_ptr<AST::Expression> condition = Expression();
+			EatToken(Lexer::TokenType::SymbolRightParenthesis);
+			std::shared_ptr<AST::Statement> consequent = Statement();
+			std::shared_ptr<AST::Statement> alternate = nullptr;
+			if (IsLookAhead(Lexer::TokenType::KeywordControlElse))
+			{
+				EatToken(Lexer::TokenType::KeywordControlElse);
+				alternate = Statement();
+			}
+			return std::make_shared<AST::ControlStatement>(condition, consequent, alternate);
 		}
 
 		/*

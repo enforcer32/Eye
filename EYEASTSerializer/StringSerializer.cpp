@@ -36,6 +36,8 @@ namespace Eye
 				return SerializeBlockStatement(std::static_pointer_cast<AST::BlockStatement>(stmt));
 			case AST::StatementType::VariableStatement:
 				return SerializeVariableStatement(std::static_pointer_cast<AST::VariableStatement>(stmt));
+			case AST::StatementType::ControlStatement:
+				return SerializeControlStatement(std::static_pointer_cast<AST::ControlStatement>(stmt));
 			default:
 				break;
 			}
@@ -106,6 +108,21 @@ namespace Eye
 				oss << "\"initializer\":" << "null" << "\n";
 
 			oss << "}\n}";
+			return oss.str();
+		}
+
+		std::string StringSerializer::SerializeControlStatement(const std::shared_ptr<AST::ControlStatement>& controlStmt)
+		{
+			std::ostringstream oss;
+			oss << "{\"ControlStatement\": {\n";
+			oss << "\"type\": \"ControlStatement\",\n";
+			oss << "\"condition\": " << SerializeExpression(controlStmt->GetCondition()) << ",\n";
+			oss << "\"consequent\": " << SerializeStatement(controlStmt->GetConsequent()) << ",\n";
+			if (controlStmt->GetAlternate())
+				oss << "\"alternate\": " << SerializeStatement(controlStmt->GetAlternate()) << "\n";
+			else
+				oss << "\"alternate\": null\n";
+			oss << "}\n}\n";
 			return oss.str();
 		}
 
