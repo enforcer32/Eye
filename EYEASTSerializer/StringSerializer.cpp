@@ -56,6 +56,8 @@ namespace Eye
 				return SerializeUnaryExpression(std::static_pointer_cast<AST::UnaryExpression>(expr));
 			else if (expr->GetType() == AST::ExpressionType::MemberExpression)
 				return SerializeMemberExpression(std::static_pointer_cast<AST::MemberExpression>(expr));
+			else if (expr->GetType() == AST::ExpressionType::CallExpression)
+				return SerializeCallExpression(std::static_pointer_cast<AST::CallExpression>(expr));
 		}
 
 		std::string StringSerializer::SerializeLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr)
@@ -145,6 +147,26 @@ namespace Eye
 			oss << "\"property\":" << SerializeExpression(memberExpr->GetProperty()) << ",\n";
 			oss << "\"computed\": " << (memberExpr->IsComputed() ? "true" : "false") << "\n";
 			oss << "}\n}";
+			return oss.str();
+		}
+
+		std::string StringSerializer::SerializeCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr)
+		{
+			std::ostringstream oss;
+			oss << "{\"CallExpression\": {\n";
+			oss << "\"type\": \"CallExpression\",\n";
+			oss << "\"callee\": " << SerializeExpression(callExpr->GetCallee()) << ",\n";
+			oss << "\"arguments\": [\n";
+			size_t i = 0;
+			for (const auto& arg : callExpr->GetArguments())
+			{
+				oss << SerializeExpression(arg);
+				i++;
+				if ((i + 1) <= callExpr->GetArguments().size())
+					oss << ",";
+			}
+			oss << "]\n";
+			oss << "}\n}\n";
 			return oss.str();
 		}
 	}

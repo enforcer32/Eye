@@ -9,6 +9,7 @@
 #include <EYEAST/Expressions/AssignmentExpression.h>
 #include <EYEAST/Expressions/UnaryExpression.h>
 #include <EYEAST/Expressions/MemberExpression.h>
+#include <EYEAST/Expressions/CallExpression.h>
 
 namespace Eye
 {
@@ -30,6 +31,7 @@ namespace Eye
 			std::string SerializeAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignmentExpr);
 			std::string SerializeUnaryExpression(const std::shared_ptr<AST::UnaryExpression>& unaryExpr);
 			std::string SerializeMemberExpression(const std::shared_ptr<AST::MemberExpression>& memberExpr);
+			std::string SerializeCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr);
 		};
 	}
 }

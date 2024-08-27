@@ -127,30 +127,26 @@ LogicalORExpression
 	;
 
 LHSExpression
-	: FunctionCallMemberExpression
-	;
-
-FunctionCallMemberExpression
 	: MemberExpression
-	| FunctionCallExpression
+	| CallExpression
 	;
 
-FunctionCallExpression
-	: Callee FunctionCallArguments
+CallExpression
+	: Callee CallArguments
 	;
 
 Callee
 	: MemberExpression
-	| FunctionCallExpression
+	| CallExpression
 	;
 
-FunctionCallArguments
-	: '(' OptionalFunctionCallArgumentList ')'
+CallArguments
+	: '(' OptionalCallArgumentList ')'
 	;
 
-FunctionCallArgumentList
+CallArgumentList
 	: AssignmentExpression
-	| FunctionCallArgumentList ',' AssignmentExpression
+	| CallArgumentList ',' AssignmentExpression
 	;
 
 MemberExpression

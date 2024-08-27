@@ -11,7 +11,7 @@ namespace Eye
 			UnaryExpression,
 			AssignmentExpression,
 			MemberExpression,
-			FunctionCallExpression,
+			CallExpression,
 			NewExpression,
 			IdentifierExpression, // RHS?
 		};

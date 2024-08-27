@@ -238,11 +238,15 @@ namespace Eye
 		/*
 			LHSExpression
 				: MemberExpression
+				| CallExpression
 				;
 		*/
 		std::shared_ptr<AST::Expression> Parser::LHSExpression()
 		{
-			return MemberExpression();
+			std::shared_ptr<AST::Expression> memberExpression = MemberExpression();
+			if (IsLookAhead(Lexer::TokenType::OperatorLeftParenthesis))
+				return CallExpression(memberExpression);
+			return memberExpression;
 		}
 
 		/*
@@ -271,6 +275,49 @@ namespace Eye
 				}
 			}
 			return obj;
+		}
+
+		/*
+			CallExpression
+				: Callee CallArguments
+				;
+
+			Callee
+				: MemberExpression
+				| CallExpression
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::CallExpression(const std::shared_ptr<AST::Expression>& callee)
+		{
+			std::shared_ptr<AST::Expression> callExpression = std::make_shared<AST::CallExpression>(callee, CallArguments());
+			if (IsLookAhead(Lexer::TokenType::OperatorLeftParenthesis))
+				callExpression = CallExpression(callExpression);
+			return callExpression;
+		}
+
+		/*
+			CallArguments
+				: '(' OptionalCallArgumentList ')'
+				;
+
+			CallArgumentList
+				: AssignmentExpression
+				| CallArgumentList ',' AssignmentExpression
+				;
+		*/
+		std::vector<std::shared_ptr<AST::Expression>> Parser::CallArguments()
+		{
+			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
+			std::vector<std::shared_ptr<AST::Expression>> arguments;
+			if (!IsLookAhead(Lexer::TokenType::SymbolRightParenthesis))
+			{
+				do
+				{
+					arguments.push_back(AssignmentExpression());
+				} while (IsLookAhead(Lexer::TokenType::OperatorComma) && EatToken(Lexer::TokenType::OperatorComma));
+			}
+			EatToken(Lexer::TokenType::SymbolRightParenthesis);
+			return arguments;
 		}
 
 		/*

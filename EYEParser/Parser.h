@@ -10,6 +10,7 @@
 #include <EYEAST/Expressions/AssignmentExpression.h>
 #include <EYEAST/Expressions/UnaryExpression.h>
 #include <EYEAST/Expressions/MemberExpression.h>
+#include <EYEAST/Expressions/CallExpression.h>
 
 namespace Eye
 {
@@ -41,6 +42,8 @@ namespace Eye
 			std::shared_ptr<AST::Expression> UnaryExpression();
 			std::shared_ptr<AST::Expression> LHSExpression();
 			std::shared_ptr<AST::Expression> MemberExpression();
+			std::shared_ptr<AST::Expression> CallExpression(const std::shared_ptr<AST::Expression>& callee);
+			std::vector<std::shared_ptr<AST::Expression>> CallArguments();
 			std::shared_ptr<AST::Expression> PrimaryExpression();
 			std::shared_ptr<AST::LiteralExpression> LiteralExpression();
 			std::shared_ptr<AST::LiteralExpression> IntegerLiteral();

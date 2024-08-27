@@ -11,6 +11,7 @@ file(GLOB_RECURSE EYEASTSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/Expressions/IdentifierExpression.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Expressions/UnaryExpression.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Expressions/MemberExpression.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Expressions/CallExpression.h"
 )
 
 add_library(${EYEAST_TARGET_NAME} STATIC ${EYEASTSources})

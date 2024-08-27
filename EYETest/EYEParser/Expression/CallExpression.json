@@ -1,0 +1,203 @@
+{
+  "Program": {
+	"type": "Program",
+	"StatementListSize": 5,
+	"StatementList": [
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"CallExpression": {
+			  "type": "CallExpression",
+			  "callee": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "tests"
+				}
+			  },
+			  "arguments": [
+				{
+				  "LiteralExpression": {
+					"type": "Integer",
+					"value": 13
+				  }
+				}
+			  ]
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"CallExpression": {
+			  "type": "CallExpression",
+			  "callee": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "add"
+				}
+			  },
+			  "arguments": [
+				{
+				  "LiteralExpression": {
+					"type": "Integer",
+					"value": 1
+				  }
+				},
+				{
+				  "LiteralExpression": {
+					"type": "Float",
+					"value": 2.5
+				  }
+				},
+				{
+				  "MemberExpression": {
+					"type": "MemberExpression",
+					"object": {
+					  "IdentifierExpression": {
+						"type": "IdentifierExpression",
+						"value": "nums"
+					  }
+					},
+					"property": {
+					  "LiteralExpression": {
+						"type": "Integer",
+						"value": 1
+					  }
+					},
+					"computed": true
+				  }
+				}
+			  ]
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"CallExpression": {
+			  "type": "CallExpression",
+			  "callee": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "add"
+				}
+			  },
+			  "arguments": [
+				{
+				  "LiteralExpression": {
+					"type": "Float",
+					"value": 1.56
+				  }
+				},
+				{
+				  "MemberExpression": {
+					"type": "MemberExpression",
+					"object": {
+					  "IdentifierExpression": {
+						"type": "IdentifierExpression",
+						"value": "nums"
+					  }
+					},
+					"property": {
+					  "LiteralExpression": {
+						"type": "Integer",
+						"value": 0
+					  }
+					},
+					"computed": true
+				  }
+				},
+				{
+				  "AssignmentExpression": {
+					"type": "AssignmentExpression",
+					"operator": "=",
+					"lhsExpression": {
+					  "IdentifierExpression": {
+						"type": "IdentifierExpression",
+						"value": "num"
+					  }
+					},
+					"expression": {
+					  "LiteralExpression": {
+						"type": "Integer",
+						"value": 5
+					  }
+					}
+				  }
+				}
+			  ]
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"CallExpression": {
+			  "type": "CallExpression",
+			  "callee": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "nothing"
+				}
+			  },
+			  "arguments": [
+
+			  ]
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"CallExpression": {
+			  "type": "CallExpression",
+			  "callee": {
+				"CallExpression": {
+				  "type": "CallExpression",
+				  "callee": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "callback"
+					}
+				  },
+				  "arguments": [
+
+				  ]
+				}
+			  },
+			  "arguments": [
+				{
+				  "LiteralExpression": {
+					"type": "Integer",
+					"value": 1
+				  }
+				},
+				{
+				  "LiteralExpression": {
+					"type": "String",
+					"value": "ar1"
+				  }
+				},
+				{
+				  "LiteralExpression": {
+					"type": "Integer",
+					"value": 3
+				  }
+				}
+			  ]
+			}
+		  }
+		}
+	  }
+	]
+  }
+}
