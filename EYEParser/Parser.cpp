@@ -65,6 +65,12 @@ namespace Eye
 			{
 			case Lexer::TokenType::SymbolLeftBrace:
 				return BlockStatement();
+			case Lexer::TokenType::KeywordDataTypeAuto:
+			case Lexer::TokenType::KeywordDataTypeInt:
+			case Lexer::TokenType::KeywordDataTypeFloat:
+			case Lexer::TokenType::KeywordDataTypeStr:
+			case Lexer::TokenType::KeywordDataTypeBool:
+				return VariableStatement();
 			default:
 				break;
 			}
@@ -96,6 +102,67 @@ namespace Eye
 				statementList = StatementList(Lexer::TokenType::SymbolRightBrace);
 			EatToken(Lexer::TokenType::SymbolRightBrace);
 			return std::make_shared<AST::BlockStatement>(statementList);
+		}
+
+		/*
+			VariableStatement
+				: DatatypeKeyword VariableDeclarationList ';'
+				;
+
+			DatatypeKeyword
+				: 'auto'
+				| 'int'
+				| 'float'
+				| 'str'
+				| 'bool'
+				;
+		*/
+		std::shared_ptr<AST::VariableStatement> Parser::VariableStatement()
+		{
+			Lexer::Token dataType = EatToken(m_LookAhead.GetType());
+			std::shared_ptr<AST::VariableStatement> variableStatement = std::make_shared<AST::VariableStatement>(dataType, VariableDeclarationList());
+			EatToken(Lexer::TokenType::SymbolSemiColon);
+			return variableStatement;
+		}
+
+		/*
+			VariableDeclarationList
+				: VariableDeclaration
+				| VariableDeclarationList ',' VariableDeclaration
+				;
+		*/
+		std::vector<std::shared_ptr<AST::VariableDeclaration>> Parser::VariableDeclarationList()
+		{
+			std::vector<std::shared_ptr<AST::VariableDeclaration>> variableDeclarationList;
+			do
+			{
+				variableDeclarationList.push_back(VariableDeclaration());
+			} while (IsLookAhead(Lexer::TokenType::OperatorComma) && EatToken(Lexer::TokenType::OperatorComma));
+			return variableDeclarationList;
+		}
+
+		/*
+			VariableDeclaration
+				: IdentifierExpression OptionalVariableInitializer
+				;
+		*/
+		std::shared_ptr<AST::VariableDeclaration> Parser::VariableDeclaration()
+		{
+			std::shared_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
+			if (!IsLookAhead(Lexer::TokenType::SymbolSemiColon) && !IsLookAhead(Lexer::TokenType::OperatorComma))
+				return std::make_shared<AST::VariableDeclaration>(identifier, VariableInitializer());
+			return std::make_shared<AST::VariableDeclaration>(identifier, nullptr);
+		}
+
+		/*
+			VariableInitializer
+				: '=' AssignmentExpression
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::VariableInitializer()
+		{
+			EatToken(Lexer::TokenType::OperatorAssignment);
+			return AssignmentExpression();
 		}
 
 		/*

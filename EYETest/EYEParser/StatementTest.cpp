@@ -58,5 +58,28 @@ namespace Eye
 			nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
 			ASSERT_EQ(testFileData, parserData);
 		}
+
+		TEST(ParserStatementTest, VariableStatement)
+		{
+			std::string testType = "Statement";
+			std::string eyeFile = "VariableStatement.eye";
+			std::string testFile = "VariableStatement.json";
+			std::string eyeFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + eyeFile;
+			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
+
+			Lexer::Lexer lexer;
+			if (!lexer.Tokenize(eyeFilePath))
+				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->VariableStatement Failed to Tokenize()");
+
+			Parser parser;
+			if (!parser.Parse(lexer.GetTokens()))
+				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->VariableStatement Failed to Parse()");
+
+			ASTSerializer::StringSerializer astSerializer;
+
+			nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
+			nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+			ASSERT_EQ(testFileData, parserData);
+		}
 	}
 }

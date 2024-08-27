@@ -27,7 +27,7 @@ BlockStatement
 	;
 
 VariableStatement
-	: 'auto' VariableDeclarationList ';'
+	: DatatypeKeyword VariableDeclarationList ';'
 	;
 
 VariableDeclarationList
@@ -36,7 +36,7 @@ VariableDeclarationList
 	;
 
 VariableDeclaration
-	: Identifier OptionalVariableInitializer
+	: IdentifierExpression OptionalVariableInitializer
 	;
 
 VariableInitializer
@@ -263,4 +263,12 @@ UnaryOperator
 	: '+'
 	| '-'
 	| '!'
+	;
+
+DatatypeKeyword
+	: 'auto'
+	| 'int'
+	| 'float'
+	| 'str'
+	| 'bool'
 	;

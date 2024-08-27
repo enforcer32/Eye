@@ -34,6 +34,8 @@ namespace Eye
 				return SerializeExpressionStatement(std::static_pointer_cast<AST::ExpressionStatement>(stmt));
 			case AST::StatementType::BlockStatement:
 				return SerializeBlockStatement(std::static_pointer_cast<AST::BlockStatement>(stmt));
+			case AST::StatementType::VariableStatement:
+				return SerializeVariableStatement(std::static_pointer_cast<AST::VariableStatement>(stmt));
 			default:
 				break;
 			}
@@ -67,6 +69,43 @@ namespace Eye
 			}
 			oss << "]\n";
 			oss << "}\n}\n";
+			return oss.str();
+		}
+
+		std::string StringSerializer::SerializeVariableStatement(const std::shared_ptr<AST::VariableStatement>& variableStmt)
+		{
+			std::ostringstream oss;
+			oss << "{\"VariableStatement\": {\n";
+			oss << "\"type\": \"VariableStatement\",\n";
+			oss << "\"dataType\": \"" << Lexer::TokenTypeStr[(int)variableStmt->GetDataType().GetType()] << "\",\n";
+			oss << "\"declarationSize\": " << variableStmt->GetVariableDeclarationList().size() << ",\n";
+			oss << "\"declarations\": [\n";
+			size_t i = 0;
+			for (const auto& variable : variableStmt->GetVariableDeclarationList())
+			{
+				oss << SerializeVariableDeclaration(variable);
+				i++;
+				if ((i + 1) <= variableStmt->GetVariableDeclarationList().size())
+					oss << ",";
+			}
+			oss << "]\n";
+			oss << "}\n}";
+			return oss.str();
+		}
+
+		std::string StringSerializer::SerializeVariableDeclaration(const std::shared_ptr<AST::VariableDeclaration>& variableDeclaration)
+		{
+			std::ostringstream oss;
+			oss << "{\"VariableDeclaration\": {\n";
+			oss << "\"type\": \"VariableDeclaration\",\n";
+			oss << "\"identifier\":" << SerializeIdentifierExpression(variableDeclaration->GetIdentifier()) << ",\n";
+
+			if (variableDeclaration->GetInitializer())
+				oss << "\"initializer\":" << SerializeExpression(variableDeclaration->GetInitializer()) << "\n";
+			else
+				oss << "\"initializer\":" << "null" << "\n";
+
+			oss << "}\n}";
 			return oss.str();
 		}
 

@@ -1,0 +1,244 @@
+{
+  "Program": {
+	"type": "Program",
+	"StatementListSize": 8,
+	"StatementList": [
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "dataType": "bool",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "isTrue"
+				  }
+				},
+				"initializer": null
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "dataType": "bool",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "isFalse"
+				  }
+				},
+				"initializer": {
+				  "LiteralExpression": {
+					"type": "Boolean",
+					"value": true
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "dataType": "auto",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "num"
+				  }
+				},
+				"initializer": {
+				  "LiteralExpression": {
+					"type": "Integer",
+					"value": 55
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "dataType": "float",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "num2"
+				  }
+				},
+				"initializer": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "number"
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "dataType": "auto",
+		  "declarationSize": 4,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "x1"
+				  }
+				},
+				"initializer": null
+			  }
+			},
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "x2"
+				  }
+				},
+				"initializer": null
+			  }
+			},
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "x3"
+				  }
+				},
+				"initializer": null
+			  }
+			},
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "x4"
+				  }
+				},
+				"initializer": {
+				  "LiteralExpression": {
+					"type": "Integer",
+					"value": 55
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"AssignmentExpression": {
+			  "type": "AssignmentExpression",
+			  "operator": "=",
+			  "lhsExpression": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "x3"
+				}
+			  },
+			  "expression": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "num"
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "dataType": "str",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "text"
+				  }
+				},
+				"initializer": {
+				  "LiteralExpression": {
+					"type": "String",
+					"value": "Hello"
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "dataType": "int",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "id"
+				  }
+				},
+				"initializer": {
+				  "LiteralExpression": {
+					"type": "Integer",
+					"value": 14
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  }
+	]
+  }
+}
