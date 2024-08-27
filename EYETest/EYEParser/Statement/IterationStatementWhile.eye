@@ -1,7 +1,7 @@
 auto num = 10;
-do {
+while(num > 5)
+{
 	num += 10;
 	if(num == 100)
 		num = 0;
-
-} while (num > 5);
+}

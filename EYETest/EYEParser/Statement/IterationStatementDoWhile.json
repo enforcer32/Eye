@@ -1,0 +1,135 @@
+{
+  "Program": {
+	"type": "Program",
+	"StatementListSize": 2,
+	"StatementList": [
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "dataType": "auto",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "num"
+				  }
+				},
+				"initializer": {
+				  "LiteralExpression": {
+					"type": "Integer",
+					"value": 10
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"DoWhileStatement": {
+		  "type": "DoWhileStatement",
+		  "condition": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "operator": ">",
+			  "left": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "num"
+				}
+			  },
+			  "right": {
+				"LiteralExpression": {
+				  "type": "Integer",
+				  "value": 5
+				}
+			  }
+			}
+		  },
+		  "body": {
+			"BlockStatement": {
+			  "type": "BlockStatement",
+			  "StatementListSize": 2,
+			  "StatementList": [
+				{
+				  "ExpressionStatement": {
+					"type": "ExpressionStatement",
+					"expression": {
+					  "AssignmentExpression": {
+						"type": "AssignmentExpression",
+						"operator": "+=",
+						"lhsExpression": {
+						  "IdentifierExpression": {
+							"type": "IdentifierExpression",
+							"value": "num"
+						  }
+						},
+						"expression": {
+						  "LiteralExpression": {
+							"type": "Integer",
+							"value": 10
+						  }
+						}
+					  }
+					}
+				  }
+				},
+				{
+				  "ControlStatement": {
+					"type": "ControlStatement",
+					"condition": {
+					  "BinaryExpression": {
+						"type": "BinaryExpression",
+						"operator": "==",
+						"left": {
+						  "IdentifierExpression": {
+							"type": "IdentifierExpression",
+							"value": "num"
+						  }
+						},
+						"right": {
+						  "LiteralExpression": {
+							"type": "Integer",
+							"value": 100
+						  }
+						}
+					  }
+					},
+					"consequent": {
+					  "ExpressionStatement": {
+						"type": "ExpressionStatement",
+						"expression": {
+						  "AssignmentExpression": {
+							"type": "AssignmentExpression",
+							"operator": "=",
+							"lhsExpression": {
+							  "IdentifierExpression": {
+								"type": "IdentifierExpression",
+								"value": "num"
+							  }
+							},
+							"expression": {
+							  "LiteralExpression": {
+								"type": "Integer",
+								"value": 0
+							  }
+							}
+						  }
+						}
+					  }
+					},
+					"alternate": null
+				  }
+				}
+			  ]
+			}
+		  }
+		}
+	  }
+	]
+  }
+}

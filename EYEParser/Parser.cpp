@@ -73,6 +73,10 @@ namespace Eye
 				return VariableStatement();
 			case Lexer::TokenType::KeywordControlIf:
 				return ControlStatement();
+			case Lexer::TokenType::KeywordIterationWhile:
+			case Lexer::TokenType::KeywordIterationDo:
+			case Lexer::TokenType::KeywordIterationFor:
+				return IterationStatement();
 			default:
 				break;
 			}
@@ -187,6 +191,55 @@ namespace Eye
 				alternate = Statement();
 			}
 			return std::make_shared<AST::ControlStatement>(condition, consequent, alternate);
+		}
+
+		/*
+			IterationStatement
+				: WhileStatement
+				| DoWhileStatement
+				| ForStatement
+				;
+		*/
+		std::shared_ptr<AST::IterationStatement> Parser::IterationStatement()
+		{
+			if (IsLookAhead(Lexer::TokenType::KeywordIterationWhile))
+				return WhileStatement();
+			else if (IsLookAhead(Lexer::TokenType::KeywordIterationDo))
+				return DoWhileStatement();
+
+			return nullptr;
+		}
+
+		/*
+			WhileStatement
+				: 'while' '(' Expression ')' Statement
+				;
+		*/
+		std::shared_ptr<AST::WhileStatement> Parser::WhileStatement()
+		{
+			EatToken(Lexer::TokenType::KeywordIterationWhile);
+			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
+			std::shared_ptr<AST::Expression> condition = Expression();
+			EatToken(Lexer::TokenType::SymbolRightParenthesis);
+			std::shared_ptr<AST::Statement> body = Statement();
+			return std::make_shared<AST::WhileStatement>(condition, body);
+		}
+
+		/*
+			DoWhileStatement
+				: 'do' Statement 'while' '(' Expression ')' ';'
+				;
+		*/
+		std::shared_ptr<AST::DoWhileStatement> Parser::DoWhileStatement()
+		{
+			EatToken(Lexer::TokenType::KeywordIterationDo);
+			std::shared_ptr<AST::Statement> body = Statement();
+			EatToken(Lexer::TokenType::KeywordIterationWhile);
+			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
+			std::shared_ptr<AST::Expression> condition = Expression();
+			EatToken(Lexer::TokenType::SymbolRightParenthesis);
+			EatToken(Lexer::TokenType::SymbolSemiColon);
+			return std::make_shared<AST::DoWhileStatement>(condition, body);
 		}
 
 		/*

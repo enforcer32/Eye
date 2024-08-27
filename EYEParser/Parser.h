@@ -7,6 +7,7 @@
 #include <EYEAST/Statements/BlockStatement.h>
 #include <EYEAST/Statements/VariableStatement.h>
 #include <EYEAST/Statements/ControlStatement.h>
+#include <EYEAST/Statements/IterationStatement.h>
 
 #include <EYEAST/Expressions/Expression.h>
 #include <EYEAST/Expressions/LiteralExpression.h>
@@ -39,6 +40,9 @@ namespace Eye
 			std::shared_ptr<AST::VariableDeclaration> VariableDeclaration();
 			std::shared_ptr<AST::Expression> VariableInitializer();
 			std::shared_ptr<AST::ControlStatement> ControlStatement();
+			std::shared_ptr<AST::IterationStatement> IterationStatement();
+			std::shared_ptr<AST::WhileStatement> WhileStatement();
+			std::shared_ptr<AST::DoWhileStatement> DoWhileStatement();
 
 			// Expressions
 			std::shared_ptr<AST::Expression> Expression();

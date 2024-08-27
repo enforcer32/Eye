@@ -38,6 +38,8 @@ namespace Eye
 				return SerializeVariableStatement(std::static_pointer_cast<AST::VariableStatement>(stmt));
 			case AST::StatementType::ControlStatement:
 				return SerializeControlStatement(std::static_pointer_cast<AST::ControlStatement>(stmt));
+			case AST::StatementType::IterationStatement:
+				return SerializeIterationStatement(std::static_pointer_cast<AST::IterationStatement>(stmt));
 			default:
 				break;
 			}
@@ -122,6 +124,41 @@ namespace Eye
 				oss << "\"alternate\": " << SerializeStatement(controlStmt->GetAlternate()) << "\n";
 			else
 				oss << "\"alternate\": null\n";
+			oss << "}\n}\n";
+			return oss.str();
+		}
+
+		std::string StringSerializer::SerializeIterationStatement(const std::shared_ptr<AST::IterationStatement>& iterationStmt)
+		{
+			switch (iterationStmt->GetIterationType())
+			{
+			case AST::IterationStatementType::WhileStatement:
+				return SerializeWhileStatement(std::static_pointer_cast<AST::WhileStatement>(iterationStmt));
+			case AST::IterationStatementType::DoWhileStatement:
+				return SerializeDoWhileStatement(std::static_pointer_cast<AST::DoWhileStatement>(iterationStmt));
+			default:
+				break;
+			}
+		}
+
+		std::string StringSerializer::SerializeWhileStatement(const std::shared_ptr<AST::WhileStatement>& whileStmt)
+		{
+			std::ostringstream oss;
+			oss << "{\"WhileStatement\": {\n";
+			oss << "\"type\": \"WhileStatement\",\n";
+			oss << "\"condition\": " << SerializeExpression(whileStmt->GetCondition()) << ",\n";
+			oss << "\"body\": " << SerializeStatement(whileStmt->GetBody()) << "\n";
+			oss << "}\n}\n";
+			return oss.str();
+		}
+
+		std::string StringSerializer::SerializeDoWhileStatement(const std::shared_ptr<AST::DoWhileStatement>& doWhileStmt)
+		{
+			std::ostringstream oss;
+			oss << "{\"DoWhileStatement\": {\n";
+			oss << "\"type\": \"DoWhileStatement\",\n";
+			oss << "\"condition\": " << SerializeExpression(doWhileStmt->GetCondition()) << ",\n";
+			oss << "\"body\": " << SerializeStatement(doWhileStmt->GetBody()) << "\n";
 			oss << "}\n}\n";
 			return oss.str();
 		}
