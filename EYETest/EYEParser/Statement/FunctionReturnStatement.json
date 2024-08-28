@@ -1,0 +1,322 @@
+{
+  "Program": {
+	"type": "Program",
+	"StatementListSize": 5,
+	"StatementList": [
+	  {
+		"FunctionStatement": {
+		  "type": "FunctionStatement",
+		  "returnType": "int",
+		  "identifier": {
+			"IdentifierExpression": {
+			  "type": "IdentifierExpression",
+			  "value": "test"
+			}
+		  },
+		  "parameters": [
+			{
+			  "FunctionParameter": {
+				"type": "FunctionParameter",
+				"dataType": "int",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "args"
+				  }
+				},
+				"initializer": {
+				  "LiteralExpression": {
+					"type": "Integer",
+					"value": 15
+				  }
+				}
+			  }
+			}
+		  ],
+		  "body": {
+			"BlockStatement": {
+			  "type": "BlockStatement",
+			  "StatementListSize": 2,
+			  "StatementList": [
+				{
+				  "ControlStatement": {
+					"type": "ControlStatement",
+					"condition": {
+					  "BinaryExpression": {
+						"type": "BinaryExpression",
+						"operator": "==",
+						"left": {
+						  "IdentifierExpression": {
+							"type": "IdentifierExpression",
+							"value": "args"
+						  }
+						},
+						"right": {
+						  "LiteralExpression": {
+							"type": "Integer",
+							"value": 12
+						  }
+						}
+					  }
+					},
+					"consequent": {
+					  "BlockStatement": {
+						"type": "BlockStatement",
+						"StatementListSize": 1,
+						"StatementList": [
+						  {
+							"ReturnStatement": {
+							  "type": "ReturnStatement",
+							  "expression": {
+								"LiteralExpression": {
+								  "type": "Integer",
+								  "value": 10
+								}
+							  }
+							}
+						  }
+						]
+					  }
+					},
+					"alternate": null
+				  }
+				},
+				{
+				  "ReturnStatement": {
+					"type": "ReturnStatement",
+					"expression": {
+					  "BinaryExpression": {
+						"type": "BinaryExpression",
+						"operator": "*",
+						"left": {
+						  "LiteralExpression": {
+							"type": "Integer",
+							"value": 5
+						  }
+						},
+						"right": {
+						  "LiteralExpression": {
+							"type": "Integer",
+							"value": 2
+						  }
+						}
+					  }
+					}
+				  }
+				}
+			  ]
+			}
+		  }
+		}
+	  },
+	  {
+		"FunctionStatement": {
+		  "type": "FunctionStatement",
+		  "returnType": "float",
+		  "identifier": {
+			"IdentifierExpression": {
+			  "type": "IdentifierExpression",
+			  "value": "add"
+			}
+		  },
+		  "parameters": [
+			{
+			  "FunctionParameter": {
+				"type": "FunctionParameter",
+				"dataType": "int",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "x"
+				  }
+				},
+				"initializer": null
+			  }
+			},
+			{
+			  "FunctionParameter": {
+				"type": "FunctionParameter",
+				"dataType": "float",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "y"
+				  }
+				},
+				"initializer": null
+			  }
+			},
+			{
+			  "FunctionParameter": {
+				"type": "FunctionParameter",
+				"dataType": "str",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "z"
+				  }
+				},
+				"initializer": null
+			  }
+			}
+		  ],
+		  "body": {
+			"BlockStatement": {
+			  "type": "BlockStatement",
+			  "StatementListSize": 1,
+			  "StatementList": [
+				{
+				  "ReturnStatement": {
+					"type": "ReturnStatement",
+					"expression": {
+					  "BinaryExpression": {
+						"type": "BinaryExpression",
+						"operator": "+",
+						"left": {
+						  "BinaryExpression": {
+							"type": "BinaryExpression",
+							"operator": "+",
+							"left": {
+							  "IdentifierExpression": {
+								"type": "IdentifierExpression",
+								"value": "x"
+							  }
+							},
+							"right": {
+							  "IdentifierExpression": {
+								"type": "IdentifierExpression",
+								"value": "y"
+							  }
+							}
+						  }
+						},
+						"right": {
+						  "IdentifierExpression": {
+							"type": "IdentifierExpression",
+							"value": "z"
+						  }
+						}
+					  }
+					}
+				  }
+				}
+			  ]
+			}
+		  }
+		}
+	  },
+	  {
+		"FunctionStatement": {
+		  "type": "FunctionStatement",
+		  "returnType": "bool",
+		  "identifier": {
+			"IdentifierExpression": {
+			  "type": "IdentifierExpression",
+			  "value": "defaultValue"
+			}
+		  },
+		  "parameters": [
+			{
+			  "FunctionParameter": {
+				"type": "FunctionParameter",
+				"dataType": "bool",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "def"
+				  }
+				},
+				"initializer": {
+				  "LiteralExpression": {
+					"type": "Boolean",
+					"value": false
+				  }
+				}
+			  }
+			}
+		  ],
+		  "body": {
+			"BlockStatement": {
+			  "type": "BlockStatement",
+			  "StatementListSize": 1,
+			  "StatementList": [
+				{
+				  "ReturnStatement": {
+					"type": "ReturnStatement",
+					"expression": {
+					  "IdentifierExpression": {
+						"type": "IdentifierExpression",
+						"value": "def"
+					  }
+					}
+				  }
+				}
+			  ]
+			}
+		  }
+		}
+	  },
+	  {
+		"FunctionStatement": {
+		  "type": "FunctionStatement",
+		  "returnType": "auto",
+		  "identifier": {
+			"IdentifierExpression": {
+			  "type": "IdentifierExpression",
+			  "value": "nothing"
+			}
+		  },
+		  "parameters": [
+
+		  ],
+		  "body": {
+			"BlockStatement": {
+			  "type": "BlockStatement",
+			  "StatementListSize": 0,
+			  "StatementList": [
+
+			  ]
+			}
+		  }
+		}
+	  },
+	  {
+		"BlockStatement": {
+		  "type": "BlockStatement",
+		  "StatementListSize": 1,
+		  "StatementList": [
+			{
+			  "FunctionStatement": {
+				"type": "FunctionStatement",
+				"returnType": "auto",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "empty"
+				  }
+				},
+				"parameters": [
+
+				],
+				"body": {
+				  "BlockStatement": {
+					"type": "BlockStatement",
+					"StatementListSize": 1,
+					"StatementList": [
+					  {
+						"ReturnStatement": {
+						  "type": "ReturnStatement",
+						  "expression": null
+						}
+					  }
+					]
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  }
+	]
+  }
+}

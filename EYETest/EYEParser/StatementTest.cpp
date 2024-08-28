@@ -105,21 +105,21 @@ namespace Eye
 			ASSERT_EQ(testFileData, parserData);
 		}
 
-		TEST(ParserStatementTest, IterationStatementWhile)
+		TEST(ParserStatementTest, IterationWhileStatement)
 		{
 			std::string testType = "Statement";
-			std::string eyeFile = "IterationStatementWhile.eye";
-			std::string testFile = "IterationStatementWhile.json";
+			std::string eyeFile = "IterationWhileStatement.eye";
+			std::string testFile = "IterationWhileStatement.json";
 			std::string eyeFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + eyeFile;
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
 			if (!lexer.Tokenize(eyeFilePath))
-				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->IterationStatementWhile Failed to Tokenize()");
+				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->IterationWhileStatement Failed to Tokenize()");
 
 			Parser parser;
 			if (!parser.Parse(lexer.GetTokens()))
-				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->IterationStatementWhile Failed to Parse()");
+				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->IterationWhileStatement Failed to Parse()");
 
 			ASTSerializer::StringSerializer astSerializer;
 
@@ -128,21 +128,21 @@ namespace Eye
 			ASSERT_EQ(testFileData, parserData);
 		}
 
-		TEST(ParserStatementTest, IterationStatementDoWhile)
+		TEST(ParserStatementTest, IterationDoWhileStatement)
 		{
 			std::string testType = "Statement";
-			std::string eyeFile = "IterationStatementDoWhile.eye";
-			std::string testFile = "IterationStatementDoWhile.json";
+			std::string eyeFile = "IterationDoWhileStatement.eye";
+			std::string testFile = "IterationDoWhileStatement.json";
 			std::string eyeFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + eyeFile;
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
 			if (!lexer.Tokenize(eyeFilePath))
-				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->IterationStatementDoWhile Failed to Tokenize()");
+				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->IterationDoWhileStatement Failed to Tokenize()");
 
 			Parser parser;
 			if (!parser.Parse(lexer.GetTokens()))
-				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->IterationStatementDoWhile Failed to Parse()");
+				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->IterationDoWhileStatement Failed to Parse()");
 
 			ASTSerializer::StringSerializer astSerializer;
 
@@ -151,21 +151,44 @@ namespace Eye
 			ASSERT_EQ(testFileData, parserData);
 		}
 
-		TEST(ParserStatementTest, IterationStatementFor)
+		TEST(ParserStatementTest, IterationForStatement)
 		{
 			std::string testType = "Statement";
-			std::string eyeFile = "IterationStatementFor.eye";
-			std::string testFile = "IterationStatementFor.json";
+			std::string eyeFile = "IterationForStatement.eye";
+			std::string testFile = "IterationForStatement.json";
 			std::string eyeFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + eyeFile;
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
 			if (!lexer.Tokenize(eyeFilePath))
-				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->IterationStatementFor Failed to Tokenize()");
+				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->IterationForStatement Failed to Tokenize()");
 
 			Parser parser;
 			if (!parser.Parse(lexer.GetTokens()))
-				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->IterationStatementFor Failed to Parse()");
+				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->IterationForStatement Failed to Parse()");
+
+			ASTSerializer::StringSerializer astSerializer;
+
+			nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
+			nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+			ASSERT_EQ(testFileData, parserData);
+		}
+
+		TEST(ParserStatementTest, FunctionReturnStatement)
+		{
+			std::string testType = "Statement";
+			std::string eyeFile = "FunctionReturnStatement.eye";
+			std::string testFile = "FunctionReturnStatement.json";
+			std::string eyeFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + eyeFile;
+			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
+
+			Lexer::Lexer lexer;
+			if (!lexer.Tokenize(eyeFilePath))
+				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->FunctionReturnStatement Failed to Tokenize()");
+
+			Parser parser;
+			if (!parser.Parse(lexer.GetTokens()))
+				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->FunctionReturnStatement Failed to Parse()");
 
 			ASTSerializer::StringSerializer astSerializer;
 

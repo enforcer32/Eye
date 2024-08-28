@@ -40,6 +40,10 @@ namespace Eye
 				return SerializeControlStatement(std::static_pointer_cast<AST::ControlStatement>(stmt));
 			case AST::StatementType::IterationStatement:
 				return SerializeIterationStatement(std::static_pointer_cast<AST::IterationStatement>(stmt));
+			case AST::StatementType::FunctionStatement:
+				return SerializeFunctionStatement(std::static_pointer_cast<AST::FunctionStatement>(stmt));
+			case AST::StatementType::ReturnStatement:
+				return SerializeReturnStatement(std::static_pointer_cast<AST::ReturnStatement>(stmt));
 			default:
 				break;
 			}
@@ -193,7 +197,57 @@ namespace Eye
 				oss << "\"body\": " << "null" << "\n";
 			oss << "}\n}\n";
 			return oss.str();
+		}
 
+		std::string StringSerializer::SerializeFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt)
+		{
+			std::ostringstream oss;
+			oss << "{\"FunctionStatement\": {\n";
+			oss << "\"type\": \"FunctionStatement\",\n";
+			oss << "\"returnType\": \"" << Lexer::TokenTypeStr[(int)functionStmt->GetReturnType().GetType()] << "\",\n";
+			oss << "\"identifier\": " << SerializeIdentifierExpression(functionStmt->GetIdentifier()) << ",\n";
+			oss << "\"parameters\": [\n";
+			size_t i = 0;
+			for (const auto& param : functionStmt->GetParameters())
+			{
+				oss << SerializeFunctionParameter(param);
+				i++;
+				if ((i + 1) <= functionStmt->GetParameters().size())
+					oss << ",";
+			}
+			oss << "],\n";
+			oss << "\"body\": " << SerializeBlockStatement(functionStmt->GetBody()) << "\n";
+			oss << "}\n}\n";
+			return oss.str();
+		}
+
+		std::string StringSerializer::SerializeFunctionParameter(const std::shared_ptr<AST::FunctionParameter>& functionParam)
+		{
+			std::ostringstream oss;
+			oss << "{\"FunctionParameter\": {\n";
+			oss << "\"type\": \"FunctionParameter\",\n";
+			oss << "\"dataType\": \"" << Lexer::TokenTypeStr[(int)functionParam->GetDataType().GetType()] << "\",\n";
+			oss << "\"identifier\":" << SerializeIdentifierExpression(functionParam->GetIdentifier()) << ",\n";
+
+			if (functionParam->GetInitializer())
+				oss << "\"initializer\":" << SerializeExpression(functionParam->GetInitializer()) << "\n";
+			else
+				oss << "\"initializer\":" << "null" << "\n";
+			oss << "}\n}";
+			return oss.str();
+		}
+
+		std::string StringSerializer::SerializeReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt)
+		{
+			std::ostringstream oss;
+			oss << "{\"ReturnStatement\": {\n";
+			oss << "\"type\": \"ReturnStatement\",\n";
+			if (returnStmt->GetExpression())
+				oss << "\"expression\": " << SerializeExpression(returnStmt->GetExpression()) << "\n";
+			else
+				oss << "\"expression\":" << "null\n";
+			oss << "}\n}\n";
+			return oss.str();
 		}
 
 		std::string StringSerializer::SerializeExpression(const std::shared_ptr<AST::Expression>& expr)

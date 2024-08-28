@@ -77,6 +77,10 @@ namespace Eye
 			case Lexer::TokenType::KeywordIterationDo:
 			case Lexer::TokenType::KeywordIterationFor:
 				return IterationStatement();
+			case Lexer::TokenType::KeywordFunction:
+				return FunctionStatement();
+			case Lexer::TokenType::KeywordReturn:
+				return ReturnStatement();
 			default:
 				break;
 			}
@@ -291,6 +295,77 @@ namespace Eye
 
 			std::shared_ptr<AST::Statement> body = Statement();
 			return std::make_shared<AST::ForStatement>(initializer, initializerType, condition, update, body);
+		}
+
+		/*
+			FunctionStatement
+				: 'function' DataTypeKeyword Identifier '(' OptionalFunctionParameterList ')' BlockStatement
+				;
+		*/
+		std::shared_ptr<AST::FunctionStatement> Parser::FunctionStatement()
+		{
+			EatToken(Lexer::TokenType::KeywordFunction);
+			
+			if (!IsDataTypeKeyword(m_LookAhead))
+				EYEPARSER_THROW_UNEXPECTED_TOKEN(Lexer::TokenTypeStr[(int)m_LookAhead.GetType()], "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
+			Lexer::Token returnType = EatToken(m_LookAhead.GetType());
+
+			std::shared_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
+
+			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
+			std::vector<std::shared_ptr<AST::FunctionParameter>> parameters;
+			if (!IsLookAhead(Lexer::TokenType::SymbolRightParenthesis))
+				parameters = FunctionParameterList();
+			EatToken(Lexer::TokenType::SymbolRightParenthesis);
+
+			std::shared_ptr<AST::BlockStatement> body = BlockStatement();
+			return std::make_shared<AST::FunctionStatement>(returnType, identifier, parameters, body);
+		}
+
+		/*
+			FunctionParameterList
+				: FunctionParameter
+				| FunctionParameterList ',' FunctionParameter
+				;
+		*/
+		std::vector<std::shared_ptr<AST::FunctionParameter>> Parser::FunctionParameterList()
+		{
+			std::vector<std::shared_ptr<AST::FunctionParameter>> parameters;
+			do
+			{
+				parameters.push_back(FunctionParameter());
+			} while (IsLookAhead(Lexer::TokenType::OperatorComma) && EatToken(Lexer::TokenType::OperatorComma));
+			return parameters;
+		}
+
+		/*
+			FunctionParameter
+				: DataTypeKeyword IdentifierExpression OptionalVariableInitializer
+				;
+		*/
+		std::shared_ptr<AST::FunctionParameter> Parser::FunctionParameter()
+		{
+			if (!IsDataTypeKeyword(m_LookAhead))
+					EYEPARSER_THROW_UNEXPECTED_TOKEN(Lexer::TokenTypeStr[(int)m_LookAhead.GetType()], "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
+			Lexer::Token dataType = EatToken(m_LookAhead.GetType());
+
+			std::shared_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
+			if (!IsLookAhead(Lexer::TokenType::SymbolRightParenthesis) && !IsLookAhead(Lexer::TokenType::OperatorComma))
+				return std::make_shared<AST::FunctionParameter>(dataType, identifier, VariableInitializer());
+			return std::make_shared<AST::FunctionParameter>(dataType, identifier, nullptr);
+		}
+
+		/*
+			ReturnStatement
+				: 'return' OptionalExpression ';'
+				;
+		*/
+		std::shared_ptr<AST::ReturnStatement> Parser::ReturnStatement()
+		{
+			EatToken(Lexer::TokenType::KeywordReturn);
+			std::shared_ptr<AST::Expression> expression = (!IsLookAhead(Lexer::TokenType::SymbolSemiColon)) ? Expression() : nullptr;
+			EatToken(Lexer::TokenType::SymbolSemiColon);
+			return std::make_shared<AST::ReturnStatement>(expression);
 		}
 
 		/*

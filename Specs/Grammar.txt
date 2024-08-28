@@ -66,13 +66,17 @@ ForStatement
 	: 'for' '(' OptionalForVariableInitializer ';' OptionalExpression ';' OptionalExpression ')' Statement
 	;
 
-ForVariableInitializer
-	: VariableStatement
-	| Expression
+FunctionStatement
+	: 'function' DataTypeKeyword Identifier '(' OptionalFunctionParameterList ')' BlockStatement
 	;
 
-FunctionStatement
-	: 'function' Identifier '(' OptionalParameterList ')' BlockStatement
+FunctionParameterList
+	: FunctionParameter
+	| FunctionParameterList ',' FunctionParameter
+	;
+		
+FunctionParameter
+	: DataTypeKeyword IdentifierExpression OptionalVariableInitializer
 	;
 
 ReturnStatement
@@ -90,11 +94,6 @@ StructBlockStatement
 VariableStatementList
 	: VariableStatement
 	| VariableStatementList VariableStatement
-	;
-
-ParameterList
-	: Identifier
-	| ParameterList ',' Identifier
 	;
 
 Expression

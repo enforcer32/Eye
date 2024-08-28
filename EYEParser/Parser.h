@@ -8,6 +8,8 @@
 #include <EYEAST/Statements/VariableStatement.h>
 #include <EYEAST/Statements/ControlStatement.h>
 #include <EYEAST/Statements/IterationStatement.h>
+#include <EYEAST/Statements/FunctionStatement.h>
+#include <EYEAST/Statements/ReturnStatement.h>
 
 #include <EYEAST/Expressions/Expression.h>
 #include <EYEAST/Expressions/LiteralExpression.h>
@@ -44,6 +46,10 @@ namespace Eye
 			std::shared_ptr<AST::WhileStatement> WhileStatement();
 			std::shared_ptr<AST::DoWhileStatement> DoWhileStatement();
 			std::shared_ptr<AST::ForStatement> ForStatement();
+			std::shared_ptr<AST::FunctionStatement> FunctionStatement();
+			std::vector<std::shared_ptr<AST::FunctionParameter>> FunctionParameterList();
+			std::shared_ptr<AST::FunctionParameter> FunctionParameter();
+			std::shared_ptr<AST::ReturnStatement> ReturnStatement();
 
 			// Expressions
 			std::shared_ptr<AST::Expression> Expression();
