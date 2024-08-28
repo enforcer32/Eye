@@ -43,6 +43,7 @@ namespace Eye
 			std::shared_ptr<AST::IterationStatement> IterationStatement();
 			std::shared_ptr<AST::WhileStatement> WhileStatement();
 			std::shared_ptr<AST::DoWhileStatement> DoWhileStatement();
+			std::shared_ptr<AST::ForStatement> ForStatement();
 
 			// Expressions
 			std::shared_ptr<AST::Expression> Expression();
@@ -77,6 +78,7 @@ namespace Eye
 			bool IsAdditiveOperator(Lexer::Token token) const;
 			bool IsMultiplicativeOperator(Lexer::Token token) const;
 			bool IsUnaryOperator(Lexer::Token token) const;
+			bool IsDataTypeKeyword(Lexer::Token token) const;
 			bool IsLHSExpression(const std::shared_ptr<AST::Expression>& expression) const;
 
 		private:

@@ -37,6 +37,7 @@ namespace Eye
 			std::string SerializeIterationStatement(const std::shared_ptr<AST::IterationStatement>& iterationStmt);
 			std::string SerializeWhileStatement(const std::shared_ptr<AST::WhileStatement>& whileStmt);
 			std::string SerializeDoWhileStatement(const std::shared_ptr<AST::DoWhileStatement>& doWhileStmt);
+			std::string SerializeForStatement(const std::shared_ptr<AST::ForStatement>& forStmt);
 
 			std::string SerializeExpression(const std::shared_ptr<AST::Expression>& expr);
 			std::string SerializeLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);

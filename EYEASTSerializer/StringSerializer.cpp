@@ -136,6 +136,8 @@ namespace Eye
 				return SerializeWhileStatement(std::static_pointer_cast<AST::WhileStatement>(iterationStmt));
 			case AST::IterationStatementType::DoWhileStatement:
 				return SerializeDoWhileStatement(std::static_pointer_cast<AST::DoWhileStatement>(iterationStmt));
+			case AST::IterationStatementType::ForStatement:
+				return SerializeForStatement(std::static_pointer_cast<AST::ForStatement>(iterationStmt));
 			default:
 				break;
 			}
@@ -161,6 +163,37 @@ namespace Eye
 			oss << "\"body\": " << SerializeStatement(doWhileStmt->GetBody()) << "\n";
 			oss << "}\n}\n";
 			return oss.str();
+		}
+
+		std::string StringSerializer::SerializeForStatement(const std::shared_ptr<AST::ForStatement>& forStmt)
+		{
+			std::ostringstream oss;
+			oss << "{\"ForStatement\": {\n";
+			oss << "\"type\": \"ForStatement\",\n";
+			if (forStmt->GetInitializerType() == AST::ForInitializerType::VariableStatement)
+				oss << "\"initializer\": " << SerializeVariableStatement(forStmt->GetInitializer<AST::VariableStatement>()) << ",\n";
+			else if (forStmt->GetInitializerType() == AST::ForInitializerType::Expression)
+				oss << "\"initializer\": " << SerializeExpression(forStmt->GetInitializer<AST::Expression>()) << ",\n";
+			else
+				oss << "\"initializer\":" << "null" << ",\n";
+
+			if (forStmt->GetCondition())
+				oss << "\"condition\": " << SerializeExpression(forStmt->GetCondition()) << ",\n";
+			else
+				oss << "\"condition\":" << "null" << ",\n";
+
+			if (forStmt->GetUpdate())
+				oss << "\"update\": " << SerializeExpression(forStmt->GetUpdate()) << ",\n";
+			else
+				oss << "\"update\":" << "null" << ",\n";
+
+			if (forStmt->GetBody())
+				oss << "\"body\": " << SerializeStatement(forStmt->GetBody()) << "\n";
+			else
+				oss << "\"body\": " << "null" << "\n";
+			oss << "}\n}\n";
+			return oss.str();
+
 		}
 
 		std::string StringSerializer::SerializeExpression(const std::shared_ptr<AST::Expression>& expr)
