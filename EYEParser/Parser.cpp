@@ -70,6 +70,7 @@ namespace Eye
 			case Lexer::TokenType::KeywordDataTypeFloat:
 			case Lexer::TokenType::KeywordDataTypeStr:
 			case Lexer::TokenType::KeywordDataTypeBool:
+			case Lexer::TokenType::KeywordDataTypeVoid:
 				return VariableStatement();
 			case Lexer::TokenType::KeywordControlIf:
 				return ControlStatement();
@@ -846,7 +847,7 @@ namespace Eye
 		*/
 		bool Parser::IsDataTypeKeyword(Lexer::Token token) const
 		{
-			return (token.GetType() == Lexer::TokenType::KeywordDataTypeAuto || token.GetType() == Lexer::TokenType::KeywordDataTypeInt || token.GetType() == Lexer::TokenType::KeywordDataTypeFloat || token.GetType() == Lexer::TokenType::KeywordDataTypeStr || token.GetType() == Lexer::TokenType::KeywordDataTypeBool);
+			return (token.GetType() == Lexer::TokenType::KeywordDataTypeAuto || token.GetType() == Lexer::TokenType::KeywordDataTypeInt || token.GetType() == Lexer::TokenType::KeywordDataTypeFloat || token.GetType() == Lexer::TokenType::KeywordDataTypeStr || token.GetType() == Lexer::TokenType::KeywordDataTypeBool || token.GetType() == Lexer::TokenType::KeywordDataTypeVoid);
 		}
 
 		/*

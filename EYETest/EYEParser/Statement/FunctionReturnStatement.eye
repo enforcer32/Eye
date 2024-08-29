@@ -18,12 +18,12 @@ function bool defaultValue(bool def = false)
 	return def;
 }
 
-function auto nothing()
+function void nothing()
 {
 }
 
 {
-	function auto empty()
+	function void empty()
 	{
 		return;
 	}

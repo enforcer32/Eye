@@ -259,7 +259,7 @@
 	  {
 		"FunctionStatement": {
 		  "type": "FunctionStatement",
-		  "returnType": "auto",
+		  "returnType": "void",
 		  "identifier": {
 			"IdentifierExpression": {
 			  "type": "IdentifierExpression",
@@ -288,7 +288,7 @@
 			{
 			  "FunctionStatement": {
 				"type": "FunctionStatement",
-				"returnType": "auto",
+				"returnType": "void",
 				"identifier": {
 				  "IdentifierExpression": {
 					"type": "IdentifierExpression",

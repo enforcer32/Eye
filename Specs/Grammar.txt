@@ -270,4 +270,5 @@ DatatypeKeyword
 	| 'float'
 	| 'str'
 	| 'bool'
+	| 'void'
 	;

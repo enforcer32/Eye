@@ -5,11 +5,12 @@ Types:
 	float,
 	bool,
 	auto,
+	void,
 }
 
 Keywords:
 {
-	auto, int, float, str, bool,
+	auto, int, float, str, bool, void,
 	const, true, false, null,
 	if,	else,
 	while, do, for, continue, break,

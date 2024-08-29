@@ -43,6 +43,7 @@ namespace Eye
 			ASSERT_EQ(lexer.GetTokens()[18].GetType(), TokenType::KeywordDataTypeStr);
 			ASSERT_EQ(lexer.GetTokens()[24].GetType(), TokenType::KeywordDataTypeBool);
 			ASSERT_EQ(lexer.GetTokens()[30].GetType(), TokenType::KeywordConst);
+			ASSERT_EQ(lexer.GetTokens()[37].GetType(), TokenType::KeywordDataTypeVoid);
 		}
 
 		TEST(LexerKeywordTest, Control)

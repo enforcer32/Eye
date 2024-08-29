@@ -1,7 +1,7 @@
 {
   "Program": {
 	"type": "Program",
-	"StatementListSize": 8,
+	"StatementListSize": 9,
 	"StatementList": [
 	  {
 		"VariableStatement": {
@@ -234,6 +234,27 @@
 					"value": 14
 				  }
 				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "dataType": "void",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "nothing"
+				  }
+				},
+				"initializer": null
 			  }
 			}
 		  ]
