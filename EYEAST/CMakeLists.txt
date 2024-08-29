@@ -9,6 +9,7 @@ file(GLOB_RECURSE EYEASTSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/Statements/IterationStatement.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Statements/FunctionStatement.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Statements/ReturnStatement.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Statements/StructStatement.h"
 
 	"${CMAKE_CURRENT_SOURCE_DIR}/Expressions/Expression.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Expressions/LiteralExpression.h"

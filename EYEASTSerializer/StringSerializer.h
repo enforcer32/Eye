@@ -10,6 +10,7 @@
 #include <EYEAST/Statements/IterationStatement.h>
 #include <EYEAST/Statements/FunctionStatement.h>
 #include <EYEAST/Statements/ReturnStatement.h>
+#include <EYEAST/Statements/StructStatement.h>
 
 #include <EYEAST/Expressions/Expression.h>
 #include <EYEAST/Expressions/LiteralExpression.h>
@@ -43,6 +44,7 @@ namespace Eye
 			std::string SerializeFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt);
 			std::string SerializeFunctionParameter(const std::shared_ptr<AST::FunctionParameter>& functionParam);
 			std::string SerializeReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt);
+			std::string SerializeStructStatement(const std::shared_ptr<AST::StructStatement>& structStmt);
 
 			std::string SerializeExpression(const std::shared_ptr<AST::Expression>& expr);
 			std::string SerializeLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);

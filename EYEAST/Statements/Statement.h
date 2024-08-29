@@ -14,7 +14,6 @@ namespace Eye
 			FunctionStatement,
 			ReturnStatement,
 			StructStatement,
-			StructBlockStatement,
 		};
 
 		/*

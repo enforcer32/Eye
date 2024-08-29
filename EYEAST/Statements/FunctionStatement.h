@@ -12,10 +12,6 @@ namespace Eye
 	namespace AST
 	{
 		/*
-			FunctionStatement
-				: 'function' DataTypeKeyword Identifier '(' OptionalFunctionParameterList ')' BlockStatement
-				;
-
 			FunctionParameterList
 				: FunctionParameter
 				| FunctionParameterList ',' FunctionParameter
@@ -43,6 +39,11 @@ namespace Eye
 			std::shared_ptr<Expression> m_Initializer;
 		};
 
+		/*
+			FunctionStatement
+				: 'function' DataTypeKeyword Identifier '(' OptionalFunctionParameterList ')' BlockStatement
+				;
+		*/
 		class FunctionStatement : public Statement
 		{
 		public:

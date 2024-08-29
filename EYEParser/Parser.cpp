@@ -82,6 +82,8 @@ namespace Eye
 				return FunctionStatement();
 			case Lexer::TokenType::KeywordReturn:
 				return ReturnStatement();
+			case Lexer::TokenType::KeywordStruct:
+				return StructStatement();
 			default:
 				break;
 			}
@@ -136,6 +138,8 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::VariableStatement> Parser::VariableStatement()
 		{
+			if (!IsDataTypeKeyword(m_LookAhead))
+				EYEPARSER_THROW_UNEXPECTED_TOKEN(Lexer::TokenTypeStr[(int)m_LookAhead.GetType()], "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
 			Lexer::Token dataType = EatToken(m_LookAhead.GetType());
 			std::shared_ptr<AST::VariableStatement> variableStatement = std::make_shared<AST::VariableStatement>(dataType, VariableDeclarationList());
 			EatToken(Lexer::TokenType::SymbolSemiColon);
@@ -367,6 +371,24 @@ namespace Eye
 			std::shared_ptr<AST::Expression> expression = (!IsLookAhead(Lexer::TokenType::SymbolSemiColon)) ? Expression() : nullptr;
 			EatToken(Lexer::TokenType::SymbolSemiColon);
 			return std::make_shared<AST::ReturnStatement>(expression);
+		}
+
+		/*
+			StructStatement
+				: 'struct' Identifier '{' OptionalVariableStatementList '}' ';'
+				;
+		*/
+		std::shared_ptr<AST::StructStatement> Parser::StructStatement()
+		{
+			EatToken(Lexer::TokenType::KeywordStruct);
+			std::shared_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
+			EatToken(Lexer::TokenType::SymbolLeftBrace);
+			std::vector<std::shared_ptr<AST::VariableStatement>> variableStatementList;
+			while (!IsLookAhead(Lexer::TokenType::SymbolRightBrace))
+				variableStatementList.push_back(VariableStatement());
+			EatToken(Lexer::TokenType::SymbolRightBrace);
+			EatToken(Lexer::TokenType::SymbolSemiColon);
+			return std::make_shared<AST::StructStatement>(identifier, variableStatementList);
 		}
 
 		/*

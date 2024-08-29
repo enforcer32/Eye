@@ -84,11 +84,7 @@ ReturnStatement
 	;
 
 StructStatement
-	: 'struct' Identifier StructBlockStatement ';'
-	;
-
-StructBlockStatement
-	: '{' OptionalVariableStatementList '}'
+	: 'struct' Identifier '{' OptionalVariableStatementList '}' ';'
 	;
 
 VariableStatementList

@@ -10,6 +10,7 @@
 #include <EYEAST/Statements/IterationStatement.h>
 #include <EYEAST/Statements/FunctionStatement.h>
 #include <EYEAST/Statements/ReturnStatement.h>
+#include <EYEAST/Statements/StructStatement.h>
 
 #include <EYEAST/Expressions/Expression.h>
 #include <EYEAST/Expressions/LiteralExpression.h>
@@ -50,6 +51,7 @@ namespace Eye
 			std::vector<std::shared_ptr<AST::FunctionParameter>> FunctionParameterList();
 			std::shared_ptr<AST::FunctionParameter> FunctionParameter();
 			std::shared_ptr<AST::ReturnStatement> ReturnStatement();
+			std::shared_ptr<AST::StructStatement> StructStatement();
 
 			// Expressions
 			std::shared_ptr<AST::Expression> Expression();

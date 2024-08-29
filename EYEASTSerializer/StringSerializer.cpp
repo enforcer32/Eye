@@ -1,5 +1,7 @@
 #include "EYEASTSerializer/StringSerializer.h"
 
+#include <EYEUtility/Logger.h>
+
 #include <sstream>
 
 namespace Eye
@@ -44,7 +46,10 @@ namespace Eye
 				return SerializeFunctionStatement(std::static_pointer_cast<AST::FunctionStatement>(stmt));
 			case AST::StatementType::ReturnStatement:
 				return SerializeReturnStatement(std::static_pointer_cast<AST::ReturnStatement>(stmt));
+			case AST::StatementType::StructStatement:
+				return SerializeStructStatement(std::static_pointer_cast<AST::StructStatement>(stmt));
 			default:
+				EYE_LOG_CRITICAL("ASTSerializer Unknown Statement Type!");
 				break;
 			}
 		}
@@ -250,6 +255,26 @@ namespace Eye
 			return oss.str();
 		}
 
+		std::string StringSerializer::SerializeStructStatement(const std::shared_ptr<AST::StructStatement>& structStmt)
+		{
+			std::ostringstream oss;
+			oss << "{\"StructStatement\": {\n";
+			oss << "\"type\": \"StructStatement\",\n";
+			oss << "\"identifier\": " << SerializeIdentifierExpression(structStmt->GetIdentifier()) << ",\n";
+			oss << "\"members\": [\n";
+			size_t i = 0;
+			for (const auto& member : structStmt->GetMembers())
+			{
+				oss << SerializeVariableStatement(member);
+				i++;
+				if ((i + 1) <= structStmt->GetMembers().size())
+					oss << ",";
+			}
+			oss << "]\n";
+			oss << "}\n}\n";
+			return oss.str();
+		}
+
 		std::string StringSerializer::SerializeExpression(const std::shared_ptr<AST::Expression>& expr)
 		{
 			if (expr->GetType() == AST::ExpressionType::LiteralExpression)
@@ -266,6 +291,8 @@ namespace Eye
 				return SerializeMemberExpression(std::static_pointer_cast<AST::MemberExpression>(expr));
 			else if (expr->GetType() == AST::ExpressionType::CallExpression)
 				return SerializeCallExpression(std::static_pointer_cast<AST::CallExpression>(expr));
+			else
+				EYE_LOG_CRITICAL("ASTSerializer Unknown Expression Type!");
 		}
 
 		std::string StringSerializer::SerializeLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr)
