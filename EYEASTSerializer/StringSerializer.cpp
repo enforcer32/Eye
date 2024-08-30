@@ -95,10 +95,10 @@ namespace Eye
 			oss << "{\"VariableStatement\": {\n";
 			oss << "\"type\": \"VariableStatement\",\n";
 			if (variableStmt->GetTypeQualifier())
-				oss << "\"typeQualifier\": \"" << Lexer::TokenTypeStr[(int)variableStmt->GetTypeQualifier().GetType()] << "\",\n";
+				oss << "\"typeQualifier\": \"" << variableStmt->GetTypeQualifier().GetTypeString() << "\",\n";
 			else
 				oss << "\"typeQualifier\":" << "null" << ",\n";
-			oss << "\"dataType\": \"" << Lexer::TokenTypeStr[(int)variableStmt->GetDataType().GetType()] << "\",\n";
+			oss << "\"dataType\": \"" << variableStmt->GetDataType().GetTypeString() << "\",\n";
 			oss << "\"declarationSize\": " << variableStmt->GetVariableDeclarationList().size() << ",\n";
 			oss << "\"declarations\": [\n";
 			size_t i = 0;
@@ -235,7 +235,7 @@ namespace Eye
 			std::ostringstream oss;
 			oss << "{\"FunctionStatement\": {\n";
 			oss << "\"type\": \"FunctionStatement\",\n";
-			oss << "\"returnType\": \"" << Lexer::TokenTypeStr[(int)functionStmt->GetReturnType().GetType()] << "\",\n";
+			oss << "\"returnType\": \"" << functionStmt->GetReturnType().GetTypeString() << "\",\n";
 			oss << "\"identifier\": " << SerializeIdentifierExpression(functionStmt->GetIdentifier()) << ",\n";
 			oss << "\"parameters\": [\n";
 			size_t i = 0;
@@ -258,10 +258,10 @@ namespace Eye
 			oss << "{\"FunctionParameter\": {\n";
 			oss << "\"type\": \"FunctionParameter\",\n";
 			if(functionParam->GetTypeQualifier())
-				oss << "\"typeQualifier\": \"" << Lexer::TokenTypeStr[(int)functionParam->GetTypeQualifier().GetType()] << "\",\n";
+				oss << "\"typeQualifier\": \"" << functionParam->GetTypeQualifier().GetTypeString() << "\",\n";
 			else
 				oss << "\"typeQualifier\":" << "null" << ",\n";
-			oss << "\"dataType\": \"" << Lexer::TokenTypeStr[(int)functionParam->GetDataType().GetType()] << "\",\n";
+			oss << "\"dataType\": \"" << functionParam->GetDataType().GetTypeString() << "\",\n";
 			oss << "\"identifier\":" << SerializeIdentifierExpression(functionParam->GetIdentifier()) << ",\n";
 
 			if (functionParam->GetInitializer())
@@ -307,26 +307,30 @@ namespace Eye
 
 		std::string StringSerializer::SerializeExpression(const std::shared_ptr<AST::Expression>& expr)
 		{
-			if (expr->GetType() == AST::ExpressionType::LiteralExpression)
+			switch (expr->GetType())
+			{
+			case AST::ExpressionType::LiteralExpression:
 				return SerializeLiteralExpression(std::static_pointer_cast<AST::LiteralExpression>(expr));
-			else if (expr->GetType() == AST::ExpressionType::BinaryExpression)
+			case AST::ExpressionType::BinaryExpression:
 				return SerializeBinaryExpression(std::static_pointer_cast<AST::BinaryExpression>(expr));
-			else if (expr->GetType() == AST::ExpressionType::IdentifierExpression)
+			case AST::ExpressionType::IdentifierExpression:
 				return SerializeIdentifierExpression(std::static_pointer_cast<AST::IdentifierExpression>(expr));
-			else if (expr->GetType() == AST::ExpressionType::AssignmentExpression)
+			case AST::ExpressionType::AssignmentExpression:
 				return SerializeAssignmentExpression(std::static_pointer_cast<AST::AssignmentExpression>(expr));
-			else if (expr->GetType() == AST::ExpressionType::UnaryExpression)
+			case AST::ExpressionType::UnaryExpression:
 				return SerializeUnaryExpression(std::static_pointer_cast<AST::UnaryExpression>(expr));
-			else if (expr->GetType() == AST::ExpressionType::MemberExpression)
+			case AST::ExpressionType::MemberExpression:
 				return SerializeMemberExpression(std::static_pointer_cast<AST::MemberExpression>(expr));
-			else if (expr->GetType() == AST::ExpressionType::CallExpression)
+			case AST::ExpressionType::CallExpression:
 				return SerializeCallExpression(std::static_pointer_cast<AST::CallExpression>(expr));
-			else if (expr->GetType() == AST::ExpressionType::PostfixExpression)
+			case AST::ExpressionType::PostfixExpression:
 				return SerializePostfixExpression(std::static_pointer_cast<AST::PostfixExpression>(expr));
-			else if (expr->GetType() == AST::ExpressionType::NewExpression)
+			case AST::ExpressionType::NewExpression:
 				return SerializeNewExpression(std::static_pointer_cast<AST::NewExpression>(expr));
-			else
+			default:
 				EYE_LOG_CRITICAL("ASTSerializer Unknown Expression Type!");
+				break;
+			}
 		}
 
 		std::string StringSerializer::SerializeLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr)
@@ -367,7 +371,7 @@ namespace Eye
 			std::ostringstream oss;
 			oss << "{\"BinaryExpression\": {\n";
 			oss << "\"type\": \"BinaryExpression\",\n";
-			oss << "\"operator\": \"" << Lexer::TokenTypeStr[(int)binaryExpr->GetOperator().GetType()] << "\",\n";
+			oss << "\"operator\": \"" << binaryExpr->GetOperator().GetTypeString() << "\",\n";
 			oss << "\"left\": " << SerializeExpression(binaryExpr->GetLeft()) << ",\n";
 			oss << "\"right\": " << SerializeExpression(binaryExpr->GetRight()) << "\n";
 			oss << "}\n}";
@@ -389,7 +393,7 @@ namespace Eye
 			std::ostringstream oss;
 			oss << "{\"AssignmentExpression\": {\n";
 			oss << "\"type\": \"AssignmentExpression\",\n";
-			oss << "\"operator\": \"" << Lexer::TokenTypeStr[(int)assignmentExpr->GetOperator().GetType()] << "\",\n";
+			oss << "\"operator\": \"" << assignmentExpr->GetOperator().GetTypeString() << "\",\n";
 			oss << "\"lhsExpression\": " << SerializeExpression(assignmentExpr->GetLHSExpression()) << ",\n";
 			oss << "\"expression\": " << SerializeExpression(assignmentExpr->GetExpression()) << "\n";
 			oss << "}\n}";
@@ -401,7 +405,7 @@ namespace Eye
 			std::ostringstream oss;
 			oss << "{\"UnaryExpression\": {\n";
 			oss << "\"type\": \"UnaryExpression\",\n";
-			oss << "\"operator\": \"" << Lexer::TokenTypeStr[(int)unaryExpr->GetOperator().GetType()] << "\",\n";
+			oss << "\"operator\": \"" << unaryExpr->GetOperator().GetTypeString() << "\",\n";
 			oss << "\"expression\": " << SerializeExpression(unaryExpr->GetExpression()) << "\n";
 			oss << "}\n}";
 			return oss.str();
@@ -444,7 +448,7 @@ namespace Eye
 			std::ostringstream oss;
 			oss << "{\"PostfixExpression\": {\n";
 			oss << "\"type\": \"PostfixExpression\",\n";
-			oss << "\"operator\": \"" << Lexer::TokenTypeStr[(int)postfixExpr->GetOperator().GetType()] << "\",\n";
+			oss << "\"operator\": \"" << postfixExpr->GetOperator().GetTypeString() << "\",\n";
 			oss << "\"expression\": " << SerializeExpression(postfixExpr->GetExpression()) << "\n";
 			oss << "}\n}";
 			return oss.str();

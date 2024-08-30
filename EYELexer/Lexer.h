@@ -42,9 +42,6 @@ namespace Eye
 			bool IsBinaryNumber(const std::string& num) const;
 			bool IsKeyword(const std::string& op) const;
 			char CharToEscapedChar(char c) const;
-			TokenType OperatorToTokenType(const std::string& op) const;
-			TokenType SymbolToTokenType(const std::string& symbol) const;
-			TokenType KeywordToTokenType(const std::string& keyword) const;
 
 		private:
 			char NextChar();

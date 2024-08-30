@@ -25,89 +25,6 @@ namespace Eye
 			}
 		};
 
-		static const char* TokenTypeStr[]
-		{
-			"Invalid",
-			// Literals
-			"LiteralInteger",
-			"LiteralFloat",
-			"LiteralString",
-			"LiteralBoolean",
-			"LiteralNull",
-			// Identifier & Keyword
-			"Identifier",
-			"auto",
-			"int",
-			"float",
-			"str",
-			"bool",
-			"void",
-			"const",
-			"if",
-			"else",
-			"while",
-			"do",
-			"for",
-			"continue",
-			"break",
-			"function",
-			"return",
-			"struct",
-			"new",
-			// Operators
-			"+",
-			"-",
-			"*",
-			"/",
-			"%",
-			"++",
-			"--",
-			"=",
-			"+=",
-			"-=",
-			"*=",
-			"/=",
-			"%=",
-			"&=",
-			"|=",
-			"^=",
-			"<<=",
-			">>=",
-			"==",
-			"!=",
-			"<",
-			">",
-			"<=",
-			">=",
-			"&&",
-			"||",
-			"!",
-			"&",
-			"|",
-			"^",
-			"<<",
-			">>",
-			"~",
-			"(",
-			"[",
-			"?",
-			".",
-			",",
-			// Symbols
-			")",
-			"]",
-			"{",
-			"}",
-			":",
-			";",
-			"\\",
-			// Others
-			"Comment",
-			"Newline",
-			"EscapeCharacter",
-			"EndOfFile",
-		};
-
 		enum class TokenType
 		{
 			Invalid = 0,
@@ -190,6 +107,8 @@ namespace Eye
 			EscapeCharacter,
 			EndOfFile,
 		};
+		std::string_view TokenTypeToString(TokenType type);
+		TokenType StringToTokenType(const std::string& str);
 
 		class Token
 		{
@@ -217,6 +136,7 @@ namespace Eye
 			}
 
 			std::string ToString() const;
+			std::string_view GetTypeString() const;
 
 		private:
 			TokenType m_Type;

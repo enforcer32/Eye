@@ -260,13 +260,13 @@ namespace Eye
 			if (singleOperator && !IsValidOperator(opStr))
 				EYELEXER_THROW_UNEXPECTED_TOKEN(opStr, m_Position.Line, m_Position.Col, m_Position.FileName);
 
-			return Token(OperatorToTokenType(opStr), m_Position);
+			return Token(StringToTokenType(opStr), m_Position);
 		}
 
 		Token Lexer::MakeSymbolToken()
 		{
 			char c = NextChar();
-			return Token(SymbolToTokenType(std::string{ c }), m_Position);
+			return Token(StringToTokenType(std::string{ c }), m_Position);
 		}
 
 		Token Lexer::MakeSpecialToken()
@@ -292,7 +292,7 @@ namespace Eye
 			else if (IsKeyword(identifier) && identifier == "null")
 				return Token(TokenType::LiteralNull, m_Position);
 
-			return Token((IsKeyword(identifier) ? KeywordToTokenType(identifier) : TokenType::Identifier), identifier, m_Position);
+			return Token((IsKeyword(identifier) ? StringToTokenType(identifier) : TokenType::Identifier), identifier, m_Position);
 		}
 
 		Token Lexer::HandleSlashOperator()
@@ -436,30 +436,6 @@ namespace Eye
 				break;
 			}
 			return ch;
-		}
-
-		TokenType Lexer::OperatorToTokenType(const std::string& op) const
-		{
-			for (size_t i = 0; i < sizeof(TokenTypeStr) / sizeof(TokenTypeStr[0]); i++)
-				if (op == TokenTypeStr[i])
-					return (TokenType)i;
-			return TokenType::Invalid;
-		}
-
-		TokenType Lexer::SymbolToTokenType(const std::string& symbol) const
-		{
-			for (size_t i = 0; i < sizeof(TokenTypeStr) / sizeof(TokenTypeStr[0]); i++)
-				if (symbol == TokenTypeStr[i])
-					return (TokenType)i;
-			return TokenType::Invalid;
-		}
-
-		TokenType Lexer::KeywordToTokenType(const std::string& keyword) const
-		{
-			for (size_t i = 0; i < sizeof(TokenTypeStr) / sizeof(TokenTypeStr[0]); i++)
-				if (keyword == TokenTypeStr[i])
-					return (TokenType)i;
-			return TokenType::Invalid;
 		}
 
 		char Lexer::NextChar()

@@ -4,6 +4,102 @@ namespace Eye
 {
 	namespace Lexer
 	{
+		static const char* TokenTypeStr[]
+		{
+			"Invalid",
+			// Literals
+			"LiteralInteger",
+			"LiteralFloat",
+			"LiteralString",
+			"LiteralBoolean",
+			"LiteralNull",
+			// Identifier & Keyword
+			"Identifier",
+			"auto",
+			"int",
+			"float",
+			"str",
+			"bool",
+			"void",
+			"const",
+			"if",
+			"else",
+			"while",
+			"do",
+			"for",
+			"continue",
+			"break",
+			"function",
+			"return",
+			"struct",
+			"new",
+			// Operators
+			"+",
+			"-",
+			"*",
+			"/",
+			"%",
+			"++",
+			"--",
+			"=",
+			"+=",
+			"-=",
+			"*=",
+			"/=",
+			"%=",
+			"&=",
+			"|=",
+			"^=",
+			"<<=",
+			">>=",
+			"==",
+			"!=",
+			"<",
+			">",
+			"<=",
+			">=",
+			"&&",
+			"||",
+			"!",
+			"&",
+			"|",
+			"^",
+			"<<",
+			">>",
+			"~",
+			"(",
+			"[",
+			"?",
+			".",
+			",",
+			// Symbols
+			")",
+			"]",
+			"{",
+			"}",
+			":",
+			";",
+			"\\",
+			// Others
+			"Comment",
+			"Newline",
+			"EscapeCharacter",
+			"EndOfFile",
+		};
+
+		std::string_view TokenTypeToString(TokenType type)
+		{
+			return TokenTypeStr[(int)type];
+		}
+
+		TokenType StringToTokenType(const std::string& str)
+		{
+			for (size_t i = 0; i < sizeof(TokenTypeStr) / sizeof(TokenTypeStr[0]); i++)
+				if (str == TokenTypeStr[i])
+					return (TokenType)i;
+			return TokenType::Invalid;
+		}
+
 		Token::Token()
 			: m_Type(TokenType::Invalid)
 		{
@@ -203,6 +299,11 @@ namespace Eye
 			}
 
 			return "Token{Type: " + type + ", Value: " + value + ", " + m_Position.ToString() + "}";
+		}
+
+		std::string_view Token::GetTypeString() const
+		{
+			return TokenTypeStr[(int)m_Type];
 		}
 	}
 }

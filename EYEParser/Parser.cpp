@@ -154,7 +154,7 @@ namespace Eye
 				typeQualifier = EatToken(m_LookAhead.GetType());
 
 			if (!IsDataTypeKeyword(m_LookAhead))
-				EYEPARSER_THROW_UNEXPECTED_TOKEN(Lexer::TokenTypeStr[(int)m_LookAhead.GetType()], "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
+				EYEPARSER_THROW_UNEXPECTED_TOKEN(m_LookAhead.GetTypeString(), "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
 			Lexer::Token dataType = EatToken(m_LookAhead.GetType());
 			
 			std::shared_ptr<AST::VariableStatement> variableStatement = std::make_shared<AST::VariableStatement>(typeQualifier, dataType, VariableDeclarationList());
@@ -325,7 +325,7 @@ namespace Eye
 						typeQualifier = EatToken(m_LookAhead.GetType());
 
 					if (!IsDataTypeKeyword(m_LookAhead))
-						EYEPARSER_THROW_UNEXPECTED_TOKEN(Lexer::TokenTypeStr[(int)m_LookAhead.GetType()], "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
+						EYEPARSER_THROW_UNEXPECTED_TOKEN(m_LookAhead.GetTypeString(), "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
 					Lexer::Token dataType = EatToken(m_LookAhead.GetType());
 
 					initializer = std::make_shared<AST::VariableStatement>(typeQualifier, dataType, VariableDeclarationList());
@@ -359,7 +359,7 @@ namespace Eye
 			EatToken(Lexer::TokenType::KeywordFunction);
 			
 			if (!IsDataTypeKeyword(m_LookAhead))
-				EYEPARSER_THROW_UNEXPECTED_TOKEN(Lexer::TokenTypeStr[(int)m_LookAhead.GetType()], "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
+				EYEPARSER_THROW_UNEXPECTED_TOKEN(m_LookAhead.GetTypeString(), "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
 			Lexer::Token returnType = EatToken(m_LookAhead.GetType());
 
 			std::shared_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
@@ -402,7 +402,7 @@ namespace Eye
 				typeQualifier = EatToken(m_LookAhead.GetType());
 
 			if (!IsDataTypeKeyword(m_LookAhead))
-					EYEPARSER_THROW_UNEXPECTED_TOKEN(Lexer::TokenTypeStr[(int)m_LookAhead.GetType()], "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
+					EYEPARSER_THROW_UNEXPECTED_TOKEN(m_LookAhead.GetTypeString(), "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
 			Lexer::Token dataType = EatToken(m_LookAhead.GetType());
 
 			std::shared_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
@@ -465,7 +465,7 @@ namespace Eye
 				return left;
 
 			if (!IsLHSExpression(left))
-				EYEPARSER_THROW_UNEXPECTED(Lexer::TokenTypeStr[(int)left->GetType()], "Identifier", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
+				EYEPARSER_THROW_UNEXPECTED("LHSExpression", "Identifier", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
 
 			Lexer::Token op = EatToken(m_LookAhead.GetType());
 			return std::make_shared<AST::AssignmentExpression>(op, left, AssignmentExpression());
@@ -743,7 +743,7 @@ namespace Eye
 			case Lexer::TokenType::LiteralNull:
 				return NullLiteral();
 			default:
-				EYEPARSER_THROW_UNEXPECTED_TOKEN(Lexer::TokenTypeStr[(int)m_LookAhead.GetType()], "Literal", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
+				EYEPARSER_THROW_UNEXPECTED_TOKEN(m_LookAhead.GetTypeString(), "Literal", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
 				break;
 			}
 
@@ -1030,7 +1030,7 @@ namespace Eye
 		{
 			Lexer::Token token = m_LookAhead;
 			if (!token || token.GetType() != type)
-				EYEPARSER_THROW_UNEXPECTED_TOKEN(Lexer::TokenTypeStr[(int)token.GetType()], Lexer::TokenTypeStr[(int)type], token.GetPosition().Line, token.GetPosition().Col, token.GetPosition().FileName);
+				EYEPARSER_THROW_UNEXPECTED_TOKEN(token.GetTypeString(), Lexer::TokenTypeToString(type), token.GetPosition().Line, token.GetPosition().Col, token.GetPosition().FileName);
 			m_LookAhead = NextToken();
 			return token;
 		}
