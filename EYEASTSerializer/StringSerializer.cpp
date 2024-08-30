@@ -291,6 +291,8 @@ namespace Eye
 				return SerializeMemberExpression(std::static_pointer_cast<AST::MemberExpression>(expr));
 			else if (expr->GetType() == AST::ExpressionType::CallExpression)
 				return SerializeCallExpression(std::static_pointer_cast<AST::CallExpression>(expr));
+			else if (expr->GetType() == AST::ExpressionType::PostfixExpression)
+				return SerializePostfixExpression(std::static_pointer_cast<AST::PostfixExpression>(expr));
 			else
 				EYE_LOG_CRITICAL("ASTSerializer Unknown Expression Type!");
 		}
@@ -402,6 +404,17 @@ namespace Eye
 			}
 			oss << "]\n";
 			oss << "}\n}\n";
+			return oss.str();
+		}
+
+		std::string StringSerializer::SerializePostfixExpression(const std::shared_ptr<AST::PostfixExpression>& postfixExpr)
+		{
+			std::ostringstream oss;
+			oss << "{\"PostfixExpression\": {\n";
+			oss << "\"type\": \"PostfixExpression\",\n";
+			oss << "\"operator\": \"" << Lexer::TokenTypeStr[(int)postfixExpr->GetOperator().GetType()] << "\",\n";
+			oss << "\"expression\": " << SerializeExpression(postfixExpr->GetExpression()) << "\n";
+			oss << "}\n}";
 			return oss.str();
 		}
 	}

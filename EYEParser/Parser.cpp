@@ -561,13 +561,13 @@ namespace Eye
 
 		/*
 			MemberExpression
-				: PrimaryExpression
+				: PostfixExpression
 				| MemberExpression '.' Identifier
 				| MemberExpression '[' Expression ']'
 		*/
 		std::shared_ptr<AST::Expression> Parser::MemberExpression()
 		{
-			std::shared_ptr<AST::Expression> obj = PrimaryExpression();
+			std::shared_ptr<AST::Expression> obj = PostfixExpression();
 			while (IsLookAhead(Lexer::TokenType::OperatorDot) || IsLookAhead(Lexer::TokenType::OperatorLeftBracket))
 			{
 				if (IsLookAhead(Lexer::TokenType::OperatorDot))
@@ -628,6 +628,23 @@ namespace Eye
 			}
 			EatToken(Lexer::TokenType::SymbolRightParenthesis);
 			return arguments;
+		}
+
+		/*
+			PostfixExpression
+				: PrimaryExpression
+				| PostfixExpression PostfixOperator
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::PostfixExpression()
+		{
+			std::shared_ptr<AST::Expression> primaryExpression = PrimaryExpression();
+			if (IsPostfixOperator(m_LookAhead))
+			{
+				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				return std::make_shared<AST::PostfixExpression>(op, primaryExpression);
+			}
+			return primaryExpression;
 		}
 
 		/*
@@ -851,11 +868,24 @@ namespace Eye
 				: '+'
 				| '-'
 				| '!'
+				| '++'
+				| '--'
 				;
 		*/
 		bool Parser::IsUnaryOperator(Lexer::Token token) const
 		{
-			return (token.GetType() == Lexer::TokenType::OperatorBinaryPlus || token.GetType() == Lexer::TokenType::OperatorBinaryMinus || token.GetType() == Lexer::TokenType::OperatorLogicalNOT);
+			return (token.GetType() == Lexer::TokenType::OperatorBinaryPlus || token.GetType() == Lexer::TokenType::OperatorBinaryMinus || token.GetType() == Lexer::TokenType::OperatorLogicalNOT || token.GetType() == Lexer::TokenType::OperatorArithmeticIncrement || token.GetType() == Lexer::TokenType::OperatorArithmeticDecrement);
+		}
+
+		/*
+			PostfixOperator
+				: '++'
+				| '--'
+				;
+		*/
+		bool Parser::IsPostfixOperator(Lexer::Token token) const
+		{
+			return (token.GetType() == Lexer::TokenType::OperatorArithmeticIncrement || token.GetType() == Lexer::TokenType::OperatorArithmeticDecrement);
 		}
 
 		/*

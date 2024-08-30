@@ -19,6 +19,7 @@
 #include <EYEAST/Expressions/UnaryExpression.h>
 #include <EYEAST/Expressions/MemberExpression.h>
 #include <EYEAST/Expressions/CallExpression.h>
+#include <EYEAST/Expressions/PostfixExpression.h>
 
 namespace Eye
 {
@@ -67,6 +68,7 @@ namespace Eye
 			std::shared_ptr<AST::Expression> MemberExpression();
 			std::shared_ptr<AST::Expression> CallExpression(const std::shared_ptr<AST::Expression>& callee);
 			std::vector<std::shared_ptr<AST::Expression>> CallArguments();
+			std::shared_ptr<AST::Expression> PostfixExpression();
 			std::shared_ptr<AST::Expression> PrimaryExpression();
 			std::shared_ptr<AST::LiteralExpression> LiteralExpression();
 			std::shared_ptr<AST::LiteralExpression> IntegerLiteral();
@@ -86,6 +88,7 @@ namespace Eye
 			bool IsAdditiveOperator(Lexer::Token token) const;
 			bool IsMultiplicativeOperator(Lexer::Token token) const;
 			bool IsUnaryOperator(Lexer::Token token) const;
+			bool IsPostfixOperator(Lexer::Token token) const;
 			bool IsDataTypeKeyword(Lexer::Token token) const;
 			bool IsLHSExpression(const std::shared_ptr<AST::Expression>& expression) const;
 

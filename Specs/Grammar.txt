@@ -170,6 +170,11 @@ UnaryExpression
 	| UnaryOperator UnaryExpression
 	;
 
+PostfixExpression
+	: PrimaryExpression
+	| PostfixExpression PostfixOperator
+	;
+
 AdditiveBinaryExpression
 	: MultiplicativeBinaryExpression
 	| AdditiveBinaryExpression AdditiveOperator MultiplicativeBinaryExpression
@@ -258,6 +263,13 @@ UnaryOperator
 	: '+'
 	| '-'
 	| '!'
+	| '++'
+	| '--'
+	;
+
+PostfixOperator
+	: '++'
+	| '--'
 	;
 
 DatatypeKeyword

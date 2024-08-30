@@ -1,0 +1,157 @@
+{
+  "Program": {
+	"type": "Program",
+	"StatementListSize": 7,
+	"StatementList": [
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "++",
+			  "expression": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "number"
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "--",
+			  "expression": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "number"
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"PostfixExpression": {
+			  "type": "PostfixExpression",
+			  "operator": "++",
+			  "expression": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "number"
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"PostfixExpression": {
+			  "type": "PostfixExpression",
+			  "operator": "--",
+			  "expression": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "number"
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"UnaryExpression": {
+			  "type": "UnaryExpression",
+			  "operator": "++",
+			  "expression": {
+				"PostfixExpression": {
+				  "type": "PostfixExpression",
+				  "operator": "--",
+				  "expression": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "number"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "operator": "+",
+			  "left": {
+				"LiteralExpression": {
+				  "type": "Integer",
+				  "value": 10
+				}
+			  },
+			  "right": {
+				"PostfixExpression": {
+				  "type": "PostfixExpression",
+				  "operator": "--",
+				  "expression": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "number"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "operator": "+",
+			  "left": {
+				"LiteralExpression": {
+				  "type": "Integer",
+				  "value": 20
+				}
+			  },
+			  "right": {
+				"UnaryExpression": {
+				  "type": "UnaryExpression",
+				  "operator": "--",
+				  "expression": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "number"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	  }
+	]
+  }
+}

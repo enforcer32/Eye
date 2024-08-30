@@ -288,5 +288,28 @@ namespace Eye
 			nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
 			ASSERT_EQ(testFileData, parserData);
 		}
+
+		TEST(ParserExpressionTest, PostfixPrefixExpression)
+		{
+			std::string testType = "Expression";
+			std::string eyeFile = "PostfixPrefixExpression.eye";
+			std::string testFile = "PostfixPrefixExpression.json";
+			std::string eyeFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + eyeFile;
+			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
+
+			Lexer::Lexer lexer;
+			if (!lexer.Tokenize(eyeFilePath))
+				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->PostfixPrefixExpression Failed to Tokenize()");
+
+			Parser parser;
+			if (!parser.Parse(lexer.GetTokens()))
+				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->PostfixPrefixExpression Failed to Parse()");
+
+			ASTSerializer::StringSerializer astSerializer;
+
+			nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
+			nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+			ASSERT_EQ(testFileData, parserData);
+		}
 	}
 }

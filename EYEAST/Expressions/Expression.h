@@ -9,11 +9,12 @@ namespace Eye
 			LiteralExpression,
 			BinaryExpression,
 			UnaryExpression,
+			PostfixExpression,
 			AssignmentExpression,
 			MemberExpression,
 			CallExpression,
 			NewExpression,
-			IdentifierExpression, // RHS?
+			IdentifierExpression,
 		};
 
 		/*
