@@ -1,0 +1,40 @@
+{
+  "Program": {
+	"type": "Program",
+	"StatementListSize": 2,
+	"StatementList": [
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"NewExpression": {
+			  "type": "NewExpression",
+			  "callee": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "DataStruct"
+				}
+			  }
+			}
+		  }
+		}
+	  },
+	  {
+		"ExpressionStatement": {
+		  "type": "ExpressionStatement",
+		  "expression": {
+			"NewExpression": {
+			  "type": "NewExpression",
+			  "callee": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "Person"
+				}
+			  }
+			}
+		  }
+		}
+	  }
+	]
+  }
+}

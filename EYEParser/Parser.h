@@ -22,6 +22,7 @@
 #include <EYEAST/Expressions/MemberExpression.h>
 #include <EYEAST/Expressions/CallExpression.h>
 #include <EYEAST/Expressions/PostfixExpression.h>
+#include <EYEAST/Expressions/NewExpression.h>
 
 namespace Eye
 {
@@ -82,6 +83,7 @@ namespace Eye
 			std::shared_ptr<AST::LiteralExpression> NullLiteral();
 			std::shared_ptr<AST::Expression> ParenthesizedExpression();
 			std::shared_ptr<AST::IdentifierExpression> IdentifierExpression();
+			std::shared_ptr<AST::NewExpression> NewExpression();
 
 		private:
 			bool IsLookAhead(Lexer::TokenType type) const;

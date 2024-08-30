@@ -703,6 +703,7 @@ namespace Eye
 				: LiteralExpression
 				| ParenthesizedExpression
 				| IdentifierExpression
+				| NewExpression
 				;
 		*/
 		std::shared_ptr<AST::Expression> Parser::PrimaryExpression()
@@ -713,6 +714,8 @@ namespace Eye
 				return ParenthesizedExpression();
 			else if (IsLookAhead(Lexer::TokenType::Identifier))
 				return IdentifierExpression();
+			else if (IsLookAhead(Lexer::TokenType::KeywordNew))
+				return NewExpression();
 			return nullptr;
 		}
 
@@ -823,6 +826,17 @@ namespace Eye
 		std::shared_ptr<AST::IdentifierExpression> Parser::IdentifierExpression()
 		{
 			return std::make_shared<AST::IdentifierExpression>(EatToken(Lexer::TokenType::Identifier));
+		}
+
+		/*
+			NewExpression
+				: 'new' MemberExpression
+				;
+		*/
+		std::shared_ptr<AST::NewExpression> Parser::NewExpression()
+		{
+			EatToken(Lexer::TokenType::KeywordNew);
+			return std::make_shared<AST::NewExpression>(MemberExpression());
 		}
 
 		bool Parser::IsLookAhead(Lexer::TokenType type) const

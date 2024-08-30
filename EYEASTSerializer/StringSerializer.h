@@ -23,6 +23,7 @@
 #include <EYEAST/Expressions/MemberExpression.h>
 #include <EYEAST/Expressions/CallExpression.h>
 #include <EYEAST/Expressions/PostfixExpression.h>
+#include <EYEAST/Expressions/NewExpression.h>
 
 namespace Eye
 {
@@ -60,6 +61,7 @@ namespace Eye
 			std::string SerializeMemberExpression(const std::shared_ptr<AST::MemberExpression>& memberExpr);
 			std::string SerializeCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr);
 			std::string SerializePostfixExpression(const std::shared_ptr<AST::PostfixExpression>& postfixExpr);
+			std::string SerializeNewExpression(const std::shared_ptr<AST::NewExpression>& newExpr);
 		};
 	}
 }
