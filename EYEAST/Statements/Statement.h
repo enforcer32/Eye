@@ -11,6 +11,8 @@ namespace Eye
 			VariableStatement,
 			ControlStatement,
 			IterationStatement,
+			ContinueStatement,
+			BreakStatement,
 			FunctionStatement,
 			ReturnStatement,
 			StructStatement,
@@ -23,6 +25,8 @@ namespace Eye
 				| VariableStatement
 				| ControlStatement
 				| IterationStatement
+				| ContinueStatement
+				| BreakStatement
 				| FunctionStatement
 				| ReturnStatement
 				| StructStatement

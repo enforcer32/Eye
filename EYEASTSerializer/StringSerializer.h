@@ -8,6 +8,8 @@
 #include <EYEAST/Statements/VariableStatement.h>
 #include <EYEAST/Statements/ControlStatement.h>
 #include <EYEAST/Statements/IterationStatement.h>
+#include <EYEAST/Statements/ContinueStatement.h>
+#include <EYEAST/Statements/BreakStatement.h>
 #include <EYEAST/Statements/FunctionStatement.h>
 #include <EYEAST/Statements/ReturnStatement.h>
 #include <EYEAST/Statements/StructStatement.h>
@@ -39,6 +41,8 @@ namespace Eye
 			std::string SerializeVariableDeclaration(const std::shared_ptr<AST::VariableDeclaration>& variableDeclaration);
 			std::string SerializeControlStatement(const std::shared_ptr<AST::ControlStatement>& controlStmt);
 			std::string SerializeIterationStatement(const std::shared_ptr<AST::IterationStatement>& iterationStmt);
+			std::string SerializeContinueStatement(const std::shared_ptr<AST::ContinueStatement>& continueStmt);
+			std::string SerializeBreakStatement(const std::shared_ptr<AST::BreakStatement>& breakStmt);
 			std::string SerializeWhileStatement(const std::shared_ptr<AST::WhileStatement>& whileStmt);
 			std::string SerializeDoWhileStatement(const std::shared_ptr<AST::DoWhileStatement>& doWhileStmt);
 			std::string SerializeForStatement(const std::shared_ptr<AST::ForStatement>& forStmt);

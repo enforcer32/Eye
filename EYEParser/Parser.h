@@ -8,6 +8,8 @@
 #include <EYEAST/Statements/VariableStatement.h>
 #include <EYEAST/Statements/ControlStatement.h>
 #include <EYEAST/Statements/IterationStatement.h>
+#include <EYEAST/Statements/ContinueStatement.h>
+#include <EYEAST/Statements/BreakStatement.h>
 #include <EYEAST/Statements/FunctionStatement.h>
 #include <EYEAST/Statements/ReturnStatement.h>
 #include <EYEAST/Statements/StructStatement.h>
@@ -45,6 +47,8 @@ namespace Eye
 			std::shared_ptr<AST::Expression> VariableInitializer();
 			std::shared_ptr<AST::ControlStatement> ControlStatement();
 			std::shared_ptr<AST::IterationStatement> IterationStatement();
+			std::shared_ptr<AST::ContinueStatement> ContinueStatement();
+			std::shared_ptr<AST::BreakStatement> BreakStatement();
 			std::shared_ptr<AST::WhileStatement> WhileStatement();
 			std::shared_ptr<AST::DoWhileStatement> DoWhileStatement();
 			std::shared_ptr<AST::ForStatement> ForStatement();

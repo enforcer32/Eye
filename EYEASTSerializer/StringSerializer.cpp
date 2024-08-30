@@ -42,6 +42,10 @@ namespace Eye
 				return SerializeControlStatement(std::static_pointer_cast<AST::ControlStatement>(stmt));
 			case AST::StatementType::IterationStatement:
 				return SerializeIterationStatement(std::static_pointer_cast<AST::IterationStatement>(stmt));
+			case AST::StatementType::ContinueStatement:
+				return SerializeContinueStatement(std::static_pointer_cast<AST::ContinueStatement>(stmt));
+			case AST::StatementType::BreakStatement:
+				return SerializeBreakStatement(std::static_pointer_cast<AST::BreakStatement>(stmt));
 			case AST::StatementType::FunctionStatement:
 				return SerializeFunctionStatement(std::static_pointer_cast<AST::FunctionStatement>(stmt));
 			case AST::StatementType::ReturnStatement:
@@ -154,6 +158,24 @@ namespace Eye
 			default:
 				break;
 			}
+		}
+
+		std::string StringSerializer::SerializeContinueStatement(const std::shared_ptr<AST::ContinueStatement>& continueStmt)
+		{
+			std::ostringstream oss;
+			oss << "{\"ContinueStatement\": {\n";
+			oss << "\"type\": \"ContinueStatement\"\n";
+			oss << "}\n}\n";
+			return oss.str();
+		}
+
+		std::string StringSerializer::SerializeBreakStatement(const std::shared_ptr<AST::BreakStatement>& breakStmt)
+		{
+			std::ostringstream oss;
+			oss << "{\"BreakStatement\": {\n";
+			oss << "\"type\": \"BreakStatement\"\n";
+			oss << "}\n}\n";
+			return oss.str();
 		}
 
 		std::string StringSerializer::SerializeWhileStatement(const std::shared_ptr<AST::WhileStatement>& whileStmt)

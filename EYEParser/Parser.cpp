@@ -54,6 +54,8 @@ namespace Eye
 				| VariableStatement
 				| ControlStatement
 				| IterationStatement
+				| ContinueStatement
+				| BreakStatement
 				| FunctionStatement
 				| ReturnStatement
 				| StructStatement
@@ -79,6 +81,10 @@ namespace Eye
 			case Lexer::TokenType::KeywordIterationDo:
 			case Lexer::TokenType::KeywordIterationFor:
 				return IterationStatement();
+			case Lexer::TokenType::KeywordIterationContinue:
+				return ContinueStatement();
+			case Lexer::TokenType::KeywordIterationBreak:
+				return BreakStatement();
 			case Lexer::TokenType::KeywordFunction:
 				return FunctionStatement();
 			case Lexer::TokenType::KeywordReturn:
@@ -235,6 +241,30 @@ namespace Eye
 				return ForStatement();
 
 			return nullptr;
+		}
+
+		/*
+			ContinueStatement
+				: 'continue' ';'
+				;
+		*/
+		std::shared_ptr<AST::ContinueStatement> Parser::ContinueStatement()
+		{
+			EatToken(Lexer::TokenType::KeywordIterationContinue);
+			EatToken(Lexer::TokenType::SymbolSemiColon);
+			return std::make_shared<AST::ContinueStatement>();
+		}
+	
+		/*
+			BreakStatement
+				: 'break' ';'
+				;
+		*/
+		std::shared_ptr<AST::BreakStatement> Parser::BreakStatement()
+		{
+			EatToken(Lexer::TokenType::KeywordIterationBreak);
+			EatToken(Lexer::TokenType::SymbolSemiColon);
+			return std::make_shared<AST::BreakStatement>();
 		}
 
 		/*

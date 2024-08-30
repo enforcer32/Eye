@@ -13,6 +13,8 @@ Statement
 	| VariableStatement
 	| ControlStatement
 	| IterationStatement
+	| ContinueStatement
+	| BreakStatement
 	| FunctionStatement
 	| ReturnStatement
 	| StructStatement
@@ -64,6 +66,14 @@ DoWhileStatement
 
 ForStatement
 	: 'for' '(' OptionalForVariableInitializer ';' OptionalExpression ';' OptionalExpression ')' Statement
+	;
+
+ContinueStatement
+	: 'continue' ';'
+	;
+
+BreakStatement
+	: 'break' ';'
 	;
 
 FunctionStatement

@@ -1,0 +1,217 @@
+{
+  "Program": {
+	"type": "Program",
+	"StatementListSize": 3,
+	"StatementList": [
+	  {
+		"WhileStatement": {
+		  "type": "WhileStatement",
+		  "condition": {
+			"LiteralExpression": {
+			  "type": "Boolean",
+			  "value": true
+			}
+		  },
+		  "body": {
+			"BlockStatement": {
+			  "type": "BlockStatement",
+			  "StatementListSize": 3,
+			  "StatementList": [
+				{
+				  "ControlStatement": {
+					"type": "ControlStatement",
+					"condition": {
+					  "BinaryExpression": {
+						"type": "BinaryExpression",
+						"operator": "==",
+						"left": {
+						  "IdentifierExpression": {
+							"type": "IdentifierExpression",
+							"value": "x"
+						  }
+						},
+						"right": {
+						  "LiteralExpression": {
+							"type": "Integer",
+							"value": 2
+						  }
+						}
+					  }
+					},
+					"consequent": {
+					  "BreakStatement": {
+						"type": "BreakStatement"
+					  }
+					},
+					"alternate": null
+				  }
+				},
+				{
+				  "ControlStatement": {
+					"type": "ControlStatement",
+					"condition": {
+					  "BinaryExpression": {
+						"type": "BinaryExpression",
+						"operator": "==",
+						"left": {
+						  "IdentifierExpression": {
+							"type": "IdentifierExpression",
+							"value": "x"
+						  }
+						},
+						"right": {
+						  "LiteralExpression": {
+							"type": "Integer",
+							"value": 4
+						  }
+						}
+					  }
+					},
+					"consequent": {
+					  "ContinueStatement": {
+						"type": "ContinueStatement"
+					  }
+					},
+					"alternate": null
+				  }
+				},
+				{
+				  "ExpressionStatement": {
+					"type": "ExpressionStatement",
+					"expression": {
+					  "PostfixExpression": {
+						"type": "PostfixExpression",
+						"operator": "++",
+						"expression": {
+						  "IdentifierExpression": {
+							"type": "IdentifierExpression",
+							"value": "x"
+						  }
+						}
+					  }
+					}
+				  }
+				}
+			  ]
+			}
+		  }
+		}
+	  },
+	  {
+		"ForStatement": {
+		  "type": "ForStatement",
+		  "initializer": {
+			"VariableStatement": {
+			  "type": "VariableStatement",
+			  "typeQualifier": null,
+			  "dataType": "int",
+			  "declarationSize": 1,
+			  "declarations": [
+				{
+				  "VariableDeclaration": {
+					"type": "VariableDeclaration",
+					"identifier": {
+					  "IdentifierExpression": {
+						"type": "IdentifierExpression",
+						"value": "x"
+					  }
+					},
+					"initializer": {
+					  "LiteralExpression": {
+						"type": "Integer",
+						"value": 0
+					  }
+					}
+				  }
+				}
+			  ]
+			}
+		  },
+		  "condition": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "operator": "<",
+			  "left": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "x"
+				}
+			  },
+			  "right": {
+				"LiteralExpression": {
+				  "type": "Integer",
+				  "value": 5
+				}
+			  }
+			}
+		  },
+		  "update": {
+			"PostfixExpression": {
+			  "type": "PostfixExpression",
+			  "operator": "++",
+			  "expression": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "x"
+				}
+			  }
+			}
+		  },
+		  "body": {
+			"ControlStatement": {
+			  "type": "ControlStatement",
+			  "condition": {
+				"BinaryExpression": {
+				  "type": "BinaryExpression",
+				  "operator": "==",
+				  "left": {
+					"IdentifierExpression": {
+					  "type": "IdentifierExpression",
+					  "value": "x"
+					}
+				  },
+				  "right": {
+					"LiteralExpression": {
+					  "type": "Integer",
+					  "value": 3
+					}
+				  }
+				}
+			  },
+			  "consequent": {
+				"BreakStatement": {
+				  "type": "BreakStatement"
+				}
+			  },
+			  "alternate": null
+			}
+		  }
+		}
+	  },
+	  {
+		"DoWhileStatement": {
+		  "type": "DoWhileStatement",
+		  "condition": {
+			"LiteralExpression": {
+			  "type": "Boolean",
+			  "value": true
+			}
+		  },
+		  "body": {
+			"BlockStatement": {
+			  "type": "BlockStatement",
+			  "StatementListSize": 1,
+			  "StatementList": [
+				{
+				  "BreakStatement": {
+					"type": "BreakStatement"
+				  }
+				}
+			  ]
+			}
+		  }
+		}
+	  }
+	]
+  }
+}
