@@ -18,22 +18,24 @@ namespace Eye
 				;
 		
 			FunctionParameter
-				: DataTypeKeyword IdentifierExpression OptionalVariableInitializer
+				: OptionalTypeQualifierKeyword DataTypeKeyword IdentifierExpression OptionalVariableInitializer
 				;
 		*/
 		class FunctionParameter
 		{
 		public:
-			FunctionParameter(Lexer::Token dataType, const std::shared_ptr<IdentifierExpression>& identifier, const std::shared_ptr<Expression>& initializer)
-				: m_DataType(dataType), m_Identifier(identifier), m_Initializer(initializer)
+			FunctionParameter(Lexer::Token typeQualifier, Lexer::Token dataType, const std::shared_ptr<IdentifierExpression>& identifier, const std::shared_ptr<Expression>& initializer)
+				: m_TypeQualifier(typeQualifier), m_DataType(dataType), m_Identifier(identifier), m_Initializer(initializer)
 			{
 			}
 
+			inline Lexer::Token GetTypeQualifier() const { return m_TypeQualifier; }
 			inline Lexer::Token GetDataType() const { return m_DataType; }
 			inline std::shared_ptr<IdentifierExpression> GetIdentifier() const { return m_Identifier; }
 			inline std::shared_ptr<Expression> GetInitializer() const { return m_Initializer; }
 
 		private:
+			Lexer::Token m_TypeQualifier;
 			Lexer::Token m_DataType;
 			std::shared_ptr<IdentifierExpression> m_Identifier;
 			std::shared_ptr<Expression> m_Initializer;

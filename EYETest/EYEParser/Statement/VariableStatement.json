@@ -6,6 +6,7 @@
 	  {
 		"VariableStatement": {
 		  "type": "VariableStatement",
+		  "typeQualifier": null,
 		  "dataType": "bool",
 		  "declarationSize": 1,
 		  "declarations": [
@@ -27,6 +28,7 @@
 	  {
 		"VariableStatement": {
 		  "type": "VariableStatement",
+		  "typeQualifier": null,
 		  "dataType": "bool",
 		  "declarationSize": 1,
 		  "declarations": [
@@ -53,6 +55,7 @@
 	  {
 		"VariableStatement": {
 		  "type": "VariableStatement",
+		  "typeQualifier": null,
 		  "dataType": "auto",
 		  "declarationSize": 1,
 		  "declarations": [
@@ -79,6 +82,7 @@
 	  {
 		"VariableStatement": {
 		  "type": "VariableStatement",
+		  "typeQualifier": null,
 		  "dataType": "float",
 		  "declarationSize": 1,
 		  "declarations": [
@@ -105,6 +109,7 @@
 	  {
 		"VariableStatement": {
 		  "type": "VariableStatement",
+		  "typeQualifier": null,
 		  "dataType": "auto",
 		  "declarationSize": 4,
 		  "declarations": [
@@ -190,6 +195,7 @@
 	  {
 		"VariableStatement": {
 		  "type": "VariableStatement",
+		  "typeQualifier": null,
 		  "dataType": "str",
 		  "declarationSize": 1,
 		  "declarations": [
@@ -216,6 +222,7 @@
 	  {
 		"VariableStatement": {
 		  "type": "VariableStatement",
+		  "typeQualifier": null,
 		  "dataType": "int",
 		  "declarationSize": 1,
 		  "declarations": [
@@ -242,6 +249,7 @@
 	  {
 		"VariableStatement": {
 		  "type": "VariableStatement",
+		  "typeQualifier": null,
 		  "dataType": "void",
 		  "declarationSize": 1,
 		  "declarations": [

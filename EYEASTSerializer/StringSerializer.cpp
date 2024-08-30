@@ -90,6 +90,10 @@ namespace Eye
 			std::ostringstream oss;
 			oss << "{\"VariableStatement\": {\n";
 			oss << "\"type\": \"VariableStatement\",\n";
+			if (variableStmt->GetTypeQualifier())
+				oss << "\"typeQualifier\": \"" << Lexer::TokenTypeStr[(int)variableStmt->GetTypeQualifier().GetType()] << "\",\n";
+			else
+				oss << "\"typeQualifier\":" << "null" << ",\n";
 			oss << "\"dataType\": \"" << Lexer::TokenTypeStr[(int)variableStmt->GetDataType().GetType()] << "\",\n";
 			oss << "\"declarationSize\": " << variableStmt->GetVariableDeclarationList().size() << ",\n";
 			oss << "\"declarations\": [\n";
@@ -231,6 +235,10 @@ namespace Eye
 			std::ostringstream oss;
 			oss << "{\"FunctionParameter\": {\n";
 			oss << "\"type\": \"FunctionParameter\",\n";
+			if(functionParam->GetTypeQualifier())
+				oss << "\"typeQualifier\": \"" << Lexer::TokenTypeStr[(int)functionParam->GetTypeQualifier().GetType()] << "\",\n";
+			else
+				oss << "\"typeQualifier\":" << "null" << ",\n";
 			oss << "\"dataType\": \"" << Lexer::TokenTypeStr[(int)functionParam->GetDataType().GetType()] << "\",\n";
 			oss << "\"identifier\":" << SerializeIdentifierExpression(functionParam->GetIdentifier()) << ",\n";
 

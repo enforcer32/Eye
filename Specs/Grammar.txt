@@ -27,7 +27,7 @@ BlockStatement
 	;
 
 VariableStatement
-	: DatatypeKeyword VariableDeclarationList ';'
+	: OptionalTypeQualifier DatatypeKeyword VariableDeclarationList ';'
 	;
 
 VariableDeclarationList
@@ -76,7 +76,7 @@ FunctionParameterList
 	;
 		
 FunctionParameter
-	: DataTypeKeyword IdentifierExpression OptionalVariableInitializer
+	: OptionalTypeQualifier DataTypeKeyword IdentifierExpression OptionalVariableInitializer
 	;
 
 ReturnStatement
@@ -270,6 +270,10 @@ UnaryOperator
 PostfixOperator
 	: '++'
 	| '--'
+	;
+
+TypeQualifierKeyword
+	: 'const'
 	;
 
 DatatypeKeyword

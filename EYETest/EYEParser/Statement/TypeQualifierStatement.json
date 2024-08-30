@@ -1,0 +1,330 @@
+{
+  "Program": {
+	"type": "Program",
+	"StatementListSize": 5,
+	"StatementList": [
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "typeQualifier": null,
+		  "dataType": "int",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "y"
+				  }
+				},
+				"initializer": {
+				  "LiteralExpression": {
+					"type": "Integer",
+					"value": 20
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"VariableStatement": {
+		  "type": "VariableStatement",
+		  "typeQualifier": "const",
+		  "dataType": "int",
+		  "declarationSize": 1,
+		  "declarations": [
+			{
+			  "VariableDeclaration": {
+				"type": "VariableDeclaration",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "x"
+				  }
+				},
+				"initializer": {
+				  "LiteralExpression": {
+					"type": "Integer",
+					"value": 15
+				  }
+				}
+			  }
+			}
+		  ]
+		}
+	  },
+	  {
+		"ForStatement": {
+		  "type": "ForStatement",
+		  "initializer": {
+			"VariableStatement": {
+			  "type": "VariableStatement",
+			  "typeQualifier": "const",
+			  "dataType": "int",
+			  "declarationSize": 1,
+			  "declarations": [
+				{
+				  "VariableDeclaration": {
+					"type": "VariableDeclaration",
+					"identifier": {
+					  "IdentifierExpression": {
+						"type": "IdentifierExpression",
+						"value": "x"
+					  }
+					},
+					"initializer": {
+					  "LiteralExpression": {
+						"type": "Integer",
+						"value": 5
+					  }
+					}
+				  }
+				}
+			  ]
+			}
+		  },
+		  "condition": {
+			"BinaryExpression": {
+			  "type": "BinaryExpression",
+			  "operator": "<",
+			  "left": {
+				"IdentifierExpression": {
+				  "type": "IdentifierExpression",
+				  "value": "x"
+				}
+			  },
+			  "right": {
+				"LiteralExpression": {
+				  "type": "Integer",
+				  "value": 10
+				}
+			  }
+			}
+		  },
+		  "update": null,
+		  "body": {
+			"BlockStatement": {
+			  "type": "BlockStatement",
+			  "StatementListSize": 1,
+			  "StatementList": [
+				{
+				  "ControlStatement": {
+					"type": "ControlStatement",
+					"condition": {
+					  "BinaryExpression": {
+						"type": "BinaryExpression",
+						"operator": "==",
+						"left": {
+						  "IdentifierExpression": {
+							"type": "IdentifierExpression",
+							"value": "x"
+						  }
+						},
+						"right": {
+						  "LiteralExpression": {
+							"type": "Integer",
+							"value": 5
+						  }
+						}
+					  }
+					},
+					"consequent": {
+					  "ExpressionStatement": {
+						"type": "ExpressionStatement",
+						"expression": {
+						  "AssignmentExpression": {
+							"type": "AssignmentExpression",
+							"operator": "=",
+							"lhsExpression": {
+							  "IdentifierExpression": {
+								"type": "IdentifierExpression",
+								"value": "num"
+							  }
+							},
+							"expression": {
+							  "LiteralExpression": {
+								"type": "Integer",
+								"value": 11
+							  }
+							}
+						  }
+						}
+					  }
+					},
+					"alternate": null
+				  }
+				}
+			  ]
+			}
+		  }
+		}
+	  },
+	  {
+		"FunctionStatement": {
+		  "type": "FunctionStatement",
+		  "returnType": "int",
+		  "identifier": {
+			"IdentifierExpression": {
+			  "type": "IdentifierExpression",
+			  "value": "number"
+			}
+		  },
+		  "parameters": [
+			{
+			  "FunctionParameter": {
+				"type": "FunctionParameter",
+				"typeQualifier": null,
+				"dataType": "int",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "param"
+				  }
+				},
+				"initializer": null
+			  }
+			},
+			{
+			  "FunctionParameter": {
+				"type": "FunctionParameter",
+				"typeQualifier": "const",
+				"dataType": "int",
+				"identifier": {
+				  "IdentifierExpression": {
+					"type": "IdentifierExpression",
+					"value": "default"
+				  }
+				},
+				"initializer": {
+				  "LiteralExpression": {
+					"type": "Integer",
+					"value": 12
+				  }
+				}
+			  }
+			}
+		  ],
+		  "body": {
+			"BlockStatement": {
+			  "type": "BlockStatement",
+			  "StatementListSize": 1,
+			  "StatementList": [
+				{
+				  "ReturnStatement": {
+					"type": "ReturnStatement",
+					"expression": {
+					  "BinaryExpression": {
+						"type": "BinaryExpression",
+						"operator": "+",
+						"left": {
+						  "LiteralExpression": {
+							"type": "Integer",
+							"value": 10
+						  }
+						},
+						"right": {
+						  "IdentifierExpression": {
+							"type": "IdentifierExpression",
+							"value": "default"
+						  }
+						}
+					  }
+					}
+				  }
+				}
+			  ]
+			}
+		  }
+		}
+	  },
+	  {
+		"StructStatement": {
+		  "type": "StructStatement",
+		  "identifier": {
+			"IdentifierExpression": {
+			  "type": "IdentifierExpression",
+			  "value": "Person"
+			}
+		  },
+		  "members": [
+			{
+			  "VariableStatement": {
+				"type": "VariableStatement",
+				"typeQualifier": "const",
+				"dataType": "int",
+				"declarationSize": 1,
+				"declarations": [
+				  {
+					"VariableDeclaration": {
+					  "type": "VariableDeclaration",
+					  "identifier": {
+						"IdentifierExpression": {
+						  "type": "IdentifierExpression",
+						  "value": "UNIQUE"
+						}
+					  },
+					  "initializer": {
+						"LiteralExpression": {
+						  "type": "Integer",
+						  "value": 1
+						}
+					  }
+					}
+				  }
+				]
+			  }
+			},
+			{
+			  "VariableStatement": {
+				"type": "VariableStatement",
+				"typeQualifier": null,
+				"dataType": "str",
+				"declarationSize": 1,
+				"declarations": [
+				  {
+					"VariableDeclaration": {
+					  "type": "VariableDeclaration",
+					  "identifier": {
+						"IdentifierExpression": {
+						  "type": "IdentifierExpression",
+						  "value": "Name"
+						}
+					  },
+					  "initializer": null
+					}
+				  }
+				]
+			  }
+			},
+			{
+			  "VariableStatement": {
+				"type": "VariableStatement",
+				"typeQualifier": null,
+				"dataType": "int",
+				"declarationSize": 1,
+				"declarations": [
+				  {
+					"VariableDeclaration": {
+					  "type": "VariableDeclaration",
+					  "identifier": {
+						"IdentifierExpression": {
+						  "type": "IdentifierExpression",
+						  "value": "Age"
+						}
+					  },
+					  "initializer": null
+					}
+				  }
+				]
+			  }
+			}
+		  ]
+		}
+	  }
+	]
+  }
+}

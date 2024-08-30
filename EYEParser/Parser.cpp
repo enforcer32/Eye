@@ -65,6 +65,7 @@ namespace Eye
 			{
 			case Lexer::TokenType::SymbolLeftBrace:
 				return BlockStatement();
+			case Lexer::TokenType::KeywordTypeQualifierConst:
 			case Lexer::TokenType::KeywordDataTypeAuto:
 			case Lexer::TokenType::KeywordDataTypeInt:
 			case Lexer::TokenType::KeywordDataTypeFloat:
@@ -125,7 +126,7 @@ namespace Eye
 
 		/*
 			VariableStatement
-				: DatatypeKeyword VariableDeclarationList ';'
+				: OptionalTypeQualifier DatatypeKeyword VariableDeclarationList ';'
 				;
 
 			DatatypeKeyword
@@ -135,13 +136,22 @@ namespace Eye
 				| 'str'
 				| 'bool'
 				;
+
+			TypeQualifier
+				: 'const'
+				;
 		*/
 		std::shared_ptr<AST::VariableStatement> Parser::VariableStatement()
 		{
+			Lexer::Token typeQualifier;
+			if (IsTypeQualifierKeyword(m_LookAhead))
+				typeQualifier = EatToken(m_LookAhead.GetType());
+
 			if (!IsDataTypeKeyword(m_LookAhead))
 				EYEPARSER_THROW_UNEXPECTED_TOKEN(Lexer::TokenTypeStr[(int)m_LookAhead.GetType()], "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
 			Lexer::Token dataType = EatToken(m_LookAhead.GetType());
-			std::shared_ptr<AST::VariableStatement> variableStatement = std::make_shared<AST::VariableStatement>(dataType, VariableDeclarationList());
+			
+			std::shared_ptr<AST::VariableStatement> variableStatement = std::make_shared<AST::VariableStatement>(typeQualifier, dataType, VariableDeclarationList());
 			EatToken(Lexer::TokenType::SymbolSemiColon);
 			return variableStatement;
 		}
@@ -278,10 +288,17 @@ namespace Eye
 			AST::ForInitializerType initializerType = AST::ForInitializerType::Null;
 			if (!IsLookAhead(Lexer::TokenType::SymbolSemiColon))
 			{
-				if (IsDataTypeKeyword(m_LookAhead))
+				if (IsTypeQualifierKeyword(m_LookAhead) || IsDataTypeKeyword(m_LookAhead))
 				{
+					Lexer::Token typeQualifier;
+					if (IsTypeQualifierKeyword(m_LookAhead))
+						typeQualifier = EatToken(m_LookAhead.GetType());
+
+					if (!IsDataTypeKeyword(m_LookAhead))
+						EYEPARSER_THROW_UNEXPECTED_TOKEN(Lexer::TokenTypeStr[(int)m_LookAhead.GetType()], "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
 					Lexer::Token dataType = EatToken(m_LookAhead.GetType());
-					initializer = std::make_shared<AST::VariableStatement>(dataType, VariableDeclarationList());
+
+					initializer = std::make_shared<AST::VariableStatement>(typeQualifier, dataType, VariableDeclarationList());
 					initializerType = AST::ForInitializerType::VariableStatement;
 				}
 				else
@@ -345,19 +362,23 @@ namespace Eye
 
 		/*
 			FunctionParameter
-				: DataTypeKeyword IdentifierExpression OptionalVariableInitializer
+				: OptionalTypeQualifierKeyword DataTypeKeyword IdentifierExpression OptionalVariableInitializer
 				;
 		*/
 		std::shared_ptr<AST::FunctionParameter> Parser::FunctionParameter()
 		{
+			Lexer::Token typeQualifier;
+			if (IsTypeQualifierKeyword(m_LookAhead))
+				typeQualifier = EatToken(m_LookAhead.GetType());
+
 			if (!IsDataTypeKeyword(m_LookAhead))
 					EYEPARSER_THROW_UNEXPECTED_TOKEN(Lexer::TokenTypeStr[(int)m_LookAhead.GetType()], "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
 			Lexer::Token dataType = EatToken(m_LookAhead.GetType());
 
 			std::shared_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
 			if (!IsLookAhead(Lexer::TokenType::SymbolRightParenthesis) && !IsLookAhead(Lexer::TokenType::OperatorComma))
-				return std::make_shared<AST::FunctionParameter>(dataType, identifier, VariableInitializer());
-			return std::make_shared<AST::FunctionParameter>(dataType, identifier, nullptr);
+				return std::make_shared<AST::FunctionParameter>(typeQualifier, dataType, identifier, VariableInitializer());
+			return std::make_shared<AST::FunctionParameter>(typeQualifier, dataType, identifier, nullptr);
 		}
 
 		/*
@@ -886,6 +907,16 @@ namespace Eye
 		bool Parser::IsPostfixOperator(Lexer::Token token) const
 		{
 			return (token.GetType() == Lexer::TokenType::OperatorArithmeticIncrement || token.GetType() == Lexer::TokenType::OperatorArithmeticDecrement);
+		}
+
+		/*
+			TypeQualifier
+				: 'const'
+				;
+		*/
+		bool Parser::IsTypeQualifierKeyword(Lexer::Token token) const
+		{
+			return (token.GetType() == Lexer::TokenType::KeywordTypeQualifierConst);
 		}
 
 		/*

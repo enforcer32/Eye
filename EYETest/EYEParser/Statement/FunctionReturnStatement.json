@@ -17,6 +17,7 @@
 			{
 			  "FunctionParameter": {
 				"type": "FunctionParameter",
+				"typeQualifier": null,
 				"dataType": "int",
 				"identifier": {
 				  "IdentifierExpression": {
@@ -123,6 +124,7 @@
 			{
 			  "FunctionParameter": {
 				"type": "FunctionParameter",
+				"typeQualifier": null,
 				"dataType": "int",
 				"identifier": {
 				  "IdentifierExpression": {
@@ -136,6 +138,7 @@
 			{
 			  "FunctionParameter": {
 				"type": "FunctionParameter",
+				"typeQualifier": null,
 				"dataType": "float",
 				"identifier": {
 				  "IdentifierExpression": {
@@ -149,6 +152,7 @@
 			{
 			  "FunctionParameter": {
 				"type": "FunctionParameter",
+				"typeQualifier": null,
 				"dataType": "str",
 				"identifier": {
 				  "IdentifierExpression": {
@@ -219,6 +223,7 @@
 			{
 			  "FunctionParameter": {
 				"type": "FunctionParameter",
+				"typeQualifier": null,
 				"dataType": "bool",
 				"identifier": {
 				  "IdentifierExpression": {

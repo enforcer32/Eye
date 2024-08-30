@@ -89,6 +89,7 @@ namespace Eye
 			bool IsMultiplicativeOperator(Lexer::Token token) const;
 			bool IsUnaryOperator(Lexer::Token token) const;
 			bool IsPostfixOperator(Lexer::Token token) const;
+			bool IsTypeQualifierKeyword(Lexer::Token token) const;
 			bool IsDataTypeKeyword(Lexer::Token token) const;
 			bool IsLHSExpression(const std::shared_ptr<AST::Expression>& expression) const;
 

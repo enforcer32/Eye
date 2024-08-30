@@ -6,6 +6,7 @@
 	  {
 		"VariableStatement": {
 		  "type": "VariableStatement",
+		  "typeQualifier": null,
 		  "dataType": "auto",
 		  "declarationSize": 1,
 		  "declarations": [

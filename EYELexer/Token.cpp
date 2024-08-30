@@ -119,7 +119,7 @@ namespace Eye
 			case TokenType::KeywordDataTypeFloat:
 			case TokenType::KeywordDataTypeStr:
 			case TokenType::KeywordDataTypeBool:
-			case TokenType::KeywordConst:
+			case TokenType::KeywordTypeQualifierConst:
 			case TokenType::KeywordControlIf:
 			case TokenType::KeywordControlElse:
 			case TokenType::KeywordIterationWhile:

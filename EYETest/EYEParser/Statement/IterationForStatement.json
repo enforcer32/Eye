@@ -9,6 +9,7 @@
 		  "initializer": {
 			"VariableStatement": {
 			  "type": "VariableStatement",
+			  "typeQualifier": null,
 			  "dataType": "int",
 			  "declarationSize": 1,
 			  "declarations": [
@@ -115,6 +116,7 @@
 				{
 				  "VariableStatement": {
 					"type": "VariableStatement",
+					"typeQualifier": null,
 					"dataType": "auto",
 					"declarationSize": 1,
 					"declarations": [
@@ -146,6 +148,7 @@
 	  {
 		"VariableStatement": {
 		  "type": "VariableStatement",
+		  "typeQualifier": null,
 		  "dataType": "auto",
 		  "declarationSize": 1,
 		  "declarations": [

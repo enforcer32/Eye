@@ -125,7 +125,7 @@ namespace Eye
 			KeywordDataTypeStr,
 			KeywordDataTypeBool,
 			KeywordDataTypeVoid,
-			KeywordConst,
+			KeywordTypeQualifierConst,
 			KeywordControlIf,
 			KeywordControlElse,
 			KeywordIterationWhile,
