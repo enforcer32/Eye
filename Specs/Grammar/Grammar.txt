@@ -1,5 +1,0 @@
-UnaryExpression
-	: LHSExpression
-	| UnaryOperator UnaryExpression
-	;
-

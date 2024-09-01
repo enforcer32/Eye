@@ -58,7 +58,6 @@ namespace Eye
 				| BreakStatement
 				| FunctionStatement
 				| ReturnStatement
-				| StructStatement
 				;
 		*/
 		std::shared_ptr<AST::Statement> Parser::Statement()
@@ -68,7 +67,6 @@ namespace Eye
 			case Lexer::TokenType::SymbolLeftBrace:
 				return BlockStatement();
 			case Lexer::TokenType::KeywordTypeQualifierConst:
-			case Lexer::TokenType::KeywordDataTypeAuto:
 			case Lexer::TokenType::KeywordDataTypeInt:
 			case Lexer::TokenType::KeywordDataTypeFloat:
 			case Lexer::TokenType::KeywordDataTypeStr:
@@ -89,8 +87,6 @@ namespace Eye
 				return FunctionStatement();
 			case Lexer::TokenType::KeywordReturn:
 				return ReturnStatement();
-			case Lexer::TokenType::KeywordStruct:
-				return StructStatement();
 			default:
 				break;
 			}
@@ -136,8 +132,7 @@ namespace Eye
 				;
 
 			DatatypeKeyword
-				: 'auto'
-				| 'int'
+				: 'int'
 				| 'float'
 				| 'str'
 				| 'bool'
@@ -425,24 +420,6 @@ namespace Eye
 		}
 
 		/*
-			StructStatement
-				: 'struct' Identifier '{' OptionalVariableStatementList '}' ';'
-				;
-		*/
-		std::shared_ptr<AST::StructStatement> Parser::StructStatement()
-		{
-			EatToken(Lexer::TokenType::KeywordStruct);
-			std::shared_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
-			EatToken(Lexer::TokenType::SymbolLeftBrace);
-			std::vector<std::shared_ptr<AST::VariableStatement>> variableStatementList;
-			while (!IsLookAhead(Lexer::TokenType::SymbolRightBrace))
-				variableStatementList.push_back(VariableStatement());
-			EatToken(Lexer::TokenType::SymbolRightBrace);
-			EatToken(Lexer::TokenType::SymbolSemiColon);
-			return std::make_shared<AST::StructStatement>(identifier, variableStatementList);
-		}
-
-		/*
 			Expression
 				: AdditiveBinaryExpression
 				;
@@ -703,7 +680,6 @@ namespace Eye
 				: LiteralExpression
 				| ParenthesizedExpression
 				| IdentifierExpression
-				| NewExpression
 				;
 		*/
 		std::shared_ptr<AST::Expression> Parser::PrimaryExpression()
@@ -714,8 +690,6 @@ namespace Eye
 				return ParenthesizedExpression();
 			else if (IsLookAhead(Lexer::TokenType::Identifier))
 				return IdentifierExpression();
-			else if (IsLookAhead(Lexer::TokenType::KeywordNew))
-				return NewExpression();
 			return nullptr;
 		}
 
@@ -826,17 +800,6 @@ namespace Eye
 		std::shared_ptr<AST::IdentifierExpression> Parser::IdentifierExpression()
 		{
 			return std::make_shared<AST::IdentifierExpression>(EatToken(Lexer::TokenType::Identifier));
-		}
-
-		/*
-			NewExpression
-				: 'new' MemberExpression
-				;
-		*/
-		std::shared_ptr<AST::NewExpression> Parser::NewExpression()
-		{
-			EatToken(Lexer::TokenType::KeywordNew);
-			return std::make_shared<AST::NewExpression>(MemberExpression());
 		}
 
 		bool Parser::IsLookAhead(Lexer::TokenType type) const
@@ -965,8 +928,7 @@ namespace Eye
 
 		/*
 			DatatypeKeyword
-				: 'auto'
-				| 'int'
+				: 'int'
 				| 'float'
 				| 'str'
 				| 'bool'
@@ -974,7 +936,7 @@ namespace Eye
 		*/
 		bool Parser::IsDataTypeKeyword(Lexer::Token token) const
 		{
-			return (token.GetType() == Lexer::TokenType::KeywordDataTypeAuto || token.GetType() == Lexer::TokenType::KeywordDataTypeInt || token.GetType() == Lexer::TokenType::KeywordDataTypeFloat || token.GetType() == Lexer::TokenType::KeywordDataTypeStr || token.GetType() == Lexer::TokenType::KeywordDataTypeBool || token.GetType() == Lexer::TokenType::KeywordDataTypeVoid);
+			return (token.GetType() == Lexer::TokenType::KeywordDataTypeInt || token.GetType() == Lexer::TokenType::KeywordDataTypeFloat || token.GetType() == Lexer::TokenType::KeywordDataTypeStr || token.GetType() == Lexer::TokenType::KeywordDataTypeBool || token.GetType() == Lexer::TokenType::KeywordDataTypeVoid);
 		}
 
 		/*

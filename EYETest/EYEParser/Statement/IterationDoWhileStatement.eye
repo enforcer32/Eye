@@ -1,4 +1,4 @@
-auto num = 10;
+int num = 10;
 do {
 	num += 10;
 	if(num == 100)

@@ -56,7 +56,7 @@
 		"VariableStatement": {
 		  "type": "VariableStatement",
 		  "typeQualifier": null,
-		  "dataType": "auto",
+		  "dataType": "int",
 		  "declarationSize": 1,
 		  "declarations": [
 			{
@@ -110,7 +110,7 @@
 		"VariableStatement": {
 		  "type": "VariableStatement",
 		  "typeQualifier": null,
-		  "dataType": "auto",
+		  "dataType": "int",
 		  "declarationSize": 4,
 		  "declarations": [
 			{

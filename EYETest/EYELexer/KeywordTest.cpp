@@ -37,7 +37,7 @@ namespace Eye
 			if (!lexer.Tokenize(filePath))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerKeywordTest->Datatype Failed to Tokenize()");
 
-			ASSERT_EQ(lexer.GetTokens()[0].GetType(), TokenType::KeywordDataTypeAuto);
+			ASSERT_EQ(lexer.GetTokens()[0].GetType(), TokenType::KeywordDataTypeInt);
 			ASSERT_EQ(lexer.GetTokens()[6].GetType(), TokenType::KeywordDataTypeInt);
 			ASSERT_EQ(lexer.GetTokens()[12].GetType(), TokenType::KeywordDataTypeFloat);
 			ASSERT_EQ(lexer.GetTokens()[18].GetType(), TokenType::KeywordDataTypeStr);
@@ -92,21 +92,6 @@ namespace Eye
 			ASSERT_EQ(lexer.GetTokens()[2].GetType(), TokenType::Identifier);
 			ASSERT_EQ(lexer.GetTokens()[4].GetType(), TokenType::KeywordDataTypeInt);
 			ASSERT_EQ(lexer.GetTokens()[13].GetType(), TokenType::KeywordReturn);
-		}
-
-		TEST(LexerKeywordTest, Struct)
-		{
-			std::string testType = "Keyword";
-			std::string eyeFile = "Struct.eye";
-			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
-
-			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
-				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerKeywordTest->Struct Failed to Tokenize()");
-
-			ASSERT_EQ(lexer.GetTokens()[0].GetType(), TokenType::KeywordStruct);
-			ASSERT_EQ(lexer.GetTokens()[1].GetType(), TokenType::Identifier);
-			ASSERT_EQ(lexer.GetTokens()[20].GetType(), TokenType::KeywordNew);
 		}
 	}
 }

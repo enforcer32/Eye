@@ -1,5 +1,5 @@
-auto number = 0;
-auto cond = true;
+int number = 0;
+int cond = true;
 
 if(cond)
 {

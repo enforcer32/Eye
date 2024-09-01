@@ -1,8 +1,0 @@
-FunctionStatement
-	: 'function' Identifier '(' OptionalParameterList ')' BlockStatement
-	;
-
-ParameterList
-	: Identifier
-	| ParameterList ',' Identifier
-	;

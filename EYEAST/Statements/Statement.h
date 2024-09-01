@@ -15,7 +15,6 @@ namespace Eye
 			BreakStatement,
 			FunctionStatement,
 			ReturnStatement,
-			StructStatement,
 		};
 
 		/*
@@ -29,7 +28,6 @@ namespace Eye
 				| BreakStatement
 				| FunctionStatement
 				| ReturnStatement
-				| StructStatement
 				;
 		*/
 		class Statement

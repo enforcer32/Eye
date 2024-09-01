@@ -51,8 +51,7 @@ namespace Eye
 				;
 
 			DatatypeKeyword
-				: 'auto'
-				| 'int'
+				: 'int'
 				| 'float'
 				| 'str'
 				| 'bool'

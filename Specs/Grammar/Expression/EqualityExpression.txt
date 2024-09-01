@@ -1,9 +1,0 @@
-EqualityExpression
-	: RelationalExpression EqualityOperator EqualityExpression
-	| RelationalExpression
-	;
-
-EqualityOperator
-	: '=='
-	| '!=
-	;

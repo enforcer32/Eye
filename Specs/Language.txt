@@ -4,17 +4,16 @@ Types:
 	str,
 	float,
 	bool,
-	auto,
 	void,
 }
 
 Keywords:
 {
-	auto, int, float, str, bool, void,
+	int, float, str, bool, void,
 	const, true, false, null,
 	if,	else,
 	while, do, for, continue, break,
-	function, return, struct, new, 
+	function, return, 
 }
 
 Operators:

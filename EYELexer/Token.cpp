@@ -15,7 +15,6 @@ namespace Eye
 			"LiteralNull",
 			// Identifier & Keyword
 			"Identifier",
-			"auto",
 			"int",
 			"float",
 			"str",
@@ -31,8 +30,6 @@ namespace Eye
 			"break",
 			"function",
 			"return",
-			"struct",
-			"new",
 			// Operators
 			"+",
 			"-",
@@ -210,7 +207,6 @@ namespace Eye
 				type = "Identifier";
 				value = std::get<StringType>(m_Value);
 				break;
-			case TokenType::KeywordDataTypeAuto:
 			case TokenType::KeywordDataTypeInt:
 			case TokenType::KeywordDataTypeFloat:
 			case TokenType::KeywordDataTypeStr:
@@ -224,9 +220,7 @@ namespace Eye
 			case TokenType::KeywordIterationContinue:
 			case TokenType::KeywordIterationBreak:
 			case TokenType::KeywordReturn:
-			case TokenType::KeywordNew:
 			case TokenType::KeywordFunction:
-			case TokenType::KeywordStruct:
 				type = "Keyword";
 				value = TokenTypeStr[(int)m_Type];
 				break;

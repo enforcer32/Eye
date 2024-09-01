@@ -13,7 +13,6 @@ namespace Eye
 			AssignmentExpression,
 			MemberExpression,
 			CallExpression,
-			NewExpression,
 			IdentifierExpression,
 		};
 

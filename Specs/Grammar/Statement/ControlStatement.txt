@@ -1,4 +1,0 @@
-ControlStatement
-	: 'if' '(' Expression ')' Statement
-	| 'if' '(' Expression ')' Statement 'else' Statement
-	;

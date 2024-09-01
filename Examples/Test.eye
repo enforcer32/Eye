@@ -1,2 +1,0 @@
-new DataStruct;
-new Person;

@@ -12,7 +12,6 @@
 #include <EYEAST/Statements/BreakStatement.h>
 #include <EYEAST/Statements/FunctionStatement.h>
 #include <EYEAST/Statements/ReturnStatement.h>
-#include <EYEAST/Statements/StructStatement.h>
 
 #include <EYEAST/Expressions/Expression.h>
 #include <EYEAST/Expressions/LiteralExpression.h>
@@ -22,7 +21,6 @@
 #include <EYEAST/Expressions/MemberExpression.h>
 #include <EYEAST/Expressions/CallExpression.h>
 #include <EYEAST/Expressions/PostfixExpression.h>
-#include <EYEAST/Expressions/NewExpression.h>
 
 namespace Eye
 {
@@ -57,7 +55,6 @@ namespace Eye
 			std::vector<std::shared_ptr<AST::FunctionParameter>> FunctionParameterList();
 			std::shared_ptr<AST::FunctionParameter> FunctionParameter();
 			std::shared_ptr<AST::ReturnStatement> ReturnStatement();
-			std::shared_ptr<AST::StructStatement> StructStatement();
 
 			// Expressions
 			std::shared_ptr<AST::Expression> Expression();
@@ -83,7 +80,6 @@ namespace Eye
 			std::shared_ptr<AST::LiteralExpression> NullLiteral();
 			std::shared_ptr<AST::Expression> ParenthesizedExpression();
 			std::shared_ptr<AST::IdentifierExpression> IdentifierExpression();
-			std::shared_ptr<AST::NewExpression> NewExpression();
 
 		private:
 			bool IsLookAhead(Lexer::TokenType type) const;

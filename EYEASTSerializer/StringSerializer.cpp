@@ -50,8 +50,6 @@ namespace Eye
 				return SerializeFunctionStatement(std::static_pointer_cast<AST::FunctionStatement>(stmt));
 			case AST::StatementType::ReturnStatement:
 				return SerializeReturnStatement(std::static_pointer_cast<AST::ReturnStatement>(stmt));
-			case AST::StatementType::StructStatement:
-				return SerializeStructStatement(std::static_pointer_cast<AST::StructStatement>(stmt));
 			default:
 				EYE_LOG_CRITICAL("ASTSerializer Unknown Statement Type!");
 				break;
@@ -285,26 +283,6 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeStructStatement(const std::shared_ptr<AST::StructStatement>& structStmt)
-		{
-			std::ostringstream oss;
-			oss << "{\"StructStatement\": {\n";
-			oss << "\"type\": \"StructStatement\",\n";
-			oss << "\"identifier\": " << SerializeIdentifierExpression(structStmt->GetIdentifier()) << ",\n";
-			oss << "\"members\": [\n";
-			size_t i = 0;
-			for (const auto& member : structStmt->GetMembers())
-			{
-				oss << SerializeVariableStatement(member);
-				i++;
-				if ((i + 1) <= structStmt->GetMembers().size())
-					oss << ",";
-			}
-			oss << "]\n";
-			oss << "}\n}\n";
-			return oss.str();
-		}
-
 		std::string StringSerializer::SerializeExpression(const std::shared_ptr<AST::Expression>& expr)
 		{
 			switch (expr->GetType())
@@ -325,8 +303,6 @@ namespace Eye
 				return SerializeCallExpression(std::static_pointer_cast<AST::CallExpression>(expr));
 			case AST::ExpressionType::PostfixExpression:
 				return SerializePostfixExpression(std::static_pointer_cast<AST::PostfixExpression>(expr));
-			case AST::ExpressionType::NewExpression:
-				return SerializeNewExpression(std::static_pointer_cast<AST::NewExpression>(expr));
 			default:
 				EYE_LOG_CRITICAL("ASTSerializer Unknown Expression Type!");
 				break;
@@ -451,16 +427,6 @@ namespace Eye
 			oss << "\"operator\": \"" << postfixExpr->GetOperator().GetTypeString() << "\",\n";
 			oss << "\"expression\": " << SerializeExpression(postfixExpr->GetExpression()) << "\n";
 			oss << "}\n}";
-			return oss.str();
-		}
-
-		std::string StringSerializer::SerializeNewExpression(const std::shared_ptr<AST::NewExpression>& newExpr)
-		{
-			std::ostringstream oss;
-			oss << "{\"NewExpression\": {\n";
-			oss << "\"type\": \"NewExpression\",\n";
-			oss << "\"callee\": " << SerializeExpression(newExpr->GetCallee()) << "\n";
-			oss << "}\n}\n";
 			return oss.str();
 		}
 	}

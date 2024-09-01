@@ -36,7 +36,6 @@ namespace Eye
 			LiteralNull,
 			// Identifier & Keyword
 			Identifier,
-			KeywordDataTypeAuto,
 			KeywordDataTypeInt,
 			KeywordDataTypeFloat,
 			KeywordDataTypeStr,
@@ -52,8 +51,6 @@ namespace Eye
 			KeywordIterationBreak,
 			KeywordFunction,
 			KeywordReturn,
-			KeywordStruct,
-			KeywordNew,
 			// Operators
 			OperatorBinaryPlus,
 			OperatorBinaryMinus,

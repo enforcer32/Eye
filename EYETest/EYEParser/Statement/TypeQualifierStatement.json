@@ -1,7 +1,7 @@
 {
   "Program": {
 	"type": "Program",
-	"StatementListSize": 5,
+	"StatementListSize": 4,
 	"StatementList": [
 	  {
 		"VariableStatement": {
@@ -239,90 +239,6 @@
 			  ]
 			}
 		  }
-		}
-	  },
-	  {
-		"StructStatement": {
-		  "type": "StructStatement",
-		  "identifier": {
-			"IdentifierExpression": {
-			  "type": "IdentifierExpression",
-			  "value": "Person"
-			}
-		  },
-		  "members": [
-			{
-			  "VariableStatement": {
-				"type": "VariableStatement",
-				"typeQualifier": "const",
-				"dataType": "int",
-				"declarationSize": 1,
-				"declarations": [
-				  {
-					"VariableDeclaration": {
-					  "type": "VariableDeclaration",
-					  "identifier": {
-						"IdentifierExpression": {
-						  "type": "IdentifierExpression",
-						  "value": "UNIQUE"
-						}
-					  },
-					  "initializer": {
-						"LiteralExpression": {
-						  "type": "Integer",
-						  "value": 1
-						}
-					  }
-					}
-				  }
-				]
-			  }
-			},
-			{
-			  "VariableStatement": {
-				"type": "VariableStatement",
-				"typeQualifier": null,
-				"dataType": "str",
-				"declarationSize": 1,
-				"declarations": [
-				  {
-					"VariableDeclaration": {
-					  "type": "VariableDeclaration",
-					  "identifier": {
-						"IdentifierExpression": {
-						  "type": "IdentifierExpression",
-						  "value": "Name"
-						}
-					  },
-					  "initializer": null
-					}
-				  }
-				]
-			  }
-			},
-			{
-			  "VariableStatement": {
-				"type": "VariableStatement",
-				"typeQualifier": null,
-				"dataType": "int",
-				"declarationSize": 1,
-				"declarations": [
-				  {
-					"VariableDeclaration": {
-					  "type": "VariableDeclaration",
-					  "identifier": {
-						"IdentifierExpression": {
-						  "type": "IdentifierExpression",
-						  "value": "Age"
-						}
-					  },
-					  "initializer": null
-					}
-				  }
-				]
-			  }
-			}
-		  ]
 		}
 	  }
 	]

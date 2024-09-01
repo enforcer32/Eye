@@ -12,7 +12,6 @@
 #include <EYEAST/Statements/BreakStatement.h>
 #include <EYEAST/Statements/FunctionStatement.h>
 #include <EYEAST/Statements/ReturnStatement.h>
-#include <EYEAST/Statements/StructStatement.h>
 
 #include <EYEAST/Expressions/Expression.h>
 #include <EYEAST/Expressions/LiteralExpression.h>
@@ -23,7 +22,6 @@
 #include <EYEAST/Expressions/MemberExpression.h>
 #include <EYEAST/Expressions/CallExpression.h>
 #include <EYEAST/Expressions/PostfixExpression.h>
-#include <EYEAST/Expressions/NewExpression.h>
 
 namespace Eye
 {
@@ -50,7 +48,6 @@ namespace Eye
 			std::string SerializeFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt);
 			std::string SerializeFunctionParameter(const std::shared_ptr<AST::FunctionParameter>& functionParam);
 			std::string SerializeReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt);
-			std::string SerializeStructStatement(const std::shared_ptr<AST::StructStatement>& structStmt);
 
 			std::string SerializeExpression(const std::shared_ptr<AST::Expression>& expr);
 			std::string SerializeLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);
@@ -61,7 +58,6 @@ namespace Eye
 			std::string SerializeMemberExpression(const std::shared_ptr<AST::MemberExpression>& memberExpr);
 			std::string SerializeCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr);
 			std::string SerializePostfixExpression(const std::shared_ptr<AST::PostfixExpression>& postfixExpr);
-			std::string SerializeNewExpression(const std::shared_ptr<AST::NewExpression>& newExpr);
 		};
 	}
 }

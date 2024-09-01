@@ -17,7 +17,6 @@ Statement
 	| BreakStatement
 	| FunctionStatement
 	| ReturnStatement
-	| StructStatement
 	;
 
 ExpressionStatement
@@ -93,10 +92,6 @@ ReturnStatement
 	: 'return' OptionalExpression ';'
 	;
 
-StructStatement
-	: 'struct' Identifier '{' OptionalVariableStatementList '}' ';'
-	;
-
 VariableStatementList
 	: VariableStatement
 	| VariableStatementList VariableStatement
@@ -168,11 +163,6 @@ PrimaryExpression
 	: LiteralExpression
 	| ParenthesizedExpression
 	| IdentifierExpression
-	| NewExpression
-	;
-
-NewExpression
-	: 'new' MemberExpression
 	;
 
 UnaryExpression
@@ -287,8 +277,7 @@ TypeQualifierKeyword
 	;
 
 DatatypeKeyword
-	: 'auto'
-	| 'int'
+	: 'int'
 	| 'float'
 	| 'str'
 	| 'bool'

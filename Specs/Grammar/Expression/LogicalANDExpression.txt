@@ -1,9 +1,0 @@
-LogicalANDExpression
-	: EqualityExpression '&&' LogicalANDExpression
-	| EqualityExpression
-	;
-
-LogicalOperator
-	: '&&'
-	| '||'
-	;

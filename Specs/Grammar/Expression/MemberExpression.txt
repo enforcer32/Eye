@@ -1,5 +1,0 @@
-MemberExpression
-	: PrimaryExpression
-	| MemberExpression '.' Identifier
-	| MemberExpression '[' Expression ']'
-	;
