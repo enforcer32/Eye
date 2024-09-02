@@ -29,7 +29,7 @@ namespace Eye
 		class Parser
 		{
 		public:
-			bool Parse(const std::vector<Lexer::Token>& tokens);
+			bool Parse(const std::vector<std::shared_ptr<Lexer::Token>>& tokens);
 			std::shared_ptr<AST::Program> GetAST() const;
 
 		private:
@@ -83,29 +83,29 @@ namespace Eye
 
 		private:
 			bool IsLookAhead(Lexer::TokenType type) const;
-			bool IsLiteral(Lexer::Token token) const;
-			bool IsAssignmentOperator(Lexer::Token token) const;
-			bool IsEqualityOperator(Lexer::Token token) const;
-			bool IsRelationalOperator(Lexer::Token token) const;
-			bool IsAdditiveOperator(Lexer::Token token) const;
-			bool IsMultiplicativeOperator(Lexer::Token token) const;
-			bool IsUnaryOperator(Lexer::Token token) const;
-			bool IsPostfixOperator(Lexer::Token token) const;
-			bool IsTypeQualifierKeyword(Lexer::Token token) const;
-			bool IsDataTypeKeyword(Lexer::Token token) const;
+			bool IsLiteral(const std::shared_ptr<Lexer::Token>& token) const;
+			bool IsAssignmentOperator(const std::shared_ptr<Lexer::Token>& token) const;
+			bool IsEqualityOperator(const std::shared_ptr<Lexer::Token>& token) const;
+			bool IsRelationalOperator(const std::shared_ptr<Lexer::Token>& token) const;
+			bool IsAdditiveOperator(const std::shared_ptr<Lexer::Token>& token) const;
+			bool IsMultiplicativeOperator(const std::shared_ptr<Lexer::Token>& token) const;
+			bool IsUnaryOperator(const std::shared_ptr<Lexer::Token>& token) const;
+			bool IsPostfixOperator(const std::shared_ptr<Lexer::Token>& token) const;
+			bool IsTypeQualifierKeyword(const std::shared_ptr<Lexer::Token>& token) const;
+			bool IsDataTypeKeyword(const std::shared_ptr<Lexer::Token>& token) const;
 			bool IsLHSExpression(const std::shared_ptr<AST::Expression>& expression) const;
 
 		private:
 			bool HasToken() const;
-			Lexer::Token NextToken();
-			Lexer::Token PeekToken();
-			Lexer::Token EatToken(Lexer::TokenType type);
+			std::shared_ptr<Lexer::Token> NextToken();
+			std::shared_ptr<Lexer::Token> PeekToken();
+			std::shared_ptr<Lexer::Token> EatToken(Lexer::TokenType type);
 
 		private:
 			std::shared_ptr<AST::Program> m_Program;
-			std::vector<Lexer::Token> m_Tokens;
+			std::vector<std::shared_ptr<Lexer::Token>> m_Tokens;
 			size_t m_CurrentTokenIndex;
-			Lexer::Token m_LookAhead;
+			std::shared_ptr<Lexer::Token> m_LookAhead;
 		};
 	}
 }

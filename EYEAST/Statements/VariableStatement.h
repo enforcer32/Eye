@@ -60,18 +60,18 @@ namespace Eye
 		class VariableStatement : public Statement
 		{
 		public:
-			VariableStatement(Lexer::Token typeQualifier, Lexer::Token dataType, const std::vector<std::shared_ptr<VariableDeclaration>>& variableDeclarationList)
+			VariableStatement(const std::shared_ptr<Lexer::Token>& typeQualifier, const std::shared_ptr<Lexer::Token>& dataType, const std::vector<std::shared_ptr<VariableDeclaration>>& variableDeclarationList)
 				: Statement(StatementType::VariableStatement), m_TypeQualifier(typeQualifier), m_DataType(dataType), m_VariableDeclarationList(variableDeclarationList)
 			{
 			}
 
-			inline Lexer::Token GetTypeQualifier() const { return m_TypeQualifier; }
-			inline Lexer::Token GetDataType() const { return m_DataType; }
+			inline std::shared_ptr<Lexer::Token> GetTypeQualifier() const { return m_TypeQualifier; }
+			inline std::shared_ptr<Lexer::Token> GetDataType() const { return m_DataType; }
 			inline const std::vector<std::shared_ptr<VariableDeclaration>>& GetVariableDeclarationList() const { return m_VariableDeclarationList; }
 
 		private:
-			Lexer::Token m_TypeQualifier;
-			Lexer::Token m_DataType;
+			std::shared_ptr<Lexer::Token> m_TypeQualifier;
+			std::shared_ptr<Lexer::Token> m_DataType;
 			std::vector<std::shared_ptr<VariableDeclaration>> m_VariableDeclarationList;
 		};
 	}

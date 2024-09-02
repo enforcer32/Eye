@@ -15,15 +15,15 @@ namespace Eye
 		class IdentifierExpression : public Expression
 		{
 		public:
-			IdentifierExpression(Lexer::Token identifier)
+			IdentifierExpression(const std::shared_ptr<Lexer::Token>& identifier)
 				: Expression(ExpressionType::IdentifierExpression), m_Identifier(identifier)
 			{
 			}
 
-			inline std::string GetValue() const { return m_Identifier.GetValue<Lexer::StringType>(); }
+			inline std::string GetValue() const { return m_Identifier->GetValue<Lexer::StringType>(); }
 
 		private:
-			Lexer::Token m_Identifier;
+			std::shared_ptr<Lexer::Token> m_Identifier;
 		};
 	}
 }

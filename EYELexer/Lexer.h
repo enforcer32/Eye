@@ -13,25 +13,25 @@ namespace Eye
 		{
 		public:
 			bool Tokenize(const std::string& filepath);
-			std::vector<Token> GetTokens() const;
+			std::vector<std::shared_ptr<Token>> GetTokens() const;
 
 		private:
-			Token NextToken();
-			Token HandleWhitespace();
-			Token HandleNewline();
-			Token MakeEOFToken();
-			Token MakeNumberToken();
-			Token MakeNumberBaseToken();
-			Token MakeHexNumberToken();
-			Token MakeBinaryNumberToken();
-			Token MakeStringToken(char sdelim, char edelim);
-			Token MakeOperatorToken();
-			Token MakeSymbolToken();
-			Token MakeSpecialToken();
-			Token MakeIdentifierToken();
-			Token HandleSlashOperator();
-			Token MakeSingleLineCommentToken();
-			Token MakeMultiLineCommentToken();
+			std::shared_ptr<Token> NextToken();
+			std::shared_ptr<Token> HandleWhitespace();
+			std::shared_ptr<Token> HandleNewline();
+			std::shared_ptr<Token> MakeEOFToken();
+			std::shared_ptr<Token> MakeNumberToken();
+			std::shared_ptr<Token> MakeNumberBaseToken();
+			std::shared_ptr<Token> MakeHexNumberToken();
+			std::shared_ptr<Token> MakeBinaryNumberToken();
+			std::shared_ptr<Token> MakeStringToken(char sdelim, char edelim);
+			std::shared_ptr<Token> MakeOperatorToken();
+			std::shared_ptr<Token> MakeSymbolToken();
+			std::shared_ptr<Token> MakeSpecialToken();
+			std::shared_ptr<Token> MakeIdentifierToken();
+			std::shared_ptr<Token> HandleSlashOperator();
+			std::shared_ptr<Token> MakeSingleLineCommentToken();
+			std::shared_ptr<Token> MakeMultiLineCommentToken();
 
 		private:
 			bool IsOperator(char op) const;
@@ -51,7 +51,7 @@ namespace Eye
 		private:
 			Position m_Position;
 			std::istringstream m_BufferStream;
-			std::vector<Token> m_Tokens;
+			std::vector<std::shared_ptr<Token>> m_Tokens;
 		};
 	}
 }

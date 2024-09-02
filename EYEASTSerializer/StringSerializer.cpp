@@ -93,10 +93,10 @@ namespace Eye
 			oss << "{\"VariableStatement\": {\n";
 			oss << "\"type\": \"VariableStatement\",\n";
 			if (variableStmt->GetTypeQualifier())
-				oss << "\"typeQualifier\": \"" << variableStmt->GetTypeQualifier().GetTypeString() << "\",\n";
+				oss << "\"typeQualifier\": \"" << variableStmt->GetTypeQualifier()->GetTypeString() << "\",\n";
 			else
 				oss << "\"typeQualifier\":" << "null" << ",\n";
-			oss << "\"dataType\": \"" << variableStmt->GetDataType().GetTypeString() << "\",\n";
+			oss << "\"dataType\": \"" << variableStmt->GetDataType()->GetTypeString() << "\",\n";
 			oss << "\"declarationSize\": " << variableStmt->GetVariableDeclarationList().size() << ",\n";
 			oss << "\"declarations\": [\n";
 			size_t i = 0;
@@ -233,7 +233,7 @@ namespace Eye
 			std::ostringstream oss;
 			oss << "{\"FunctionStatement\": {\n";
 			oss << "\"type\": \"FunctionStatement\",\n";
-			oss << "\"returnType\": \"" << functionStmt->GetReturnType().GetTypeString() << "\",\n";
+			oss << "\"returnType\": \"" << functionStmt->GetReturnType()->GetTypeString() << "\",\n";
 			oss << "\"identifier\": " << SerializeIdentifierExpression(functionStmt->GetIdentifier()) << ",\n";
 			oss << "\"parameters\": [\n";
 			size_t i = 0;
@@ -256,10 +256,10 @@ namespace Eye
 			oss << "{\"FunctionParameter\": {\n";
 			oss << "\"type\": \"FunctionParameter\",\n";
 			if(functionParam->GetTypeQualifier())
-				oss << "\"typeQualifier\": \"" << functionParam->GetTypeQualifier().GetTypeString() << "\",\n";
+				oss << "\"typeQualifier\": \"" << functionParam->GetTypeQualifier()->GetTypeString() << "\",\n";
 			else
 				oss << "\"typeQualifier\":" << "null" << ",\n";
-			oss << "\"dataType\": \"" << functionParam->GetDataType().GetTypeString() << "\",\n";
+			oss << "\"dataType\": \"" << functionParam->GetDataType()->GetTypeString() << "\",\n";
 			oss << "\"identifier\":" << SerializeIdentifierExpression(functionParam->GetIdentifier()) << ",\n";
 
 			if (functionParam->GetInitializer())
@@ -347,7 +347,7 @@ namespace Eye
 			std::ostringstream oss;
 			oss << "{\"BinaryExpression\": {\n";
 			oss << "\"type\": \"BinaryExpression\",\n";
-			oss << "\"operator\": \"" << binaryExpr->GetOperator().GetTypeString() << "\",\n";
+			oss << "\"operator\": \"" << binaryExpr->GetOperator()->GetTypeString() << "\",\n";
 			oss << "\"left\": " << SerializeExpression(binaryExpr->GetLeft()) << ",\n";
 			oss << "\"right\": " << SerializeExpression(binaryExpr->GetRight()) << "\n";
 			oss << "}\n}";
@@ -369,7 +369,7 @@ namespace Eye
 			std::ostringstream oss;
 			oss << "{\"AssignmentExpression\": {\n";
 			oss << "\"type\": \"AssignmentExpression\",\n";
-			oss << "\"operator\": \"" << assignmentExpr->GetOperator().GetTypeString() << "\",\n";
+			oss << "\"operator\": \"" << assignmentExpr->GetOperator()->GetTypeString() << "\",\n";
 			oss << "\"lhsExpression\": " << SerializeExpression(assignmentExpr->GetLHSExpression()) << ",\n";
 			oss << "\"expression\": " << SerializeExpression(assignmentExpr->GetExpression()) << "\n";
 			oss << "}\n}";
@@ -381,7 +381,7 @@ namespace Eye
 			std::ostringstream oss;
 			oss << "{\"UnaryExpression\": {\n";
 			oss << "\"type\": \"UnaryExpression\",\n";
-			oss << "\"operator\": \"" << unaryExpr->GetOperator().GetTypeString() << "\",\n";
+			oss << "\"operator\": \"" << unaryExpr->GetOperator()->GetTypeString() << "\",\n";
 			oss << "\"expression\": " << SerializeExpression(unaryExpr->GetExpression()) << "\n";
 			oss << "}\n}";
 			return oss.str();
@@ -424,7 +424,7 @@ namespace Eye
 			std::ostringstream oss;
 			oss << "{\"PostfixExpression\": {\n";
 			oss << "\"type\": \"PostfixExpression\",\n";
-			oss << "\"operator\": \"" << postfixExpr->GetOperator().GetTypeString() << "\",\n";
+			oss << "\"operator\": \"" << postfixExpr->GetOperator()->GetTypeString() << "\",\n";
 			oss << "\"expression\": " << SerializeExpression(postfixExpr->GetExpression()) << "\n";
 			oss << "}\n}";
 			return oss.str();

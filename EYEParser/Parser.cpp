@@ -9,7 +9,7 @@ namespace Eye
 {
 	namespace Parser
 	{
-		bool Parser::Parse(const std::vector<Lexer::Token>& tokens)
+		bool Parser::Parse(const std::vector<std::shared_ptr<Lexer::Token>>& tokens)
 		{
 			m_Tokens = tokens;
 			m_CurrentTokenIndex = 0;
@@ -42,7 +42,7 @@ namespace Eye
 		std::vector<std::shared_ptr<AST::Statement>> Parser::StatementList(Lexer::TokenType stopAt)
 		{
 			std::vector<std::shared_ptr<AST::Statement>> statementList;
-			while (m_LookAhead && m_LookAhead.GetType() != Lexer::TokenType::EndOfFile && m_LookAhead.GetType() != stopAt)
+			while (m_LookAhead && m_LookAhead->GetType() != Lexer::TokenType::EndOfFile && m_LookAhead->GetType() != stopAt)
 				statementList.push_back(Statement());
 			return statementList;
 		}
@@ -62,7 +62,7 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::Statement> Parser::Statement()
 		{
-			switch (m_LookAhead.GetType())
+			switch (m_LookAhead->GetType())
 			{
 			case Lexer::TokenType::SymbolLeftBrace:
 				return BlockStatement();
@@ -144,13 +144,13 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::VariableStatement> Parser::VariableStatement()
 		{
-			Lexer::Token typeQualifier;
+			std::shared_ptr<Lexer::Token> typeQualifier;
 			if (IsTypeQualifierKeyword(m_LookAhead))
-				typeQualifier = EatToken(m_LookAhead.GetType());
+				typeQualifier = EatToken(m_LookAhead->GetType());
 
 			if (!IsDataTypeKeyword(m_LookAhead))
-				EYEPARSER_THROW_UNEXPECTED_TOKEN(m_LookAhead.GetTypeString(), "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
-			Lexer::Token dataType = EatToken(m_LookAhead.GetType());
+				EYEPARSER_THROW_UNEXPECTED_TOKEN(m_LookAhead->GetTypeString(), "DataTypeKeyword", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
+			std::shared_ptr<Lexer::Token> dataType = EatToken(m_LookAhead->GetType());
 			
 			std::shared_ptr<AST::VariableStatement> variableStatement = std::make_shared<AST::VariableStatement>(typeQualifier, dataType, VariableDeclarationList());
 			EatToken(Lexer::TokenType::SymbolSemiColon);
@@ -315,13 +315,13 @@ namespace Eye
 			{
 				if (IsTypeQualifierKeyword(m_LookAhead) || IsDataTypeKeyword(m_LookAhead))
 				{
-					Lexer::Token typeQualifier;
+					std::shared_ptr<Lexer::Token> typeQualifier;
 					if (IsTypeQualifierKeyword(m_LookAhead))
-						typeQualifier = EatToken(m_LookAhead.GetType());
+						typeQualifier = EatToken(m_LookAhead->GetType());
 
 					if (!IsDataTypeKeyword(m_LookAhead))
-						EYEPARSER_THROW_UNEXPECTED_TOKEN(m_LookAhead.GetTypeString(), "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
-					Lexer::Token dataType = EatToken(m_LookAhead.GetType());
+						EYEPARSER_THROW_UNEXPECTED_TOKEN(m_LookAhead->GetTypeString(), "DataTypeKeyword", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
+					std::shared_ptr<Lexer::Token> dataType = EatToken(m_LookAhead->GetType());
 
 					initializer = std::make_shared<AST::VariableStatement>(typeQualifier, dataType, VariableDeclarationList());
 					initializerType = AST::ForInitializerType::VariableStatement;
@@ -354,8 +354,8 @@ namespace Eye
 			EatToken(Lexer::TokenType::KeywordFunction);
 			
 			if (!IsDataTypeKeyword(m_LookAhead))
-				EYEPARSER_THROW_UNEXPECTED_TOKEN(m_LookAhead.GetTypeString(), "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
-			Lexer::Token returnType = EatToken(m_LookAhead.GetType());
+				EYEPARSER_THROW_UNEXPECTED_TOKEN(m_LookAhead->GetTypeString(), "DataTypeKeyword", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
+			std::shared_ptr<Lexer::Token> returnType = EatToken(m_LookAhead->GetType());
 
 			std::shared_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
 
@@ -392,13 +392,13 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::FunctionParameter> Parser::FunctionParameter()
 		{
-			Lexer::Token typeQualifier;
+			std::shared_ptr<Lexer::Token> typeQualifier;
 			if (IsTypeQualifierKeyword(m_LookAhead))
-				typeQualifier = EatToken(m_LookAhead.GetType());
+				typeQualifier = EatToken(m_LookAhead->GetType());
 
 			if (!IsDataTypeKeyword(m_LookAhead))
-					EYEPARSER_THROW_UNEXPECTED_TOKEN(m_LookAhead.GetTypeString(), "DataTypeKeyword", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
-			Lexer::Token dataType = EatToken(m_LookAhead.GetType());
+					EYEPARSER_THROW_UNEXPECTED_TOKEN(m_LookAhead->GetTypeString(), "DataTypeKeyword", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
+			std::shared_ptr<Lexer::Token> dataType = EatToken(m_LookAhead->GetType());
 
 			std::shared_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
 			if (!IsLookAhead(Lexer::TokenType::SymbolRightParenthesis) && !IsLookAhead(Lexer::TokenType::OperatorComma))
@@ -442,9 +442,9 @@ namespace Eye
 				return left;
 
 			if (!IsLHSExpression(left))
-				EYEPARSER_THROW_UNEXPECTED("LHSExpression", "Identifier", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
+				EYEPARSER_THROW_UNEXPECTED("LHSExpression", "Identifier", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
 
-			Lexer::Token op = EatToken(m_LookAhead.GetType());
+			std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 			return std::make_shared<AST::AssignmentExpression>(op, left, AssignmentExpression());
 		}
 
@@ -459,7 +459,7 @@ namespace Eye
 			std::shared_ptr<AST::Expression> left = LogicalANDExpression();
 			while (IsLookAhead(Lexer::TokenType::OperatorLogicalOR))
 			{
-				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				std::shared_ptr<AST::Expression> right = LogicalANDExpression();
 				left = std::make_shared<AST::BinaryExpression>(op, left, right);
 			}
@@ -477,7 +477,7 @@ namespace Eye
 			std::shared_ptr<AST::Expression> left = EqualityExpression();
 			while (IsLookAhead(Lexer::TokenType::OperatorLogicalAND))
 			{
-				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				std::shared_ptr<AST::Expression> right = EqualityExpression();
 				left = std::make_shared<AST::BinaryExpression>(op, left, right);
 			}
@@ -495,7 +495,7 @@ namespace Eye
 			std::shared_ptr<AST::Expression> left = RelationalExpression();
 			while (IsEqualityOperator(m_LookAhead))
 			{
-				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				std::shared_ptr<AST::Expression> right = RelationalExpression();
 				left = std::make_shared<AST::BinaryExpression>(op, left, right);
 			}
@@ -513,7 +513,7 @@ namespace Eye
 			std::shared_ptr<AST::Expression> left = AdditiveBinaryExpression();
 			while (IsRelationalOperator(m_LookAhead))
 			{
-				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				std::shared_ptr<AST::Expression> right = AdditiveBinaryExpression();
 				left = std::make_shared<AST::BinaryExpression>(op, left, right);
 			}
@@ -531,7 +531,7 @@ namespace Eye
 			std::shared_ptr<AST::Expression> left = MultiplicativeBinaryExpression();
 			while (IsAdditiveOperator(m_LookAhead))
 			{
-				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				std::shared_ptr<AST::Expression> right = MultiplicativeBinaryExpression();
 				left = std::make_shared<AST::BinaryExpression>(op, left, right);
 			}
@@ -549,7 +549,7 @@ namespace Eye
 			std::shared_ptr<AST::Expression> left = UnaryExpression();
 			while (IsMultiplicativeOperator(m_LookAhead))
 			{
-				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				std::shared_ptr<AST::Expression> right = UnaryExpression();
 				left = std::make_shared<AST::BinaryExpression>(op, left, right);
 			}
@@ -566,7 +566,7 @@ namespace Eye
 		{
 			if (IsUnaryOperator(m_LookAhead))
 			{
-				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				return std::make_shared<AST::UnaryExpression>(op, UnaryExpression());
 			}
 
@@ -669,7 +669,7 @@ namespace Eye
 			std::shared_ptr<AST::Expression> primaryExpression = PrimaryExpression();
 			if (IsPostfixOperator(m_LookAhead))
 			{
-				Lexer::Token op = EatToken(m_LookAhead.GetType());
+				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				return std::make_shared<AST::PostfixExpression>(op, primaryExpression);
 			}
 			return primaryExpression;
@@ -704,7 +704,7 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::LiteralExpression> Parser::LiteralExpression()
 		{
-			switch (m_LookAhead.GetType())
+			switch (m_LookAhead->GetType())
 			{
 			case Lexer::TokenType::LiteralInteger:
 				return IntegerLiteral();
@@ -717,7 +717,7 @@ namespace Eye
 			case Lexer::TokenType::LiteralNull:
 				return NullLiteral();
 			default:
-				EYEPARSER_THROW_UNEXPECTED_TOKEN(m_LookAhead.GetTypeString(), "Literal", m_LookAhead.GetPosition().Line, m_LookAhead.GetPosition().Col, m_LookAhead.GetPosition().FileName);
+				EYEPARSER_THROW_UNEXPECTED_TOKEN(m_LookAhead->GetTypeString(), "Literal", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
 				break;
 			}
 
@@ -731,8 +731,8 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::LiteralExpression> Parser::IntegerLiteral()
 		{
-			Lexer::Token token = EatToken(Lexer::TokenType::LiteralInteger);
-			return std::make_shared<AST::LiteralExpression>((AST::LiteralIntegerType)token.GetValue<Lexer::IntegerType>());
+			std::shared_ptr<Lexer::Token> token = EatToken(Lexer::TokenType::LiteralInteger);
+			return std::make_shared<AST::LiteralExpression>((AST::LiteralIntegerType)token->GetValue<Lexer::IntegerType>());
 		}
 
 		/*
@@ -742,8 +742,8 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::LiteralExpression> Parser::FloatLiteral()
 		{
-			Lexer::Token token = EatToken(Lexer::TokenType::LiteralFloat);
-			return std::make_shared<AST::LiteralExpression>((AST::LiteralFloatType)token.GetValue<Lexer::FloatType>());
+			std::shared_ptr<Lexer::Token> token = EatToken(Lexer::TokenType::LiteralFloat);
+			return std::make_shared<AST::LiteralExpression>((AST::LiteralFloatType)token->GetValue<Lexer::FloatType>());
 		}
 		
 		/*
@@ -753,8 +753,8 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::LiteralExpression> Parser::StringLiteral()
 		{
-			Lexer::Token token = EatToken(Lexer::TokenType::LiteralString);
-			return std::make_shared<AST::LiteralExpression>((AST::LiteralStringType)token.GetValue<Lexer::StringType>());
+			std::shared_ptr<Lexer::Token> token = EatToken(Lexer::TokenType::LiteralString);
+			return std::make_shared<AST::LiteralExpression>((AST::LiteralStringType)token->GetValue<Lexer::StringType>());
 		}
 		
 		/*
@@ -764,8 +764,8 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::LiteralExpression> Parser::BooleanLiteral()
 		{
-			Lexer::Token token = EatToken(Lexer::TokenType::LiteralBoolean);
-			return std::make_shared<AST::LiteralExpression>((AST::LiteralBooleanType)token.GetValue<Lexer::BooleanType>());
+			std::shared_ptr<Lexer::Token> token = EatToken(Lexer::TokenType::LiteralBoolean);
+			return std::make_shared<AST::LiteralExpression>((AST::LiteralBooleanType)token->GetValue<Lexer::BooleanType>());
 		}
 		
 		/*
@@ -775,7 +775,7 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::LiteralExpression> Parser::NullLiteral()
 		{
-			Lexer::Token token = EatToken(Lexer::TokenType::LiteralNull);
+			std::shared_ptr<Lexer::Token> token = EatToken(Lexer::TokenType::LiteralNull);
 			return std::make_shared<AST::LiteralExpression>(AST::LiteralType::Null);
 		}
 
@@ -804,7 +804,7 @@ namespace Eye
 
 		bool Parser::IsLookAhead(Lexer::TokenType type) const
 		{
-			return (m_LookAhead.GetType() == type);
+			return (m_LookAhead->GetType() == type);
 		}
 
 		/*
@@ -816,9 +816,9 @@ namespace Eye
 				| NullLiteral
 				;
 		*/
-		bool Parser::IsLiteral(Lexer::Token token) const
+		bool Parser::IsLiteral(const std::shared_ptr<Lexer::Token>& token) const
 		{
-			return (token.GetType() == Lexer::TokenType::LiteralInteger || token.GetType() == Lexer::TokenType::LiteralFloat || token.GetType() == Lexer::TokenType::LiteralString || token.GetType() == Lexer::TokenType::LiteralBoolean || token.GetType() == Lexer::TokenType::LiteralNull);
+			return (token->GetType() == Lexer::TokenType::LiteralInteger || token->GetType() == Lexer::TokenType::LiteralFloat || token->GetType() == Lexer::TokenType::LiteralString || token->GetType() == Lexer::TokenType::LiteralBoolean || token->GetType() == Lexer::TokenType::LiteralNull);
 		}
 
 		/*
@@ -835,12 +835,12 @@ namespace Eye
 				| '<<='
 				;
 		*/
-		bool Parser::IsAssignmentOperator(Lexer::Token token) const
+		bool Parser::IsAssignmentOperator(const std::shared_ptr<Lexer::Token>& token) const
 		{
-			return (token.GetType() == Lexer::TokenType::OperatorAssignment || token.GetType() == Lexer::TokenType::OperatorAssignmentPlus || token.GetType() == Lexer::TokenType::OperatorAssignmentMinus ||
-				token.GetType() == Lexer::TokenType::OperatorAssignmentStar || token.GetType() == Lexer::TokenType::OperatorAssignmentSlash || token.GetType() == Lexer::TokenType::OperatorAssignmentModulo ||
-				token.GetType() == Lexer::TokenType::OperatorAssignmentBitwiseAND || token.GetType() == Lexer::TokenType::OperatorAssignmentBitwiseOR || token.GetType() == Lexer::TokenType::OperatorAssignmentBitwiseXOR
-				|| token.GetType() == Lexer::TokenType::OperatorAssignmentBitwiseLeftShift || token.GetType() == Lexer::TokenType::OperatorAssignmentBitwiseRightShift || token.GetType() == Lexer::TokenType::OperatorAssignmentBitwiseXOR);
+			return (token->GetType() == Lexer::TokenType::OperatorAssignment || token->GetType() == Lexer::TokenType::OperatorAssignmentPlus || token->GetType() == Lexer::TokenType::OperatorAssignmentMinus ||
+				token->GetType() == Lexer::TokenType::OperatorAssignmentStar || token->GetType() == Lexer::TokenType::OperatorAssignmentSlash || token->GetType() == Lexer::TokenType::OperatorAssignmentModulo ||
+				token->GetType() == Lexer::TokenType::OperatorAssignmentBitwiseAND || token->GetType() == Lexer::TokenType::OperatorAssignmentBitwiseOR || token->GetType() == Lexer::TokenType::OperatorAssignmentBitwiseXOR
+				|| token->GetType() == Lexer::TokenType::OperatorAssignmentBitwiseLeftShift || token->GetType() == Lexer::TokenType::OperatorAssignmentBitwiseRightShift || token->GetType() == Lexer::TokenType::OperatorAssignmentBitwiseXOR);
 		}
 
 		/*
@@ -849,9 +849,9 @@ namespace Eye
 				| '!=
 				;
 		*/
-		bool Parser::IsEqualityOperator(Lexer::Token token) const
+		bool Parser::IsEqualityOperator(const std::shared_ptr<Lexer::Token>& token) const
 		{
-			return (token.GetType() == Lexer::TokenType::OperatorRelationalEquals || token.GetType() == Lexer::TokenType::OperatorRelationalNotEquals);
+			return (token->GetType() == Lexer::TokenType::OperatorRelationalEquals || token->GetType() == Lexer::TokenType::OperatorRelationalNotEquals);
 		}
 
 		/*
@@ -862,10 +862,10 @@ namespace Eye
 				| '>='
 				;
 		*/
-		bool Parser::IsRelationalOperator(Lexer::Token token) const
+		bool Parser::IsRelationalOperator(const std::shared_ptr<Lexer::Token>& token) const
 		{
-			return (token.GetType() == Lexer::TokenType::OperatorRelationalSmaller || token.GetType() == Lexer::TokenType::OperatorRelationalSmallerEquals || token.GetType() == Lexer::TokenType::OperatorRelationalGreater ||
-				token.GetType() == Lexer::TokenType::OperatorRelationalGreaterEquals);
+			return (token->GetType() == Lexer::TokenType::OperatorRelationalSmaller || token->GetType() == Lexer::TokenType::OperatorRelationalSmallerEquals || token->GetType() == Lexer::TokenType::OperatorRelationalGreater ||
+				token->GetType() == Lexer::TokenType::OperatorRelationalGreaterEquals);
 		}
 
 		/*
@@ -874,9 +874,9 @@ namespace Eye
 				| '-'
 				;
 		*/
-		bool Parser::IsAdditiveOperator(Lexer::Token token) const
+		bool Parser::IsAdditiveOperator(const std::shared_ptr<Lexer::Token>& token) const
 		{
-			return (token.GetType() == Lexer::TokenType::OperatorBinaryPlus || token.GetType() == Lexer::TokenType::OperatorBinaryMinus);
+			return (token->GetType() == Lexer::TokenType::OperatorBinaryPlus || token->GetType() == Lexer::TokenType::OperatorBinaryMinus);
 		}
 
 		/*
@@ -886,9 +886,9 @@ namespace Eye
 				| '%'
 				;
 		*/
-		bool Parser::IsMultiplicativeOperator(Lexer::Token token) const
+		bool Parser::IsMultiplicativeOperator(const std::shared_ptr<Lexer::Token>& token) const
 		{
-			return (token.GetType() == Lexer::TokenType::OperatorBinaryStar || token.GetType() == Lexer::TokenType::OperatorBinarySlash || token.GetType() == Lexer::TokenType::OperatorBinaryModulo);
+			return (token->GetType() == Lexer::TokenType::OperatorBinaryStar || token->GetType() == Lexer::TokenType::OperatorBinarySlash || token->GetType() == Lexer::TokenType::OperatorBinaryModulo);
 		}
 
 		/*
@@ -900,9 +900,9 @@ namespace Eye
 				| '--'
 				;
 		*/
-		bool Parser::IsUnaryOperator(Lexer::Token token) const
+		bool Parser::IsUnaryOperator(const std::shared_ptr<Lexer::Token>& token) const
 		{
-			return (token.GetType() == Lexer::TokenType::OperatorBinaryPlus || token.GetType() == Lexer::TokenType::OperatorBinaryMinus || token.GetType() == Lexer::TokenType::OperatorLogicalNOT || token.GetType() == Lexer::TokenType::OperatorArithmeticIncrement || token.GetType() == Lexer::TokenType::OperatorArithmeticDecrement);
+			return (token->GetType() == Lexer::TokenType::OperatorBinaryPlus || token->GetType() == Lexer::TokenType::OperatorBinaryMinus || token->GetType() == Lexer::TokenType::OperatorLogicalNOT || token->GetType() == Lexer::TokenType::OperatorArithmeticIncrement || token->GetType() == Lexer::TokenType::OperatorArithmeticDecrement);
 		}
 
 		/*
@@ -911,9 +911,9 @@ namespace Eye
 				| '--'
 				;
 		*/
-		bool Parser::IsPostfixOperator(Lexer::Token token) const
+		bool Parser::IsPostfixOperator(const std::shared_ptr<Lexer::Token>& token) const
 		{
-			return (token.GetType() == Lexer::TokenType::OperatorArithmeticIncrement || token.GetType() == Lexer::TokenType::OperatorArithmeticDecrement);
+			return (token->GetType() == Lexer::TokenType::OperatorArithmeticIncrement || token->GetType() == Lexer::TokenType::OperatorArithmeticDecrement);
 		}
 
 		/*
@@ -921,9 +921,9 @@ namespace Eye
 				: 'const'
 				;
 		*/
-		bool Parser::IsTypeQualifierKeyword(Lexer::Token token) const
+		bool Parser::IsTypeQualifierKeyword(const std::shared_ptr<Lexer::Token>& token) const
 		{
-			return (token.GetType() == Lexer::TokenType::KeywordTypeQualifierConst);
+			return (token->GetType() == Lexer::TokenType::KeywordTypeQualifierConst);
 		}
 
 		/*
@@ -934,9 +934,9 @@ namespace Eye
 				| 'bool'
 				;
 		*/
-		bool Parser::IsDataTypeKeyword(Lexer::Token token) const
+		bool Parser::IsDataTypeKeyword(const std::shared_ptr<Lexer::Token>& token) const
 		{
-			return (token.GetType() == Lexer::TokenType::KeywordDataTypeInt || token.GetType() == Lexer::TokenType::KeywordDataTypeFloat || token.GetType() == Lexer::TokenType::KeywordDataTypeStr || token.GetType() == Lexer::TokenType::KeywordDataTypeBool || token.GetType() == Lexer::TokenType::KeywordDataTypeVoid);
+			return (token->GetType() == Lexer::TokenType::KeywordDataTypeInt || token->GetType() == Lexer::TokenType::KeywordDataTypeFloat || token->GetType() == Lexer::TokenType::KeywordDataTypeStr || token->GetType() == Lexer::TokenType::KeywordDataTypeBool || token->GetType() == Lexer::TokenType::KeywordDataTypeVoid);
 		}
 
 		/*
@@ -954,13 +954,13 @@ namespace Eye
 			return m_CurrentTokenIndex < m_Tokens.size();
 		}
 
-		Lexer::Token Parser::NextToken()
+		std::shared_ptr<Lexer::Token> Parser::NextToken()
 		{
 			if (!HasToken())
 				return {};
 
-			Lexer::Token token = m_Tokens[m_CurrentTokenIndex++];
-			while (token && (token.GetType() == Lexer::TokenType::Newline || token.GetType() == Lexer::TokenType::Comment || (token.GetType() == Lexer::TokenType::SymbolBackslash)))
+			std::shared_ptr<Lexer::Token> token = m_Tokens[m_CurrentTokenIndex++];
+			while (token && (token->GetType() == Lexer::TokenType::Newline || token->GetType() == Lexer::TokenType::Comment || (token->GetType() == Lexer::TokenType::SymbolBackslash)))
 			{
 				if (HasToken())
 					token = m_Tokens[m_CurrentTokenIndex++];
@@ -971,13 +971,13 @@ namespace Eye
 			return token;
 		}
 
-		Lexer::Token Parser::PeekToken()
+		std::shared_ptr<Lexer::Token> Parser::PeekToken()
 		{
 			if (!HasToken())
 				return {};
 
-			Lexer::Token token = m_Tokens[m_CurrentTokenIndex];
-			while (token && (token.GetType() == Lexer::TokenType::Newline || token.GetType() == Lexer::TokenType::Comment || (token.GetType() == Lexer::TokenType::SymbolBackslash)))
+			std::shared_ptr<Lexer::Token> token = m_Tokens[m_CurrentTokenIndex];
+			while (token && (token->GetType() == Lexer::TokenType::Newline || token->GetType() == Lexer::TokenType::Comment || (token->GetType() == Lexer::TokenType::SymbolBackslash)))
 			{
 				if (HasToken())
 					token = m_Tokens[++m_CurrentTokenIndex];
@@ -988,11 +988,11 @@ namespace Eye
 			return token;
 		}
 
-		Lexer::Token Parser::EatToken(Lexer::TokenType type)
+		std::shared_ptr<Lexer::Token> Parser::EatToken(Lexer::TokenType type)
 		{
-			Lexer::Token token = m_LookAhead;
-			if (!token || token.GetType() != type)
-				EYEPARSER_THROW_UNEXPECTED_TOKEN(token.GetTypeString(), Lexer::TokenTypeToString(type), token.GetPosition().Line, token.GetPosition().Col, token.GetPosition().FileName);
+			std::shared_ptr<Lexer::Token> token = m_LookAhead;
+			if (!token || token->GetType() != type)
+				EYEPARSER_THROW_UNEXPECTED_TOKEN(token->GetTypeString(), Lexer::TokenTypeToString(type), token->GetPosition().Line, token->GetPosition().Col, token->GetPosition().FileName);
 			m_LookAhead = NextToken();
 			return token;
 		}

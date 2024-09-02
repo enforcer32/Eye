@@ -14,7 +14,7 @@ namespace Eye
 			m_Position.FileName = filepath;
 			m_BufferStream = std::istringstream(FileIO::ReadFileContent(filepath));;
 
-			Token token = NextToken();
+			std::shared_ptr<Token> token = NextToken();
 			while (token)
 			{
 				m_Tokens.push_back(token);
@@ -25,14 +25,14 @@ namespace Eye
 			return true;
 		}
 
-		std::vector<Token> Lexer::GetTokens() const
+		std::vector<std::shared_ptr<Token>> Lexer::GetTokens() const
 		{
 			return m_Tokens;
 		}
 
-		Token Lexer::NextToken()
+		std::shared_ptr<Token> Lexer::NextToken()
 		{
-			Token token;
+			std::shared_ptr<Token> token;
 
 			char c = PeekChar();
 			switch (c)
@@ -123,24 +123,24 @@ namespace Eye
 			return token;
 		}
 
-		Token Lexer::HandleWhitespace()
+		std::shared_ptr<Token> Lexer::HandleWhitespace()
 		{
 			NextChar();
 			return NextToken();
 		}
 
-		Token Lexer::HandleNewline()
+		std::shared_ptr<Token> Lexer::HandleNewline()
 		{
 			NextChar();
-			return Token(TokenType::Newline, m_Position);
+			return std::make_shared<Token>(TokenType::Newline, m_Position);
 		}
 
-		Token Lexer::MakeEOFToken()
+		std::shared_ptr<Token> Lexer::MakeEOFToken()
 		{
-			return Token(TokenType::EndOfFile, m_Position);
+			return std::make_shared<Token>(TokenType::EndOfFile, m_Position);
 		}
 
-		Token Lexer::MakeNumberToken()
+		std::shared_ptr<Token> Lexer::MakeNumberToken()
 		{
 			bool floatNumber = false;
 
@@ -156,15 +156,15 @@ namespace Eye
 				}
 			}
 
-			return (floatNumber ? Token((FloatType)std::atof(numbers.c_str()), m_Position) : Token((IntegerType)std::atoll(numbers.c_str()), m_Position));
+			return (floatNumber ? std::make_shared<Token>((FloatType)std::atof(numbers.c_str()), m_Position) : std::make_shared<Token>((IntegerType)std::atoll(numbers.c_str()), m_Position));
 		}
 
-		Token Lexer::MakeNumberBaseToken()
+		std::shared_ptr<Token> Lexer::MakeNumberBaseToken()
 		{
-			if (m_Tokens.empty() || !(m_Tokens.back().GetType() == TokenType::LiteralInteger && m_Tokens.back().GetValue<IntegerType>() == 0))
+			if (m_Tokens.empty() || !(m_Tokens.back()->GetType() == TokenType::LiteralInteger && m_Tokens.back()->GetValue<IntegerType>() == 0))
 				return MakeIdentifierToken();
 
-			Token lastToken = m_Tokens.back();
+			std::shared_ptr<Token> lastToken = m_Tokens.back();
 			m_Tokens.pop_back();
 
 			char baseType = PeekChar();
@@ -176,7 +176,7 @@ namespace Eye
 			return {};
 		}
 
-		Token Lexer::MakeHexNumberToken()
+		std::shared_ptr<Token> Lexer::MakeHexNumberToken()
 		{
 			NextChar();
 
@@ -187,10 +187,10 @@ namespace Eye
 				NextChar();
 			}
 
-			return Token((IntegerType)std::strtol(hexStr.c_str(), 0, 16), m_Position);
+			return std::make_shared<Token>((IntegerType)std::strtol(hexStr.c_str(), 0, 16), m_Position);
 		}
 
-		Token Lexer::MakeBinaryNumberToken()
+		std::shared_ptr<Token> Lexer::MakeBinaryNumberToken()
 		{
 			NextChar();
 
@@ -204,10 +204,10 @@ namespace Eye
 			if (!IsBinaryNumber(binaryStr))
 				EYELEXER_THROW_UNEXPECTED_TOKEN(("0b" + binaryStr), m_Position.Line, m_Position.Col, m_Position.FileName);
 
-			return Token((IntegerType)std::strtol(binaryStr.c_str(), 0, 2), m_Position);
+			return std::make_shared<Token>((IntegerType)std::strtol(binaryStr.c_str(), 0, 2), m_Position);
 		}
 
-		Token Lexer::MakeStringToken(char sdelim, char edelim)
+		std::shared_ptr<Token> Lexer::MakeStringToken(char sdelim, char edelim)
 		{
 			if (NextChar() != sdelim)
 				EYELEXER_THROW_UNEXPECTED_TOKEN(sdelim, m_Position.Line, m_Position.Col, m_Position.FileName);
@@ -216,10 +216,10 @@ namespace Eye
 			for (char c = NextChar(); c != edelim && c != EOF; c = NextChar())
 				str.push_back(c);
 
-			return Token(str, m_Position);
+			return std::make_shared<Token>(str, m_Position);
 		}
 
-		Token Lexer::MakeOperatorToken()
+		std::shared_ptr<Token> Lexer::MakeOperatorToken()
 		{
 			bool singleOperator = true;
 
@@ -260,16 +260,16 @@ namespace Eye
 			if (singleOperator && !IsValidOperator(opStr))
 				EYELEXER_THROW_UNEXPECTED_TOKEN(opStr, m_Position.Line, m_Position.Col, m_Position.FileName);
 
-			return Token(StringToTokenType(opStr), m_Position);
+			return std::make_shared<Token>(StringToTokenType(opStr), m_Position);
 		}
 
-		Token Lexer::MakeSymbolToken()
+		std::shared_ptr<Token> Lexer::MakeSymbolToken()
 		{
 			char c = NextChar();
-			return Token(StringToTokenType(std::string{ c }), m_Position);
+			return std::make_shared<Token>(StringToTokenType(std::string{ c }), m_Position);
 		}
 
-		Token Lexer::MakeSpecialToken()
+		std::shared_ptr<Token> Lexer::MakeSpecialToken()
 		{
 			char c = PeekChar();
 			if (std::isalpha(c) || c == '_')
@@ -277,7 +277,7 @@ namespace Eye
 			return {};
 		}
 
-		Token Lexer::MakeIdentifierToken()
+		std::shared_ptr<Token> Lexer::MakeIdentifierToken()
 		{
 			std::string identifier;
 
@@ -288,14 +288,14 @@ namespace Eye
 			}
 
 			if (IsKeyword(identifier) && (identifier == "true" || identifier == "false"))
-				return Token((identifier == "true" ? true : false), m_Position);
+				return std::make_shared<Token>((identifier == "true" ? true : false), m_Position);
 			else if (IsKeyword(identifier) && identifier == "null")
-				return Token(TokenType::LiteralNull, m_Position);
+				return std::make_shared<Token>(TokenType::LiteralNull, m_Position);
 
-			return Token((IsKeyword(identifier) ? StringToTokenType(identifier) : TokenType::Identifier), identifier, m_Position);
+			return std::make_shared<Token>((IsKeyword(identifier) ? StringToTokenType(identifier) : TokenType::Identifier), identifier, m_Position);
 		}
 
-		Token Lexer::HandleSlashOperator()
+		std::shared_ptr<Token> Lexer::HandleSlashOperator()
 		{
 			char c = PeekChar();
 			if (c == '/')
@@ -320,7 +320,7 @@ namespace Eye
 			return {};
 		}
 
-		Token Lexer::MakeSingleLineCommentToken()
+		std::shared_ptr<Token> Lexer::MakeSingleLineCommentToken()
 		{
 			std::string comment;
 			for (char c = PeekChar(); (c != '\n' && c != EOF); c = PeekChar())
@@ -328,10 +328,10 @@ namespace Eye
 				comment += c;
 				c = NextChar();
 			}
-			return Token(TokenType::Comment, comment, m_Position);
+			return std::make_shared<Token>(TokenType::Comment, comment, m_Position);
 		}
 
-		Token Lexer::MakeMultiLineCommentToken()
+		std::shared_ptr<Token> Lexer::MakeMultiLineCommentToken()
 		{
 			std::string comment;
 
@@ -359,7 +359,7 @@ namespace Eye
 				}
 			}
 
-			return Token(TokenType::Comment, comment, m_Position);
+			return std::make_shared<Token>(TokenType::Comment, comment, m_Position);
 		}
 
 		bool Lexer::IsOperator(char op) const
