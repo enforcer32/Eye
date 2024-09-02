@@ -1,0 +1,4 @@
+Static TypeChecker
+Strong Typing
+No Type Inference
+No Generics

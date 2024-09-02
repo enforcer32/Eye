@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EYEAST/Program.h"
+#include <EYEAST/Program.h>
 
 #include <string>
 

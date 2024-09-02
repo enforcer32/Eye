@@ -13,3 +13,4 @@ Namespace
 Virtual Machine
 Bytecode
 Native Code Generator
+TypeChecker
