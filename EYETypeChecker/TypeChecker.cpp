@@ -16,6 +16,9 @@ namespace Eye
 
 		void TypeChecker::TypeCheckStatement(const std::shared_ptr<AST::Statement>& stmt)
 		{
+			if (!stmt)
+				return;
+
 			switch (stmt->GetType())
 			{
 			case AST::StatementType::ExpressionStatement:
@@ -26,6 +29,9 @@ namespace Eye
 				break;
 			case AST::StatementType::VariableStatement:
 				TypeCheckVariableStatement(std::static_pointer_cast<AST::VariableStatement>(stmt));
+				break;
+			case AST::StatementType::ControlStatement:
+				TypeCheckControlStatement(std::static_pointer_cast<AST::ControlStatement>(stmt));
 				break;
 			default:
 				EYE_LOG_CRITICAL("EYETypeChecker Unknown Statement Type!");
@@ -62,8 +68,20 @@ namespace Eye
 			}
 		}
 
+		void TypeChecker::TypeCheckControlStatement(const std::shared_ptr<AST::ControlStatement>& ctrlStmt)
+		{
+			Type conditionType = TypeCheckExpression(ctrlStmt->GetCondition());
+			if(conditionType != Type::Boolean)
+				EYE_LOG_CRITICAL("EYETypeChecker ControlStatement->Expected {} Type for Condition (\"if()\") but got {} Type Instead!", TypeToString(Type::Boolean), TypeToString(conditionType));
+			TypeCheckStatement(ctrlStmt->GetConsequent());
+			TypeCheckStatement(ctrlStmt->GetAlternate());
+		}
+
 		Type TypeChecker::TypeCheckExpression(const std::shared_ptr<AST::Expression>& expr)
 		{
+			/*if (!expr)
+				EYE_LOG_CRITICAL("EYETypeChecker Unknown Expression Type!");*/
+
 			switch (expr->GetType())	
 			{
 			case AST::ExpressionType::LiteralExpression:
@@ -99,23 +117,55 @@ namespace Eye
 			Type leftType = TypeCheckExpression(binaryExpr->GetLeft());
 			Type rightType = TypeCheckExpression(binaryExpr->GetRight());
 			
-			if (binaryExpr->GetOperator()->GetType() == Lexer::TokenType::OperatorBinaryPlus)
+			switch (binaryExpr->GetOperator()->GetType())
 			{
-				if ((leftType == Type::Integer || leftType == Type::Float) && (rightType != Type::Integer && rightType != Type::Float))
-				{
-					if (rightType == Type::String)
-					{
-						std::string value = std::static_pointer_cast<AST::LiteralExpression>(binaryExpr->GetRight())->GetValue<AST::LiteralStringType>();
-						EYE_LOG_CRITICAL("EYETypeChecker Binary(+)->Expected Integer/Float Type for (\"{}\") but got {} Type Instead!", value, TypeToString(rightType));
-					}
-					else if (rightType == Type::Boolean)
-					{
-						std::string value = (std::static_pointer_cast<AST::LiteralExpression>(binaryExpr->GetRight())->GetValue<AST::LiteralBooleanType>() ? "true" : "false");
-						EYE_LOG_CRITICAL("EYETypeChecker Binary(+)->Expected Integer/Float for Type ({}) but got {} Type Instead!", value, TypeToString(rightType));
-					}
-				}
-				return leftType;
+			case Lexer::TokenType::OperatorBinaryPlus:
+				return TypeCheckBinaryExpressionArithmeticPlus(leftType, rightType, binaryExpr);
+			case Lexer::TokenType::OperatorRelationalEquals:
+			case Lexer::TokenType::OperatorRelationalNotEquals:
+			case Lexer::TokenType::OperatorRelationalSmaller:
+			case Lexer::TokenType::OperatorRelationalGreater:
+			case Lexer::TokenType::OperatorRelationalSmallerEquals:
+			case Lexer::TokenType::OperatorRelationalGreaterEquals:
+				return TypeCheckBinaryExpressionRelational(leftType, rightType, binaryExpr);
+			default:
+				break;
 			}
+		}
+
+		Type TypeChecker::TypeCheckBinaryExpressionArithmeticPlus(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
+		{
+			// Integers/Floats
+			if ((leftType == Type::Integer || leftType == Type::Float) && (rightType != Type::Integer && rightType != Type::Float))
+			{
+				if (rightType == Type::String)
+				{
+					std::string value = std::static_pointer_cast<AST::LiteralExpression>(binaryExpr->GetRight())->GetValue<AST::LiteralStringType>();
+					EYE_LOG_CRITICAL("EYETypeChecker Binary(+)->Expected Integer/Float Type for (\"{}\") but got {} Type Instead!", value, TypeToString(rightType));
+				}
+				else if (rightType == Type::Boolean)
+				{
+					std::string value = (std::static_pointer_cast<AST::LiteralExpression>(binaryExpr->GetRight())->GetValue<AST::LiteralBooleanType>() ? "true" : "false");
+					EYE_LOG_CRITICAL("EYETypeChecker Binary(+)->Expected Integer/Float for Type ({}) but got {} Type Instead!", value, TypeToString(rightType));
+				}
+			}
+			return leftType;
+		}
+
+		Type TypeChecker::TypeCheckBinaryExpressionRelational(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
+		{
+			if (leftType != rightType)
+			{
+				std::string value;
+				if(rightType == Type::String)
+					value = std::static_pointer_cast<AST::LiteralExpression>(binaryExpr->GetRight())->GetValue<AST::LiteralStringType>();
+				else if(rightType == Type::Integer || rightType == Type::Float)
+					value = std::to_string(std::static_pointer_cast<AST::LiteralExpression>(binaryExpr->GetRight())->GetValue<AST::LiteralIntegerType>());
+				else if(rightType == Type::Boolean)
+					value = (std::static_pointer_cast<AST::LiteralExpression>(binaryExpr->GetRight())->GetValue<AST::LiteralBooleanType>() ? "true" : "false");
+				EYE_LOG_CRITICAL("EYETypeChecker Binary Relational({})->Expected {} Type for (\"{}\") but got {} Type Instead!", binaryExpr->GetOperator()->GetTypeString(), TypeToString(leftType), value, TypeToString(rightType));
+			}
+			return Type::Boolean;
 		}
 
 		Type TypeChecker::LexerToTypeCheckerType(Lexer::TokenType type)
@@ -129,7 +179,6 @@ namespace Eye
 			else if (type == Lexer::TokenType::KeywordDataTypeBool)
 				return Type::Boolean;
 			EYE_LOG_CRITICAL("EYETypeChecker LexerToTypeCheckerType Invalid Type!");
-			return Type::Invalid;
 		}
 
 		void TypeChecker::BeginBlockScope()

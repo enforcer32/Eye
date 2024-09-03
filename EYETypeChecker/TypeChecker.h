@@ -8,6 +8,7 @@
 #include <EYEAST/Statements/ExpressionStatement.h>
 #include <EYEAST/Statements/BlockStatement.h>
 #include <EYEAST/Statements/VariableStatement.h>
+#include <EYEAST/Statements/ControlStatement.h>
 
 #include <EYEAST/Expressions/Expression.h>
 #include <EYEAST/Expressions/LiteralExpression.h>
@@ -29,10 +30,13 @@ namespace Eye
 			void TypeCheckExpressionStatement(const std::shared_ptr<AST::ExpressionStatement>& exprStmt);
 			void TypeCheckBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt);
 			void TypeCheckVariableStatement(const std::shared_ptr<AST::VariableStatement>& varStmt);
+			void TypeCheckControlStatement(const std::shared_ptr<AST::ControlStatement>& ctrlStmt);
 
 			Type TypeCheckExpression(const std::shared_ptr<AST::Expression>& expr);
 			Type TypeCheckLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);
 			Type TypeCheckBinaryExpression(const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
+			Type TypeCheckBinaryExpressionArithmeticPlus(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
+			Type TypeCheckBinaryExpressionRelational(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
 
 		private:
 			Type LexerToTypeCheckerType(Lexer::TokenType type);

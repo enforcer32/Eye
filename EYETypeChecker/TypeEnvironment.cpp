@@ -16,25 +16,14 @@ namespace Eye
 			return m_Parent;
 		}
 
-		bool TypeEnvironment::DefineVariable(const std::string& identifier, Type value)
+		void TypeEnvironment::DefineVariable(const std::string& identifier, Type value)
 		{
-			if (m_Variables.find(identifier) != m_Variables.end())
-			{
-				EYE_LOG_ERROR("EYETypeEnvironment->Redeclaration of Variable({})", identifier);
-				return false;
-			}
 			m_Variables[identifier] = value;
 			EYE_LOG_INFO("EYETypeEnvironment->Defined Variable({}, {})", identifier, TypeToString(value));
-			return true;
 		}
 
 		void TypeEnvironment::AssignVariable(const std::string& identifier, Type value)
 		{
-			if (GetVariable(identifier) == Type::Invalid)
-			{
-				EYE_LOG_ERROR("EYETypeEnvironment->Variable Not Declared: ({})", identifier);
-				return;
-			}
 			AssignResolveVariable(identifier, value);
 			EYE_LOG_INFO("EYETypeEnvironment->Defined Assigned({}, {})", identifier, TypeToString(value));
 		}
@@ -50,7 +39,6 @@ namespace Eye
 				return m_Variables[identifier];
 			else if (m_Parent)
 				return m_Parent->GetResolveVariable(identifier);
-			return Type::Invalid;
 		}
 
 		void TypeEnvironment::AssignResolveVariable(const std::string& identifier, Type value)

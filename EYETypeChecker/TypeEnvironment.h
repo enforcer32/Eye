@@ -16,7 +16,7 @@ namespace Eye
 			TypeEnvironment(const std::shared_ptr<TypeEnvironment>& parent = nullptr);
 
 			std::shared_ptr<TypeEnvironment> GetParent() const;
-			bool DefineVariable(const std::string& identifier, Type value);
+			void DefineVariable(const std::string& identifier, Type value);
 			void AssignVariable(const std::string& identifier, Type value);
 			Type GetVariable(const std::string& identifier);
 

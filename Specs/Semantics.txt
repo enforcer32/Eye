@@ -1,5 +1,10 @@
 Statements Must end with SemiColon
 Variables Always Declared before Use
+Variables should never be ReDeclared within same scope
 Functions must always define return type
 Functions with non-void return types must always return data
 Const Variables should never be changed
+ParenthesizedExpressions must always contain Expressions: Example->ControlStatement, IterationStatements ()
+Function Parameters Do Not Have to Follow ParenthesizedExpressions Rules because func() is not an expression, its a statement list (int x1, int x2) etc...
+ControlStatement and IterationStatement Bodies are Optional
+Function Body is not optional (Might Change, Function Definition/Declarations/Forward Declaring?)
