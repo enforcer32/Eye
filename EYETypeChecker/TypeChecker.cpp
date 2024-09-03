@@ -21,6 +21,9 @@ namespace Eye
 			case AST::StatementType::ExpressionStatement:
 				TypeCheckExpressionStatement(std::static_pointer_cast<AST::ExpressionStatement>(stmt));
 				break;
+			case AST::StatementType::BlockStatement:
+				TypeCheckBlockStatement(std::static_pointer_cast<AST::BlockStatement>(stmt));
+				break;
 			case AST::StatementType::VariableStatement:
 				TypeCheckVariableStatement(std::static_pointer_cast<AST::VariableStatement>(stmt));
 				break;
@@ -33,6 +36,14 @@ namespace Eye
 		void TypeChecker::TypeCheckExpressionStatement(const std::shared_ptr<AST::ExpressionStatement>& exprStmt)
 		{
 			TypeCheckExpression(exprStmt->GetExpression());
+		}
+
+		void TypeChecker::TypeCheckBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt)
+		{
+			BeginBlockScope();
+			for (const auto& stmt : blockStmt->GetStatementList())
+				TypeCheckStatement(stmt);
+			EndBlockScope();
 		}
 
 		void TypeChecker::TypeCheckVariableStatement(const std::shared_ptr<AST::VariableStatement>& varStmt)
@@ -119,6 +130,16 @@ namespace Eye
 				return Type::Boolean;
 			EYE_LOG_CRITICAL("EYETypeChecker LexerToTypeCheckerType Invalid Type!");
 			return Type::Invalid;
+		}
+
+		void TypeChecker::BeginBlockScope()
+		{
+			m_TypeEnvironment = std::make_shared<TypeEnvironment>(m_TypeEnvironment);
+		}
+
+		void TypeChecker::EndBlockScope()
+		{
+			m_TypeEnvironment = m_TypeEnvironment->GetParent();
 		}
 	}
 }

@@ -11,6 +11,11 @@ namespace Eye
 		{
 		}
 
+		std::shared_ptr<TypeEnvironment> TypeEnvironment::GetParent() const
+		{
+			return m_Parent;
+		}
+
 		bool TypeEnvironment::DefineVariable(const std::string& identifier, Type value)
 		{
 			if (m_Variables.find(identifier) != m_Variables.end())
