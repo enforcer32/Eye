@@ -30,6 +30,9 @@ namespace Eye
 
 		std::string StringSerializer::SerializeStatement(const std::shared_ptr<AST::Statement>& stmt)
 		{
+			if (!stmt)
+				return "null";
+
 			switch (stmt->GetType())
 			{
 			case AST::StatementType::ExpressionStatement:
@@ -118,12 +121,7 @@ namespace Eye
 			oss << "{\"VariableDeclaration\": {\n";
 			oss << "\"type\": \"VariableDeclaration\",\n";
 			oss << "\"identifier\":" << SerializeIdentifierExpression(variableDeclaration->GetIdentifier()) << ",\n";
-
-			if (variableDeclaration->GetInitializer())
-				oss << "\"initializer\":" << SerializeExpression(variableDeclaration->GetInitializer()) << "\n";
-			else
-				oss << "\"initializer\":" << "null" << "\n";
-
+			oss << "\"initializer\":" << SerializeExpression(variableDeclaration->GetInitializer()) << "\n";
 			oss << "}\n}";
 			return oss.str();
 		}
@@ -135,10 +133,7 @@ namespace Eye
 			oss << "\"type\": \"ControlStatement\",\n";
 			oss << "\"condition\": " << SerializeExpression(controlStmt->GetCondition()) << ",\n";
 			oss << "\"consequent\": " << SerializeStatement(controlStmt->GetConsequent()) << ",\n";
-			if (controlStmt->GetAlternate())
-				oss << "\"alternate\": " << SerializeStatement(controlStmt->GetAlternate()) << "\n";
-			else
-				oss << "\"alternate\": null\n";
+			oss << "\"alternate\": " << SerializeStatement(controlStmt->GetAlternate()) << "\n";
 			oss << "}\n}\n";
 			return oss.str();
 		}
@@ -209,21 +204,9 @@ namespace Eye
 				oss << "\"initializer\": " << SerializeExpression(forStmt->GetInitializer<AST::Expression>()) << ",\n";
 			else
 				oss << "\"initializer\":" << "null" << ",\n";
-
-			if (forStmt->GetCondition())
-				oss << "\"condition\": " << SerializeExpression(forStmt->GetCondition()) << ",\n";
-			else
-				oss << "\"condition\":" << "null" << ",\n";
-
-			if (forStmt->GetUpdate())
-				oss << "\"update\": " << SerializeExpression(forStmt->GetUpdate()) << ",\n";
-			else
-				oss << "\"update\":" << "null" << ",\n";
-
-			if (forStmt->GetBody())
-				oss << "\"body\": " << SerializeStatement(forStmt->GetBody()) << "\n";
-			else
-				oss << "\"body\": " << "null" << "\n";
+			oss << "\"condition\": " << SerializeExpression(forStmt->GetCondition()) << ",\n";
+			oss << "\"update\": " << SerializeExpression(forStmt->GetUpdate()) << ",\n";
+			oss << "\"body\": " << SerializeStatement(forStmt->GetBody()) << "\n";
 			oss << "}\n}\n";
 			return oss.str();
 		}
@@ -261,11 +244,7 @@ namespace Eye
 				oss << "\"typeQualifier\":" << "null" << ",\n";
 			oss << "\"dataType\": \"" << functionParam->GetDataType()->GetTypeString() << "\",\n";
 			oss << "\"identifier\":" << SerializeIdentifierExpression(functionParam->GetIdentifier()) << ",\n";
-
-			if (functionParam->GetInitializer())
-				oss << "\"initializer\":" << SerializeExpression(functionParam->GetInitializer()) << "\n";
-			else
-				oss << "\"initializer\":" << "null" << "\n";
+			oss << "\"initializer\":" << SerializeExpression(functionParam->GetInitializer()) << "\n";
 			oss << "}\n}";
 			return oss.str();
 		}
@@ -275,16 +254,16 @@ namespace Eye
 			std::ostringstream oss;
 			oss << "{\"ReturnStatement\": {\n";
 			oss << "\"type\": \"ReturnStatement\",\n";
-			if (returnStmt->GetExpression())
-				oss << "\"expression\": " << SerializeExpression(returnStmt->GetExpression()) << "\n";
-			else
-				oss << "\"expression\":" << "null\n";
+			oss << "\"expression\": " << SerializeExpression(returnStmt->GetExpression()) << "\n";
 			oss << "}\n}\n";
 			return oss.str();
 		}
 
 		std::string StringSerializer::SerializeExpression(const std::shared_ptr<AST::Expression>& expr)
 		{
+			if (!expr)
+				return "null";
+
 			switch (expr->GetType())
 			{
 			case AST::ExpressionType::LiteralExpression:

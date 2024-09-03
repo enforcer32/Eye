@@ -1,0 +1,5 @@
+Statements Must end with SemiColon
+Variables Always Declared before Use
+Functions must always define return type
+Functions with non-void return types must always return data
+Const Variables should never be changed
