@@ -9,6 +9,7 @@
 #include <EYEAST/Statements/BlockStatement.h>
 #include <EYEAST/Statements/VariableStatement.h>
 #include <EYEAST/Statements/ControlStatement.h>
+#include <EYEAST/Statements/IterationStatement.h>
 
 #include <EYEAST/Expressions/Expression.h>
 #include <EYEAST/Expressions/LiteralExpression.h>
@@ -31,6 +32,8 @@ namespace Eye
 			void TypeCheckBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt);
 			void TypeCheckVariableStatement(const std::shared_ptr<AST::VariableStatement>& varStmt);
 			void TypeCheckControlStatement(const std::shared_ptr<AST::ControlStatement>& ctrlStmt);
+			void TypeCheckIterationStatement(const std::shared_ptr<AST::IterationStatement>& iterStmt);
+			void TypeCheckWhileStatement(const std::shared_ptr<AST::WhileStatement>& whileStmt);
 
 			Type TypeCheckExpression(const std::shared_ptr<AST::Expression>& expr);
 			Type TypeCheckLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);

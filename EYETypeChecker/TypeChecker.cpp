@@ -33,6 +33,9 @@ namespace Eye
 			case AST::StatementType::ControlStatement:
 				TypeCheckControlStatement(std::static_pointer_cast<AST::ControlStatement>(stmt));
 				break;
+			case AST::StatementType::IterationStatement:
+				TypeCheckIterationStatement(std::static_pointer_cast<AST::IterationStatement>(stmt));
+				break;
 			default:
 				EYE_LOG_CRITICAL("EYETypeChecker Unknown Statement Type!");
 				break;
@@ -75,6 +78,20 @@ namespace Eye
 				EYE_LOG_CRITICAL("EYETypeChecker ControlStatement->Expected {} Type for Condition (\"if()\") but got {} Type Instead!", TypeToString(Type::Boolean), TypeToString(conditionType));
 			TypeCheckStatement(ctrlStmt->GetConsequent());
 			TypeCheckStatement(ctrlStmt->GetAlternate());
+		}
+
+		void TypeChecker::TypeCheckIterationStatement(const std::shared_ptr<AST::IterationStatement>& iterStmt)
+		{
+			if (iterStmt->GetIterationType() == AST::IterationStatementType::WhileStatement)
+				return TypeCheckWhileStatement(std::static_pointer_cast<AST::WhileStatement>(iterStmt));
+		}
+
+		void TypeChecker::TypeCheckWhileStatement(const std::shared_ptr<AST::WhileStatement>& whileStmt)
+		{
+			Type conditionType = TypeCheckExpression(whileStmt->GetCondition());
+			if (conditionType != Type::Boolean)
+				EYE_LOG_CRITICAL("EYETypeChecker WhileStatement->Expected {} Type for Condition (\"while()\") but got {} Type Instead!", TypeToString(Type::Boolean), TypeToString(conditionType));
+			TypeCheckStatement(whileStmt->GetBody());
 		}
 
 		Type TypeChecker::TypeCheckExpression(const std::shared_ptr<AST::Expression>& expr)
