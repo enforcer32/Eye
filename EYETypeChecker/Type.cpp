@@ -23,7 +23,7 @@ namespace Eye
 				return "Boolean";
 				break;
 			default:
-				EYE_LOG_CRITICAL("TypeToString Unknown Type!");
+				EYE_LOG_CRITICAL("EYETypeToString Unknown Type!");
 				break;
 			}
 		}

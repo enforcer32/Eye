@@ -8,6 +8,7 @@ namespace Eye
 	{
 		enum class Type
 		{
+			Invalid,
 			Integer,
 			Float,
 			String,
