@@ -1,5 +1,7 @@
 #pragma once
 
+#include "EYETypeChecker/Type.h"
+
 #include <EYEAST/Program.h>
 
 #include <EYEAST/Statements/Statement.h>
@@ -13,16 +15,6 @@ namespace Eye
 {
 	namespace TypeChecker
 	{
-		enum class Type
-		{
-			Integer,
-			Float,
-			String,
-			Boolean,
-		};
-
-		std::string TypeToString(Type type);
-
 		class TypeChecker
 		{
 		public:

@@ -1,6 +1,8 @@
 file(GLOB_RECURSE EYETypeCheckerSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/TypeChecker.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/TypeChecker.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Type.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Type.cpp"
 )
 
 add_library(${EYETYPECHECKER_TARGET_NAME} STATIC ${EYETypeCheckerSources})
