@@ -219,6 +219,8 @@ namespace Eye
 			EatToken(Lexer::TokenType::KeywordControlIf);
 			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
 			std::shared_ptr<AST::Expression> condition = Expression();
+			if(!condition)
+				throw Error::Exceptions::SyntaxErrorException("Expected Expression", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
 			EatToken(Lexer::TokenType::SymbolRightParenthesis);
 			std::shared_ptr<AST::Statement> consequent = Statement();
 			std::shared_ptr<AST::Statement> alternate = nullptr;
@@ -283,6 +285,8 @@ namespace Eye
 			EatToken(Lexer::TokenType::KeywordIterationWhile);
 			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
 			std::shared_ptr<AST::Expression> condition = Expression();
+			if(!condition)
+				throw Error::Exceptions::SyntaxErrorException("Expected Expression", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
 			EatToken(Lexer::TokenType::SymbolRightParenthesis);
 			std::shared_ptr<AST::Statement> body = Statement();
 			return std::make_shared<AST::WhileStatement>(condition, body);
@@ -300,6 +304,8 @@ namespace Eye
 			EatToken(Lexer::TokenType::KeywordIterationWhile);
 			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
 			std::shared_ptr<AST::Expression> condition = Expression();
+			if (!condition)
+				throw Error::Exceptions::SyntaxErrorException("Expected Expression", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
 			EatToken(Lexer::TokenType::SymbolRightParenthesis);
 			EatToken(Lexer::TokenType::SymbolSemiColon);
 			return std::make_shared<AST::DoWhileStatement>(condition, body);
