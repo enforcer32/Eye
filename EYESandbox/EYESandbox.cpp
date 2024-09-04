@@ -23,9 +23,9 @@ int main(int argc, char** argv)
 	Eye::ASTGenerator::ASTGenerator astGenerator;
 	std::cout << astGenerator.GenerateStringAST("..\\..\\..\\..\\Examples\\Test.eye") << std::endl;
 
-	Eye::TypeChecker::TypeChecker typeChecker;
+	/*Eye::TypeChecker::TypeChecker typeChecker;
 	if (!typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("..\\..\\..\\..\\Examples\\Test.eye")))
-		EYE_LOG_CRITICAL("EYETypeChecker Failed");
+		EYE_LOG_CRITICAL("EYETypeChecker Failed");*/
 
 	return 0;
 }

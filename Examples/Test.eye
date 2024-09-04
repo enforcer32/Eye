@@ -1,17 +1,4 @@
-//int x0, x1 = 12, x2 = "str", x3 = 25.12;
-/*int x = 12;
-{
-	int x = 12;
-}
-*/
-
-//10+20;
-//10+"20";
-
-if(1 <= 5);
-//if(1 == "2");
-
-while(5 != 10)
-{
-	//int x = "12";
-}
+int a = 1;
+float b = 2.2;
+str # = "Hello";
+bool nothing = true;

@@ -8,3 +8,4 @@ file(GLOB_RECURSE EYELexerSources
 add_library(${EYELEXER_TARGET_NAME} STATIC ${EYELexerSources})
 target_include_directories(${EYELEXER_TARGET_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../")
 target_link_libraries(${EYELEXER_TARGET_NAME} PRIVATE ${EYEUTILITY_TARGET_NAME})
+target_link_libraries(${EYELEXER_TARGET_NAME} PRIVATE ${EYEEXCEPTIONS_TARGET_NAME})

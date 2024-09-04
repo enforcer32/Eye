@@ -2,8 +2,11 @@
 
 #include "EYELexer/Token.h"
 
+#include <EYEUtility/Error.h>
+
 #include <sstream>
 #include <vector>
+#include <expected>
 
 namespace Eye
 {
@@ -12,7 +15,7 @@ namespace Eye
 		class Lexer
 		{
 		public:
-			bool Tokenize(const std::string& filepath);
+			std::expected<bool, Utility::Error> Tokenize(const std::string& filepath);
 			std::vector<std::shared_ptr<Token>> GetTokens() const;
 
 		private:
