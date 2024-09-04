@@ -2,8 +2,10 @@
 
 #include "EYETypeChecker/Type.h"
 
-#include <EYEAST/Program.h>
+#include <EYEError/Error.h>
+#include <EYETypeChecker/TypeEnvironment.h>
 
+#include <EYEAST/Program.h>
 #include <EYEAST/Statements/Statement.h>
 #include <EYEAST/Statements/ExpressionStatement.h>
 #include <EYEAST/Statements/BlockStatement.h>
@@ -15,7 +17,7 @@
 #include <EYEAST/Expressions/LiteralExpression.h>
 #include <EYEAST/Expressions/BinaryExpression.h>
 
-#include <EYETypeChecker/TypeEnvironment.h>
+#include <expected>
 
 namespace Eye
 {
@@ -24,7 +26,7 @@ namespace Eye
 		class TypeChecker
 		{
 		public:
-			bool TypeCheck(const std::shared_ptr<AST::Program>& ast);
+			std::expected<bool, Error::Error> TypeCheck(const std::shared_ptr<AST::Program>& ast);
 
 		private:
 			void TypeCheckStatement(const std::shared_ptr<AST::Statement>& stmt);

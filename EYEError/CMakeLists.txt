@@ -6,6 +6,8 @@ file(GLOB_RECURSE EYEErrorSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/UnexpectedTokenException.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/SyntaxErrorException.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/SyntaxErrorException.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/BadTypeConversionException.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/BadTypeConversionException.cpp"
 )
 
 add_library(${EYEERROR_TARGET_NAME} STATIC ${EYEErrorSources})

@@ -1,16 +1,30 @@
 #include "EYETypeChecker/TypeChecker.h"
 
 #include <EYEUtility/Logger.h>
+#include <EYEError/Exceptions/BadTypeConversionException.h>
 
 namespace Eye
 {
 	namespace TypeChecker
 	{
-		bool TypeChecker::TypeCheck(const std::shared_ptr<AST::Program>& ast)
+		std::expected<bool, Error::Error> TypeChecker::TypeCheck(const std::shared_ptr<AST::Program>& ast)
 		{
 			m_TypeEnvironment = std::make_shared<TypeEnvironment>();
-			for (const auto& stmt : ast->GetStatementList())
-				TypeCheckStatement(stmt);
+			
+			try
+			{
+				for (const auto& stmt : ast->GetStatementList())
+					TypeCheckStatement(stmt);
+			}
+			catch (const Error::Exceptions::BadTypeConversionException& ex)
+			{
+				return std::unexpected(Error::Error(Error::ErrorType::TypeCheckerBadTypeConversion, ex.what()));
+			}
+			catch (...)
+			{
+				EYE_LOG_CRITICAL("EYETypeChecker->TypeCheck Unknown Exception!");
+			}
+
 			return true;
 		}
 
@@ -65,7 +79,7 @@ namespace Eye
 				{
 					Type initializerType = TypeCheckExpression(var->GetInitializer());
 					if (variableType != initializerType)
-						EYE_LOG_CRITICAL("EYETypeChecker Variable Declaration->Expected {} Type for (\"{}\") but got {} Type Instead!", TypeToString(variableType), var->GetIdentifier()->GetValue(), TypeToString(initializerType));
+						throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), varStmt->GetDataType()->GetPosition().Line, varStmt->GetDataType()->GetPosition().Col, varStmt->GetDataType()->GetPosition().FileName);
 				}
 				m_TypeEnvironment->DefineVariable(var->GetIdentifier()->GetValue(), variableType);
 			}

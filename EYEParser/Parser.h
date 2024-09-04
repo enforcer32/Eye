@@ -2,6 +2,7 @@
 
 #include <EYELexer/Token.h>
 #include <EYEError/Error.h>
+
 #include <EYEAST/Program.h>
 #include <EYEAST/Statements/Statement.h>
 #include <EYEAST/Statements/ExpressionStatement.h>
