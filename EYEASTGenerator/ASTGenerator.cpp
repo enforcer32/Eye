@@ -25,7 +25,6 @@ namespace Eye
 		std::string ASTGenerator::GenerateStringAST(const std::string& filepath)
 		{
 			Lexer::Lexer lexer;
-
 			auto res = lexer.Tokenize(filepath);
 			if (!res)
 			{
@@ -34,8 +33,12 @@ namespace Eye
 			}
 
 			Parser::Parser parser;
-			if (!parser.Parse(lexer.GetTokens()))
+			res = parser.Parse(lexer.GetTokens());
+			if (!res)
+			{
+				EYE_LOG_ERROR(res.error().GetMessage());
 				EYE_LOG_CRITICAL("EYEASTGenerator->GenerateStringAST Parser Failed to Parse!");
+			}
 
 			ASTSerializer::StringSerializer astSerializer;
 			std::string serialized = astSerializer.Serialize(parser.GetAST());

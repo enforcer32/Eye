@@ -134,6 +134,7 @@ namespace Eye
 
 			std::string ToString() const;
 			std::string_view GetTypeString() const;
+			std::string GetValueString() const;
 
 		private:
 			TokenType m_Type;

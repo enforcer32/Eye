@@ -9,6 +9,7 @@ namespace Eye
 		enum class ErrorType
 		{
 			LexerUnexpectedToken,
+			ParserSyntaxError,
 		};
 
 		class Error

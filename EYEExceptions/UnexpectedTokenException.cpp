@@ -11,7 +11,7 @@ namespace Eye
 		UnexpectedTokenException::UnexpectedTokenException(const std::string& token, size_t line, size_t col, const std::string& filepath)
 			:  std::exception()
 		{
-			m_What = "UnexpectedTokenException: " + token + "\n\ton line " + std::to_string(line) + ", col " + std::to_string(col) + " in file " + filepath + "\n\t" + GetErrorLine(line, col, filepath);
+			m_What = "UnexpectedTokenException: '" + token + "'\n\ton line " + std::to_string(line) + ", col " + std::to_string(col) + " in file " + filepath + "\n\t" + GetErrorLine(line, col, filepath);
 		}
 
 		const char* UnexpectedTokenException::what() const noexcept

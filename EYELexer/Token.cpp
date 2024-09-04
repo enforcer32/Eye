@@ -299,5 +299,110 @@ namespace Eye
 		{
 			return TokenTypeStr[(int)m_Type];
 		}
+
+		std::string Token::GetValueString() const
+		{
+			std::string value = "None";
+
+			switch (m_Type)
+			{
+			case TokenType::LiteralInteger:
+				value = std::to_string(std::get<IntegerType>(m_Value));
+				break;
+			case TokenType::LiteralFloat:
+				value = std::to_string(std::get<FloatType>(m_Value));
+				break;
+			case TokenType::LiteralString:
+				value = std::get<StringType>(m_Value);
+				break;
+			case TokenType::LiteralBoolean:
+				value = (std::get<BooleanType>(m_Value) ? "true" : "false");
+				break;
+			case TokenType::LiteralNull:
+				value = "null";
+				break;
+			case TokenType::Identifier:
+				value = std::get<StringType>(m_Value);
+				break;
+			case TokenType::KeywordDataTypeInt:
+			case TokenType::KeywordDataTypeFloat:
+			case TokenType::KeywordDataTypeStr:
+			case TokenType::KeywordDataTypeBool:
+			case TokenType::KeywordTypeQualifierConst:
+			case TokenType::KeywordControlIf:
+			case TokenType::KeywordControlElse:
+			case TokenType::KeywordIterationWhile:
+			case TokenType::KeywordIterationDo:
+			case TokenType::KeywordIterationFor:
+			case TokenType::KeywordIterationContinue:
+			case TokenType::KeywordIterationBreak:
+			case TokenType::KeywordReturn:
+			case TokenType::KeywordFunction:
+				value = TokenTypeStr[(int)m_Type];
+				break;
+			case TokenType::OperatorBinaryPlus:
+			case TokenType::OperatorBinaryMinus:
+			case TokenType::OperatorBinaryStar:
+			case TokenType::OperatorBinarySlash:
+			case TokenType::OperatorBinaryModulo:
+			case TokenType::OperatorArithmeticIncrement:
+			case TokenType::OperatorArithmeticDecrement:
+			case TokenType::OperatorAssignment:
+			case TokenType::OperatorAssignmentPlus:
+			case TokenType::OperatorAssignmentMinus:
+			case TokenType::OperatorAssignmentStar:
+			case TokenType::OperatorAssignmentSlash:
+			case TokenType::OperatorAssignmentModulo:
+			case TokenType::OperatorAssignmentBitwiseAND:
+			case TokenType::OperatorAssignmentBitwiseOR:
+			case TokenType::OperatorAssignmentBitwiseXOR:
+			case TokenType::OperatorAssignmentBitwiseLeftShift:
+			case TokenType::OperatorAssignmentBitwiseRightShift:
+			case TokenType::OperatorRelationalEquals:
+			case TokenType::OperatorRelationalNotEquals:
+			case TokenType::OperatorRelationalSmaller:
+			case TokenType::OperatorRelationalGreater:
+			case TokenType::OperatorRelationalSmallerEquals:
+			case TokenType::OperatorRelationalGreaterEquals:
+			case TokenType::OperatorLogicalAND:
+			case TokenType::OperatorLogicalOR:
+			case TokenType::OperatorLogicalNOT:
+			case TokenType::OperatorBitwiseBinaryAND:
+			case TokenType::OperatorBitwiseBinaryOR:
+			case TokenType::OperatorBitwiseBinaryXOR:
+			case TokenType::OperatorBitwiseLeftShift:
+			case TokenType::OperatorBitwiseRightShift:
+			case TokenType::OperatorBitwiseNOT:
+			case TokenType::OperatorLeftParenthesis:
+			case TokenType::OperatorLeftBracket:
+			case TokenType::OperatorQuestionMark:
+			case TokenType::OperatorDot:
+			case TokenType::OperatorComma:
+				value = TokenTypeStr[(int)m_Type];
+				break;
+			case TokenType::SymbolRightParenthesis:
+			case TokenType::SymbolRightBracket:
+			case TokenType::SymbolLeftBrace:
+			case TokenType::SymbolRightBrace:
+			case TokenType::SymbolColon:
+			case TokenType::SymbolSemiColon:
+			case TokenType::SymbolBackslash:
+				value = TokenTypeStr[(int)m_Type];
+				break;
+			case TokenType::Comment:
+				value = std::get<StringType>(m_Value);
+				break;
+			case TokenType::Newline:
+				break;
+			case TokenType::EscapeCharacter:
+				break;
+			case TokenType::EndOfFile:
+				break;
+			default:
+				break;
+			}
+
+			return value;
+		}
 	}
 }
