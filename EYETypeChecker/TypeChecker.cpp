@@ -79,7 +79,11 @@ namespace Eye
 				{
 					Type initializerType = TypeCheckExpression(var->GetInitializer());
 					if (variableType != initializerType)
-						throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), varStmt->GetDataType()->GetPosition().Line, varStmt->GetDataType()->GetPosition().Col, varStmt->GetDataType()->GetPosition().FileName);
+					{
+						const auto& position = varStmt->GetDataType()->GetPosition();
+						throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), position.Line, position.Col, position.FileName);
+					}
+
 				}
 				m_TypeEnvironment->DefineVariable(var->GetIdentifier()->GetValue(), variableType);
 			}
@@ -166,21 +170,23 @@ namespace Eye
 
 		Type TypeChecker::TypeCheckBinaryExpressionArithmeticPlus(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
 		{
-			// Integers/Floats
-			if ((leftType == Type::Integer || leftType == Type::Float) && (rightType != Type::Integer && rightType != Type::Float))
+			if (leftType == Type::Boolean || rightType == Type::Boolean)
 			{
-				if (rightType == Type::String)
-				{
-					std::string value = std::static_pointer_cast<AST::LiteralExpression>(binaryExpr->GetRight())->GetValue<AST::LiteralStringType>();
-					EYE_LOG_CRITICAL("EYETypeChecker Binary(+)->Expected Integer/Float Type for (\"{}\") but got {} Type Instead!", value, TypeToString(rightType));
-				}
-				else if (rightType == Type::Boolean)
-				{
-					std::string value = (std::static_pointer_cast<AST::LiteralExpression>(binaryExpr->GetRight())->GetValue<AST::LiteralBooleanType>() ? "true" : "false");
-					EYE_LOG_CRITICAL("EYETypeChecker Binary(+)->Expected Integer/Float for Type ({}) but got {} Type Instead!", value, TypeToString(rightType));
-				}
+				const auto& position = binaryExpr->GetOperator()->GetPosition();
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), position.Line, position.Col, position.FileName);
 			}
-			return leftType;
+
+			if ((leftType == Type::String && rightType != Type::String) || (leftType != Type::String && rightType == Type::String))
+			{
+				const auto& position = binaryExpr->GetOperator()->GetPosition();
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), position.Line, position.Col, position.FileName);
+			}
+
+			if (leftType == Type::Float || rightType == Type::Float)
+				return Type::Float;
+
+			if (leftType == Type::Integer && rightType == Type::Integer)
+				return Type::Integer;
 		}
 
 		Type TypeChecker::TypeCheckBinaryExpressionRelational(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
