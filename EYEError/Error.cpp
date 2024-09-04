@@ -1,8 +1,8 @@
-#include "EYEUtility/Error.h"
+#include "EYEError/Error.h"
 
 namespace Eye
 {
-	namespace Utility
+	namespace Error
 	{
 		Error::Error(ErrorType type, const std::string& message)
 			: m_Type(type), m_Message(message)

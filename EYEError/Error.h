@@ -4,7 +4,7 @@
 
 namespace Eye
 {
-	namespace Utility
+	namespace Error
 	{
 		enum class ErrorType
 		{

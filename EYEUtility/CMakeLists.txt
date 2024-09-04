@@ -5,8 +5,6 @@ file(GLOB_RECURSE EYEUtilitySources
 	"${CMAKE_CURRENT_SOURCE_DIR}/Logger.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/FileIO.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/FileIO.cpp"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Error.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/Error.cpp"
 )
 
 add_library(${EYEUTILITY_TARGET_NAME} STATIC ${EYEUtilitySources})

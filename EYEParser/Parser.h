@@ -1,7 +1,7 @@
 #pragma once
 
 #include <EYELexer/Token.h>
-#include <EYEUtility/Error.h>
+#include <EYEError/Error.h>
 #include <EYEAST/Program.h>
 #include <EYEAST/Statements/Statement.h>
 #include <EYEAST/Statements/ExpressionStatement.h>
@@ -33,7 +33,7 @@ namespace Eye
 		class Parser
 		{
 		public:
-			std::expected<bool, Utility::Error> Parse(const std::vector<std::shared_ptr<Lexer::Token>>& tokens);
+			std::expected<bool, Error::Error> Parse(const std::vector<std::shared_ptr<Lexer::Token>>& tokens);
 			std::shared_ptr<AST::Program> GetAST() const;
 
 		private:

@@ -2,13 +2,13 @@
 
 #include <EYEUtility/FileIO.h>
 #include <EYEUtility/Logger.h>
-#include <EYEExceptions/UnexpectedTokenException.h>
+#include <EYEError/Exceptions/UnexpectedTokenException.h>
 
 namespace Eye
 {
 	namespace Lexer
 	{
-		std::expected<bool, Utility::Error> Lexer::Tokenize(const std::string& filepath)
+		std::expected<bool, Error::Error> Lexer::Tokenize(const std::string& filepath)
 		{
 			m_Position.FileName = filepath;
 			m_BufferStream = std::istringstream(FileIO::ReadFileContent(filepath));;
@@ -22,9 +22,9 @@ namespace Eye
 					token = NextToken();
 				}
 			}
-			catch (const Exceptions::UnexpectedTokenException& ex)
+			catch (const Error::Exceptions::UnexpectedTokenException& ex)
 			{
-				return std::unexpected(Utility::Error(Utility::ErrorType::LexerUnexpectedToken, ex.what()));
+				return std::unexpected(Error::Error(Error::ErrorType::LexerUnexpectedToken, ex.what()));
 			}
 			catch (...)
 			{
@@ -126,7 +126,7 @@ namespace Eye
 			default:
 				token = MakeSpecialToken();
 				if (!token)
-					throw Exceptions::UnexpectedTokenException(std::string{ c }, m_Position.Line, m_Position.Col, m_Position.FileName);
+					throw Error::Exceptions::UnexpectedTokenException(std::string{ c }, m_Position.Line, m_Position.Col, m_Position.FileName);
 				break;
 			}
 
@@ -212,7 +212,7 @@ namespace Eye
 			}
 
 			if (!IsBinaryNumber(binaryStr))
-				throw Exceptions::UnexpectedTokenException(("0b" + binaryStr), m_Position.Line, m_Position.Col, m_Position.FileName);
+				throw Error::Exceptions::UnexpectedTokenException(("0b" + binaryStr), m_Position.Line, m_Position.Col, m_Position.FileName);
 
 			return std::make_shared<Token>((IntegerType)std::strtol(binaryStr.c_str(), 0, 2), m_Position);
 		}
@@ -220,7 +220,7 @@ namespace Eye
 		std::shared_ptr<Token> Lexer::MakeStringToken(char sdelim, char edelim)
 		{
 			if (NextChar() != sdelim)
-				throw Exceptions::UnexpectedTokenException(std::string{ sdelim }, m_Position.Line, m_Position.Col, m_Position.FileName);
+				throw Error::Exceptions::UnexpectedTokenException(std::string{ sdelim }, m_Position.Line, m_Position.Col, m_Position.FileName);
 
 			std::string str;
 			for (char c = NextChar(); c != edelim && c != EOF; c = NextChar())
@@ -268,7 +268,7 @@ namespace Eye
 			}
 
 			if (singleOperator && !IsValidOperator(opStr))
-				throw Exceptions::UnexpectedTokenException(opStr, m_Position.Line, m_Position.Col, m_Position.FileName);
+				throw Error::Exceptions::UnexpectedTokenException(opStr, m_Position.Line, m_Position.Col, m_Position.FileName);
 
 			return std::make_shared<Token>(StringToTokenType(opStr), m_Position);
 		}
@@ -356,7 +356,7 @@ namespace Eye
 
 				if (c == EOF)
 				{
-					throw Exceptions::UnexpectedTokenException(comment, m_Position.Line, m_Position.Col, m_Position.FileName);
+					throw Error::Exceptions::UnexpectedTokenException(comment, m_Position.Line, m_Position.Col, m_Position.FileName);
 				}
 				else if (c == '*')
 				{
