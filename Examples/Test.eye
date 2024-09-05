@@ -1,1 +1,1 @@
-int # = 12;
+const int x = 12;

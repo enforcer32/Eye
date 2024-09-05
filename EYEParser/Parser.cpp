@@ -160,7 +160,7 @@ namespace Eye
 				typeQualifier = EatToken(m_LookAhead->GetType());
 
 			if (!IsDataTypeKeyword(m_LookAhead))
-				throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
+				throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetLocation());
 			
 			std::shared_ptr<Lexer::Token> dataType = EatToken(m_LookAhead->GetType());
 			std::shared_ptr<AST::VariableStatement> variableStatement = std::make_shared<AST::VariableStatement>(typeQualifier, dataType, VariableDeclarationList());
@@ -220,7 +220,7 @@ namespace Eye
 			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
 			std::shared_ptr<AST::Expression> condition = Expression();
 			if(!condition)
-				throw Error::Exceptions::SyntaxErrorException("Expected Expression", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
+				throw Error::Exceptions::SyntaxErrorException("Expected Expression", m_LookAhead->GetLocation());
 			EatToken(Lexer::TokenType::SymbolRightParenthesis);
 			std::shared_ptr<AST::Statement> consequent = Statement();
 			std::shared_ptr<AST::Statement> alternate = nullptr;
@@ -286,7 +286,7 @@ namespace Eye
 			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
 			std::shared_ptr<AST::Expression> condition = Expression();
 			if(!condition)
-				throw Error::Exceptions::SyntaxErrorException("Expected Expression", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
+				throw Error::Exceptions::SyntaxErrorException("Expected Expression", m_LookAhead->GetLocation());
 			EatToken(Lexer::TokenType::SymbolRightParenthesis);
 			std::shared_ptr<AST::Statement> body = Statement();
 			return std::make_shared<AST::WhileStatement>(condition, body);
@@ -305,7 +305,7 @@ namespace Eye
 			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
 			std::shared_ptr<AST::Expression> condition = Expression();
 			if (!condition)
-				throw Error::Exceptions::SyntaxErrorException("Expected Expression", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
+				throw Error::Exceptions::SyntaxErrorException("Expected Expression", m_LookAhead->GetLocation());
 			EatToken(Lexer::TokenType::SymbolRightParenthesis);
 			EatToken(Lexer::TokenType::SymbolSemiColon);
 			return std::make_shared<AST::DoWhileStatement>(condition, body);
@@ -337,7 +337,7 @@ namespace Eye
 						typeQualifier = EatToken(m_LookAhead->GetType());
 
 					if (!IsDataTypeKeyword(m_LookAhead))
-						throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
+						throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetLocation());
 
 					std::shared_ptr<Lexer::Token> dataType = EatToken(m_LookAhead->GetType());
 					initializer = std::make_shared<AST::VariableStatement>(typeQualifier, dataType, VariableDeclarationList());
@@ -371,7 +371,7 @@ namespace Eye
 			EatToken(Lexer::TokenType::KeywordFunction);
 			
 			if (!IsDataTypeKeyword(m_LookAhead))
-				throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
+				throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetLocation());
 
 			std::shared_ptr<Lexer::Token> returnType = EatToken(m_LookAhead->GetType());
 			std::shared_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
@@ -414,7 +414,7 @@ namespace Eye
 				typeQualifier = EatToken(m_LookAhead->GetType());
 
 			if (!IsDataTypeKeyword(m_LookAhead))
-				throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
+				throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetLocation());
 
 			std::shared_ptr<Lexer::Token> dataType = EatToken(m_LookAhead->GetType());
 			std::shared_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
@@ -459,7 +459,7 @@ namespace Eye
 				return left;
 
 			if (!IsLHSExpression(left))
-				throw Error::Exceptions::SyntaxErrorException("Unexpected LHSExpression '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
+				throw Error::Exceptions::SyntaxErrorException("Unexpected LHSExpression '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetLocation());
 
 			std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 			return std::make_shared<AST::AssignmentExpression>(op, left, AssignmentExpression());
@@ -734,7 +734,7 @@ namespace Eye
 			case Lexer::TokenType::LiteralNull:
 				return NullLiteral();
 			default:
-				throw Error::Exceptions::SyntaxErrorException("Unexpected LiteralExpression '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetPosition().Line, m_LookAhead->GetPosition().Col, m_LookAhead->GetPosition().FileName);
+				throw Error::Exceptions::SyntaxErrorException("Unexpected LiteralExpression '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetLocation());
 				break;
 			}
 
@@ -1009,7 +1009,7 @@ namespace Eye
 		{
 			std::shared_ptr<Lexer::Token> token = m_LookAhead;
 			if (!token || token->GetType() != type)
-				throw Error::Exceptions::SyntaxErrorException("Unexpected " + std::string(token->GetTypeString()), token->GetPosition().Line, token->GetPosition().Col, token->GetPosition().FileName);
+				throw Error::Exceptions::SyntaxErrorException("Unexpected " + std::string(token->GetTypeString()), token->GetLocation());
 			m_LookAhead = NextToken();
 			return token;
 		}

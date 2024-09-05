@@ -10,10 +10,16 @@ namespace Eye
 	{
 		namespace Exceptions
 		{
-			SyntaxErrorException::SyntaxErrorException(const std::string& msg, size_t line, size_t col, const std::string& filepath)
+			SyntaxErrorException::SyntaxErrorException(const std::string& msg, const Types::Position& position)
 				: std::exception()
 			{
-				m_What = "SyntaxErrorException: " + msg + "\n\ton line " + std::to_string(line) + ", col " + std::to_string(col) + " in file " + filepath + "\n\t" + GetErrorLine(line, col, filepath);
+				m_What = "SyntaxErrorException: " + msg + "\n\ton line " + std::to_string(position.Line) + ", col " + std::to_string(position.Col) + " in file " + position.FilePath + "\n\t" + GetErrorLine(position.FilePath, position.Line, position.Col);
+			}
+
+			SyntaxErrorException::SyntaxErrorException(const std::string& msg, const Types::Location& location)
+				: std::exception()
+			{
+				m_What = "SyntaxErrorException: " + msg + "\n\ton line " + std::to_string(location.Line) + ", col " + std::to_string(location.Col) + " in file " + location.FilePath + "\n\t" + GetErrorLine(location.FilePath, location.Line, location.Col);
 			}
 
 			const char* SyntaxErrorException::what() const noexcept
@@ -21,7 +27,7 @@ namespace Eye
 				return m_What.c_str();
 			}
 
-			std::string SyntaxErrorException::GetErrorLine(size_t line, size_t col, const std::string& filepath)
+			std::string SyntaxErrorException::GetErrorLine(const std::string& filepath, size_t line, size_t col)
 			{
 				std::istringstream dataStream = std::istringstream(Eye::FileIO::ReadFileContent(filepath));
 				std::string dataLine;
