@@ -18,8 +18,8 @@ namespace Eye
 		class AssignmentExpression : public Expression
 		{
 		public:
-			AssignmentExpression(const std::shared_ptr<Lexer::Token>& op, const std::shared_ptr<Expression>& lhsExpression, const std::shared_ptr<Expression>& expression)
-				: Expression(ExpressionType::AssignmentExpression), m_Operator(op), m_LHSExpression(lhsExpression), m_Expression(expression)
+			AssignmentExpression(const std::shared_ptr<Lexer::Token>& op, const std::shared_ptr<Expression>& lhsExpression, const std::shared_ptr<Expression>& expression, const Types::Location& source)
+				: Expression(ExpressionType::AssignmentExpression, source), m_Operator(op), m_LHSExpression(lhsExpression), m_Expression(expression)
 			{
 			}
 

@@ -22,8 +22,8 @@ namespace Eye
 		class UnaryExpression : public Expression
 		{
 		public:
-			UnaryExpression(const std::shared_ptr<Lexer::Token>& op, const std::shared_ptr<Expression>& expression)
-				: Expression(ExpressionType::UnaryExpression), m_Operator(op), m_Expression(expression)
+			UnaryExpression(const std::shared_ptr<Lexer::Token>& op, const std::shared_ptr<Expression>& expression, const Types::Location& source)
+				: Expression(ExpressionType::UnaryExpression, source), m_Operator(op), m_Expression(expression)
 			{
 			}
 

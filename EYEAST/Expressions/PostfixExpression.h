@@ -21,8 +21,8 @@ namespace Eye
 		class PostfixExpression : public Expression
 		{
 		public:
-			PostfixExpression(const std::shared_ptr<Lexer::Token>& op, const std::shared_ptr<Expression>& expression)
-				: Expression(ExpressionType::PostfixExpression), m_Operator(op), m_Expression(expression)
+			PostfixExpression(const std::shared_ptr<Lexer::Token>& op, const std::shared_ptr<Expression>& expression, const Types::Location& source)
+				: Expression(ExpressionType::PostfixExpression, source), m_Operator(op), m_Expression(expression)
 			{
 			}
 

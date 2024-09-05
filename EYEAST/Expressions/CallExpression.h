@@ -32,8 +32,8 @@ namespace Eye
 		class CallExpression : public Expression
 		{
 		public:
-			CallExpression(const std::shared_ptr<Expression>& callee, const std::vector<std::shared_ptr<Expression>>& arguments)
-				: Expression(ExpressionType::CallExpression), m_Callee(callee), m_Arguments(arguments)
+			CallExpression(const std::shared_ptr<Expression>& callee, const std::vector<std::shared_ptr<Expression>>& arguments, const Types::Location& source)
+				: Expression(ExpressionType::CallExpression, source), m_Callee(callee), m_Arguments(arguments)
 			{
 			}
 

@@ -79,10 +79,7 @@ namespace Eye
 				{
 					Type initializerType = TypeCheckExpression(var->GetInitializer());
 					if (variableType != initializerType)
-					{
-						const auto& position = varStmt->GetDataType()->GetPosition();
-						throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), position.Line, position.Col, position.FileName);
-					}
+						throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), var->GetInitializer()->GetSource());
 
 				}
 				m_TypeEnvironment->DefineVariable(var->GetIdentifier()->GetValue(), variableType);
@@ -171,16 +168,10 @@ namespace Eye
 		Type TypeChecker::TypeCheckBinaryExpressionArithmeticPlus(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
 		{
 			if (leftType == Type::Boolean || rightType == Type::Boolean)
-			{
-				const auto& position = binaryExpr->GetOperator()->GetPosition();
-				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), position.Line, position.Col, position.FileName);
-			}
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), binaryExpr->GetOperator()->GetLocation());
 
 			if ((leftType == Type::String && rightType != Type::String) || (leftType != Type::String && rightType == Type::String))
-			{
-				const auto& position = binaryExpr->GetOperator()->GetPosition();
-				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), position.Line, position.Col, position.FileName);
-			}
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), binaryExpr->GetOperator()->GetLocation());
 
 			if (leftType == Type::Float || rightType == Type::Float)
 				return Type::Float;

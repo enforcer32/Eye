@@ -15,8 +15,8 @@ namespace Eye
 		class IdentifierExpression : public Expression
 		{
 		public:
-			IdentifierExpression(const std::shared_ptr<Lexer::Token>& identifier)
-				: Expression(ExpressionType::IdentifierExpression), m_Identifier(identifier)
+			IdentifierExpression(const std::shared_ptr<Lexer::Token>& identifier, const Types::Location& source)
+				: Expression(ExpressionType::IdentifierExpression, source), m_Identifier(identifier)
 			{
 			}
 

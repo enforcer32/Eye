@@ -462,7 +462,7 @@ namespace Eye
 				throw Error::Exceptions::SyntaxErrorException("Unexpected LHSExpression '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetLocation());
 
 			std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
-			return std::make_shared<AST::AssignmentExpression>(op, left, AssignmentExpression());
+			return std::make_shared<AST::AssignmentExpression>(op, left, AssignmentExpression(), op->GetLocation());
 		}
 
 		/*
@@ -478,7 +478,7 @@ namespace Eye
 			{
 				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				std::shared_ptr<AST::Expression> right = LogicalANDExpression();
-				left = std::make_shared<AST::BinaryExpression>(op, left, right);
+				left = std::make_shared<AST::BinaryExpression>(op, left, right, op->GetLocation());
 			}
 			return left;
 		}
@@ -496,7 +496,7 @@ namespace Eye
 			{
 				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				std::shared_ptr<AST::Expression> right = EqualityExpression();
-				left = std::make_shared<AST::BinaryExpression>(op, left, right);
+				left = std::make_shared<AST::BinaryExpression>(op, left, right, op->GetLocation());
 			}
 			return left;
 		}
@@ -514,7 +514,7 @@ namespace Eye
 			{
 				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				std::shared_ptr<AST::Expression> right = RelationalExpression();
-				left = std::make_shared<AST::BinaryExpression>(op, left, right);
+				left = std::make_shared<AST::BinaryExpression>(op, left, right, op->GetLocation());
 			}
 			return left;
 		}
@@ -532,7 +532,7 @@ namespace Eye
 			{
 				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				std::shared_ptr<AST::Expression> right = AdditiveBinaryExpression();
-				left = std::make_shared<AST::BinaryExpression>(op, left, right);
+				left = std::make_shared<AST::BinaryExpression>(op, left, right, op->GetLocation());
 			}
 			return left;
 		}
@@ -550,7 +550,7 @@ namespace Eye
 			{
 				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				std::shared_ptr<AST::Expression> right = MultiplicativeBinaryExpression();
-				left = std::make_shared<AST::BinaryExpression>(op, left, right);
+				left = std::make_shared<AST::BinaryExpression>(op, left, right, op->GetLocation());
 			}
 			return left;
 		}
@@ -568,7 +568,7 @@ namespace Eye
 			{
 				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				std::shared_ptr<AST::Expression> right = UnaryExpression();
-				left = std::make_shared<AST::BinaryExpression>(op, left, right);
+				left = std::make_shared<AST::BinaryExpression>(op, left, right, op->GetLocation());
 			}
 			return left;
 		}
@@ -584,7 +584,7 @@ namespace Eye
 			if (IsUnaryOperator(m_LookAhead))
 			{
 				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
-				return std::make_shared<AST::UnaryExpression>(op, UnaryExpression());
+				return std::make_shared<AST::UnaryExpression>(op, UnaryExpression(), op->GetLocation());
 			}
 
 			return LHSExpression();
@@ -617,16 +617,16 @@ namespace Eye
 			{
 				if (IsLookAhead(Lexer::TokenType::OperatorDot))
 				{
-					EatToken(Lexer::TokenType::OperatorDot);
+					const auto& op = EatToken(Lexer::TokenType::OperatorDot);
 					std::shared_ptr<AST::IdentifierExpression> prop = IdentifierExpression();
-					obj = std::make_shared<AST::MemberExpression>(obj, prop, false);
+					obj = std::make_shared<AST::MemberExpression>(obj, prop, false, op->GetLocation());
 				}
 				else if (IsLookAhead(Lexer::TokenType::OperatorLeftBracket))
 				{
-					EatToken(Lexer::TokenType::OperatorLeftBracket);
+					const auto& op = EatToken(Lexer::TokenType::OperatorLeftBracket);
 					std::shared_ptr<AST::Expression> prop = Expression();
 					EatToken(Lexer::TokenType::SymbolRightBracket);
-					obj = std::make_shared<AST::MemberExpression>(obj, prop, true);
+					obj = std::make_shared<AST::MemberExpression>(obj, prop, true, op->GetLocation());
 				}
 			}
 			return obj;
@@ -644,7 +644,7 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::Expression> Parser::CallExpression(const std::shared_ptr<AST::Expression>& callee)
 		{
-			std::shared_ptr<AST::Expression> callExpression = std::make_shared<AST::CallExpression>(callee, CallArguments());
+			std::shared_ptr<AST::Expression> callExpression = std::make_shared<AST::CallExpression>(callee, CallArguments(), m_LookAhead->GetLocation());
 			if (IsLookAhead(Lexer::TokenType::OperatorLeftParenthesis))
 				callExpression = CallExpression(callExpression);
 			return callExpression;
@@ -687,7 +687,7 @@ namespace Eye
 			if (IsPostfixOperator(m_LookAhead))
 			{
 				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
-				return std::make_shared<AST::PostfixExpression>(op, primaryExpression);
+				return std::make_shared<AST::PostfixExpression>(op, primaryExpression, op->GetLocation());
 			}
 			return primaryExpression;
 		}
@@ -749,7 +749,7 @@ namespace Eye
 		std::shared_ptr<AST::LiteralExpression> Parser::IntegerLiteral()
 		{
 			std::shared_ptr<Lexer::Token> token = EatToken(Lexer::TokenType::LiteralInteger);
-			return std::make_shared<AST::LiteralExpression>((AST::LiteralIntegerType)token->GetValue<Lexer::IntegerType>());
+			return std::make_shared<AST::LiteralExpression>((AST::LiteralIntegerType)token->GetValue<Lexer::IntegerType>(), token->GetLocation());
 		}
 
 		/*
@@ -760,7 +760,7 @@ namespace Eye
 		std::shared_ptr<AST::LiteralExpression> Parser::FloatLiteral()
 		{
 			std::shared_ptr<Lexer::Token> token = EatToken(Lexer::TokenType::LiteralFloat);
-			return std::make_shared<AST::LiteralExpression>((AST::LiteralFloatType)token->GetValue<Lexer::FloatType>());
+			return std::make_shared<AST::LiteralExpression>((AST::LiteralFloatType)token->GetValue<Lexer::FloatType>(), token->GetLocation());
 		}
 		
 		/*
@@ -771,7 +771,7 @@ namespace Eye
 		std::shared_ptr<AST::LiteralExpression> Parser::StringLiteral()
 		{
 			std::shared_ptr<Lexer::Token> token = EatToken(Lexer::TokenType::LiteralString);
-			return std::make_shared<AST::LiteralExpression>((AST::LiteralStringType)token->GetValue<Lexer::StringType>());
+			return std::make_shared<AST::LiteralExpression>((AST::LiteralStringType)token->GetValue<Lexer::StringType>(), token->GetLocation());
 		}
 		
 		/*
@@ -782,7 +782,7 @@ namespace Eye
 		std::shared_ptr<AST::LiteralExpression> Parser::BooleanLiteral()
 		{
 			std::shared_ptr<Lexer::Token> token = EatToken(Lexer::TokenType::LiteralBoolean);
-			return std::make_shared<AST::LiteralExpression>((AST::LiteralBooleanType)token->GetValue<Lexer::BooleanType>());
+			return std::make_shared<AST::LiteralExpression>((AST::LiteralBooleanType)token->GetValue<Lexer::BooleanType>(), token->GetLocation());
 		}
 		
 		/*
@@ -793,7 +793,7 @@ namespace Eye
 		std::shared_ptr<AST::LiteralExpression> Parser::NullLiteral()
 		{
 			std::shared_ptr<Lexer::Token> token = EatToken(Lexer::TokenType::LiteralNull);
-			return std::make_shared<AST::LiteralExpression>(AST::LiteralType::Null);
+			return std::make_shared<AST::LiteralExpression>(AST::LiteralType::Null, token->GetLocation());
 		}
 
 		/*
@@ -816,7 +816,8 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::IdentifierExpression> Parser::IdentifierExpression()
 		{
-			return std::make_shared<AST::IdentifierExpression>(EatToken(Lexer::TokenType::Identifier));
+			const auto& id = EatToken(Lexer::TokenType::Identifier);
+			return std::make_shared<AST::IdentifierExpression>(id, id->GetLocation());
 		}
 
 		bool Parser::IsLookAhead(Lexer::TokenType type) const
