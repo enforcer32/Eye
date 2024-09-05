@@ -1,5 +1,7 @@
 #pragma once
 
+#include <EYETypes/Location.h>
+
 #include <string>
 #include <variant>
 #include <ostream>
@@ -12,18 +14,6 @@ namespace Eye
 		using FloatType = double;
 		using StringType = std::string;
 		using BooleanType = bool;
-
-		struct Position
-		{
-			uint32_t Line = 1;
-			uint32_t Col = 1;
-			std::string FileName = "";
-
-			std::string ToString() const
-			{
-				return "Position: {Line: " + std::to_string(Line) + ", Column: " + std::to_string(Col) + ", FileName: " + FileName + "}";
-			}
-		};
 
 		enum class TokenType
 		{
@@ -111,19 +101,19 @@ namespace Eye
 		{
 		public:
 			Token();
-			Token(IntegerType value, Position position);
-			Token(FloatType value, Position position);
-			Token(StringType value, Position position);
-			Token(BooleanType value, Position position);
-			Token(TokenType type, Position position);
-			Token(TokenType type, StringType value, Position position);
+			Token(IntegerType value, const Types::Location& location);
+			Token(FloatType value, const Types::Location& location);
+			Token(StringType value, const Types::Location& location);
+			Token(BooleanType value, const Types::Location& location);
+			Token(TokenType type, const Types::Location& location);
+			Token(TokenType type, StringType value, const Types::Location& location);
 
 			bool operator==(const Token& token) const;
 			bool operator!=(const Token& token) const;
 			operator bool() const;
 
 			TokenType GetType() const;
-			const Position& GetPosition() const;
+			const Types::Location& GetLocation() const;
 
 			template<typename T>
 			T GetValue() const
@@ -138,7 +128,7 @@ namespace Eye
 
 		private:
 			TokenType m_Type;
-			Position m_Position;
+			Types::Location m_Location;
 			std::variant<IntegerType, FloatType, StringType, BooleanType> m_Value;
 		};
 	}

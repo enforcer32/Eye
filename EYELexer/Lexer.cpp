@@ -10,7 +10,7 @@ namespace Eye
 	{
 		std::expected<bool, Error::Error> Lexer::Tokenize(const std::string& filepath)
 		{
-			m_Position.FileName = filepath;
+			m_FilePosition.FilePath = filepath;
 			m_BufferStream = std::istringstream(FileIO::ReadFileContent(filepath));;
 
 			try
@@ -126,7 +126,7 @@ namespace Eye
 			default:
 				token = MakeSpecialToken();
 				if (!token)
-					throw Error::Exceptions::UnexpectedTokenException(std::string{ c }, m_Position.Line, m_Position.Col, m_Position.FileName);
+					throw Error::Exceptions::UnexpectedTokenException(std::string{ c }, m_FilePosition);
 				break;
 			}
 
@@ -141,17 +141,20 @@ namespace Eye
 
 		std::shared_ptr<Token> Lexer::HandleNewline()
 		{
+			Types::Location location(m_FilePosition.Line, m_FilePosition.Col, m_FilePosition.Offset, m_FilePosition.Offset, m_FilePosition.FilePath);
 			NextChar();
-			return std::make_shared<Token>(TokenType::Newline, m_Position);
+			return std::make_shared<Token>(TokenType::Newline, location);
 		}
 
 		std::shared_ptr<Token> Lexer::MakeEOFToken()
 		{
-			return std::make_shared<Token>(TokenType::EndOfFile, m_Position);
+			Types::Location location(m_FilePosition.Line, m_FilePosition.Col, m_FilePosition.Offset, m_FilePosition.Offset, m_FilePosition.FilePath);
+			return std::make_shared<Token>(TokenType::EndOfFile, location);
 		}
 
 		std::shared_ptr<Token> Lexer::MakeNumberToken()
 		{
+			Types::Location location(m_FilePosition.Line, m_FilePosition.Col, m_FilePosition.Offset, m_FilePosition.Offset, m_FilePosition.FilePath);
 			bool floatNumber = false;
 
 			std::string numbers;
@@ -166,7 +169,8 @@ namespace Eye
 				}
 			}
 
-			return (floatNumber ? std::make_shared<Token>((FloatType)std::atof(numbers.c_str()), m_Position) : std::make_shared<Token>((IntegerType)std::atoll(numbers.c_str()), m_Position));
+			location.End = m_FilePosition.Offset - 1;
+			return (floatNumber ? std::make_shared<Token>((FloatType)std::atof(numbers.c_str()), location) : std::make_shared<Token>((IntegerType)std::atoll(numbers.c_str()), location));
 		}
 
 		std::shared_ptr<Token> Lexer::MakeNumberBaseToken()
@@ -188,6 +192,7 @@ namespace Eye
 
 		std::shared_ptr<Token> Lexer::MakeHexNumberToken()
 		{
+			Types::Location location(m_FilePosition.Line, m_FilePosition.Col-1, m_FilePosition.Offset - 1, m_FilePosition.Offset - 1, m_FilePosition.FilePath);
 			NextChar();
 
 			std::string hexStr{};
@@ -197,11 +202,13 @@ namespace Eye
 				NextChar();
 			}
 
-			return std::make_shared<Token>((IntegerType)std::strtol(hexStr.c_str(), 0, 16), m_Position);
+			location.End = m_FilePosition.Offset - 1;
+			return std::make_shared<Token>((IntegerType)std::strtol(hexStr.c_str(), 0, 16), location);
 		}
 
 		std::shared_ptr<Token> Lexer::MakeBinaryNumberToken()
 		{
+			Types::Location location(m_FilePosition.Line, m_FilePosition.Col - 1, m_FilePosition.Offset - 1, m_FilePosition.Offset - 1, m_FilePosition.FilePath);
 			NextChar();
 
 			std::string binaryStr;
@@ -212,25 +219,29 @@ namespace Eye
 			}
 
 			if (!IsBinaryNumber(binaryStr))
-				throw Error::Exceptions::UnexpectedTokenException(("0b" + binaryStr), m_Position.Line, m_Position.Col, m_Position.FileName);
+				throw Error::Exceptions::UnexpectedTokenException(("0b" + binaryStr), m_FilePosition);
 
-			return std::make_shared<Token>((IntegerType)std::strtol(binaryStr.c_str(), 0, 2), m_Position);
+			location.End = m_FilePosition.Offset - 1;
+			return std::make_shared<Token>((IntegerType)std::strtol(binaryStr.c_str(), 0, 2), location);
 		}
 
 		std::shared_ptr<Token> Lexer::MakeStringToken(char sdelim, char edelim)
 		{
+			Types::Location location(m_FilePosition.Line, m_FilePosition.Col, m_FilePosition.Offset, m_FilePosition.Offset, m_FilePosition.FilePath);
 			if (NextChar() != sdelim)
-				throw Error::Exceptions::UnexpectedTokenException(std::string{ sdelim }, m_Position.Line, m_Position.Col, m_Position.FileName);
+				throw Error::Exceptions::UnexpectedTokenException(std::string{ sdelim }, m_FilePosition);
 
 			std::string str;
 			for (char c = NextChar(); c != edelim && c != EOF; c = NextChar())
 				str.push_back(c);
 
-			return std::make_shared<Token>(str, m_Position);
+			location.End = m_FilePosition.Offset - 1;
+			return std::make_shared<Token>(str, location);
 		}
 
 		std::shared_ptr<Token> Lexer::MakeOperatorToken()
 		{
+			Types::Location location(m_FilePosition.Line, m_FilePosition.Col, m_FilePosition.Offset, m_FilePosition.Offset, m_FilePosition.FilePath);
 			bool singleOperator = true;
 
 			char op = NextChar();
@@ -268,15 +279,17 @@ namespace Eye
 			}
 
 			if (singleOperator && !IsValidOperator(opStr))
-				throw Error::Exceptions::UnexpectedTokenException(opStr, m_Position.Line, m_Position.Col, m_Position.FileName);
+				throw Error::Exceptions::UnexpectedTokenException(opStr, m_FilePosition);
 
-			return std::make_shared<Token>(StringToTokenType(opStr), m_Position);
+			location.End = m_FilePosition.Offset - 1;
+			return std::make_shared<Token>(StringToTokenType(opStr), location);
 		}
 
 		std::shared_ptr<Token> Lexer::MakeSymbolToken()
 		{
+			Types::Location location(m_FilePosition.Line, m_FilePosition.Col, m_FilePosition.Offset, m_FilePosition.Offset, m_FilePosition.FilePath);
 			char c = NextChar();
-			return std::make_shared<Token>(StringToTokenType(std::string{ c }), m_Position);
+			return std::make_shared<Token>(StringToTokenType(std::string{ c }), location);
 		}
 
 		std::shared_ptr<Token> Lexer::MakeSpecialToken()
@@ -289,6 +302,7 @@ namespace Eye
 
 		std::shared_ptr<Token> Lexer::MakeIdentifierToken()
 		{
+			Types::Location location(m_FilePosition.Line, m_FilePosition.Col, m_FilePosition.Offset, m_FilePosition.Offset, m_FilePosition.FilePath);
 			std::string identifier;
 
 			for (char c = PeekChar(); ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_'); c = PeekChar())
@@ -297,12 +311,14 @@ namespace Eye
 				c = NextChar();
 			}
 
-			if (IsKeyword(identifier) && (identifier == "true" || identifier == "false"))
-				return std::make_shared<Token>((identifier == "true" ? true : false), m_Position);
-			else if (IsKeyword(identifier) && identifier == "null")
-				return std::make_shared<Token>(TokenType::LiteralNull, m_Position);
+			location.End = m_FilePosition.Offset - 1;
 
-			return std::make_shared<Token>((IsKeyword(identifier) ? StringToTokenType(identifier) : TokenType::Identifier), identifier, m_Position);
+			if (IsKeyword(identifier) && (identifier == "true" || identifier == "false"))
+				return std::make_shared<Token>((identifier == "true" ? true : false), location);
+			else if (IsKeyword(identifier) && identifier == "null")
+				return std::make_shared<Token>(TokenType::LiteralNull, location);
+
+			return std::make_shared<Token>((IsKeyword(identifier) ? StringToTokenType(identifier) : TokenType::Identifier), identifier, location);
 		}
 
 		std::shared_ptr<Token> Lexer::HandleSlashOperator()
@@ -324,6 +340,9 @@ namespace Eye
 				}
 
 				PutBack('/');
+				m_FilePosition.Col--;
+				m_FilePosition.Offset--;
+				// Reverse Line Too?
 				return MakeOperatorToken();
 			}
 
@@ -332,17 +351,20 @@ namespace Eye
 
 		std::shared_ptr<Token> Lexer::MakeSingleLineCommentToken()
 		{
+			Types::Location location(m_FilePosition.Line, m_FilePosition.Col - 2, m_FilePosition.Offset - 2, m_FilePosition.Offset, m_FilePosition.FilePath);
 			std::string comment;
 			for (char c = PeekChar(); (c != '\n' && c != EOF); c = PeekChar())
 			{
 				comment += c;
 				c = NextChar();
 			}
-			return std::make_shared<Token>(TokenType::Comment, comment, m_Position);
+			location.End = m_FilePosition.Offset - 1;
+			return std::make_shared<Token>(TokenType::Comment, comment, location);
 		}
 
 		std::shared_ptr<Token> Lexer::MakeMultiLineCommentToken()
 		{
+			Types::Location location(m_FilePosition.Line, m_FilePosition.Col - 2, m_FilePosition.Offset - 2, m_FilePosition.Offset, m_FilePosition.FilePath);
 			std::string comment;
 
 			while (true)
@@ -356,7 +378,7 @@ namespace Eye
 
 				if (c == EOF)
 				{
-					throw Error::Exceptions::UnexpectedTokenException(comment, m_Position.Line, m_Position.Col, m_Position.FileName);
+					throw Error::Exceptions::UnexpectedTokenException(comment, m_FilePosition);
 				}
 				else if (c == '*')
 				{
@@ -369,7 +391,8 @@ namespace Eye
 				}
 			}
 
-			return std::make_shared<Token>(TokenType::Comment, comment, m_Position);
+			location.End = m_FilePosition.Offset - 1;
+			return std::make_shared<Token>(TokenType::Comment, comment, location);
 		}
 
 		bool Lexer::IsOperator(char op) const
@@ -451,11 +474,12 @@ namespace Eye
 		char Lexer::NextChar()
 		{
 			char c = m_BufferStream.get();
-			m_Position.Col++;
+			m_FilePosition.Offset++;
+			m_FilePosition.Col++;
 			if (c == '\n')
 			{
-				m_Position.Line++;
-				m_Position.Col = 1;
+				m_FilePosition.Line++;
+				m_FilePosition.Col = 1;
 			}
 			return c;
 		}

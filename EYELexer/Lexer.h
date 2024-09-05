@@ -3,6 +3,7 @@
 #include "EYELexer/Token.h"
 
 #include <EYEError/Error.h>
+#include <EYETypes/Position.h>
 
 #include <sstream>
 #include <vector>
@@ -52,7 +53,7 @@ namespace Eye
 			void PutBack(char c);
 
 		private:
-			Position m_Position;
+			Types::Position m_FilePosition;
 			std::istringstream m_BufferStream;
 			std::vector<std::shared_ptr<Token>> m_Tokens;
 		};
