@@ -12,12 +12,20 @@ namespace Eye
 		std::shared_ptr<AST::Program> ASTGenerator::GenerateMemoryAST(const std::string& filepath)
 		{
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(filepath))
+			auto res = lexer.Tokenize(filepath);
+			if (!res)
+			{
+				EYE_LOG_ERROR(res.error().GetMessage());
 				EYE_LOG_CRITICAL("EYEASTGenerator->GenerateMemoryAST Lexer Failed to Tokenize!");
+			}
 
 			Parser::Parser parser;
-			if (!parser.Parse(lexer.GetTokens()))
+			res = parser.Parse(lexer.GetTokens());
+			if (!res)
+			{
+				EYE_LOG_ERROR(res.error().GetMessage());
 				EYE_LOG_CRITICAL("EYEASTGenerator->GenerateMemoryAST Parser Failed to Parse!");
+			}
 
 			return parser.GetAST();
 		}

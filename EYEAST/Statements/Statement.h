@@ -1,5 +1,7 @@
 #pragma once
 
+#include <EYETypes/Location.h>
+
 namespace Eye
 {
 	namespace AST
@@ -34,15 +36,17 @@ namespace Eye
 		{
 		public:
 			inline StatementType GetType() const { return m_Type; }
+			inline const Types::Location& GetSource() const { return m_Source; }
 
 		protected:
-			Statement(StatementType type)
-				: m_Type(type)
+			Statement(StatementType type, const Types::Location& source)
+				: m_Type(type), m_Source(source)
 			{
 			}
 
 		private:
 			StatementType m_Type;
+			Types::Location m_Source;
 		};
 	}
 }

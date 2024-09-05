@@ -14,8 +14,8 @@ namespace Eye
 		class BreakStatement : public Statement
 		{
 		public:
-			BreakStatement()
-				: Statement(StatementType::BreakStatement)
+			BreakStatement(const Types::Location& source)
+				: Statement(StatementType::BreakStatement, source)
 			{
 			}
 		};

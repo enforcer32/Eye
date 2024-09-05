@@ -26,8 +26,8 @@ namespace Eye
 		class IterationStatement : public Statement
 		{
 		public:
-			IterationStatement(IterationStatementType iterationType)
-				: Statement(StatementType::IterationStatement), m_IterationType(iterationType)
+			IterationStatement(IterationStatementType iterationType, const Types::Location& source)
+				: Statement(StatementType::IterationStatement, source), m_IterationType(iterationType)
 			{
 			}
 
@@ -45,8 +45,8 @@ namespace Eye
 		class WhileStatement : public IterationStatement
 		{
 		public:
-			WhileStatement(const std::shared_ptr<Expression>& condition, const std::shared_ptr<Statement>& body)
-				: IterationStatement(IterationStatementType::WhileStatement), m_Condition(condition), m_Body(body)
+			WhileStatement(const std::shared_ptr<Expression>& condition, const std::shared_ptr<Statement>& body, const Types::Location& source)
+				: IterationStatement(IterationStatementType::WhileStatement, source), m_Condition(condition), m_Body(body)
 			{
 			}
 
@@ -66,8 +66,8 @@ namespace Eye
 		class DoWhileStatement : public IterationStatement
 		{
 		public:
-			DoWhileStatement(const std::shared_ptr<Expression>& condition, const std::shared_ptr<Statement>& body)
-				: IterationStatement(IterationStatementType::DoWhileStatement), m_Condition(condition), m_Body(body)
+			DoWhileStatement(const std::shared_ptr<Expression>& condition, const std::shared_ptr<Statement>& body, const Types::Location& source)
+				: IterationStatement(IterationStatementType::DoWhileStatement, source), m_Condition(condition), m_Body(body)
 			{
 			}
 
@@ -100,8 +100,8 @@ namespace Eye
 		class ForStatement : public IterationStatement
 		{
 		public:
-			ForStatement(const std::shared_ptr<void>& initializer, ForInitializerType initializerType, const std::shared_ptr<Expression>& condition, const std::shared_ptr<Expression>& update, const std::shared_ptr<Statement>& body)
-				: IterationStatement(IterationStatementType::ForStatement), m_Initializer(initializer), m_InitializerType(initializerType), m_Condition(condition), m_Update(update), m_Body(body)
+			ForStatement(const std::shared_ptr<void>& initializer, ForInitializerType initializerType, const std::shared_ptr<Expression>& condition, const std::shared_ptr<Expression>& update, const std::shared_ptr<Statement>& body, const Types::Location& source)
+				: IterationStatement(IterationStatementType::ForStatement, source), m_Initializer(initializer), m_InitializerType(initializerType), m_Condition(condition), m_Update(update), m_Body(body)
 			{
 			}
 

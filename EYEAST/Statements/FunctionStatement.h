@@ -49,8 +49,8 @@ namespace Eye
 		class FunctionStatement : public Statement
 		{
 		public:
-			FunctionStatement(const std::shared_ptr<Lexer::Token>& returnType, const std::shared_ptr<IdentifierExpression>& identifier, const std::vector<std::shared_ptr<FunctionParameter>>& parameters, const std::shared_ptr<BlockStatement>& body)
-				: Statement(StatementType::FunctionStatement), m_ReturnType(returnType), m_Identifier(identifier), m_Parameters(parameters), m_Body(body)
+			FunctionStatement(const std::shared_ptr<Lexer::Token>& returnType, const std::shared_ptr<IdentifierExpression>& identifier, const std::vector<std::shared_ptr<FunctionParameter>>& parameters, const std::shared_ptr<BlockStatement>& body, const Types::Location& source)
+				: Statement(StatementType::FunctionStatement, source), m_ReturnType(returnType), m_Identifier(identifier), m_Parameters(parameters), m_Body(body)
 			{
 			}
 

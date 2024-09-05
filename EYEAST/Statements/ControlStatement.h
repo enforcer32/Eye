@@ -18,8 +18,8 @@ namespace Eye
 		class ControlStatement : public Statement
 		{
 		public:
-			ControlStatement(const std::shared_ptr<Expression>& condition, const std::shared_ptr<Statement>& consequent, const std::shared_ptr<Statement>& alternate)
-				: Statement(StatementType::ControlStatement), m_Condition(condition), m_Consequent(consequent), m_Alternate(alternate)
+			ControlStatement(const std::shared_ptr<Expression>& condition, const std::shared_ptr<Statement>& consequent, const std::shared_ptr<Statement>& alternate, const Types::Location& source)
+				: Statement(StatementType::ControlStatement, source), m_Condition(condition), m_Consequent(consequent), m_Alternate(alternate)
 			{
 			}
 		

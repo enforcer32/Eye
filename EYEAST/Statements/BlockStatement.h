@@ -17,8 +17,8 @@ namespace Eye
 		class BlockStatement : public Statement
 		{
 		public:
-			BlockStatement(const std::vector<std::shared_ptr<Statement>>& statementList)
-				: Statement(StatementType::BlockStatement), m_StatementList(statementList)
+			BlockStatement(const std::vector<std::shared_ptr<Statement>>& statementList, const Types::Location& source)
+				: Statement(StatementType::BlockStatement, source), m_StatementList(statementList)
 			{
 			}
 

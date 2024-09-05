@@ -119,7 +119,7 @@ namespace Eye
 
 			std::shared_ptr<AST::Expression> expression = Expression();
 			EatToken(Lexer::TokenType::SymbolSemiColon);
-			return std::make_shared<AST::ExpressionStatement>(expression);
+			return std::make_shared<AST::ExpressionStatement>(expression, expression->GetSource());
 		}
 
 		/*
@@ -129,12 +129,12 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::BlockStatement> Parser::BlockStatement()
 		{
-			EatToken(Lexer::TokenType::SymbolLeftBrace);
+			const auto& blockToken = EatToken(Lexer::TokenType::SymbolLeftBrace);
 			std::vector<std::shared_ptr<AST::Statement>> statementList;
 			if (!IsLookAhead(Lexer::TokenType::SymbolRightBrace))
 				statementList = StatementList(Lexer::TokenType::SymbolRightBrace);
 			EatToken(Lexer::TokenType::SymbolRightBrace);
-			return std::make_shared<AST::BlockStatement>(statementList);
+			return std::make_shared<AST::BlockStatement>(statementList, blockToken->GetLocation());
 		}
 
 		/*
@@ -163,7 +163,8 @@ namespace Eye
 				throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetLocation());
 			
 			std::shared_ptr<Lexer::Token> dataType = EatToken(m_LookAhead->GetType());
-			std::shared_ptr<AST::VariableStatement> variableStatement = std::make_shared<AST::VariableStatement>(typeQualifier, dataType, VariableDeclarationList());
+			const auto& varToken = (typeQualifier ? typeQualifier : dataType);
+			std::shared_ptr<AST::VariableStatement> variableStatement = std::make_shared<AST::VariableStatement>(typeQualifier, dataType, VariableDeclarationList(), varToken->GetLocation());
 			EatToken(Lexer::TokenType::SymbolSemiColon);
 			return variableStatement;
 		}
@@ -216,7 +217,7 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::ControlStatement> Parser::ControlStatement()
 		{
-			EatToken(Lexer::TokenType::KeywordControlIf);
+			const auto& ifToken = EatToken(Lexer::TokenType::KeywordControlIf);
 			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
 			std::shared_ptr<AST::Expression> condition = Expression();
 			if(!condition)
@@ -229,7 +230,7 @@ namespace Eye
 				EatToken(Lexer::TokenType::KeywordControlElse);
 				alternate = Statement();
 			}
-			return std::make_shared<AST::ControlStatement>(condition, consequent, alternate);
+			return std::make_shared<AST::ControlStatement>(condition, consequent, alternate, ifToken->GetLocation());
 		}
 
 		/*
@@ -258,9 +259,9 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::ContinueStatement> Parser::ContinueStatement()
 		{
-			EatToken(Lexer::TokenType::KeywordIterationContinue);
+			const auto& continueToken = EatToken(Lexer::TokenType::KeywordIterationContinue);
 			EatToken(Lexer::TokenType::SymbolSemiColon);
-			return std::make_shared<AST::ContinueStatement>();
+			return std::make_shared<AST::ContinueStatement>(continueToken->GetLocation());
 		}
 	
 		/*
@@ -270,9 +271,9 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::BreakStatement> Parser::BreakStatement()
 		{
-			EatToken(Lexer::TokenType::KeywordIterationBreak);
+			const auto& breakToken = EatToken(Lexer::TokenType::KeywordIterationBreak);
 			EatToken(Lexer::TokenType::SymbolSemiColon);
-			return std::make_shared<AST::BreakStatement>();
+			return std::make_shared<AST::BreakStatement>(breakToken->GetLocation());
 		}
 
 		/*
@@ -282,14 +283,14 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::WhileStatement> Parser::WhileStatement()
 		{
-			EatToken(Lexer::TokenType::KeywordIterationWhile);
+			const auto& whileToken = EatToken(Lexer::TokenType::KeywordIterationWhile);
 			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
 			std::shared_ptr<AST::Expression> condition = Expression();
 			if(!condition)
 				throw Error::Exceptions::SyntaxErrorException("Expected Expression", m_LookAhead->GetLocation());
 			EatToken(Lexer::TokenType::SymbolRightParenthesis);
 			std::shared_ptr<AST::Statement> body = Statement();
-			return std::make_shared<AST::WhileStatement>(condition, body);
+			return std::make_shared<AST::WhileStatement>(condition, body, whileToken->GetLocation());
 		}
 
 		/*
@@ -299,7 +300,7 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::DoWhileStatement> Parser::DoWhileStatement()
 		{
-			EatToken(Lexer::TokenType::KeywordIterationDo);
+			const auto& doToken = EatToken(Lexer::TokenType::KeywordIterationDo);
 			std::shared_ptr<AST::Statement> body = Statement();
 			EatToken(Lexer::TokenType::KeywordIterationWhile);
 			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
@@ -308,7 +309,7 @@ namespace Eye
 				throw Error::Exceptions::SyntaxErrorException("Expected Expression", m_LookAhead->GetLocation());
 			EatToken(Lexer::TokenType::SymbolRightParenthesis);
 			EatToken(Lexer::TokenType::SymbolSemiColon);
-			return std::make_shared<AST::DoWhileStatement>(condition, body);
+			return std::make_shared<AST::DoWhileStatement>(condition, body, doToken->GetLocation());
 		}
 
 		/*
@@ -323,7 +324,7 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::ForStatement> Parser::ForStatement()
 		{
-			EatToken(Lexer::TokenType::KeywordIterationFor);
+			const auto& forToken = EatToken(Lexer::TokenType::KeywordIterationFor);
 			EatToken(Lexer::TokenType::OperatorLeftParenthesis);
 
 			std::shared_ptr<void> initializer = nullptr;
@@ -340,7 +341,8 @@ namespace Eye
 						throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetLocation());
 
 					std::shared_ptr<Lexer::Token> dataType = EatToken(m_LookAhead->GetType());
-					initializer = std::make_shared<AST::VariableStatement>(typeQualifier, dataType, VariableDeclarationList());
+					const auto& varToken = (typeQualifier ? typeQualifier : dataType);
+					initializer = std::make_shared<AST::VariableStatement>(typeQualifier, dataType, VariableDeclarationList(), varToken->GetLocation());
 					initializerType = AST::ForInitializerType::VariableStatement;
 				}
 				else
@@ -358,7 +360,7 @@ namespace Eye
 			EatToken(Lexer::TokenType::SymbolRightParenthesis);
 
 			std::shared_ptr<AST::Statement> body = Statement();
-			return std::make_shared<AST::ForStatement>(initializer, initializerType, condition, update, body);
+			return std::make_shared<AST::ForStatement>(initializer, initializerType, condition, update, body, forToken->GetLocation());
 		}
 
 		/*
@@ -368,7 +370,7 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::FunctionStatement> Parser::FunctionStatement()
 		{
-			EatToken(Lexer::TokenType::KeywordFunction);
+			const auto& functionToken = EatToken(Lexer::TokenType::KeywordFunction);
 			
 			if (!IsDataTypeKeyword(m_LookAhead))
 				throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetLocation());
@@ -383,7 +385,7 @@ namespace Eye
 			EatToken(Lexer::TokenType::SymbolRightParenthesis);
 
 			std::shared_ptr<AST::BlockStatement> body = BlockStatement();
-			return std::make_shared<AST::FunctionStatement>(returnType, identifier, parameters, body);
+			return std::make_shared<AST::FunctionStatement>(returnType, identifier, parameters, body, functionToken->GetLocation());
 		}
 
 		/*
@@ -430,10 +432,10 @@ namespace Eye
 		*/
 		std::shared_ptr<AST::ReturnStatement> Parser::ReturnStatement()
 		{
-			EatToken(Lexer::TokenType::KeywordReturn);
+			const auto& returnToken = EatToken(Lexer::TokenType::KeywordReturn);
 			std::shared_ptr<AST::Expression> expression = (!IsLookAhead(Lexer::TokenType::SymbolSemiColon)) ? Expression() : nullptr;
 			EatToken(Lexer::TokenType::SymbolSemiColon);
-			return std::make_shared<AST::ReturnStatement>(expression);
+			return std::make_shared<AST::ReturnStatement>(expression, returnToken->GetLocation());
 		}
 
 		/*

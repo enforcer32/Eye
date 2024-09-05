@@ -17,8 +17,8 @@ namespace Eye
 		class ReturnStatement : public Statement
 		{
 		public:
-			ReturnStatement(const std::shared_ptr<Expression>& expression)
-				: Statement(StatementType::ReturnStatement), m_Expression(expression)
+			ReturnStatement(const std::shared_ptr<Expression>& expression, const Types::Location& source)
+				: Statement(StatementType::ReturnStatement, source), m_Expression(expression)
 			{
 			}
 

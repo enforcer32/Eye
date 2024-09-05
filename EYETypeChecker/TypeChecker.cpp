@@ -168,10 +168,10 @@ namespace Eye
 		Type TypeChecker::TypeCheckBinaryExpressionArithmeticPlus(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
 		{
 			if (leftType == Type::Boolean || rightType == Type::Boolean)
-				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), binaryExpr->GetOperator()->GetLocation());
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), binaryExpr->GetRight()->GetSource());
 
 			if ((leftType == Type::String && rightType != Type::String) || (leftType != Type::String && rightType == Type::String))
-				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), binaryExpr->GetOperator()->GetLocation());
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), binaryExpr->GetRight()->GetSource());
 
 			if (leftType == Type::Float || rightType == Type::Float)
 				return Type::Float;
