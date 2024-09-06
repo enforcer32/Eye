@@ -2,6 +2,7 @@
 
 #include <EYEUtility/Logger.h>
 #include <EYEError/Exceptions/BadTypeConversionException.h>
+#include <EYEError/Exceptions/BadTypeCompareException.h>
 
 namespace Eye
 {
@@ -19,6 +20,10 @@ namespace Eye
 			catch (const Error::Exceptions::BadTypeConversionException& ex)
 			{
 				return std::unexpected(Error::Error(Error::ErrorType::TypeCheckerBadTypeConversion, ex.what()));
+			}
+			catch (const Error::Exceptions::BadTypeCompareException& ex)
+			{
+				return std::unexpected(Error::Error(Error::ErrorType::TypeCheckerBadTypeCompare, ex.what()));
 			}
 			catch (...)
 			{
@@ -182,17 +187,12 @@ namespace Eye
 
 		Type TypeChecker::TypeCheckBinaryExpressionRelational(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
 		{
-			if (leftType != rightType)
-			{
-				std::string value;
-				if(rightType == Type::String)
-					value = std::static_pointer_cast<AST::LiteralExpression>(binaryExpr->GetRight())->GetValue<AST::LiteralStringType>();
-				else if(rightType == Type::Integer || rightType == Type::Float)
-					value = std::to_string(std::static_pointer_cast<AST::LiteralExpression>(binaryExpr->GetRight())->GetValue<AST::LiteralIntegerType>());
-				else if(rightType == Type::Boolean)
-					value = (std::static_pointer_cast<AST::LiteralExpression>(binaryExpr->GetRight())->GetValue<AST::LiteralBooleanType>() ? "true" : "false");
-				EYE_LOG_CRITICAL("EYETypeChecker Binary Relational({})->Expected {} Type for (\"{}\") but got {} Type Instead!", binaryExpr->GetOperator()->GetTypeString(), TypeToString(leftType), value, TypeToString(rightType));
-			}
+			if((leftType == Type::Boolean && rightType != Type::Boolean) || (leftType != Type::Boolean && rightType == Type::Boolean))
+				throw Error::Exceptions::BadTypeCompareException("Incomparable Types: " + TypeToString(leftType) + " and " + TypeToString(rightType), binaryExpr->GetOperator()->GetSource());
+
+			if ((leftType == Type::String && rightType != Type::String) || (leftType != Type::String && rightType == Type::String))
+				throw Error::Exceptions::BadTypeCompareException("Incomparable Types: " + TypeToString(leftType) + " and " + TypeToString(rightType), binaryExpr->GetOperator()->GetSource());
+
 			return Type::Boolean;
 		}
 

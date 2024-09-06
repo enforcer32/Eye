@@ -13,7 +13,8 @@ file(GLOB_RECURSE EYETestSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYEParser/ExpressionTest.cpp"
 
 	#EYETypeChecker
-	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Expression/BinaryExpressionTest.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Expression/BinaryExpression/BinaryExpressionArithmeticTest.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Expression/BinaryExpression/BinaryExpressionRelationalTest.cpp"
 )
 
 add_executable(${EYETEST_TARGET_NAME} ${EYETestSources})

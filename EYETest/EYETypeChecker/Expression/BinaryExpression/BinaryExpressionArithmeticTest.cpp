@@ -10,7 +10,7 @@ namespace Eye
 {
 	namespace TypeChecker
 	{
-		TEST(TypeCheckerBinaryExpressionTest, BinaryExpressionArithmeticPlus)
+		TEST(TypeCheckerBinaryExpressionArithmeticTest, ArithmeticPlus)
 		{
 			TypeChecker typeChecker;
 			Eye::ASTGenerator::ASTGenerator astGenerator;
@@ -20,10 +20,19 @@ namespace Eye
 			ASSERT_EQ(!res.has_value(), true);
 			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeConversion);
 
-			// X + Boolean || Boolean + X
+			// Non-Boolean + Boolean
 			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25+true;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(!res.has_value(), true);
 			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeConversion);
+
+			// Boolean + Non-Boolean
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("false+12.25;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			ASSERT_EQ(!res.has_value(), true);
+			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeConversion);
+
+			// String + String
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("\"World\" + \"Hello\";", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			ASSERT_EQ(res.has_value(), true);
 
 			// String + Non-String
 			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("\"Hello\"+123;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
@@ -35,12 +44,16 @@ namespace Eye
 			ASSERT_EQ(!res.has_value(), true);
 			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeConversion);
 
-			// String + String
-			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("\"World\" + \"Hello\";", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			// Float + Float
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25.12 + 512.35;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(res.has_value(), true);
 
 			// Float + Number
 			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25.12 + 123;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			ASSERT_EQ(res.has_value(), true);
+
+			// Number + Number
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25 + 33;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(res.has_value(), true);
 
 			// Number + Float

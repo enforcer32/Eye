@@ -11,6 +11,7 @@ namespace Eye
 			LexerUnexpectedToken,
 			ParserSyntaxError,
 			TypeCheckerBadTypeConversion,
+			TypeCheckerBadTypeCompare,
 		};
 
 		class Error
