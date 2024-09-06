@@ -9,10 +9,14 @@ namespace Eye
 {
 	namespace ASTGenerator
 	{
-		std::shared_ptr<AST::Program> ASTGenerator::GenerateMemoryAST(const std::string& filepath)
+		std::shared_ptr<AST::Program> ASTGenerator::GenerateMemoryAST(const std::string& source, ASTGeneratorSourceType sourceType)
 		{
+			Utility::EyeSource eyeSource;
+			eyeSource.Source = source;
+			eyeSource.Type = (sourceType == ASTGeneratorSourceType::File ? Utility::EyeSourceType::File : Utility::EyeSourceType::String);
+
 			Lexer::Lexer lexer;
-			auto res = lexer.Tokenize(filepath);
+			auto res = lexer.Tokenize(eyeSource);
 			if (!res)
 			{
 				EYE_LOG_ERROR(res.error().GetMessage());
@@ -30,10 +34,14 @@ namespace Eye
 			return parser.GetAST();
 		}
 
-		std::string ASTGenerator::GenerateStringAST(const std::string& filepath)
+		std::string ASTGenerator::GenerateStringAST(const std::string& source, ASTGeneratorSourceType sourceType)
 		{
+			Utility::EyeSource eyeSource;
+			eyeSource.Source = source;
+			eyeSource.Type = (sourceType == ASTGeneratorSourceType::File ? Utility::EyeSourceType::File : Utility::EyeSourceType::String);
+
 			Lexer::Lexer lexer;
-			auto res = lexer.Tokenize(filepath);
+			auto res = lexer.Tokenize(eyeSource);
 			if (!res)
 			{
 				EYE_LOG_ERROR(res.error().GetMessage());

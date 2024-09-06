@@ -14,7 +14,7 @@ namespace Eye
 		class ContinueStatement : public Statement
 		{
 		public:
-			ContinueStatement(const Types::Location& source)
+			ContinueStatement(const Utility::EyeSource& source)
 				: Statement(StatementType::ContinueStatement, source)
 			{
 			}

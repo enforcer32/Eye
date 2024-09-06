@@ -60,7 +60,7 @@ namespace Eye
 		class VariableStatement : public Statement
 		{
 		public:
-			VariableStatement(const std::shared_ptr<Lexer::Token>& typeQualifier, const std::shared_ptr<Lexer::Token>& dataType, const std::vector<std::shared_ptr<VariableDeclaration>>& variableDeclarationList, const Types::Location& source)
+			VariableStatement(const Utility::EyeSource& source, const std::shared_ptr<Lexer::Token>& typeQualifier, const std::shared_ptr<Lexer::Token>& dataType, const std::vector<std::shared_ptr<VariableDeclaration>>& variableDeclarationList)
 				: Statement(StatementType::VariableStatement, source), m_TypeQualifier(typeQualifier), m_DataType(dataType), m_VariableDeclarationList(variableDeclarationList)
 			{
 			}

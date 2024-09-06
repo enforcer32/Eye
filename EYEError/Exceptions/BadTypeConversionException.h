@@ -1,7 +1,6 @@
 #pragma once
 
-#include <EYETypes/Location.h>
-#include <EYETypes/Position.h>
+#include <EYEUtility/EyeSource.h>
 
 #include <stdexcept>
 #include <string>
@@ -15,13 +14,12 @@ namespace Eye
 			class BadTypeConversionException : public std::exception
 			{
 			public:
-				BadTypeConversionException(const std::string& msg, const Types::Position& position);
-				BadTypeConversionException(const std::string& msg, const Types::Location& location);
+				BadTypeConversionException(const std::string& msg, const Utility::EyeSource& source);
 
 				virtual const char* what() const noexcept override;
 
 			private:
-				std::string GetErrorLine(const std::string& filepath, size_t line, size_t col);
+				std::string GetErrorLine(const Utility::EyeSource& source);
 
 			private:
 				std::string m_What;

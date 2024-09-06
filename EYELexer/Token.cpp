@@ -102,33 +102,33 @@ namespace Eye
 		{
 		}
 
-		Token::Token(IntegerType value, const Types::Location& location)
-			: m_Type(TokenType::LiteralInteger), m_Value(value), m_Location(location)
+		Token::Token(IntegerType value, const Utility::EyeSource& source)
+			: m_Type(TokenType::LiteralInteger), m_Value(value), m_Source(source)
 		{
 		}
 
-		Token::Token(FloatType value, const Types::Location& location)
-			: m_Type(TokenType::LiteralFloat), m_Value(value), m_Location(location)
+		Token::Token(FloatType value, const Utility::EyeSource& source)
+			: m_Type(TokenType::LiteralFloat), m_Value(value), m_Source(source)
 		{
 		}
 
-		Token::Token(StringType value, const Types::Location& location)
-			: m_Type(TokenType::LiteralString), m_Value(value), m_Location(location)
+		Token::Token(StringType value, const Utility::EyeSource& source)
+			: m_Type(TokenType::LiteralString), m_Value(value), m_Source(source)
 		{
 		}
 
-		Token::Token(BooleanType value, const Types::Location& location)
-			: m_Type(TokenType::LiteralBoolean), m_Value(value), m_Location(location)
+		Token::Token(BooleanType value, const Utility::EyeSource& source)
+			: m_Type(TokenType::LiteralBoolean), m_Value(value), m_Source(source)
 		{
 		}
 
-		Token::Token(TokenType type, const Types::Location& location)
-			: m_Type(type), m_Location(location)
+		Token::Token(TokenType type, const Utility::EyeSource& source)
+			: m_Type(type), m_Source(source)
 		{
 		}
 
-		Token::Token(TokenType type, StringType value, const Types::Location& location)
-			: m_Type(type), m_Value(value), m_Location(location)
+		Token::Token(TokenType type, StringType value, const Utility::EyeSource& source)
+			: m_Type(type), m_Value(value), m_Source(source)
 		{
 		}
 
@@ -171,9 +171,9 @@ namespace Eye
 			return m_Type;
 		}
 
-		const Types::Location& Token::GetLocation() const
+		const Utility::EyeSource& Token::GetSource() const
 		{
-			return m_Location;
+			return m_Source;
 		}
 
 		std::string Token::ToString() const
@@ -292,7 +292,7 @@ namespace Eye
 				break;
 			}
 
-			return "Token{Type: " + type + ", Value: " + value + ", " + m_Location.ToString() + "}";
+			return "Token{Type: " + type + ", Value: " + value + ", " + m_Source.ToString() + "}";
 		}
 
 		std::string_view Token::GetTypeString() const

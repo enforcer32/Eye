@@ -19,7 +19,7 @@ namespace Eye
 		class MemberExpression : public Expression
 		{
 		public:
-			MemberExpression(const std::shared_ptr<Expression>& object, const std::shared_ptr<Expression>& property, bool computed, const Types::Location& source)
+			MemberExpression(const Utility::EyeSource& source, const std::shared_ptr<Expression>& object, const std::shared_ptr<Expression>& property, bool computed)
 				: Expression(ExpressionType::MemberExpression, source), m_Object(object), m_Property(property), m_Computed(computed)
 			{
 			}

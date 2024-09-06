@@ -22,7 +22,7 @@ namespace Eye
 		class UnaryExpression : public Expression
 		{
 		public:
-			UnaryExpression(const std::shared_ptr<Lexer::Token>& op, const std::shared_ptr<Expression>& expression, const Types::Location& source)
+			UnaryExpression(const Utility::EyeSource& source, const std::shared_ptr<Lexer::Token>& op, const std::shared_ptr<Expression>& expression)
 				: Expression(ExpressionType::UnaryExpression, source), m_Operator(op), m_Expression(expression)
 			{
 			}

@@ -8,11 +8,17 @@ namespace Eye
 {
 	namespace ASTGenerator
 	{
+		enum ASTGeneratorSourceType
+		{
+			File,
+			String,
+		};
+
 		class ASTGenerator
 		{
 		public:
-			std::shared_ptr<AST::Program> GenerateMemoryAST(const std::string& filepath);
-			std::string GenerateStringAST(const std::string& filepath);
+			std::shared_ptr<AST::Program> GenerateMemoryAST(const std::string& source, ASTGeneratorSourceType sourceType);
+			std::string GenerateStringAST(const std::string& source, ASTGeneratorSourceType sourceType);
 		};
 	}
 }

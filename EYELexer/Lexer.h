@@ -3,7 +3,7 @@
 #include "EYELexer/Token.h"
 
 #include <EYEError/Error.h>
-#include <EYETypes/Position.h>
+#include <EYEUtility/EyeSource.h>
 
 #include <sstream>
 #include <vector>
@@ -16,7 +16,7 @@ namespace Eye
 		class Lexer
 		{
 		public:
-			std::expected<bool, Error::Error> Tokenize(const std::string& filepath);
+			std::expected<bool, Error::Error> Tokenize(const Utility::EyeSource& source);
 			std::vector<std::shared_ptr<Token>> GetTokens() const;
 
 		private:
@@ -53,7 +53,7 @@ namespace Eye
 			void PutBack(char c);
 
 		private:
-			Types::Position m_FilePosition;
+			Utility::EyeSource m_Source;
 			std::istringstream m_BufferStream;
 			std::vector<std::shared_ptr<Token>> m_Tokens;
 		};

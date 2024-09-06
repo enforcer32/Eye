@@ -1,7 +1,6 @@
 #pragma once
 
-#include <EYETypes/Location.h>
-#include <EYETypes/Position.h>
+#include <EYEUtility/EyeSource.h>
 
 #include <stdexcept>
 #include <string>
@@ -15,13 +14,12 @@ namespace Eye
 			class UnexpectedTokenException : public std::exception
 			{
 			public:
-				UnexpectedTokenException(const std::string& token, const Types::Position& position);
-				UnexpectedTokenException(const std::string& token, const Types::Location& location);
+				UnexpectedTokenException(const std::string& token, const Utility::EyeSource& source);
 
 				virtual const char* what() const noexcept override;
 
 			private:
-				std::string GetErrorLine(const std::string& filepath, size_t line, size_t col);
+				std::string GetErrorLine(const Utility::EyeSource& source);
 
 			private:
 				std::string m_What;

@@ -17,7 +17,7 @@ namespace Eye
 		class BinaryExpression : public Expression
 		{
 		public:
-			BinaryExpression(const std::shared_ptr<Lexer::Token>& op, const std::shared_ptr<Expression>& left, const std::shared_ptr<Expression>& right, const Types::Location& source)
+			BinaryExpression(const Utility::EyeSource& source, const std::shared_ptr<Lexer::Token>& op, const std::shared_ptr<Expression>& left, const std::shared_ptr<Expression>& right)
 				: Expression(ExpressionType::BinaryExpression, source), m_Operator(op), m_Left(left), m_Right(right)
 			{
 			}

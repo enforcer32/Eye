@@ -55,27 +55,27 @@ namespace Eye
 		class LiteralExpression : public Expression
 		{
 		public:
-			LiteralExpression(LiteralType type, const Types::Location& source)
+			LiteralExpression(const Utility::EyeSource& source, LiteralType type)
 				: Expression(ExpressionType::LiteralExpression, source), m_LiteralType(type)
 			{
 			}
 
-			LiteralExpression(LiteralIntegerType value, const Types::Location& source)
+			LiteralExpression(const Utility::EyeSource& source, LiteralIntegerType value)
 				: Expression(ExpressionType::LiteralExpression, source), m_LiteralType(LiteralType::Integer), m_Value(value)
 			{
 			}
 
-			LiteralExpression(LiteralFloatType value, const Types::Location& source)
+			LiteralExpression(const Utility::EyeSource& source, LiteralFloatType value)
 				: Expression(ExpressionType::LiteralExpression, source), m_LiteralType(LiteralType::Float), m_Value(value)
 			{
 			}
 
-			LiteralExpression(LiteralStringType value, const Types::Location& source)
+			LiteralExpression(const Utility::EyeSource& source, LiteralStringType value)
 				: Expression(ExpressionType::LiteralExpression, source), m_LiteralType(LiteralType::String), m_Value(value)
 			{
 			}
 
-			LiteralExpression(LiteralBooleanType value, const Types::Location& source)
+			LiteralExpression(const Utility::EyeSource& source, LiteralBooleanType value)
 				: Expression(ExpressionType::LiteralExpression, source), m_LiteralType(LiteralType::Boolean), m_Value(value)
 			{
 			}

@@ -13,4 +13,3 @@ file(GLOB_RECURSE EYEErrorSources
 add_library(${EYEERROR_TARGET_NAME} STATIC ${EYEErrorSources})
 target_include_directories(${EYEERROR_TARGET_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../")
 target_link_libraries(${EYEERROR_TARGET_NAME} PRIVATE ${EYEUTILITY_TARGET_NAME})
-target_link_libraries(${EYEERROR_TARGET_NAME} PRIVATE ${EYETYPES_TARGET_NAME})

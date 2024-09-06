@@ -26,7 +26,7 @@ namespace Eye
 		class IterationStatement : public Statement
 		{
 		public:
-			IterationStatement(IterationStatementType iterationType, const Types::Location& source)
+			IterationStatement(IterationStatementType iterationType, const Utility::EyeSource& source)
 				: Statement(StatementType::IterationStatement, source), m_IterationType(iterationType)
 			{
 			}
@@ -45,7 +45,7 @@ namespace Eye
 		class WhileStatement : public IterationStatement
 		{
 		public:
-			WhileStatement(const std::shared_ptr<Expression>& condition, const std::shared_ptr<Statement>& body, const Types::Location& source)
+			WhileStatement(const Utility::EyeSource& source, const std::shared_ptr<Expression>& condition, const std::shared_ptr<Statement>& body)
 				: IterationStatement(IterationStatementType::WhileStatement, source), m_Condition(condition), m_Body(body)
 			{
 			}
@@ -66,7 +66,7 @@ namespace Eye
 		class DoWhileStatement : public IterationStatement
 		{
 		public:
-			DoWhileStatement(const std::shared_ptr<Expression>& condition, const std::shared_ptr<Statement>& body, const Types::Location& source)
+			DoWhileStatement(const Utility::EyeSource& source, const std::shared_ptr<Expression>& condition, const std::shared_ptr<Statement>& body)
 				: IterationStatement(IterationStatementType::DoWhileStatement, source), m_Condition(condition), m_Body(body)
 			{
 			}
@@ -100,7 +100,7 @@ namespace Eye
 		class ForStatement : public IterationStatement
 		{
 		public:
-			ForStatement(const std::shared_ptr<void>& initializer, ForInitializerType initializerType, const std::shared_ptr<Expression>& condition, const std::shared_ptr<Expression>& update, const std::shared_ptr<Statement>& body, const Types::Location& source)
+			ForStatement(const Utility::EyeSource& source, const std::shared_ptr<void>& initializer, ForInitializerType initializerType, const std::shared_ptr<Expression>& condition, const std::shared_ptr<Expression>& update, const std::shared_ptr<Statement>& body)
 				: IterationStatement(IterationStatementType::ForStatement, source), m_Initializer(initializer), m_InitializerType(initializerType), m_Condition(condition), m_Update(update), m_Body(body)
 			{
 			}

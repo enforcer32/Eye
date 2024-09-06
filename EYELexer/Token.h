@@ -1,6 +1,6 @@
 #pragma once
 
-#include <EYETypes/Location.h>
+#include <EYEUtility/EyeSource.h>
 
 #include <string>
 #include <variant>
@@ -101,19 +101,19 @@ namespace Eye
 		{
 		public:
 			Token();
-			Token(IntegerType value, const Types::Location& location);
-			Token(FloatType value, const Types::Location& location);
-			Token(StringType value, const Types::Location& location);
-			Token(BooleanType value, const Types::Location& location);
-			Token(TokenType type, const Types::Location& location);
-			Token(TokenType type, StringType value, const Types::Location& location);
+			Token(IntegerType value, const Utility::EyeSource& source);
+			Token(FloatType value, const Utility::EyeSource& source);
+			Token(StringType value, const Utility::EyeSource& source);
+			Token(BooleanType value, const Utility::EyeSource& source);
+			Token(TokenType type, const Utility::EyeSource& source);
+			Token(TokenType type, StringType value, const Utility::EyeSource& source);
 
 			bool operator==(const Token& token) const;
 			bool operator!=(const Token& token) const;
 			operator bool() const;
 
 			TokenType GetType() const;
-			const Types::Location& GetLocation() const;
+			const Utility::EyeSource& GetSource() const;
 
 			template<typename T>
 			T GetValue() const
@@ -128,7 +128,7 @@ namespace Eye
 
 		private:
 			TokenType m_Type;
-			Types::Location m_Location;
+			Utility::EyeSource m_Source;
 			std::variant<IntegerType, FloatType, StringType, BooleanType> m_Value;
 		};
 	}

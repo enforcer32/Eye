@@ -15,7 +15,7 @@ namespace Eye
 		class ExpressionStatement : public Statement
 		{
 		public:
-			ExpressionStatement(const std::shared_ptr<Expression>& expression, const Types::Location& source)
+			ExpressionStatement(const Utility::EyeSource& source, const std::shared_ptr<Expression>& expression)
 				: Statement(StatementType::ExpressionStatement, source), m_Expression(expression)
 			{
 			}
