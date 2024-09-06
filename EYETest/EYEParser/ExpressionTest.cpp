@@ -22,7 +22,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->LiteralExpression Failed to Tokenize()");
 
 			Parser parser;
@@ -45,7 +45,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->AdditiveBinaryExpression Failed to Tokenize()");
 
 			Parser parser;
@@ -68,7 +68,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->MultiplicativeBinaryExpression Failed to Tokenize()");
 
 			Parser parser;
@@ -91,7 +91,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->IdentifierExpression Failed to Tokenize()");
 
 			Parser parser;
@@ -114,7 +114,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->AssignmentExpression Failed to Tokenize()");
 
 			Parser parser;
@@ -137,7 +137,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->RelationalExpression Failed to Tokenize()");
 
 			Parser parser;
@@ -160,7 +160,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->EqualityExpression Failed to Tokenize()");
 
 			Parser parser;
@@ -183,7 +183,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->LogicalExpression Failed to Tokenize()");
 
 			Parser parser;
@@ -206,7 +206,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->UnaryExpression Failed to Tokenize()");
 
 			Parser parser;
@@ -229,7 +229,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->ParenthesizedExpression Failed to Tokenize()");
 
 			Parser parser;
@@ -252,7 +252,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->MemberExpression Failed to Tokenize()");
 
 			Parser parser;
@@ -275,7 +275,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->CallExpression Failed to Tokenize()");
 
 			Parser parser;
@@ -298,7 +298,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->PostfixPrefixExpression Failed to Tokenize()");
 
 			Parser parser;

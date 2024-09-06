@@ -16,7 +16,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerLiteralTest->IntegerDecimal Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetValue<IntegerType>(), 12345);
@@ -31,7 +31,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerLiteralTest->IntegerHex Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetValue<IntegerType>(), 4660);
@@ -46,7 +46,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerLiteralTest->IntegerBinary Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetValue<IntegerType>(), 6);
@@ -61,7 +61,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerLiteralTest->Float Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetValue<FloatType>(), 123.456);
@@ -76,7 +76,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerLiteralTest->String Failed to Tokenize()");
 
 			ASSERT_EQ(std::string(lexer.GetTokens()[0]->GetValue<StringType>()), "Hello World");
@@ -91,7 +91,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerLiteralTest->Boolean Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetValue<BooleanType>(), true);
@@ -107,7 +107,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerLiteralTest->Null Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetType(), TokenType::LiteralNull);

@@ -16,7 +16,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerOtherTest->Comment Failed to Tokenize()");
 
 			ASSERT_EQ(std::string(lexer.GetTokens()[0]->GetValue<StringType>()), " Single Line Comment");
@@ -30,7 +30,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerOtherTest->MultiLineComment Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[3]->GetType(), TokenType::Comment);
@@ -43,7 +43,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerOtherTest->NewLine Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[1]->GetType(), TokenType::Newline);
@@ -60,7 +60,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerOtherTest->EndOfFile Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[8]->GetType(), TokenType::EndOfFile);

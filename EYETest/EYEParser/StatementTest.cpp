@@ -22,7 +22,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->ExpressionStatement Failed to Tokenize()");
 
 			Parser parser;
@@ -45,7 +45,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->BlockStatement Failed to Tokenize()");
 
 			Parser parser;
@@ -68,7 +68,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->VariableStatement Failed to Tokenize()");
 
 			Parser parser;
@@ -91,7 +91,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->ControlStatement Failed to Tokenize()");
 
 			Parser parser;
@@ -114,7 +114,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->IterationWhileStatement Failed to Tokenize()");
 
 			Parser parser;
@@ -137,7 +137,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->IterationDoWhileStatement Failed to Tokenize()");
 
 			Parser parser;
@@ -160,7 +160,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->IterationForStatement Failed to Tokenize()");
 
 			Parser parser;
@@ -183,7 +183,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->FunctionReturnStatement Failed to Tokenize()");
 
 			Parser parser;
@@ -206,7 +206,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->TypeQualifierStatement Failed to Tokenize()");
 
 			Parser parser;
@@ -229,7 +229,7 @@ namespace Eye
 			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
 
 			Lexer::Lexer lexer;
-			if (!lexer.Tokenize(eyeFilePath))
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserStatementTest->ContinueBreakStatement Failed to Tokenize()");
 
 			Parser parser;

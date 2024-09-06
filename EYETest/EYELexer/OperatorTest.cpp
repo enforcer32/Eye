@@ -16,7 +16,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerOperatorTest->Arithmetic Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetType(), TokenType::OperatorArithmeticIncrement);
@@ -30,7 +30,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerOperatorTest->Binary Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetType(), TokenType::OperatorBinaryPlus);
@@ -47,7 +47,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerOperatorTest->Assignment Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetType(), TokenType::OperatorAssignment);
@@ -70,7 +70,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerOperatorTest->Relational Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetType(), TokenType::OperatorRelationalEquals);
@@ -88,7 +88,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerOperatorTest->Logical Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetType(), TokenType::OperatorLogicalAND);
@@ -103,7 +103,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerOperatorTest->Bitwise Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetType(), TokenType::OperatorBitwiseBinaryAND);
@@ -121,7 +121,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerOperatorTest->Other Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetType(), TokenType::OperatorLeftParenthesis);
@@ -138,7 +138,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerOperatorTest->Chained Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetType(), TokenType::OperatorAssignmentBitwiseLeftShift);

@@ -16,7 +16,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerKeywordTest->Identifier Failed to Tokenize()");
 
 			ASSERT_EQ(std::string(lexer.GetTokens()[1]->GetValue<StringType>()), "test");
@@ -34,7 +34,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerKeywordTest->Datatype Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetType(), TokenType::KeywordDataTypeInt);
@@ -53,7 +53,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerKeywordTest->Control Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetType(), TokenType::KeywordControlIf);
@@ -67,7 +67,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerKeywordTest->Iteration Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetType(), TokenType::KeywordIterationWhile);
@@ -84,7 +84,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerKeywordTest->Function Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetType(), TokenType::KeywordFunction);

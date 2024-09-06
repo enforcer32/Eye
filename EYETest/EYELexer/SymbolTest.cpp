@@ -16,7 +16,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerSymbolTest->Function Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetType(), TokenType::SymbolRightParenthesis);
@@ -35,7 +35,7 @@ namespace Eye
 			std::string filePath = "..\\..\\..\\..\\EYETest\\EYELexer\\" + testType + "\\" + eyeFile;
 
 			Lexer lexer;
-			if (!lexer.Tokenize(filePath))
+			if (!lexer.Tokenize(Utility::EyeSource(filePath, Utility::EyeSourceType::File)))
 				EYE_LOG_CRITICAL("EYETest->EYELexer->LexerSymbolTest->Function Failed to Tokenize()");
 
 			ASSERT_EQ(lexer.GetTokens()[0]->GetType(), TokenType::SymbolLeftBrace);
