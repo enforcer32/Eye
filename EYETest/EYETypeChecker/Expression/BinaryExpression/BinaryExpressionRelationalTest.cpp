@@ -1,63 +1,93 @@
 #pragma once
 
-#include <EYEUtility/Logger.h>
 #include <EYEASTGenerator/ASTGenerator.h>
 #include <EYETypeChecker/TypeChecker.h>
 
 #include <gtest/gtest.h>
 
+#define CREATE_RELATIONAL_TEST(testOperator, testErrorType) \
+	TypeChecker typeChecker; \
+	Eye::ASTGenerator::ASTGenerator astGenerator; \
+	\
+	auto res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25 " testOperator " true;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(!res.has_value(), true); \
+	ASSERT_EQ(res.error().GetType(), testErrorType); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("false " testOperator " 12.25;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(!res.has_value(), true); \
+	ASSERT_EQ(res.error().GetType(), testErrorType); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("\"World\" " testOperator " \"Hello\";", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(res.has_value(), true); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("\"Hello\" " testOperator " 123;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(!res.has_value(), true); \
+	ASSERT_EQ(res.error().GetType(), testErrorType); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25.12 " testOperator " \"Hello\";", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(!res.has_value(), true); \
+	ASSERT_EQ(res.error().GetType(), testErrorType); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25.12 " testOperator " 512.35;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(res.has_value(), true); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25.12 " testOperator " 123;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(res.has_value(), true); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25 " testOperator " 33;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(res.has_value(), true); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25 " testOperator " 123.33;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(res.has_value(), true)
+
 namespace Eye
 {
 	namespace TypeChecker
 	{
-		TEST(TypeCheckerBinaryExpressionRelationalTest, RelationalEqual)
+		TEST(TypeCheckerBinaryExpressionRelationalTest, Equals)
 		{
-			TypeChecker typeChecker;
-			Eye::ASTGenerator::ASTGenerator astGenerator;
-
-			//  Boolean == Boolean
-			auto res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("true == true;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			CREATE_RELATIONAL_TEST("==", Eye::Error::ErrorType::TypeCheckerBadTypeCompare);
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("true == true;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(res.has_value(), true);
+		}
 
-			// Non-Boolean == Boolean
-			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25 == true;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+		TEST(TypeCheckerBinaryExpressionRelationalTest, NotEquals)
+		{
+			CREATE_RELATIONAL_TEST("!=", Eye::Error::ErrorType::TypeCheckerBadTypeCompare);
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("true != true;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			ASSERT_EQ(res.has_value(), true);
+		}
+
+		TEST(TypeCheckerBinaryExpressionRelationalTest, Smaller)
+		{
+			CREATE_RELATIONAL_TEST("<", Eye::Error::ErrorType::TypeCheckerBadTypeCompare);
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("true < true;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(!res.has_value(), true);
-			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeCompare);
+			ASSERT_EQ(res.error().GetType(), Eye::Error::ErrorType::TypeCheckerBadTypeCompare);
+		}
 
-			// Boolean == Non-Boolean
-			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("false == 12.25;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+		TEST(TypeCheckerBinaryExpressionRelationalTest, Greater)
+		{
+			CREATE_RELATIONAL_TEST("<", Eye::Error::ErrorType::TypeCheckerBadTypeCompare);
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("true > true;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(!res.has_value(), true);
-			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeCompare);
+			ASSERT_EQ(res.error().GetType(), Eye::Error::ErrorType::TypeCheckerBadTypeCompare);
+		}
 
-			// String == String
-			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("\"World\" == \"Hello\";", Eye::ASTGenerator::ASTGeneratorSourceType::String));
-			ASSERT_EQ(res.has_value(), true);
-
-			// String == Non-String
-			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("\"Hello\" == 123;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+		TEST(TypeCheckerBinaryExpressionRelationalTest, SmallerEquals)
+		{
+			CREATE_RELATIONAL_TEST("<", Eye::Error::ErrorType::TypeCheckerBadTypeCompare);
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("true <= true;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(!res.has_value(), true);
-			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeCompare);
+			ASSERT_EQ(res.error().GetType(), Eye::Error::ErrorType::TypeCheckerBadTypeCompare);
+		}
 
-			// Non-String == String
-			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25.12 == \"Hello\";", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+		TEST(TypeCheckerBinaryExpressionRelationalTest, GreaterEquals)
+		{
+			CREATE_RELATIONAL_TEST("<", Eye::Error::ErrorType::TypeCheckerBadTypeCompare);
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("true >= true;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(!res.has_value(), true);
-			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeCompare);
-
-			// Float == Float
-			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25.12 == 512.35;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
-			ASSERT_EQ(res.has_value(), true);
-
-			// Float == Number
-			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25.12 == 123;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
-			ASSERT_EQ(res.has_value(), true);
-
-			// Number == Number
-			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25 == 33;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
-			ASSERT_EQ(res.has_value(), true);
-
-			// Number == Float
-			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25 == 123.33;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
-			ASSERT_EQ(res.has_value(), true);
+			ASSERT_EQ(res.error().GetType(), Eye::Error::ErrorType::TypeCheckerBadTypeCompare);
 		}
 	}
 }

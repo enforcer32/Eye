@@ -187,11 +187,19 @@ namespace Eye
 
 		Type TypeChecker::TypeCheckBinaryExpressionRelational(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
 		{
-			if((leftType == Type::Boolean && rightType != Type::Boolean) || (leftType != Type::Boolean && rightType == Type::Boolean))
-				throw Error::Exceptions::BadTypeCompareException("Incomparable Types: " + TypeToString(leftType) + " and " + TypeToString(rightType), binaryExpr->GetOperator()->GetSource());
-
 			if ((leftType == Type::String && rightType != Type::String) || (leftType != Type::String && rightType == Type::String))
 				throw Error::Exceptions::BadTypeCompareException("Incomparable Types: " + TypeToString(leftType) + " and " + TypeToString(rightType), binaryExpr->GetOperator()->GetSource());
+
+			if (binaryExpr->GetOperator()->GetType() == Lexer::TokenType::OperatorRelationalEquals || binaryExpr->GetOperator()->GetType() == Lexer::TokenType::OperatorRelationalNotEquals)
+			{
+				if ((leftType == Type::Boolean && rightType != Type::Boolean) || (leftType != Type::Boolean && rightType == Type::Boolean))
+					throw Error::Exceptions::BadTypeCompareException("Incomparable Types: " + TypeToString(leftType) + " and " + TypeToString(rightType), binaryExpr->GetOperator()->GetSource());
+			}
+			else
+			{
+				if(leftType == Type::Boolean || rightType == Type::Boolean)
+					throw Error::Exceptions::BadTypeCompareException("Incomparable Types: " + TypeToString(leftType) + " and " + TypeToString(rightType), binaryExpr->GetOperator()->GetSource());
+			}
 
 			return Type::Boolean;
 		}
