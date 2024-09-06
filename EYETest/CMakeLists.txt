@@ -11,6 +11,9 @@ file(GLOB_RECURSE EYETestSources
 	#EYEParser
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYEParser/StatementTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYEParser/ExpressionTest.cpp"
+
+	#EYETypeChecker
+	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Expression/BinaryExpressionTest.cpp"
 )
 
 add_executable(${EYETEST_TARGET_NAME} ${EYETestSources})
@@ -18,6 +21,8 @@ target_include_directories(${EYETEST_TARGET_NAME} PRIVATE "${CMAKE_CURRENT_SOURC
 target_link_libraries(${EYETEST_TARGET_NAME} PRIVATE ${EYEUTILITY_TARGET_NAME})
 target_link_libraries(${EYETEST_TARGET_NAME} PRIVATE ${EYELEXER_TARGET_NAME})
 target_link_libraries(${EYETEST_TARGET_NAME} PRIVATE ${EYEPARSER_TARGET_NAME})
+target_link_libraries(${EYETEST_TARGET_NAME} PRIVATE ${EYETYPECHECKER_TARGET_NAME})
+target_link_libraries(${EYETEST_TARGET_NAME} PRIVATE ${EYEASTGENERATOR_TARGET_NAME})
 target_link_libraries(${EYETEST_TARGET_NAME} PRIVATE ${EYEASTSERIALIZER_TARGET_NAME})
 target_link_libraries(${EYETEST_TARGET_NAME} PRIVATE GTest::gtest_main)
 target_link_libraries(${EYETEST_TARGET_NAME} PRIVATE nlohmann_json::nlohmann_json)
