@@ -74,6 +74,21 @@ namespace Eye
 			EndBlockScope();
 		}
 
+		Type TypeChecker(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
+		{
+			if (leftType == Type::Boolean || rightType == Type::Boolean)
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), binaryExpr->GetRight()->GetSource());
+
+			if ((leftType == Type::String && rightType != Type::String) || (leftType != Type::String && rightType == Type::String))
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), binaryExpr->GetRight()->GetSource());
+
+			if (leftType == Type::Float || rightType == Type::Float)
+				return Type::Float;
+
+			if (leftType == Type::Integer && rightType == Type::Integer)
+				return Type::Integer;
+		}
+
 		void TypeChecker::TypeCheckVariableStatement(const std::shared_ptr<AST::VariableStatement>& varStmt)
 		{
 			Type variableType = LexerToTypeCheckerType(varStmt->GetDataType()->GetType());
@@ -83,9 +98,14 @@ namespace Eye
 				if (var->GetInitializer())
 				{
 					Type initializerType = TypeCheckExpression(var->GetInitializer());
-					if (variableType != initializerType)
+					if (variableType == Type::String && initializerType != Type::String)
 						throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), var->GetInitializer()->GetSource());
-
+					else if (variableType == Type::Float && (initializerType != Type::Float && initializerType != Type::Integer))
+						throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), var->GetInitializer()->GetSource());
+					else if (variableType == Type::Integer && initializerType != Type::Integer)
+						throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), var->GetInitializer()->GetSource());
+					else if (variableType == Type::Boolean && initializerType != Type::Boolean)
+						throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), var->GetInitializer()->GetSource());
 				}
 				m_TypeEnvironment->DefineVariable(var->GetIdentifier()->GetValue(), variableType);
 			}
@@ -177,6 +197,9 @@ namespace Eye
 
 			if ((leftType == Type::String && rightType != Type::String) || (leftType != Type::String && rightType == Type::String))
 				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), binaryExpr->GetRight()->GetSource());
+
+			if (leftType == Type::String && rightType == Type::String)
+				return Type::String;
 
 			if (leftType == Type::Float || rightType == Type::Float)
 				return Type::Float;

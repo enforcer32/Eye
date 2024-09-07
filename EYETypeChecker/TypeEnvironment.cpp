@@ -1,7 +1,5 @@
 #include "EYETypeChecker/TypeEnvironment.h"
 
-#include <EYEUtility/Logger.h>
-
 namespace Eye
 {
 	namespace TypeChecker
@@ -19,13 +17,11 @@ namespace Eye
 		void TypeEnvironment::DefineVariable(const std::string& identifier, Type value)
 		{
 			m_Variables[identifier] = value;
-			EYE_LOG_INFO("EYETypeEnvironment->Defined Variable({}, {})", identifier, TypeToString(value));
 		}
 
 		void TypeEnvironment::AssignVariable(const std::string& identifier, Type value)
 		{
 			AssignResolveVariable(identifier, value);
-			EYE_LOG_INFO("EYETypeEnvironment->Defined Assigned({}, {})", identifier, TypeToString(value));
 		}
 
 		Type TypeEnvironment::GetVariable(const std::string& identifier)
