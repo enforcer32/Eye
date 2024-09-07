@@ -114,8 +114,8 @@ namespace Eye
 		void TypeChecker::TypeCheckControlStatement(const std::shared_ptr<AST::ControlStatement>& ctrlStmt)
 		{
 			Type conditionType = TypeCheckExpression(ctrlStmt->GetCondition());
-			if(conditionType != Type::Boolean)
-				EYE_LOG_CRITICAL("EYETypeChecker ControlStatement->Expected {} Type for Condition (\"if()\") but got {} Type Instead!", TypeToString(Type::Boolean), TypeToString(conditionType));
+			if(conditionType != Type::Boolean && conditionType != Type::Integer)
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(conditionType) + " to " + TypeToString(Type::Boolean), ctrlStmt->GetSource());
 			TypeCheckStatement(ctrlStmt->GetConsequent());
 			TypeCheckStatement(ctrlStmt->GetAlternate());
 		}
