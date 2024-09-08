@@ -122,10 +122,17 @@ namespace Eye
 
 		void TypeChecker::TypeCheckIterationStatement(const std::shared_ptr<AST::IterationStatement>& iterStmt)
 		{
-			if (iterStmt->GetIterationType() == AST::IterationStatementType::WhileStatement)
+			switch (iterStmt->GetIterationType())
+			{
+			case AST::IterationStatementType::WhileStatement:
 				return TypeCheckWhileStatement(std::static_pointer_cast<AST::WhileStatement>(iterStmt));
-			else if (iterStmt->GetIterationType() == AST::IterationStatementType::DoWhileStatement)
+			case AST::IterationStatementType::DoWhileStatement:
 				return TypeCheckDoWhileStatement(std::static_pointer_cast<AST::DoWhileStatement>(iterStmt));
+			case AST::IterationStatementType::ForStatement:
+				return TypeCheckForStatement(std::static_pointer_cast<AST::ForStatement>(iterStmt));
+			default:
+				break;
+			}
 		}
 
 		void TypeChecker::TypeCheckWhileStatement(const std::shared_ptr<AST::WhileStatement>& whileStmt)
@@ -142,6 +149,31 @@ namespace Eye
 			if (conditionType != Type::Boolean && conditionType != Type::Integer)
 				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(conditionType) + " to " + TypeToString(Type::Boolean), doStmt->GetSource());
 			TypeCheckStatement(doStmt->GetBody());
+		}
+
+		void TypeChecker::TypeCheckForStatement(const std::shared_ptr<AST::ForStatement>& forStmt)
+		{
+			switch (forStmt->GetInitializerType())
+			{
+			case AST::ForInitializerType::Expression:
+				TypeCheckExpression(forStmt->GetInitializer<AST::Expression>());
+			case AST::ForInitializerType::VariableStatement:
+				TypeCheckVariableStatement(forStmt->GetInitializer<AST::VariableStatement>());
+			default:
+				break;
+			}
+
+			if (forStmt->GetCondition())
+			{
+				Type conditionType = TypeCheckExpression(forStmt->GetCondition());
+				if (conditionType != Type::Boolean && conditionType != Type::Integer)
+					throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(conditionType) + " to " + TypeToString(Type::Boolean), forStmt->GetSource());
+			}
+
+			if (forStmt->GetUpdate())
+				TypeCheckExpression(forStmt->GetUpdate());
+
+			TypeCheckStatement(forStmt->GetBody());
 		}
 
 		Type TypeChecker::TypeCheckExpression(const std::shared_ptr<AST::Expression>& expr)
