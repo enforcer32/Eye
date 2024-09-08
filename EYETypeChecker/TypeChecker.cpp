@@ -143,6 +143,8 @@ namespace Eye
 			{
 			case AST::ExpressionType::LiteralExpression:
 				return TypeCheckLiteralExpression(std::static_pointer_cast<AST::LiteralExpression>(expr));
+			case AST::ExpressionType::IdentifierExpression:
+				return TypeCheckIdentifierExpression(std::static_pointer_cast<AST::IdentifierExpression>(expr));
 			case AST::ExpressionType::BinaryExpression:
 				return TypeCheckBinaryExpression(std::static_pointer_cast<AST::BinaryExpression>(expr));
 			default:
@@ -167,6 +169,11 @@ namespace Eye
 				EYE_LOG_CRITICAL("EYETypeChecker Unknown Type!");
 				break;
 			}
+		}
+
+		Type TypeChecker::TypeCheckIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr)
+		{
+			return m_TypeEnvironment->GetVariable(identifierExpr->GetValue());
 		}
 
 		Type TypeChecker::TypeCheckBinaryExpression(const std::shared_ptr<AST::BinaryExpression>& binaryExpr)

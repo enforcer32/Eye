@@ -43,7 +43,6 @@ namespace Eye
 			ASSERT_EQ(res.has_value(), true);
 		}
 
-		/* IDENTIFER EXPRESSIONS
 		TEST(TypeCheckerControlStatementTest, Variables)
 		{
 			TypeChecker typeChecker;
@@ -76,6 +75,5 @@ namespace Eye
 			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("bool x = false; if(x){}", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(res.has_value(), true);
 		}
-		*/
 	}
 }
