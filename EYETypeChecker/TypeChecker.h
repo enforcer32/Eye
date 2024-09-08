@@ -37,6 +37,7 @@ namespace Eye
 			void TypeCheckControlStatement(const std::shared_ptr<AST::ControlStatement>& ctrlStmt);
 			void TypeCheckIterationStatement(const std::shared_ptr<AST::IterationStatement>& iterStmt);
 			void TypeCheckWhileStatement(const std::shared_ptr<AST::WhileStatement>& whileStmt);
+			void TypeCheckDoWhileStatement(const std::shared_ptr<AST::DoWhileStatement>& doStmt);
 
 			Type TypeCheckExpression(const std::shared_ptr<AST::Expression>& expr);
 			Type TypeCheckLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);

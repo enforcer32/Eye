@@ -124,6 +124,8 @@ namespace Eye
 		{
 			if (iterStmt->GetIterationType() == AST::IterationStatementType::WhileStatement)
 				return TypeCheckWhileStatement(std::static_pointer_cast<AST::WhileStatement>(iterStmt));
+			else if (iterStmt->GetIterationType() == AST::IterationStatementType::DoWhileStatement)
+				return TypeCheckDoWhileStatement(std::static_pointer_cast<AST::DoWhileStatement>(iterStmt));
 		}
 
 		void TypeChecker::TypeCheckWhileStatement(const std::shared_ptr<AST::WhileStatement>& whileStmt)
@@ -132,6 +134,14 @@ namespace Eye
 			if (conditionType != Type::Boolean && conditionType != Type::Integer)
 				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(conditionType) + " to " + TypeToString(Type::Boolean), whileStmt->GetSource());
 			TypeCheckStatement(whileStmt->GetBody());
+		}
+
+		void TypeChecker::TypeCheckDoWhileStatement(const std::shared_ptr<AST::DoWhileStatement>& doStmt)
+		{
+			Type conditionType = TypeCheckExpression(doStmt->GetCondition());
+			if (conditionType != Type::Boolean && conditionType != Type::Integer)
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(conditionType) + " to " + TypeToString(Type::Boolean), doStmt->GetSource());
+			TypeCheckStatement(doStmt->GetBody());
 		}
 
 		Type TypeChecker::TypeCheckExpression(const std::shared_ptr<AST::Expression>& expr)
