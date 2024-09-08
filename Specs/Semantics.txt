@@ -7,3 +7,4 @@ Const Variables should never be changed
 Function Parameters Do Not Have to Follow ParenthesizedExpressions Rules because func() is not an expression, its a statement list (int x1, int x2) etc...
 ControlStatement and IterationStatement Bodies are Optional
 Function Body is not optional (Might Change, Function Definition/Declarations/Forward Declaring?)
+Only Functions can contain Return Statements, and Only 1 Return Statement in 1 Scope

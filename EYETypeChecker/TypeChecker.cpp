@@ -114,7 +114,7 @@ namespace Eye
 		void TypeChecker::TypeCheckControlStatement(const std::shared_ptr<AST::ControlStatement>& ctrlStmt)
 		{
 			Type conditionType = TypeCheckExpression(ctrlStmt->GetCondition());
-			if(conditionType != Type::Boolean && conditionType != Type::Integer)
+			if (conditionType != Type::Boolean && conditionType != Type::Integer)
 				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(conditionType) + " to " + TypeToString(Type::Boolean), ctrlStmt->GetSource());
 			TypeCheckStatement(ctrlStmt->GetConsequent());
 			TypeCheckStatement(ctrlStmt->GetAlternate());
@@ -129,8 +129,8 @@ namespace Eye
 		void TypeChecker::TypeCheckWhileStatement(const std::shared_ptr<AST::WhileStatement>& whileStmt)
 		{
 			Type conditionType = TypeCheckExpression(whileStmt->GetCondition());
-			if (conditionType != Type::Boolean)
-				EYE_LOG_CRITICAL("EYETypeChecker WhileStatement->Expected {} Type for Condition (\"while()\") but got {} Type Instead!", TypeToString(Type::Boolean), TypeToString(conditionType));
+			if (conditionType != Type::Boolean && conditionType != Type::Integer)
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(conditionType) + " to " + TypeToString(Type::Boolean), whileStmt->GetSource());
 			TypeCheckStatement(whileStmt->GetBody());
 		}
 
