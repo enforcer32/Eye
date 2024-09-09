@@ -112,7 +112,8 @@ namespace Eye
 			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("for(; true; );", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(res.has_value(), true);
 
-			// Variable Assignments....?
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("bool nothing; for(nothing = true; nothing != true;) nothing = true;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			ASSERT_EQ(res.has_value(), true);
 		}
 	}
 }

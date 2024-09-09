@@ -74,21 +74,6 @@ namespace Eye
 			EndBlockScope();
 		}
 
-		Type TypeChecker(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
-		{
-			if (leftType == Type::Boolean || rightType == Type::Boolean)
-				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), binaryExpr->GetRight()->GetSource());
-
-			if ((leftType == Type::String && rightType != Type::String) || (leftType != Type::String && rightType == Type::String))
-				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), binaryExpr->GetRight()->GetSource());
-
-			if (leftType == Type::Float || rightType == Type::Float)
-				return Type::Float;
-
-			if (leftType == Type::Integer && rightType == Type::Integer)
-				return Type::Integer;
-		}
-
 		void TypeChecker::TypeCheckVariableStatement(const std::shared_ptr<AST::VariableStatement>& varStmt)
 		{
 			Type variableType = LexerToTypeCheckerType(varStmt->GetDataType()->GetType());
@@ -157,8 +142,10 @@ namespace Eye
 			{
 			case AST::ForInitializerType::Expression:
 				TypeCheckExpression(forStmt->GetInitializer<AST::Expression>());
+				break;
 			case AST::ForInitializerType::VariableStatement:
 				TypeCheckVariableStatement(forStmt->GetInitializer<AST::VariableStatement>());
+				break;
 			default:
 				break;
 			}
@@ -187,6 +174,8 @@ namespace Eye
 				return TypeCheckLiteralExpression(std::static_pointer_cast<AST::LiteralExpression>(expr));
 			case AST::ExpressionType::IdentifierExpression:
 				return TypeCheckIdentifierExpression(std::static_pointer_cast<AST::IdentifierExpression>(expr));
+			case AST::ExpressionType::AssignmentExpression:
+				return TypeCheckAssignmentExpression(std::static_pointer_cast<AST::AssignmentExpression>(expr));
 			case AST::ExpressionType::BinaryExpression:
 				return TypeCheckBinaryExpression(std::static_pointer_cast<AST::BinaryExpression>(expr));
 			default:
@@ -216,6 +205,23 @@ namespace Eye
 		Type TypeChecker::TypeCheckIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr)
 		{
 			return m_TypeEnvironment->GetVariable(identifierExpr->GetValue());
+		}
+
+		Type TypeChecker::TypeCheckAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignExpr)
+		{
+			Type leftType = TypeCheckExpression(assignExpr->GetLHSExpression());
+			Type rightType = TypeCheckExpression(assignExpr->GetExpression());
+
+			if (leftType == Type::String && rightType != Type::String)
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), assignExpr->GetSource());
+			else if (leftType == Type::Float && (rightType != Type::Float && rightType != Type::Integer))
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), assignExpr->GetSource());
+			else if (leftType == Type::Integer && rightType != Type::Integer)
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), assignExpr->GetSource());
+			else if (leftType == Type::Boolean && rightType != Type::Boolean)
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), assignExpr->GetSource());
+
+			return leftType;
 		}
 
 		Type TypeChecker::TypeCheckBinaryExpression(const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
