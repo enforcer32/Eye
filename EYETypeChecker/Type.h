@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace Eye
 {
@@ -12,8 +13,15 @@ namespace Eye
 			Float,
 			String,
 			Boolean,
+			Void,
 		};
 
 		std::string TypeToString(Type type);
+
+		struct FunctionType
+		{
+			Type Return;
+			std::vector<Type> Parameters;
+		};
 	}
 }

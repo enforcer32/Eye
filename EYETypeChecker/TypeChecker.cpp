@@ -10,7 +10,8 @@ namespace Eye
 	{
 		std::expected<bool, Error::Error> TypeChecker::TypeCheck(const std::shared_ptr<AST::Program>& ast)
 		{
-			m_TypeEnvironment = std::make_shared<TypeEnvironment>();
+			m_TypeEnvironment = std::make_shared<Environment<Type>>();
+			m_FunctionEnvironment = std::make_shared<Environment<FunctionType>>();
 			
 			try
 			{
@@ -55,6 +56,12 @@ namespace Eye
 			case AST::StatementType::IterationStatement:
 				TypeCheckIterationStatement(std::static_pointer_cast<AST::IterationStatement>(stmt));
 				break;
+			case AST::StatementType::FunctionStatement:
+				TypeCheckFunctionStatement(std::static_pointer_cast<AST::FunctionStatement>(stmt));
+				break;
+			case AST::StatementType::ReturnStatement:
+				TypeCheckReturnStatement(std::static_pointer_cast<AST::ReturnStatement>(stmt));
+				break;
 			default:
 				EYE_LOG_CRITICAL("EYETypeChecker Unknown Statement Type!");
 				break;
@@ -92,7 +99,7 @@ namespace Eye
 					else if (variableType == Type::Boolean && initializerType != Type::Boolean)
 						throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), var->GetInitializer()->GetSource());
 				}
-				m_TypeEnvironment->DefineVariable(var->GetIdentifier()->GetValue(), variableType);
+				m_TypeEnvironment->Define(var->GetIdentifier()->GetValue(), variableType);
 			}
 		}
 
@@ -163,6 +170,35 @@ namespace Eye
 			TypeCheckStatement(forStmt->GetBody());
 		}
 
+		void TypeChecker::TypeCheckFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt)
+		{
+			FunctionType funcType;
+			funcType.Return = LexerToTypeCheckerType(functionStmt->GetReturnType()->GetType());
+			for (const auto& param : functionStmt->GetParameters())
+				funcType.Parameters.push_back(LexerToTypeCheckerType(param->GetDataType()->GetType()));
+
+			TypeCheckStatement(functionStmt->GetBody());
+
+			if (funcType.Return != Type::Void)
+			{
+				for (const auto& stmt : functionStmt->GetBody()->GetStatementList())
+				{
+					if (stmt->GetType() == AST::StatementType::ReturnStatement)
+					{
+						Type returnType = TypeCheckExpression(std::static_pointer_cast<AST::ReturnStatement>(stmt)->GetExpression());
+						if(returnType != funcType.Return)
+							throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(returnType) + " to " + TypeToString(funcType.Return), functionStmt->GetSource());
+					}
+				}
+			}
+
+			m_FunctionEnvironment->Define(functionStmt->GetIdentifier()->GetValue(), funcType);
+		}
+
+		void TypeChecker::TypeCheckReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt)
+		{
+		}
+
 		Type TypeChecker::TypeCheckExpression(const std::shared_ptr<AST::Expression>& expr)
 		{
 			/*if (!expr)
@@ -204,7 +240,7 @@ namespace Eye
 
 		Type TypeChecker::TypeCheckIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr)
 		{
-			return m_TypeEnvironment->GetVariable(identifierExpr->GetValue());
+			return m_TypeEnvironment->Get(identifierExpr->GetValue());
 		}
 
 		Type TypeChecker::TypeCheckAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignExpr)
@@ -292,17 +328,21 @@ namespace Eye
 				return Type::String;
 			else if (type == Lexer::TokenType::KeywordDataTypeBool)
 				return Type::Boolean;
+			else if (type == Lexer::TokenType::KeywordDataTypeVoid)
+				return Type::Void;
 			EYE_LOG_CRITICAL("EYETypeChecker LexerToTypeCheckerType Invalid Type!");
 		}
 
 		void TypeChecker::BeginBlockScope()
 		{
-			m_TypeEnvironment = std::make_shared<TypeEnvironment>(m_TypeEnvironment);
+			m_TypeEnvironment = std::make_shared<Environment<Type>>(m_TypeEnvironment);
+			m_FunctionEnvironment = std::make_shared<Environment<FunctionType>>(m_FunctionEnvironment);
 		}
 
 		void TypeChecker::EndBlockScope()
 		{
 			m_TypeEnvironment = m_TypeEnvironment->GetParent();
+			m_FunctionEnvironment = m_FunctionEnvironment->GetParent();
 		}
 	}
 }

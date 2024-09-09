@@ -1,9 +1,9 @@
 #pragma once
 
 #include "EYETypeChecker/Type.h"
+#include "EYETypeChecker/Environment.h"
 
 #include <EYEError/Error.h>
-#include <EYETypeChecker/TypeEnvironment.h>
 
 #include <EYEAST/Program.h>
 #include <EYEAST/Statements/Statement.h>
@@ -12,6 +12,8 @@
 #include <EYEAST/Statements/VariableStatement.h>
 #include <EYEAST/Statements/ControlStatement.h>
 #include <EYEAST/Statements/IterationStatement.h>
+#include <EYEAST/Statements/FunctionStatement.h>
+#include <EYEAST/Statements/ReturnStatement.h>
 
 #include <EYEAST/Expressions/Expression.h>
 #include <EYEAST/Expressions/LiteralExpression.h>
@@ -40,6 +42,8 @@ namespace Eye
 			void TypeCheckWhileStatement(const std::shared_ptr<AST::WhileStatement>& whileStmt);
 			void TypeCheckDoWhileStatement(const std::shared_ptr<AST::DoWhileStatement>& doStmt);
 			void TypeCheckForStatement(const std::shared_ptr<AST::ForStatement>& forStmt);
+			void TypeCheckFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt);
+			void TypeCheckReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt);
 
 			Type TypeCheckExpression(const std::shared_ptr<AST::Expression>& expr);
 			Type TypeCheckLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);
@@ -55,7 +59,8 @@ namespace Eye
 			void EndBlockScope();
 
 		private:
-			std::shared_ptr<TypeEnvironment> m_TypeEnvironment;
+			std::shared_ptr<Environment<Type>> m_TypeEnvironment;
+			std::shared_ptr<Environment<FunctionType>> m_FunctionEnvironment;
 		};
 	}
 }
