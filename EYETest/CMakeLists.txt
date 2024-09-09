@@ -16,6 +16,7 @@ file(GLOB_RECURSE EYETestSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Statement/VariableStatementTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Statement/ControlStatementTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Statement/IterationStatementTest.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Statement/BlockStatementTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Expression/BinaryExpression/BinaryExpressionArithmeticTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Expression/BinaryExpression/BinaryExpressionRelationalTest.cpp"
 )
