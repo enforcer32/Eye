@@ -73,12 +73,14 @@ namespace Eye
 			TypeCheckExpression(exprStmt->GetExpression());
 		}
 
-		void TypeChecker::TypeCheckBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt)
+		void TypeChecker::TypeCheckBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt, bool createScope)
 		{
-			BeginBlockScope();
+			if(createScope)
+				BeginBlockScope();
 			for (const auto& stmt : blockStmt->GetStatementList())
 				TypeCheckStatement(stmt);
-			EndBlockScope();
+			if(createScope)
+				EndBlockScope();
 		}
 
 		void TypeChecker::TypeCheckVariableStatement(const std::shared_ptr<AST::VariableStatement>& varStmt)
@@ -172,12 +174,18 @@ namespace Eye
 
 		void TypeChecker::TypeCheckFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt)
 		{
+			BeginBlockScope();
+
 			FunctionType funcType;
 			funcType.Return = LexerToTypeCheckerType(functionStmt->GetReturnType()->GetType());
 			for (const auto& param : functionStmt->GetParameters())
-				funcType.Parameters.push_back(LexerToTypeCheckerType(param->GetDataType()->GetType()));
+			{
+				Type type = LexerToTypeCheckerType(param->GetDataType()->GetType());
+				m_TypeEnvironment->Define(param->GetIdentifier()->GetValue(), type);
+				funcType.Parameters.push_back(type);
+			}
 
-			TypeCheckStatement(functionStmt->GetBody());
+			TypeCheckBlockStatement(functionStmt->GetBody(), false);
 
 			if (funcType.Return != Type::Void)
 			{
@@ -186,12 +194,15 @@ namespace Eye
 					if (stmt->GetType() == AST::StatementType::ReturnStatement)
 					{
 						Type returnType = TypeCheckExpression(std::static_pointer_cast<AST::ReturnStatement>(stmt)->GetExpression());
-						if(returnType != funcType.Return)
-							throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(returnType) + " to " + TypeToString(funcType.Return), functionStmt->GetSource());
+						if (funcType.Return == Type::Float && returnType == Type::Integer)
+							continue;
+						else if (funcType.Return != returnType)
+							throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(returnType) + " to " + TypeToString(funcType.Return), stmt->GetSource());
 					}
 				}
 			}
 
+			EndBlockScope();
 			m_FunctionEnvironment->Define(functionStmt->GetIdentifier()->GetValue(), funcType);
 		}
 
@@ -341,8 +352,8 @@ namespace Eye
 
 		void TypeChecker::EndBlockScope()
 		{
-			m_TypeEnvironment = m_TypeEnvironment->GetParent();
 			m_FunctionEnvironment = m_FunctionEnvironment->GetParent();
+			m_TypeEnvironment = m_TypeEnvironment->GetParent();
 		}
 	}
 }

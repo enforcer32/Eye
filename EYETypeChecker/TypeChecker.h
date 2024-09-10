@@ -35,7 +35,7 @@ namespace Eye
 		private:
 			void TypeCheckStatement(const std::shared_ptr<AST::Statement>& stmt);
 			void TypeCheckExpressionStatement(const std::shared_ptr<AST::ExpressionStatement>& exprStmt);
-			void TypeCheckBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt);
+			void TypeCheckBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt, bool createScope = true);
 			void TypeCheckVariableStatement(const std::shared_ptr<AST::VariableStatement>& varStmt);
 			void TypeCheckControlStatement(const std::shared_ptr<AST::ControlStatement>& ctrlStmt);
 			void TypeCheckIterationStatement(const std::shared_ptr<AST::IterationStatement>& iterStmt);
