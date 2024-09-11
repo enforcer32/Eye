@@ -10,6 +10,8 @@ file(GLOB_RECURSE EYEErrorSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/BadTypeConversionException.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/BadTypeCompareException.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/BadTypeCompareException.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/BadOperandTypeException.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/BadOperandTypeException.cpp"
 )
 
 add_library(${EYEERROR_TARGET_NAME} STATIC ${EYEErrorSources})

@@ -3,6 +3,7 @@
 #include <EYEUtility/Logger.h>
 #include <EYEError/Exceptions/BadTypeConversionException.h>
 #include <EYEError/Exceptions/BadTypeCompareException.h>
+#include <EYEError/Exceptions/BadOperandTypeException.h>
 
 namespace Eye
 {
@@ -25,6 +26,10 @@ namespace Eye
 			catch (const Error::Exceptions::BadTypeCompareException& ex)
 			{
 				return std::unexpected(Error::Error(Error::ErrorType::TypeCheckerBadTypeCompare, ex.what()));
+			}
+			catch (const Error::Exceptions::BadOperandTypeException& ex)
+			{
+				return std::unexpected(Error::Error(Error::ErrorType::TypeCheckerBadOperandType, ex.what()));
 			}
 			catch (...)
 			{
@@ -228,6 +233,8 @@ namespace Eye
 				return TypeCheckBinaryExpression(std::static_pointer_cast<AST::BinaryExpression>(expr));
 			case AST::ExpressionType::CallExpression:
 				return TypeCheckCallExpression(std::static_pointer_cast<AST::CallExpression>(expr));
+			case AST::ExpressionType::UnaryExpression:
+				return TypeCheckUnaryExpression(std::static_pointer_cast<AST::UnaryExpression>(expr));
 			default:
 				EYE_LOG_CRITICAL("EYETypeChecker Unknown Expression Type!");
 				break;
@@ -293,6 +300,23 @@ namespace Eye
 			}
 
 			EYE_LOG_CRITICAL("EYETypeChecker TypeCheckCallExpression Invalid Type!");
+		}
+
+		Type TypeChecker::TypeCheckUnaryExpression(const std::shared_ptr<AST::UnaryExpression>& unaryExpr)
+		{
+			Type exprType = TypeCheckExpression(unaryExpr->GetExpression());
+			if (unaryExpr->GetOperator()->GetType() == Lexer::TokenType::OperatorBinaryPlus || unaryExpr->GetOperator()->GetType() == Lexer::TokenType::OperatorBinaryMinus)
+			{
+				if (exprType != Type::Integer && exprType != Type::Float)
+					throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Unary Operator '" + unaryExpr->GetOperator()->GetValueString() + "'", unaryExpr->GetSource());
+			}
+			else if (unaryExpr->GetOperator()->GetType() == Lexer::TokenType::OperatorLogicalNOT)
+			{
+				if (exprType != Type::Boolean && exprType != Type::Integer)
+					throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Unary Operator '" + unaryExpr->GetOperator()->GetValueString() + "'", unaryExpr->GetSource());
+			}
+
+			return exprType;
 		}
 
 		Type TypeChecker::TypeCheckBinaryExpression(const std::shared_ptr<AST::BinaryExpression>& binaryExpr)

@@ -21,6 +21,7 @@
 #include <EYEAST/Expressions/AssignmentExpression.h>
 #include <EYEAST/Expressions/BinaryExpression.h>
 #include <EYEAST/Expressions/CallExpression.h>
+#include <EYEAST/Expressions/UnaryExpression.h>
 
 #include <expected>
 
@@ -51,6 +52,7 @@ namespace Eye
 			Type TypeCheckIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr);
 			Type TypeCheckAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignExpr);
 			Type TypeCheckCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr);
+			Type TypeCheckUnaryExpression(const std::shared_ptr<AST::UnaryExpression>& unaryExpr);
 			Type TypeCheckBinaryExpression(const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
 			Type TypeCheckBinaryExpressionArithmeticPlus(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
 			Type TypeCheckBinaryExpressionRelational(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr);

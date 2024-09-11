@@ -12,6 +12,7 @@ namespace Eye
 			ParserSyntaxError,
 			TypeCheckerBadTypeConversion,
 			TypeCheckerBadTypeCompare,
+			TypeCheckerBadOperandType,
 		};
 
 		class Error
