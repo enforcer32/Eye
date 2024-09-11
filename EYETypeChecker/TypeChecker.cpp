@@ -203,6 +203,7 @@ namespace Eye
 			}
 
 			EndBlockScope();
+			m_TypeEnvironment->Define(functionStmt->GetIdentifier()->GetValue(), Type::Function);
 			m_FunctionEnvironment->Define(functionStmt->GetIdentifier()->GetValue(), funcType);
 		}
 
@@ -225,6 +226,8 @@ namespace Eye
 				return TypeCheckAssignmentExpression(std::static_pointer_cast<AST::AssignmentExpression>(expr));
 			case AST::ExpressionType::BinaryExpression:
 				return TypeCheckBinaryExpression(std::static_pointer_cast<AST::BinaryExpression>(expr));
+			case AST::ExpressionType::CallExpression:
+				return TypeCheckCallExpression(std::static_pointer_cast<AST::CallExpression>(expr));
 			default:
 				EYE_LOG_CRITICAL("EYETypeChecker Unknown Expression Type!");
 				break;
@@ -269,6 +272,27 @@ namespace Eye
 				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), assignExpr->GetSource());
 
 			return leftType;
+		}
+
+		Type TypeChecker::TypeCheckCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr)
+		{
+			Type calleeType = TypeCheckExpression(callExpr->GetCallee());
+			if (calleeType == Type::Function)
+			{
+				const FunctionType& funcType = m_FunctionEnvironment->Get(std::static_pointer_cast<AST::IdentifierExpression>(callExpr->GetCallee())->GetValue());
+
+				for (size_t i = 0; i < funcType.Parameters.size(); i++)
+				{
+					Type paramType = funcType.Parameters[i];
+					Type argType = TypeCheckExpression(callExpr->GetArguments()[i]);
+					if (argType != paramType)
+						throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(argType) + " to " + TypeToString(paramType), callExpr->GetSource());
+				}
+
+				return funcType.Return;
+			}
+
+			EYE_LOG_CRITICAL("EYETypeChecker TypeCheckCallExpression Invalid Type!");
 		}
 
 		Type TypeChecker::TypeCheckBinaryExpression(const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
@@ -341,6 +365,8 @@ namespace Eye
 				return Type::Boolean;
 			else if (type == Lexer::TokenType::KeywordDataTypeVoid)
 				return Type::Void;
+			else if (type == Lexer::TokenType::KeywordFunction)
+				return Type::Function;
 			EYE_LOG_CRITICAL("EYETypeChecker LexerToTypeCheckerType Invalid Type!");
 		}
 

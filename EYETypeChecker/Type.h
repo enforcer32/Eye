@@ -14,6 +14,7 @@ namespace Eye
 			String,
 			Boolean,
 			Void,
+			Function,
 		};
 
 		std::string TypeToString(Type type);
