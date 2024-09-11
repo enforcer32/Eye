@@ -1,6 +1,6 @@
 function int add(int x, int y)
 {
-	return x + y;
+	return add(x, y);
 }
 
-add(15, 10);
+add(10, 20);

@@ -174,16 +174,18 @@ namespace Eye
 
 		void TypeChecker::TypeCheckFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt)
 		{
-			BeginBlockScope();
-
 			FunctionType funcType;
 			funcType.Return = LexerToTypeCheckerType(functionStmt->GetReturnType()->GetType());
 			for (const auto& param : functionStmt->GetParameters())
-			{
-				Type type = LexerToTypeCheckerType(param->GetDataType()->GetType());
-				m_TypeEnvironment->Define(param->GetIdentifier()->GetValue(), type);
-				funcType.Parameters.push_back(type);
-			}
+				funcType.Parameters.push_back(LexerToTypeCheckerType(param->GetDataType()->GetType()));
+
+			m_FunctionEnvironment->Define(functionStmt->GetIdentifier()->GetValue(), funcType);
+			m_TypeEnvironment->Define(functionStmt->GetIdentifier()->GetValue(), Type::Function);
+
+			BeginBlockScope();
+
+			for (const auto& param : functionStmt->GetParameters())
+				m_TypeEnvironment->Define(param->GetIdentifier()->GetValue(), LexerToTypeCheckerType(param->GetDataType()->GetType()));
 
 			TypeCheckBlockStatement(functionStmt->GetBody(), false);
 
@@ -203,8 +205,6 @@ namespace Eye
 			}
 
 			EndBlockScope();
-			m_TypeEnvironment->Define(functionStmt->GetIdentifier()->GetValue(), Type::Function);
-			m_FunctionEnvironment->Define(functionStmt->GetIdentifier()->GetValue(), funcType);
 		}
 
 		void TypeChecker::TypeCheckReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt)

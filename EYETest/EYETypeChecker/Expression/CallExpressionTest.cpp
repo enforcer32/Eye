@@ -45,6 +45,9 @@ namespace Eye
 			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("int x = 55; float y = 35.12; str txt = \"hell\"; bool state = true; function void get(int x, float y, str z, bool w) { } get(txt, y, txt, x);", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(!res.has_value(), true);
 			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeConversion);
+
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("function int add(int x, int y) { return add(x, y); } add(10, 20);", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			ASSERT_EQ(res.has_value(), true);
 		}
 	}
 }
