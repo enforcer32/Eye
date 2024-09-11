@@ -22,6 +22,9 @@ namespace Eye
 			case Eye::TypeChecker::Type::Boolean:
 				return "Boolean";
 				break;
+			case Eye::TypeChecker::Type::Function:
+				return "Function";
+				break;
 			default:
 				EYE_LOG_CRITICAL("EYETypeToString Unknown Type!");
 				break;

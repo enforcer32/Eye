@@ -12,6 +12,7 @@ Function Parameters Do Not Have to Follow ParenthesizedExpressions Rules because
 Function Body is not optional (Might Change, Function Definition/Declarations/Forward Declaring?)
 Only Functions can contain Return Statements, and Only 1 Return Statement in 1 Scope
 Number of FunctionParameters/Arguments Passed
+Cannot Call Undeclared Functions
 
 Statements:
 ControlStatement and IterationStatement Bodies are Optional

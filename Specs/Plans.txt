@@ -1,10 +1,12 @@
 DONE:
+Lexer
+Parser
+TypeChecker
 
 Current:
 
 Todo General:
-Lexer
-Parser
+Semantic Validator
 AST Generator(Lexer + Parser)
 ASTGen->Interpreter
 Module/Include System
@@ -13,4 +15,9 @@ Namespace
 Virtual Machine
 Bytecode
 Native Code Generator
-TypeChecker
+
+TypeChecker:
+	TypeCheck Member Expressions
+
+Parser:
+	Parse Structs, Arrays; 
