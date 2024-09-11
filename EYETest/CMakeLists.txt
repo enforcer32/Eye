@@ -21,6 +21,7 @@ file(GLOB_RECURSE EYETestSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Expression/AssignmentExpressionTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Expression/CallExpressionTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Expression/UnaryExpressionTest.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Expression/PostfixExpressionTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Expression/BinaryExpression/BinaryExpressionArithmeticTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/EYETypeChecker/Expression/BinaryExpression/BinaryExpressionRelationalTest.cpp"
 )

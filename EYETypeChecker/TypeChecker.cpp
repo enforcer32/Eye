@@ -235,6 +235,8 @@ namespace Eye
 				return TypeCheckCallExpression(std::static_pointer_cast<AST::CallExpression>(expr));
 			case AST::ExpressionType::UnaryExpression:
 				return TypeCheckUnaryExpression(std::static_pointer_cast<AST::UnaryExpression>(expr));
+			case AST::ExpressionType::PostfixExpression:
+				return TypeCheckPostfixExpression(std::static_pointer_cast<AST::PostfixExpression>(expr));
 			default:
 				EYE_LOG_CRITICAL("EYETypeChecker Unknown Expression Type!");
 				break;
@@ -316,6 +318,14 @@ namespace Eye
 					throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Unary Operator '" + unaryExpr->GetOperator()->GetValueString() + "'", unaryExpr->GetSource());
 			}
 
+			return exprType;
+		}
+
+		Type TypeChecker::TypeCheckPostfixExpression(const std::shared_ptr<AST::PostfixExpression>& postfixExpr)
+		{
+			Type exprType = TypeCheckExpression(postfixExpr->GetExpression());
+			if (exprType != Type::Integer && exprType != Type::Float)
+				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Postfix Operator '" + postfixExpr->GetOperator()->GetValueString() + "'", postfixExpr->GetSource());
 			return exprType;
 		}
 
