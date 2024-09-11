@@ -97,7 +97,7 @@ namespace Eye
 			ASSERT_EQ(res.has_value(), true);
 
 			// Float
-			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("for(int x = 12; x < 21.124; x-1) {}", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("for(int x = 12; x < 21.124; x+1) {}", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(res.has_value(), true);
 
 			// String

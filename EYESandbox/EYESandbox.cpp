@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 	*/
 
 	Eye::ASTGenerator::ASTGenerator astGenerator;
-	//std::cout << astGenerator.GenerateStringAST("..\\..\\..\\..\\Examples\\Test.eye") << std::endl;
+	//std::cout << astGenerator.GenerateStringAST("..\\..\\..\\..\\Examples\\Test.eye", Eye::ASTGenerator::ASTGeneratorSourceType::File) << std::endl;
 
 	Eye::TypeChecker::TypeChecker typeChecker;
 	auto res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("..\\..\\..\\..\\Examples\\Test.eye", Eye::ASTGenerator::ASTGeneratorSourceType::File));

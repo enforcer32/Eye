@@ -345,9 +345,14 @@ namespace Eye
 			case Lexer::TokenType::OperatorRelationalSmallerEquals:
 			case Lexer::TokenType::OperatorRelationalGreaterEquals:
 				return TypeCheckBinaryExpressionRelational(leftType, rightType, binaryExpr);
+			case Lexer::TokenType::OperatorLogicalOR:
+			case Lexer::TokenType::OperatorLogicalAND:
+				return TypeCheckBinaryExpressionLogical(leftType, rightType, binaryExpr);
 			default:
 				break;
 			}
+
+			EYE_LOG_CRITICAL("EYETypeChecker TypeCheckBinaryExpression Invalid Operator {}", binaryExpr->GetOperator()->GetValueString());
 		}
 
 		Type TypeChecker::TypeCheckBinaryExpressionArithmeticPlus(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
@@ -384,6 +389,15 @@ namespace Eye
 					throw Error::Exceptions::BadTypeCompareException("Incomparable Types: " + TypeToString(leftType) + " and " + TypeToString(rightType), binaryExpr->GetOperator()->GetSource());
 			}
 
+			return Type::Boolean;
+		}
+
+		Type TypeChecker::TypeCheckBinaryExpressionLogical(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
+		{
+			if (leftType != Type::Boolean && leftType != Type::Integer)
+				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(leftType) + " for Binary Operator '" + binaryExpr->GetOperator()->GetValueString() + "'", binaryExpr->GetSource());
+			else if (rightType != Type::Boolean && rightType != Type::Integer)
+				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(rightType) + " for Binary Operator '" + binaryExpr->GetOperator()->GetValueString() + "'", binaryExpr->GetSource());
 			return Type::Boolean;
 		}
 
