@@ -33,7 +33,7 @@ namespace Eye
 			}
 			catch (...)
 			{
-				EYE_LOG_CRITICAL("EYETypeChecker->TypeCheck Unknown Exception!");
+				EYE_LOG_CRITICAL("EYETypeChecker->TypeCheck Unsupported Exception!");
 			}
 
 			return true;
@@ -68,7 +68,7 @@ namespace Eye
 				TypeCheckReturnStatement(std::static_pointer_cast<AST::ReturnStatement>(stmt));
 				break;
 			default:
-				EYE_LOG_CRITICAL("EYETypeChecker Unknown Statement Type!");
+				EYE_LOG_CRITICAL("EYETypeChecker Unsupported Statement Type!");
 				break;
 			}
 		}
@@ -218,9 +218,6 @@ namespace Eye
 
 		Type TypeChecker::TypeCheckExpression(const std::shared_ptr<AST::Expression>& expr)
 		{
-			/*if (!expr)
-				EYE_LOG_CRITICAL("EYETypeChecker Unknown Expression Type!");*/
-
 			switch (expr->GetType())	
 			{
 			case AST::ExpressionType::LiteralExpression:
@@ -238,7 +235,7 @@ namespace Eye
 			case AST::ExpressionType::PostfixExpression:
 				return TypeCheckPostfixExpression(std::static_pointer_cast<AST::PostfixExpression>(expr));
 			default:
-				EYE_LOG_CRITICAL("EYETypeChecker Unknown Expression Type!");
+				EYE_LOG_CRITICAL("EYETypeChecker TypeCheckExpression Unsupported Expression Type!");
 				break;
 			}
 		}
@@ -256,7 +253,7 @@ namespace Eye
 			case AST::LiteralType::Boolean:
 				return Type::Boolean;
 			default:
-				EYE_LOG_CRITICAL("EYETypeChecker Unknown Type!");
+				EYE_LOG_CRITICAL("EYETypeChecker TypeCheckLiteralExpression Unsupported Type!");
 				break;
 			}
 		}
@@ -301,7 +298,7 @@ namespace Eye
 				return funcType.Return;
 			}
 
-			EYE_LOG_CRITICAL("EYETypeChecker TypeCheckCallExpression Invalid Type!");
+			EYE_LOG_CRITICAL("EYETypeChecker TypeCheckCallExpression Unsupported Type!");
 		}
 
 		Type TypeChecker::TypeCheckUnaryExpression(const std::shared_ptr<AST::UnaryExpression>& unaryExpr)
@@ -317,16 +314,25 @@ namespace Eye
 				if (exprType != Type::Boolean && exprType != Type::Integer)
 					throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Unary Operator '" + unaryExpr->GetOperator()->GetValueString() + "'", unaryExpr->GetSource());
 			}
+			else
+			{
+				EYE_LOG_CRITICAL("EYETypeChecker TypeCheckUnaryExpression Unsupported Operator {}", unaryExpr->GetOperator()->GetValueString());
+			}
 
 			return exprType;
 		}
 
 		Type TypeChecker::TypeCheckPostfixExpression(const std::shared_ptr<AST::PostfixExpression>& postfixExpr)
 		{
-			Type exprType = TypeCheckExpression(postfixExpr->GetExpression());
-			if (exprType != Type::Integer && exprType != Type::Float)
-				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Postfix Operator '" + postfixExpr->GetOperator()->GetValueString() + "'", postfixExpr->GetSource());
-			return exprType;
+			if (postfixExpr->GetOperator()->GetType() == Lexer::TokenType::OperatorArithmeticIncrement || postfixExpr->GetOperator()->GetType() == Lexer::TokenType::OperatorArithmeticDecrement)
+			{
+				Type exprType = TypeCheckExpression(postfixExpr->GetExpression());
+				if (exprType != Type::Integer && exprType != Type::Float)
+					throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Postfix Operator '" + postfixExpr->GetOperator()->GetValueString() + "'", postfixExpr->GetSource());
+				return exprType;
+			}
+
+			EYE_LOG_CRITICAL("EYETypeChecker TypeCheckPostfixExpression Unsupported Operator {}", postfixExpr->GetOperator()->GetValueString());
 		}
 
 		Type TypeChecker::TypeCheckBinaryExpression(const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
@@ -337,7 +343,11 @@ namespace Eye
 			switch (binaryExpr->GetOperator()->GetType())
 			{
 			case Lexer::TokenType::OperatorBinaryPlus:
-				return TypeCheckBinaryExpressionArithmeticPlus(leftType, rightType, binaryExpr);
+			case Lexer::TokenType::OperatorBinaryMinus:
+			case Lexer::TokenType::OperatorBinaryStar:
+			case Lexer::TokenType::OperatorBinarySlash:
+			case Lexer::TokenType::OperatorBinaryModulo:
+				return TypeCheckBinaryExpressionArithmetic(leftType, rightType, binaryExpr);
 			case Lexer::TokenType::OperatorRelationalEquals:
 			case Lexer::TokenType::OperatorRelationalNotEquals:
 			case Lexer::TokenType::OperatorRelationalSmaller:
@@ -352,25 +362,35 @@ namespace Eye
 				break;
 			}
 
-			EYE_LOG_CRITICAL("EYETypeChecker TypeCheckBinaryExpression Invalid Operator {}", binaryExpr->GetOperator()->GetValueString());
+			EYE_LOG_CRITICAL("EYETypeChecker TypeCheckBinaryExpression Unsupported Operator {}", binaryExpr->GetOperator()->GetValueString());
 		}
 
-		Type TypeChecker::TypeCheckBinaryExpressionArithmeticPlus(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
+		Type TypeChecker::TypeCheckBinaryExpressionArithmetic(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
 		{
 			if (leftType == Type::Boolean || rightType == Type::Boolean)
-				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), binaryExpr->GetRight()->GetSource());
+				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (leftType == Type::Boolean ? TypeToString(leftType) : TypeToString(rightType)) + " for Binary Operator '" + binaryExpr->GetOperator()->GetValueString() + "'", binaryExpr->GetSource());
 
-			if ((leftType == Type::String && rightType != Type::String) || (leftType != Type::String && rightType == Type::String))
-				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), binaryExpr->GetRight()->GetSource());
+			if (binaryExpr->GetOperator()->GetType() == Lexer::TokenType::OperatorBinaryPlus)
+			{
+				if (leftType == Type::String && rightType == Type::String)
+					return Type::String;
 
-			if (leftType == Type::String && rightType == Type::String)
-				return Type::String;
+				if ((leftType == Type::String && rightType != Type::String) || (leftType != Type::String && rightType == Type::String))
+					throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), binaryExpr->GetRight()->GetSource());
+			}
+			else
+			{
+				if (leftType == Type::String || rightType == Type::String)
+					throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (leftType == Type::String ? TypeToString(leftType) : TypeToString(rightType)) + " for Binary Operator '" + binaryExpr->GetOperator()->GetValueString() + "'", binaryExpr->GetSource());
+			}
 
 			if (leftType == Type::Float || rightType == Type::Float)
 				return Type::Float;
 
 			if (leftType == Type::Integer && rightType == Type::Integer)
 				return Type::Integer;
+
+			EYE_LOG_CRITICAL("EYETypeChecker TypeCheckBinaryExpressionArithmetic Invalid Types {}, {}", TypeToString(leftType), TypeToString(rightType));
 		}
 
 		Type TypeChecker::TypeCheckBinaryExpressionRelational(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)

@@ -98,7 +98,7 @@ namespace Eye
 
 			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("float x = (12.15 + true);", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(!res.has_value(), true);
-			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeConversion);
+			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType);
 
 			// String
 			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("str x = (\"hello\" + 22); ", Eye::ASTGenerator::ASTGeneratorSourceType::String));
@@ -111,11 +111,11 @@ namespace Eye
 			// Boolean
 			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("bool x = (true + 1); ", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(!res.has_value(), true);
-			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeConversion);
+			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType);
 
 			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("bool x = (true + false); ", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(!res.has_value(), true);
-			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeConversion);
+			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType);
 		}
 	}
 }
