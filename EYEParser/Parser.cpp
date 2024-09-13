@@ -470,7 +470,7 @@ namespace Eye
 		/*
 			LogicalORExpression
 				: LogicalANDExpression '||' LogicalORExpression
-				| LogicalORExpression
+				| LogicalANDExpression
 				;
 		*/
 		std::shared_ptr<AST::Expression> Parser::LogicalORExpression()
@@ -487,14 +487,68 @@ namespace Eye
 
 		/*
 			LogicalANDExpression
-				: EqualityExpression '&&' LogicalANDExpression
-				| EqualityExpression
+				: BitwiseORExpression '&&' LogicalANDExpression
+				| BitwiseORExpression
 				;
 		*/
 		std::shared_ptr<AST::Expression> Parser::LogicalANDExpression()
 		{
-			std::shared_ptr<AST::Expression> left = EqualityExpression();
+			std::shared_ptr<AST::Expression> left = BitwiseORExpression();
 			while (IsLookAhead(Lexer::TokenType::OperatorLogicalAND))
+			{
+				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
+				std::shared_ptr<AST::Expression> right = BitwiseORExpression();
+				left = std::make_shared<AST::BinaryExpression>(op->GetSource(), op, left, right);
+			}
+			return left;
+		}
+
+		/*
+			BitwiseORExpression
+				: BitwiseXORExpression '|' BitwiseORExpression
+				| BitwiseXORExpression
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::BitwiseORExpression()
+		{
+			std::shared_ptr<AST::Expression> left = BitwiseXORExpression();
+			while (IsLookAhead(Lexer::TokenType::OperatorBitwiseBinaryOR))
+			{
+				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
+				std::shared_ptr<AST::Expression> right = BitwiseXORExpression();
+				left = std::make_shared<AST::BinaryExpression>(op->GetSource(), op, left, right);
+			}
+			return left;
+		}
+
+		/*
+			BitwiseXORExpression
+				: BitwiseANDExpression '|' BitwiseXORExpression
+				| BitwiseANDExpression
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::BitwiseXORExpression()
+		{
+			std::shared_ptr<AST::Expression> left = BitwiseANDExpression();
+			while (IsLookAhead(Lexer::TokenType::OperatorBitwiseBinaryXOR))
+			{
+				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
+				std::shared_ptr<AST::Expression> right = BitwiseANDExpression();
+				left = std::make_shared<AST::BinaryExpression>(op->GetSource(), op, left, right);
+			}
+			return left;
+		}
+		
+		/*
+			BitwiseANDExpression
+				: EqualityExpression '&' BitwiseANDExpression
+				| EqualityExpression
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::BitwiseANDExpression()
+		{
+			std::shared_ptr<AST::Expression> left = EqualityExpression();
+			while (IsLookAhead(Lexer::TokenType::OperatorBitwiseBinaryAND))
 			{
 				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				std::shared_ptr<AST::Expression> right = EqualityExpression();
@@ -918,11 +972,12 @@ namespace Eye
 				| '!'
 				| '++'
 				| '--'
+				| '~'
 				;
 		*/
 		bool Parser::IsUnaryOperator(const std::shared_ptr<Lexer::Token>& token) const
 		{
-			return (token->GetType() == Lexer::TokenType::OperatorBinaryPlus || token->GetType() == Lexer::TokenType::OperatorBinaryMinus || token->GetType() == Lexer::TokenType::OperatorLogicalNOT || token->GetType() == Lexer::TokenType::OperatorArithmeticIncrement || token->GetType() == Lexer::TokenType::OperatorArithmeticDecrement);
+			return (token->GetType() == Lexer::TokenType::OperatorBinaryPlus || token->GetType() == Lexer::TokenType::OperatorBinaryMinus || token->GetType() == Lexer::TokenType::OperatorLogicalNOT || token->GetType() == Lexer::TokenType::OperatorArithmeticIncrement || token->GetType() == Lexer::TokenType::OperatorArithmeticDecrement || token->GetType() == Lexer::TokenType::OperatorBitwiseNOT);
 		}
 
 		/*

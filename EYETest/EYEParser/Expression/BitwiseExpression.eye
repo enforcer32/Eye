@@ -1,0 +1,11 @@
+1 & true;
+22.12 | 25;
+"Hello" ^ "bye";
+123459 & 4466;
+123 | 4456;
+999 ^ 123;
+123 & 456 | 789 ^ 1011 + 1213;
+~1235;
+number & number2;
+~binaryNum;
+numbers | numbers2;

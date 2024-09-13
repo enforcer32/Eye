@@ -1,3 +1,1 @@
-str test = "Hello";
-test -= "Bye";
-
+1 & 2;
