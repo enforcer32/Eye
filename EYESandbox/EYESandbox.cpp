@@ -1,6 +1,5 @@
 #include <EYEUtility/Logger.h>
 #include <EYEASTGenerator/ASTGenerator.h>
-#include <EYETypeChecker/TypeChecker.h>
 
 #include <iostream>
 #include <chrono>
@@ -20,23 +19,7 @@ int main(int argc, char** argv)
 	*/
 
 	Eye::ASTGenerator::ASTGenerator astGenerator;
-	//std::cout << astGenerator.GenerateStringAST("..\\..\\..\\..\\Examples\\Test.eye", Eye::ASTGenerator::ASTGeneratorSourceType::File) << std::endl;
-
-	Eye::TypeChecker::TypeChecker typeChecker;
-	auto res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("..\\..\\..\\..\\Examples\\Test.eye", Eye::ASTGenerator::ASTGeneratorSourceType::File));
-	if (!res)
-	{
-		EYE_LOG_ERROR(res.error().GetMessage());
-		EYE_LOG_CRITICAL("EYETypeChecker Failed");
-	}
-
-	//Eye::TypeChecker::TypeChecker typeChecker;
-	//auto res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("1+true;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
-	//if (!res)
-	//{
-	//	EYE_LOG_ERROR(res.error().GetMessage());
-	//	EYE_LOG_CRITICAL("EYETypeChecker Failed");
-	//}
+	std::cout << astGenerator.GenerateStringAST("..\\..\\..\\..\\Examples\\Test.eye", Eye::ASTGenerator::ASTGeneratorSourceType::File, true) << std::endl;
 
 	return 0;
 }
