@@ -48,7 +48,7 @@ namespace Eye
 			CREATE_BITWISE_TEST("^");
 		}
 
-		/*TEST(TypeCheckerBinaryExpressionBitwiseTest, BitwiseLeftShit)
+		TEST(TypeCheckerBinaryExpressionBitwiseTest, BitwiseLeftShit)
 		{
 			CREATE_BITWISE_TEST("<<");
 		}
@@ -56,6 +56,6 @@ namespace Eye
 		TEST(TypeCheckerBinaryExpressionBitwiseTest, BitwiseRightShift)
 		{
 			CREATE_BITWISE_TEST(">>");
-		}*/
+		}
 	}
 }
