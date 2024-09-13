@@ -105,6 +105,29 @@ namespace Eye
 			ASSERT_EQ(testFileData, parserData);
 		}
 
+		TEST(ParserExpressionTest, BitwiseShiftExpression)
+		{
+			std::string testType = "Expression";
+			std::string eyeFile = "BitwiseShiftExpression.eye";
+			std::string testFile = "BitwiseShiftExpression.json";
+			std::string eyeFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + eyeFile;
+			std::string testFilePath = "..\\..\\..\\..\\EYETest\\EYEParser\\" + testType + "\\" + testFile;
+
+			Lexer::Lexer lexer;
+			if (!lexer.Tokenize(Utility::EyeSource(eyeFilePath, Utility::EyeSourceType::File)))
+				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->BitwiseShiftExpression Failed to Tokenize()");
+
+			Parser parser;
+			if (!parser.Parse(lexer.GetTokens()))
+				EYE_LOG_CRITICAL("EYETest->EYEParser->ParserExpressionTest->BitwiseShiftExpression Failed to Parse()");
+
+			ASTSerializer::StringSerializer astSerializer;
+
+			nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
+			nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+			ASSERT_EQ(testFileData, parserData);
+		}
+
 		TEST(ParserExpressionTest, IdentifierExpression)
 		{
 			std::string testType = "Expression";

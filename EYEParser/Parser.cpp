@@ -577,14 +577,32 @@ namespace Eye
 
 		/*
 			RelationalExpression
-				: AdditiveBinaryExpression
-				| AdditiveBinaryExpression RelationalOperator RelationalExpression
+				: BitwiseShiftExpression
+				| BitwiseShiftExpression RelationalOperator RelationalExpression
 				;
 		*/
 		std::shared_ptr<AST::Expression> Parser::RelationalExpression()
 		{
-			std::shared_ptr<AST::Expression> left = AdditiveBinaryExpression();
+			std::shared_ptr<AST::Expression> left = BitwiseShiftExpression();
 			while (IsRelationalOperator(m_LookAhead))
+			{
+				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
+				std::shared_ptr<AST::Expression> right = BitwiseShiftExpression();
+				left = std::make_shared<AST::BinaryExpression>(op->GetSource(), op, left, right);
+			}
+			return left;
+		}
+
+		/*
+			BitwiseShiftExpression
+				: AdditiveBinaryExpression
+				| AdditiveBinaryExpression BitwiseShiftOperator BitwiseShiftExpression
+				;
+		*/
+		std::shared_ptr<AST::Expression> Parser::BitwiseShiftExpression()
+		{
+			std::shared_ptr<AST::Expression> left = AdditiveBinaryExpression();
+			while (IsBitwiseShiftOperator(m_LookAhead))
 			{
 				std::shared_ptr<Lexer::Token> op = EatToken(m_LookAhead->GetType());
 				std::shared_ptr<AST::Expression> right = AdditiveBinaryExpression();
@@ -940,6 +958,17 @@ namespace Eye
 		{
 			return (token->GetType() == Lexer::TokenType::OperatorRelationalSmaller || token->GetType() == Lexer::TokenType::OperatorRelationalSmallerEquals || token->GetType() == Lexer::TokenType::OperatorRelationalGreater ||
 				token->GetType() == Lexer::TokenType::OperatorRelationalGreaterEquals);
+		}
+
+		/*
+			BitwiseShiftOperator
+				: '<<'
+				| '>>'
+				;
+		*/
+		bool Parser::IsBitwiseShiftOperator(const std::shared_ptr<Lexer::Token>& token) const
+		{
+			return (token->GetType() == Lexer::TokenType::OperatorBitwiseLeftShift || token->GetType() == Lexer::TokenType::OperatorBitwiseRightShift);
 		}
 
 		/*

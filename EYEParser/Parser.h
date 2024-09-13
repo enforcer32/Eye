@@ -71,6 +71,7 @@ namespace Eye
 			std::shared_ptr<AST::Expression> BitwiseANDExpression();
 			std::shared_ptr<AST::Expression> EqualityExpression();
 			std::shared_ptr<AST::Expression> RelationalExpression();
+			std::shared_ptr<AST::Expression> BitwiseShiftExpression();
 			std::shared_ptr<AST::Expression> AdditiveBinaryExpression();
 			std::shared_ptr<AST::Expression> MultiplicativeBinaryExpression();
 			std::shared_ptr<AST::Expression> UnaryExpression();
@@ -95,6 +96,7 @@ namespace Eye
 			bool IsAssignmentOperator(const std::shared_ptr<Lexer::Token>& token) const;
 			bool IsEqualityOperator(const std::shared_ptr<Lexer::Token>& token) const;
 			bool IsRelationalOperator(const std::shared_ptr<Lexer::Token>& token) const;
+			bool IsBitwiseShiftOperator(const std::shared_ptr<Lexer::Token>& token) const;
 			bool IsAdditiveOperator(const std::shared_ptr<Lexer::Token>& token) const;
 			bool IsMultiplicativeOperator(const std::shared_ptr<Lexer::Token>& token) const;
 			bool IsUnaryOperator(const std::shared_ptr<Lexer::Token>& token) const;
