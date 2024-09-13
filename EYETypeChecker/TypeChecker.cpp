@@ -342,6 +342,12 @@ namespace Eye
 			case Lexer::TokenType::OperatorLogicalOR:
 			case Lexer::TokenType::OperatorLogicalAND:
 				return TypeCheckBinaryExpressionLogical(leftType, rightType, binaryExpr);
+			case Lexer::TokenType::OperatorBitwiseBinaryAND:
+			case Lexer::TokenType::OperatorBitwiseBinaryOR:
+			case Lexer::TokenType::OperatorBitwiseBinaryXOR:
+			case Lexer::TokenType::OperatorBitwiseLeftShift:
+			case Lexer::TokenType::OperatorBitwiseRightShift:
+				return TypeCheckBinaryExpressionBitwise(leftType, rightType, binaryExpr);
 			default:
 				break;
 			}
@@ -405,6 +411,13 @@ namespace Eye
 			return Type::Boolean;
 		}
 
+		Type TypeChecker::TypeCheckBinaryExpressionBitwise(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
+		{
+			if(leftType != Type::Integer || rightType != Type::Integer)
+				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (leftType != Type::Integer ? TypeToString(leftType) : TypeToString(rightType)) + " for Binary Operator '" + binaryExpr->GetOperator()->GetValueString() + "'", binaryExpr->GetSource());
+			return Type::Integer;
+		}
+
 		Type TypeChecker::TypeCheckCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr)
 		{
 			Type calleeType = TypeCheckExpression(callExpr->GetCallee());
@@ -437,6 +450,11 @@ namespace Eye
 			else if (unaryExpr->GetOperator()->GetType() == Lexer::TokenType::OperatorLogicalNOT)
 			{
 				if (exprType != Type::Boolean && exprType != Type::Integer)
+					throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Unary Operator '" + unaryExpr->GetOperator()->GetValueString() + "'", unaryExpr->GetSource());
+			}
+			else if (unaryExpr->GetOperator()->GetType() == Lexer::TokenType::OperatorBitwiseNOT)
+			{
+				if (exprType != Type::Integer)
 					throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Unary Operator '" + unaryExpr->GetOperator()->GetValueString() + "'", unaryExpr->GetSource());
 			}
 			else

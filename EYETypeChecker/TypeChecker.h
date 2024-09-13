@@ -58,6 +58,7 @@ namespace Eye
 			Type TypeCheckBinaryExpressionArithmetic(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
 			Type TypeCheckBinaryExpressionRelational(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
 			Type TypeCheckBinaryExpressionLogical(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
+			Type TypeCheckBinaryExpressionBitwise(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
 			Type TypeCheckCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr);
 			Type TypeCheckUnaryExpression(const std::shared_ptr<AST::UnaryExpression>& unaryExpr);
 			Type TypeCheckPostfixExpression(const std::shared_ptr<AST::PostfixExpression>& postfixExpr);
