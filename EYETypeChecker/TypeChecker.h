@@ -52,13 +52,15 @@ namespace Eye
 			Type TypeCheckLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);
 			Type TypeCheckIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr);
 			Type TypeCheckAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignExpr);
-			Type TypeCheckCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr);
-			Type TypeCheckUnaryExpression(const std::shared_ptr<AST::UnaryExpression>& unaryExpr);
-			Type TypeCheckPostfixExpression(const std::shared_ptr<AST::PostfixExpression>& postfixExpr);
+			Type TypeCheckAssignmentExpressionAssignment(Type lhsType, Type rightType, const std::shared_ptr<AST::AssignmentExpression>& assignExpr);
+			Type TypeCheckAssignmentExpressionAssignmentArithmetic(Type lhsType, Type rightType, const std::shared_ptr<AST::AssignmentExpression>& assignExpr);
 			Type TypeCheckBinaryExpression(const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
 			Type TypeCheckBinaryExpressionArithmetic(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
 			Type TypeCheckBinaryExpressionRelational(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
 			Type TypeCheckBinaryExpressionLogical(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
+			Type TypeCheckCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr);
+			Type TypeCheckUnaryExpression(const std::shared_ptr<AST::UnaryExpression>& unaryExpr);
+			Type TypeCheckPostfixExpression(const std::shared_ptr<AST::PostfixExpression>& postfixExpr);
 
 		private:
 			Type LexerToTypeCheckerType(Lexer::TokenType type);

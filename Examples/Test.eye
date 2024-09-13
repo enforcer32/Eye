@@ -1,1 +1,3 @@
-"Bye" - "Hello";
+str test = "Hello";
+test -= "Bye";
+

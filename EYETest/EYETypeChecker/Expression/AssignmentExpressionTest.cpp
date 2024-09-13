@@ -6,11 +6,48 @@
 
 #include <gtest/gtest.h>
 
+#define CREATE_ASSIGNMENT_TEST(testOperator) \
+	TypeChecker typeChecker; \
+	Eye::ASTGenerator::ASTGenerator astGenerator; \
+	\
+	auto res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("int x = 12; x " testOperator " 14;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(res.has_value(), true); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("int x = 12; x " testOperator " 22.15;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(!res.has_value(), true); \
+	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeConversion); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("float x = 12; x " testOperator " 14;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(res.has_value(), true); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("float x = 12; x " testOperator " 11.15;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(res.has_value(), true); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("float x = 14.24; x " testOperator " \"Hello\";", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(!res.has_value(), true); \
+	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("bool x = true; x " testOperator " 14;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(!res.has_value(), true); \
+	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("float x = 12; x " testOperator " false;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(!res.has_value(), true); \
+	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("str test = \"Hello\"; test " testOperator " \"bye\";", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(!res.has_value(), true); \
+	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("str test = \"Hello\"; test " testOperator " 22;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(!res.has_value(), true); \
+	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType)
+
 namespace Eye
 {
 	namespace TypeChecker
 	{
-		TEST(TypeCheckerExpressionTest, AssignmentExpression)
+		TEST(TypeCheckerAssignmentExpressionTest, Assignment)
 		{
 			TypeChecker typeChecker;
 			Eye::ASTGenerator::ASTGenerator astGenerator;
@@ -28,6 +65,64 @@ namespace Eye
 
 			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("int x; x = 55; int x2; x2 = x; int x3; x3 = x2;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
 			ASSERT_EQ(res.has_value(), true);
+		}
+
+		TEST(TypeCheckerAssignmentExpressionTest, AssignmentPlus)
+		{
+			TypeChecker typeChecker;
+			Eye::ASTGenerator::ASTGenerator astGenerator;
+
+			auto res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("int x = 12; x += 14;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			ASSERT_EQ(res.has_value(), true);
+
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("int x = 12; x += 22.15;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			ASSERT_EQ(!res.has_value(), true);
+			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeConversion);
+
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("float x = 12; x += 14;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			ASSERT_EQ(res.has_value(), true);
+
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("float x = 12; x += 11.15;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			ASSERT_EQ(res.has_value(), true);
+
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("float x = 14.24; x += \"Hello\";", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			ASSERT_EQ(!res.has_value(), true);
+			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeConversion);
+
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("bool x = true; x += 14;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			ASSERT_EQ(!res.has_value(), true);
+			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType);
+
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("float x = 12; x += false;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			ASSERT_EQ(!res.has_value(), true);
+			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType);
+
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("str test = \"Hello\"; test += \"bye\";", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			ASSERT_EQ(res.has_value(), true);
+
+			res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("str test = \"Hello\"; test += 22;", Eye::ASTGenerator::ASTGeneratorSourceType::String));
+			ASSERT_EQ(!res.has_value(), true);
+			ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadTypeConversion);
+		}
+
+		TEST(TypeCheckerAssignmentExpressionTest, AssignmentMinus)
+		{
+			CREATE_ASSIGNMENT_TEST("-=");
+		}
+
+		TEST(TypeCheckerAssignmentExpressionTest, AssignmentStar)
+		{
+			CREATE_ASSIGNMENT_TEST("*=");
+		}
+
+		TEST(TypeCheckerAssignmentExpressionTest, AssignmentSlash)
+		{
+			CREATE_ASSIGNMENT_TEST("/=");
+		}
+
+		TEST(TypeCheckerAssignmentExpressionTest, AssignmentModulo)
+		{
+			CREATE_ASSIGNMENT_TEST("%=");
 		}
 	}
 }
