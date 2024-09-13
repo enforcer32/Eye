@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 
-#define CREATE_ASSIGNMENT_TEST(testOperator) \
+#define CREATE_ARITHMETIC_ASSIGNMENT_TEST(testOperator) \
 	TypeChecker typeChecker; \
 	Eye::ASTGenerator::ASTGenerator astGenerator; \
 	\
@@ -40,6 +40,29 @@
 	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType); \
 	\
 	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("str test = \"Hello\"; test " testOperator " 22;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(!res.has_value(), true); \
+	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType)
+
+#define CREATE_BITWISE_ASSIGMENT_TEST(testOperator) \
+	TypeChecker typeChecker; \
+	Eye::ASTGenerator::ASTGenerator astGenerator; \
+	\
+	auto res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("int number = 10; number &= 20;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(res.has_value(), true); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("int number = 10; number &= true;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(!res.has_value(), true); \
+	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("float number = 25.12; number &= 10;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(!res.has_value(), true); \
+	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("int number = 10; number &= \"Hello\";", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	ASSERT_EQ(!res.has_value(), true); \
+	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType); \
+	\
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("bool state = true; state &= \"Bye\";", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
 	ASSERT_EQ(!res.has_value(), true); \
 	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType)
 
@@ -107,22 +130,47 @@ namespace Eye
 
 		TEST(TypeCheckerAssignmentExpressionTest, AssignmentMinus)
 		{
-			CREATE_ASSIGNMENT_TEST("-=");
+			CREATE_ARITHMETIC_ASSIGNMENT_TEST("-=");
 		}
 
 		TEST(TypeCheckerAssignmentExpressionTest, AssignmentStar)
 		{
-			CREATE_ASSIGNMENT_TEST("*=");
+			CREATE_ARITHMETIC_ASSIGNMENT_TEST("*=");
 		}
 
 		TEST(TypeCheckerAssignmentExpressionTest, AssignmentSlash)
 		{
-			CREATE_ASSIGNMENT_TEST("/=");
+			CREATE_ARITHMETIC_ASSIGNMENT_TEST("/=");
 		}
 
 		TEST(TypeCheckerAssignmentExpressionTest, AssignmentModulo)
 		{
-			CREATE_ASSIGNMENT_TEST("%=");
+			CREATE_ARITHMETIC_ASSIGNMENT_TEST("%=");
+		}
+
+		TEST(TypeCheckerAssignmentExpressionTest, AssignmentBitwiseAND)
+		{
+			CREATE_BITWISE_ASSIGMENT_TEST("&=");
+		}
+
+		TEST(TypeCheckerAssignmentExpressionTest, AssignmentBitwiseOR)
+		{
+			CREATE_BITWISE_ASSIGMENT_TEST("|=");
+		}
+
+		TEST(TypeCheckerAssignmentExpressionTest, AssignmentBitwiseXOR)
+		{
+			CREATE_BITWISE_ASSIGMENT_TEST("^=");
+		}
+
+		TEST(TypeCheckerAssignmentExpressionTest, AssignmentBitwiseLeftShift)
+		{
+			CREATE_BITWISE_ASSIGMENT_TEST("<<");
+		}
+
+		TEST(TypeCheckerAssignmentExpressionTest, AssignmentBitwiseRightShift)
+		{
+			CREATE_BITWISE_ASSIGMENT_TEST(">>");
 		}
 	}
 }

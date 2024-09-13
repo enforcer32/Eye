@@ -278,6 +278,12 @@ namespace Eye
 			case Lexer::TokenType::OperatorAssignmentSlash:
 			case Lexer::TokenType::OperatorAssignmentModulo:
 				return TypeCheckAssignmentExpressionAssignmentArithmetic(lhsType, rightType, assignExpr);
+			case Lexer::TokenType::OperatorAssignmentBitwiseAND:
+			case Lexer::TokenType::OperatorAssignmentBitwiseOR:
+			case Lexer::TokenType::OperatorAssignmentBitwiseXOR:
+			case Lexer::TokenType::OperatorAssignmentBitwiseLeftShift:
+			case Lexer::TokenType::OperatorAssignmentBitwiseRightShift:
+				return TypeCheckAssignmentExpressionAssignmentBitwsie(lhsType, rightType, assignExpr);
 			default:
 				break;
 			}
@@ -316,6 +322,13 @@ namespace Eye
 			if (lhsType == Type::Integer && rightType != Type::Integer)
 				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(lhsType), assignExpr->GetSource());
 
+			return lhsType;
+		}
+
+		Type TypeChecker::TypeCheckAssignmentExpressionAssignmentBitwsie(Type lhsType, Type rightType, const std::shared_ptr<AST::AssignmentExpression>& assignExpr)
+		{
+			if (lhsType != Type::Integer || rightType != Type::Integer)
+				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (lhsType != Type::Integer ? TypeToString(lhsType) : TypeToString(rightType)) + " for Assignment Operator '" + assignExpr->GetOperator()->GetValueString() + "'", assignExpr->GetSource());
 			return lhsType;
 		}
 
