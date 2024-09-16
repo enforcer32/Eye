@@ -1,5 +1,6 @@
 #include <EYEUtility/Logger.h>
 #include <EYEASTGenerator/ASTGenerator.h>
+#include <EYESemantic/Semantic.h>
 
 #include <iostream>
 #include <chrono>
@@ -19,7 +20,15 @@ int main(int argc, char** argv)
 	*/
 
 	Eye::ASTGenerator::ASTGenerator astGenerator;
-	std::cout << astGenerator.GenerateStringAST({ { "..\\..\\..\\..\\Examples\\Test.eye", Eye::Utility::EyeSourceType::File }, true }) << std::endl;
+	//astGenerator.GenerateStringAST({ { "..\\..\\..\\..\\Examples\\Test.eye", Eye::Utility::EyeSourceType::File }, false });
+
+	Eye::Semantic::Semantic semanticValidator;
+	auto res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "..\\..\\..\\..\\Examples\\Test.eye", Eye::Utility::EyeSourceType::File }, false }));
+	if (!res)
+	{
+		EYE_LOG_ERROR(res.error().GetMessage());
+		EYE_LOG_CRITICAL("EYESemantic->Validate Failed!");
+	}
 
 	return 0;
 }
