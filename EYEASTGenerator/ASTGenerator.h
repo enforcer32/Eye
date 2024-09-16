@@ -1,24 +1,23 @@
 #pragma once
 
+#include <EYEUtility/EyeSource.h>
 #include <EYEAST/Program.h>
-
-#include <string>
 
 namespace Eye
 {
 	namespace ASTGenerator
 	{
-		enum ASTGeneratorSourceType
+		struct ASTGeneratorProperties
 		{
-			File,
-			String,
+			Utility::EyeSource Source;
+			bool TypeCheck;
 		};
 
 		class ASTGenerator
 		{
 		public:
-			std::shared_ptr<AST::Program> GenerateMemoryAST(const std::string& source, ASTGeneratorSourceType sourceType, bool typeChecked = false);
-			std::string GenerateStringAST(const std::string& source, ASTGeneratorSourceType sourceType, bool typeChecked = false);
+			std::shared_ptr<AST::Program> GenerateMemoryAST(const ASTGeneratorProperties& properties);
+			std::string GenerateStringAST(const ASTGeneratorProperties& properties);
 		};
 	}
 }

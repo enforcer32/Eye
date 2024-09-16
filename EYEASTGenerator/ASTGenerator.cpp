@@ -10,14 +10,10 @@ namespace Eye
 {
 	namespace ASTGenerator
 	{
-		std::shared_ptr<AST::Program> ASTGenerator::GenerateMemoryAST(const std::string& source, ASTGeneratorSourceType sourceType, bool typeChecked)
+		std::shared_ptr<AST::Program> ASTGenerator::GenerateMemoryAST(const ASTGeneratorProperties& properties)
 		{
-			Utility::EyeSource eyeSource;
-			eyeSource.Source = source;
-			eyeSource.Type = (sourceType == ASTGeneratorSourceType::File ? Utility::EyeSourceType::File : Utility::EyeSourceType::String);
-
 			Lexer::Lexer lexer;
-			auto res = lexer.Tokenize(eyeSource);
+			auto res = lexer.Tokenize(properties.Source);
 			if (!res)
 			{
 				EYE_LOG_ERROR(res.error().GetMessage());
@@ -32,7 +28,7 @@ namespace Eye
 				EYE_LOG_CRITICAL("EYEASTGenerator->GenerateMemoryAST Parser Failed to Parse!");
 			}
 
-			if (typeChecked)
+			if (properties.TypeCheck)
 			{
 				TypeChecker::TypeChecker typeChecker;
 				res = typeChecker.TypeCheck(parser.GetAST());
@@ -46,14 +42,10 @@ namespace Eye
 			return parser.GetAST();
 		}
 
-		std::string ASTGenerator::GenerateStringAST(const std::string& source, ASTGeneratorSourceType sourceType, bool typeChecked)
+		std::string ASTGenerator::GenerateStringAST(const ASTGeneratorProperties& properties)
 		{
-			Utility::EyeSource eyeSource;
-			eyeSource.Source = source;
-			eyeSource.Type = (sourceType == ASTGeneratorSourceType::File ? Utility::EyeSourceType::File : Utility::EyeSourceType::String);
-
 			Lexer::Lexer lexer;
-			auto res = lexer.Tokenize(eyeSource);
+			auto res = lexer.Tokenize(properties.Source);
 			if (!res)
 			{
 				EYE_LOG_ERROR(res.error().GetMessage());
@@ -68,7 +60,7 @@ namespace Eye
 				EYE_LOG_CRITICAL("EYEASTGenerator->GenerateStringAST Parser Failed to Parse!");
 			}
 
-			if (typeChecked)
+			if (properties.TypeCheck)
 			{
 				TypeChecker::TypeChecker typeChecker;
 				res = typeChecker.TypeCheck(parser.GetAST());

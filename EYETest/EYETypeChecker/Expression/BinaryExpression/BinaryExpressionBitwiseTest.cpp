@@ -10,22 +10,22 @@
 	TypeChecker typeChecker; \
 	Eye::ASTGenerator::ASTGenerator astGenerator; \
 	 \
-	auto res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("10 " testOperator " 20;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	auto res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST({ { "10 " testOperator " 20;", Utility::EyeSourceType::String }, false })); \
 	ASSERT_EQ(res.has_value(), true); \
 	 \
-	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("10 " testOperator " true;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST({ { "10 " testOperator " true;", Utility::EyeSourceType::String }, false })); \
 	ASSERT_EQ(!res.has_value(), true); \
 	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType); \
 	 \
-	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("25.12 " testOperator " 5;", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST({ { "25.12 " testOperator " 5;", Utility::EyeSourceType::String }, false })); \
 	ASSERT_EQ(!res.has_value(), true); \
 	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType); \
 	 \
-	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("10 " testOperator " \"Hello\";", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST({ { "10 " testOperator " \"Hello\";", Utility::EyeSourceType::String }, false })); \
 	ASSERT_EQ(!res.has_value(), true); \
 	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType); \
 	 \
-	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST("true " testOperator " \"Bye\";", Eye::ASTGenerator::ASTGeneratorSourceType::String)); \
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST({ { "true " testOperator " \"Bye\";", Utility::EyeSourceType::String }, false })); \
 	ASSERT_EQ(!res.has_value(), true); \
 	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType)
 
