@@ -1,6 +1,7 @@
 file(GLOB_RECURSE EYESemanticSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/Semantic.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Semantic.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Environment.h"
 )
 
 add_library(${EYESEMANTIC_TARGET_NAME} STATIC ${EYESemanticSources})
