@@ -14,6 +14,10 @@ file(GLOB_RECURSE EYEErrorSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/BadOperandTypeException.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/NotDeclaredException.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/NotDeclaredException.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/ReDeclarationException.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/ReDeclarationException.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/BadDataTypeException.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/BadDataTypeException.cpp"
 )
 
 add_library(${EYEERROR_TARGET_NAME} STATIC ${EYEErrorSources})

@@ -14,6 +14,8 @@ namespace Eye
 			TypeCheckerBadTypeCompare,
 			TypeCheckerBadOperandType,
 			SemanticNotDeclared,
+			SemanticReDeclaration,
+			SemanticBadDataType,
 		};
 
 		class Error
