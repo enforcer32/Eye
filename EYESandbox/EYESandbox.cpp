@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 	//astGenerator.GenerateStringAST({ { "..\\..\\..\\..\\Examples\\Test.eye", Eye::Utility::EyeSourceType::File }, false });
 
 	Eye::Semantic::Semantic semanticValidator;
-	auto res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "..\\..\\..\\..\\Examples\\Test.eye", Eye::Utility::EyeSourceType::File }, false }));
+	auto res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "..\\..\\..\\..\\Examples\\Test.eye", Eye::Utility::EyeSourceType::File }, true }));
 	if (!res)
 	{
 		EYE_LOG_ERROR(res.error().GetMessage());

@@ -1,9 +1,6 @@
 #pragma once
 
-#include <EYEUtility/EyeSource.h>
-
-#include <stdexcept>
-#include <string>
+#include "EYEError/Exceptions/EyeException.h"
 
 namespace Eye
 {
@@ -11,18 +8,13 @@ namespace Eye
 	{
 		namespace Exceptions
 		{
-			class BadTypeCompareException : public std::exception
+			class BadTypeCompareException : public EyeException
 			{
 			public:
-				BadTypeCompareException(const std::string& msg, const Utility::EyeSource& source);
-
-				virtual const char* what() const noexcept override;
-
-			private:
-				std::string GetErrorLine(const Utility::EyeSource& source);
-
-			private:
-				std::string m_What;
+				BadTypeCompareException(const std::string& msg, const Utility::EyeSource& source)
+					: EyeException("BadTypeCompareException: " + msg, source)
+				{
+				}
 			};
 		}
 	}
