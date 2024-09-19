@@ -89,7 +89,7 @@ namespace Eye
 
 			for (const auto& var : varStmt->GetVariableDeclarationList())
 			{
-				if (m_VariableEnvironment->Has(var->GetIdentifier()->GetValue()))
+				if (m_VariableEnvironment->Has(var->GetIdentifier()->GetValue(), false))
 					throw Error::Exceptions::ReDeclarationException("ReDeclaration of '" + var->GetIdentifier()->GetValue() + "'", var->GetIdentifier()->GetSource());
 
 				if (var->GetInitializer())
@@ -131,6 +131,8 @@ namespace Eye
 
 		void Semantic::ValidateAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignExpr)
 		{
+			ValidateExpression(assignExpr->GetLHSExpression());
+
 			if (assignExpr->GetLHSExpression()->GetType() == AST::ExpressionType::IdentifierExpression)
 			{
 				const auto& astIdentifierExpr = std::static_pointer_cast<AST::IdentifierExpression>(assignExpr->GetLHSExpression());
@@ -138,14 +140,13 @@ namespace Eye
 					throw Error::Exceptions::WriteReadOnlyException("Assignment of Read-Only Variable: '" + astIdentifierExpr->GetValue() + "'", astIdentifierExpr->GetSource());
 			}
 
-			ValidateExpression(assignExpr->GetLHSExpression());
 			ValidateExpression(assignExpr->GetExpression());
 		}
 
 		void Semantic::BeginBlockScope()
 		{
 			m_VariableEnvironment = std::make_shared<SetEnvironment<std::string>>(m_VariableEnvironment);
-			m_VariableTypeQualifierEnvironment = std::make_shared<MapEnvironment<VariableTypeQualifier>>();
+			m_VariableTypeQualifierEnvironment = std::make_shared<MapEnvironment<VariableTypeQualifier>>(m_VariableTypeQualifierEnvironment);
 		}
 
 		void Semantic::EndBlockScope()

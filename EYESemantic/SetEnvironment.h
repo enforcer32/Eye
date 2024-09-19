@@ -27,11 +27,11 @@ namespace Eye
 				m_Values.insert(value);
 			}
 
-			bool Has(const T& value) const
+			bool Has(const T& value, bool checkParent = true) const
 			{
 				if (m_Values.find(value) != m_Values.end())
 					return true;
-				else if (m_Parent)
+				else if (checkParent && m_Parent)
 					return m_Parent->Has(value);
 				return false;
 			}
