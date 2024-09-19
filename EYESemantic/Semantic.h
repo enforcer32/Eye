@@ -1,6 +1,8 @@
 #pragma once
 
-#include "EYESemantic/Environment.h"
+#include "EYESemantic/SetEnvironment.h"
+#include "EYESemantic/MapEnvironment.h"
+#include "EYESemantic/Types.h"
 
 #include <EYEError/Error.h>
 
@@ -11,7 +13,9 @@
 #include <EYEAST/Statements/VariableStatement.h>
 
 #include <EYEAST/Expressions/Expression.h>
+#include <EYEAST/Expressions/LiteralExpression.h>
 #include <EYEAST/Expressions/IdentifierExpression.h>
+#include <EYEAST/Expressions/AssignmentExpression.h>
 
 #include <expected>
 #include <string>
@@ -32,14 +36,17 @@ namespace Eye
 			void ValidateVariableStatement(const std::shared_ptr<AST::VariableStatement>& varStmt);
 
 			void ValidateExpression(const std::shared_ptr<AST::Expression>& expr);
+			void ValidateLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);
 			void ValidateIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr);
+			void ValidateAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignExpr);
 
 		private:
 			void BeginBlockScope();
 			void EndBlockScope();
 
 		private:
-			std::shared_ptr<Environment<std::string>> m_VariableEnvironment;
+			std::shared_ptr<SetEnvironment<std::string>> m_VariableEnvironment;
+			std::shared_ptr<MapEnvironment<VariableTypeQualifier>> m_VariableTypeQualifierEnvironment;
 		};
 	}
 }

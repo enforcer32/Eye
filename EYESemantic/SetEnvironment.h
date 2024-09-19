@@ -9,15 +9,15 @@ namespace Eye
 	namespace Semantic
 	{
 		template<typename T>
-		class Environment
+		class SetEnvironment
 		{
 		public:
-			Environment(const std::shared_ptr<Environment>& parent = nullptr)
+			SetEnvironment(const std::shared_ptr<SetEnvironment>& parent = nullptr)
 				: m_Parent(parent)
 			{
 			}
 
-			std::shared_ptr<Environment> GetParent() const
+			std::shared_ptr<SetEnvironment> GetParent() const
 			{
 				return m_Parent;
 			}
@@ -37,7 +37,7 @@ namespace Eye
 			}
 
 		private:
-			std::shared_ptr<Environment> m_Parent = nullptr;
+			std::shared_ptr<SetEnvironment> m_Parent = nullptr;
 			std::unordered_set<T> m_Values;
 		};
 	}

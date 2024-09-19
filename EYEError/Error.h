@@ -16,6 +16,7 @@ namespace Eye
 			SemanticNotDeclared,
 			SemanticReDeclaration,
 			SemanticBadDataType,
+			SemanticWriteReadOnly,
 		};
 
 		class Error
