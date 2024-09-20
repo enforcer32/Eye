@@ -1,0 +1,21 @@
+#pragma once
+
+#include "Eye/Error/Exceptions/EyeException.h"
+
+namespace Eye
+{
+	namespace Error
+	{
+		namespace Exceptions
+		{
+			class BadDataTypeException : public EyeException
+			{
+			public:
+				BadDataTypeException(const std::string& msg, const EyeSource& source)
+					: EyeException("BadDataTypeException: " + msg, source)
+				{
+				}
+			};
+		}
+	}
+}
