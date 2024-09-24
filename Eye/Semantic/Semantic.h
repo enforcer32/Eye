@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Eye/Semantic/SetEnvironment.h"
 #include "Eye/Semantic/MapEnvironment.h"
 #include "Eye/Semantic/Types.h"
 #include "Eye/Error/Error.h"
@@ -10,6 +9,8 @@
 #include "Eye/AST/Statements/ExpressionStatement.h"
 #include "Eye/AST/Statements/BlockStatement.h"
 #include "Eye/AST/Statements/VariableStatement.h"
+#include "Eye/AST/Statements/FunctionStatement.h"
+#include "Eye/AST/Statements/ReturnStatement.h"
 
 #include "Eye/AST/Expressions/Expression.h"
 #include "Eye/AST/Expressions/LiteralExpression.h"
@@ -31,6 +32,8 @@ namespace Eye
 		void ValidateExpressionStatement(const std::shared_ptr<AST::ExpressionStatement>& exprStmt);
 		void ValidateBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt, bool createScope = true);
 		void ValidateVariableStatement(const std::shared_ptr<AST::VariableStatement>& varStmt);
+		void ValidateFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt);
+		void ValidateReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt);
 
 		void ValidateExpression(const std::shared_ptr<AST::Expression>& expr);
 		void ValidateLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);
@@ -42,7 +45,7 @@ namespace Eye
 		void EndBlockScope();
 
 	private:
-		std::shared_ptr<SetEnvironment<std::string>> m_VariableEnvironment;
+		std::shared_ptr<MapEnvironment<DeclarationType>> m_DeclarationEnvironment;
 		std::shared_ptr<MapEnvironment<VariableTypeQualifier>> m_VariableTypeQualifierEnvironment;
 	};
 }

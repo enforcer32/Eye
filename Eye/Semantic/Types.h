@@ -7,4 +7,10 @@ namespace Eye
 		None,
 		Const,
 	};
+
+	enum class DeclarationType
+	{
+		Variable,
+		Function
+	};
 }

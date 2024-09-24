@@ -47,6 +47,15 @@ namespace Eye
 			EYE_LOG_CRITICAL("MapEnvironment->Get " + identifier + " Not Defined!");
 		}
 
+		bool Has(const std::string& identifier, bool checkParent = true) const
+		{
+			if (m_Values.find(identifier) != m_Values.end())
+				return true;
+			else if (checkParent && m_Parent)
+				return m_Parent->Has(identifier);
+			return false;
+		}
+
 	private:
 		std::shared_ptr<MapEnvironment> m_Parent = nullptr;
 		std::unordered_map<std::string, T> m_Values;

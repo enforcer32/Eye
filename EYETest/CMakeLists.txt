@@ -29,6 +29,7 @@ file(GLOB_RECURSE EYETestSources
 
 	#EYESemantic
 	"${CMAKE_CURRENT_SOURCE_DIR}/Semantic/Statement/VariableStatementTest.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Semantic/Statement/FunctionStatementTest.cpp"
 )
 
 add_executable(${EYETEST_TARGET_NAME} ${EYETestSources})

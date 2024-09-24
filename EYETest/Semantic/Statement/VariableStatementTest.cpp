@@ -35,7 +35,7 @@ namespace Eye
 		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticNotDeclared);
 	}
 
-	TEST(SemanticVariableStatementTest, DeclareInSameScope)
+	TEST(SemanticVariableStatementTest, ReDeclareInSameScope)
 	{
 		ASTGenerator astGenerator;
 		Semantic semanticValidator;

@@ -1,18 +1,17 @@
 Variables:
-Variables Always Declared before Use
-Variables should never be ReDeclared within same scope
-Variables Should Never have void type
-Const Variables should never be changed
++Variables Always Declared before Use
++Variables should never be ReDeclared within same scope
++Variables Should Never have void type
++Const Variables should never be changed
 
 Functions:
-Functions should Never be ReDeclared within Same Scope
-Functions must always define return type
-Functions with non-void return types must always return data
-Function Parameters Do Not Have to Follow ParenthesizedExpressions Rules because func() is not an expression, its a statement list (int x1, int x2) etc...
-Function Body is not optional (Might Change, Function Definition/Declarations/Forward Declaring?)
-Only Functions can contain Return Statements, and Only 1 Return Statement in 1 Scope
-Number of FunctionParameters/Arguments Passed
++Functions should Never be ReDeclared within Same Scope
++Cannot Return from Void Functions
++Functions with non-void return types must always return data
++Functions Can Contain Only 1 Return Statement in 1 Scope
 Cannot Call Undeclared Functions
+-Number of FunctionParameters/Arguments Passed
+-Parameters with Default Value
 
 Statements:
 ControlStatement and IterationStatement Bodies are Optional

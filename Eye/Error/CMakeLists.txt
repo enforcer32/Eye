@@ -13,6 +13,7 @@ file(GLOB_RECURSE ErrorSources
 	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/ReDeclarationException.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/BadDataTypeException.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/WriteReadOnlyException.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Exceptions/ReturnException.h"
 )
 
 target_sources(${EYE_TARGET_NAME} PRIVATE ${ErrorSources})

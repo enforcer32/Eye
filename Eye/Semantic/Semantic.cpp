@@ -4,12 +4,13 @@
 #include "Eye/Error/Exceptions/ReDeclarationException.h"
 #include "Eye/Error/Exceptions/BadDataTypeException.h"
 #include "Eye/Error/Exceptions/WriteReadOnlyException.h"
+#include "Eye/Error/Exceptions/ReturnException.h"
 
 namespace Eye
 {
 	std::expected<bool, Error::Error> Semantic::Validate(const std::shared_ptr<AST::Program>& ast)
 	{
-		m_VariableEnvironment = std::make_shared<SetEnvironment<std::string>>();
+		m_DeclarationEnvironment = std::make_shared<MapEnvironment<DeclarationType>>();
 		m_VariableTypeQualifierEnvironment = std::make_shared<MapEnvironment<VariableTypeQualifier>>();
 
 		try
@@ -33,6 +34,10 @@ namespace Eye
 		{
 			return std::unexpected(Error::Error(Error::ErrorType::SemanticWriteReadOnly, ex.what()));
 		}
+		catch (const Error::Exceptions::ReturnException& ex)
+		{
+			return std::unexpected(Error::Error(Error::ErrorType::SemanticReturnError, ex.what()));
+		}
 		catch (...)
 		{
 			EYE_LOG_CRITICAL("EYESemantic->Validate Unsupported Exception!");
@@ -53,6 +58,12 @@ namespace Eye
 			break;
 		case AST::StatementType::VariableStatement:
 			ValidateVariableStatement(std::static_pointer_cast<AST::VariableStatement>(stmt));
+			break;
+		case AST::StatementType::FunctionStatement:
+			ValidateFunctionStatement(std::static_pointer_cast<AST::FunctionStatement>(stmt));
+			break;
+		case AST::StatementType::ReturnStatement:
+			ValidateReturnStatement(std::static_pointer_cast<AST::ReturnStatement>(stmt));
 			break;
 		default:
 			EYE_LOG_CRITICAL("EYESemantic ValidateStatement Unsupported Statement Type!");
@@ -86,15 +97,56 @@ namespace Eye
 
 		for (const auto& var : varStmt->GetVariableDeclarationList())
 		{
-			if (m_VariableEnvironment->Has(var->GetIdentifier()->GetValue(), false))
+			if (m_DeclarationEnvironment->Has(var->GetIdentifier()->GetValue(), false))
 				throw Error::Exceptions::ReDeclarationException("ReDeclaration of '" + var->GetIdentifier()->GetValue() + "'", var->GetIdentifier()->GetSource());
 
 			if (var->GetInitializer())
 				ValidateExpression(var->GetInitializer());
 
-			m_VariableEnvironment->Define(var->GetIdentifier()->GetValue());
+			m_DeclarationEnvironment->Define(var->GetIdentifier()->GetValue(), DeclarationType::Variable);
 			m_VariableTypeQualifierEnvironment->Define(var->GetIdentifier()->GetValue(), typeQualifier);
 		}
+	}
+
+	void Semantic::ValidateFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt)
+	{
+		if (m_DeclarationEnvironment->Has(functionStmt->GetIdentifier()->GetValue()))
+			throw Error::Exceptions::ReDeclarationException("ReDeclaration of '" + functionStmt->GetIdentifier()->GetValue() + "'", functionStmt->GetIdentifier()->GetSource());
+	
+		m_DeclarationEnvironment->Define(functionStmt->GetIdentifier()->GetValue(), DeclarationType::Function);
+
+		BeginBlockScope();
+		
+		for (const auto& param : functionStmt->GetParameters())
+			m_DeclarationEnvironment->Define(param->GetIdentifier()->GetValue(), DeclarationType::Variable);
+
+		ValidateBlockStatement(functionStmt->GetBody(), false);
+
+		bool foundReturn = false;
+		bool functionReturns = (functionStmt->GetReturnType()->GetType() != TokenType::KeywordDataTypeVoid);
+		for (const auto& stmt : functionStmt->GetBody()->GetStatementList())
+		{
+			if (stmt->GetType() == AST::StatementType::ReturnStatement)
+			{
+				if (!functionReturns)
+					throw Error::Exceptions::ReturnException("Cannot Return From Void Function '" + functionStmt->GetIdentifier()->GetValue() + "()'", stmt->GetSource());
+
+				if (foundReturn)
+					throw Error::Exceptions::ReturnException("Cannot Return Multiple Times per Scope for Function '" + functionStmt->GetIdentifier()->GetValue() + "()'", stmt->GetSource());
+				
+				foundReturn = true;
+			}
+		}
+
+		if(functionReturns && !foundReturn)
+			throw Error::Exceptions::ReturnException("Non-Void Functions Must Always Return '" + functionStmt->GetIdentifier()->GetValue() + "()'", functionStmt->GetSource());
+
+		EndBlockScope();
+	}
+
+	void Semantic::ValidateReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt)
+	{
+		ValidateExpression(returnStmt->GetExpression());
 	}
 
 	void Semantic::ValidateExpression(const std::shared_ptr<AST::Expression>& expr)
@@ -122,7 +174,7 @@ namespace Eye
 
 	void Semantic::ValidateIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr)
 	{
-		if (!m_VariableEnvironment->Has(identifierExpr->GetValue()))
+		if (!m_DeclarationEnvironment->Has(identifierExpr->GetValue()))
 			throw Error::Exceptions::NotDeclaredException("'" + identifierExpr->GetValue() + "' Was Not Declared in this Scope", identifierExpr->GetSource());
 	}
 
@@ -142,13 +194,13 @@ namespace Eye
 
 	void Semantic::BeginBlockScope()
 	{
-		m_VariableEnvironment = std::make_shared<SetEnvironment<std::string>>(m_VariableEnvironment);
+		m_DeclarationEnvironment = std::make_shared<MapEnvironment<DeclarationType>>(m_DeclarationEnvironment);
 		m_VariableTypeQualifierEnvironment = std::make_shared<MapEnvironment<VariableTypeQualifier>>(m_VariableTypeQualifierEnvironment);
 	}
 
 	void Semantic::EndBlockScope()
 	{
 		m_VariableTypeQualifierEnvironment = m_VariableTypeQualifierEnvironment->GetParent();
-		m_VariableEnvironment = m_VariableEnvironment->GetParent();
+		m_DeclarationEnvironment = m_DeclarationEnvironment->GetParent();
 	}
 }
