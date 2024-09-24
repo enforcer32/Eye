@@ -6,6 +6,8 @@
 #include "Eye/Error/Exceptions/WriteReadOnlyException.h"
 #include "Eye/Error/Exceptions/ReturnException.h"
 
+#include <functional>
+
 namespace Eye
 {
 	std::expected<bool, Error::Error> Semantic::Validate(const std::shared_ptr<AST::Program>& ast)
@@ -121,27 +123,41 @@ namespace Eye
 			m_DeclarationEnvironment->Define(param->GetIdentifier()->GetValue(), DeclarationType::Variable);
 
 		ValidateBlockStatement(functionStmt->GetBody(), false);
-
-		bool foundReturn = false;
-		bool functionReturns = (functionStmt->GetReturnType()->GetType() != TokenType::KeywordDataTypeVoid);
-		for (const auto& stmt : functionStmt->GetBody()->GetStatementList())
-		{
-			if (stmt->GetType() == AST::StatementType::ReturnStatement)
-			{
-				if (!functionReturns)
-					throw Error::Exceptions::ReturnException("Cannot Return From Void Function '" + functionStmt->GetIdentifier()->GetValue() + "()'", stmt->GetSource());
-
-				if (foundReturn)
-					throw Error::Exceptions::ReturnException("Cannot Return Multiple Times per Scope for Function '" + functionStmt->GetIdentifier()->GetValue() + "()'", stmt->GetSource());
-				
-				foundReturn = true;
-			}
-		}
-
-		if(functionReturns && !foundReturn)
-			throw Error::Exceptions::ReturnException("Non-Void Functions Must Always Return '" + functionStmt->GetIdentifier()->GetValue() + "()'", functionStmt->GetSource());
+		ValidateFunctionReturnStatement(functionStmt);
 
 		EndBlockScope();
+	}
+
+	void Semantic::ValidateFunctionReturnStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt)
+	{
+		bool functionReturns = (functionStmt->GetReturnType()->GetType() != TokenType::KeywordDataTypeVoid);
+		bool foundReturn = false;
+	
+		std::function<void(const std::shared_ptr<AST::BlockStatement>& block)> validateReturn = [&](const std::shared_ptr<AST::BlockStatement>& block) -> void
+			{
+				for (const auto& stmt : block->GetStatementList())
+				{
+					if (stmt->GetType() == AST::StatementType::ReturnStatement)
+					{
+						if (!functionReturns)
+							throw Error::Exceptions::ReturnException("Cannot Return From Void Function '" + functionStmt->GetIdentifier()->GetValue() + "()'", stmt->GetSource());
+
+						if (foundReturn)
+							throw Error::Exceptions::ReturnException("Cannot Return Multiple Times per Scope for Function '" + functionStmt->GetIdentifier()->GetValue() + "()'", stmt->GetSource());
+
+						foundReturn = true;
+					}
+					else if (stmt->GetType() == AST::StatementType::BlockStatement)
+					{
+						validateReturn(std::static_pointer_cast<AST::BlockStatement>(stmt));
+					}
+				}
+
+				if (functionReturns && !foundReturn)
+					throw Error::Exceptions::ReturnException("Non-Void Functions Must Always Return '" + functionStmt->GetIdentifier()->GetValue() + "()'", functionStmt->GetSource());
+			};
+
+		validateReturn(functionStmt->GetBody());
 	}
 
 	void Semantic::ValidateReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt)

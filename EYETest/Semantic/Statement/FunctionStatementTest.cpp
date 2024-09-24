@@ -79,8 +79,8 @@ namespace Eye
 		ASSERT_EQ(!res.has_value(), true);
 		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticReturnError);
 
-		/*res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "function int getNumber() { return 20; { return 30; } } ", EyeSourceType::String }, false }));
+		res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "function int getNumber() { return 20; { return 30; } } ", EyeSourceType::String }, false }));
 		ASSERT_EQ(!res.has_value(), true);
-		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticReturnError);*/
+		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticReturnError);
 	}
 }
