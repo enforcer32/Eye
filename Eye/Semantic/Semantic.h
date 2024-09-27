@@ -16,6 +16,7 @@
 #include "Eye/AST/Expressions/LiteralExpression.h"
 #include "Eye/AST/Expressions/IdentifierExpression.h"
 #include "Eye/AST/Expressions/AssignmentExpression.h"
+#include "Eye/AST/Expressions/CallExpression.h"
 
 #include <expected>
 #include <string>
@@ -40,6 +41,7 @@ namespace Eye
 		void ValidateLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);
 		void ValidateIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr);
 		void ValidateAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignExpr);
+		void ValidateCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr);
 
 	private:
 		void BeginBlockScope();

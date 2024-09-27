@@ -178,6 +178,9 @@ namespace Eye
 		case AST::ExpressionType::AssignmentExpression:
 			ValidateAssignmentExpression(std::static_pointer_cast<AST::AssignmentExpression>(expr));
 			break;
+		case AST::ExpressionType::CallExpression:
+			ValidateCallExpression(std::static_pointer_cast<AST::CallExpression>(expr));
+			break;
 		default:
 			EYE_LOG_CRITICAL("EYESemantic ValidateExpression Unsupported Expression Type!");
 			break;
@@ -206,6 +209,16 @@ namespace Eye
 		}
 
 		ValidateExpression(assignExpr->GetExpression());
+	}
+
+	void Semantic::ValidateCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr)
+	{
+		if (callExpr->GetCallee()->GetType() == AST::ExpressionType::IdentifierExpression)
+		{
+			const auto& astIdentifierExpr = std::static_pointer_cast<AST::IdentifierExpression>(callExpr->GetCallee());
+			if (!m_DeclarationEnvironment->Has(astIdentifierExpr->GetValue()))
+				throw Error::Exceptions::NotDeclaredException("'" + astIdentifierExpr->GetValue() + "()' Was Not Declared in this Scope", astIdentifierExpr->GetSource());
+		}
 	}
 
 	void Semantic::BeginBlockScope()
