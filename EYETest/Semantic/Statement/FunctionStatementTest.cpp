@@ -38,7 +38,7 @@ namespace Eye
 
 		res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "function void getNothing() { return 12; } int y = 10;", EyeSourceType::String }, false }));
 		ASSERT_EQ(!res.has_value(), true);
-		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticReturnError);
+		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticReturnFromVoid);
 	}
 
 	TEST(SemanticFunctionStatementTest, NonVoidReturn)
@@ -54,14 +54,14 @@ namespace Eye
 
 		res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "function int getNothing() { } ", EyeSourceType::String }, false }));
 		ASSERT_EQ(!res.has_value(), true);
-		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticReturnError);
+		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticNoReturn);
 
 		res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "function str getName() { return \"Hello\"; } ", EyeSourceType::String }, false }));
 		ASSERT_EQ(res.has_value(), true);
 
 		res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "function str getName() { } ", EyeSourceType::String }, false }));
 		ASSERT_EQ(!res.has_value(), true);
-		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticReturnError);
+		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticNoReturn);
 	}
 
 	TEST(SemanticFunctionStatementTest, MultipleReturnScope)
@@ -77,10 +77,10 @@ namespace Eye
 
 		res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "function int getNumber() { return 20; return 30; } ", EyeSourceType::String }, false }));
 		ASSERT_EQ(!res.has_value(), true);
-		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticReturnError);
+		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticMultipleReturn);
 
 		res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "function int getNumber() { return 20; { return 30; } } ", EyeSourceType::String }, false }));
 		ASSERT_EQ(!res.has_value(), true);
-		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticReturnError);
+		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticMultipleReturn);
 	}
 }

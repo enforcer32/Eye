@@ -11,8 +11,8 @@ namespace Eye
 			class BadOperandTypeException : public EyeException
 			{
 			public:
-				BadOperandTypeException(const std::string& msg, const EyeSource& source)
-					: EyeException("BadOperandTypeException: " + msg, source)
+				BadOperandTypeException(const std::string& error, ErrorType errorType, const EyeSource& source)
+					: EyeException("BadOperandTypeException: " + error, errorType, source)
 				{
 				}
 			};

@@ -17,7 +17,9 @@ namespace Eye
 			SemanticReDeclaration,
 			SemanticBadDataType,
 			SemanticWriteReadOnly,
-			SemanticReturnError,
+			SemanticNoReturn,
+			SemanticReturnFromVoid,
+			SemanticMultipleReturn,
 		};
 
 		class Error

@@ -16,17 +16,9 @@ namespace Eye
 			for (const auto& stmt : ast->GetStatementList())
 				TypeCheckStatement(stmt);
 		}
-		catch (const Error::Exceptions::BadTypeConversionException& ex)
+		catch (const Error::Exceptions::EyeException& ex)
 		{
-			return std::unexpected(Error::Error(Error::ErrorType::TypeCheckerBadTypeConversion, ex.what()));
-		}
-		catch (const Error::Exceptions::BadTypeCompareException& ex)
-		{
-			return std::unexpected(Error::Error(Error::ErrorType::TypeCheckerBadTypeCompare, ex.what()));
-		}
-		catch (const Error::Exceptions::BadOperandTypeException& ex)
-		{
-			return std::unexpected(Error::Error(Error::ErrorType::TypeCheckerBadOperandType, ex.what()));
+			return std::unexpected(ex.GetError());
 		}
 		catch (...)
 		{
@@ -95,13 +87,13 @@ namespace Eye
 			{
 				Type initializerType = TypeCheckExpression(var->GetInitializer());
 				if (variableType == Type::String && initializerType != Type::String)
-					throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), var->GetInitializer()->GetSource());
+					throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), Error::ErrorType::TypeCheckerBadTypeConversion, var->GetInitializer()->GetSource());
 				else if (variableType == Type::Float && (initializerType != Type::Float && initializerType != Type::Integer))
-					throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), var->GetInitializer()->GetSource());
+					throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), Error::ErrorType::TypeCheckerBadTypeConversion, var->GetInitializer()->GetSource());
 				else if (variableType == Type::Integer && initializerType != Type::Integer)
-					throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), var->GetInitializer()->GetSource());
+					throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), Error::ErrorType::TypeCheckerBadTypeConversion, var->GetInitializer()->GetSource());
 				else if (variableType == Type::Boolean && initializerType != Type::Boolean)
-					throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), var->GetInitializer()->GetSource());
+					throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(initializerType) + " to " + TypeToString(variableType), Error::ErrorType::TypeCheckerBadTypeConversion, var->GetInitializer()->GetSource());
 			}
 			m_TypeEnvironment->Define(var->GetIdentifier()->GetValue(), variableType);
 		}
@@ -111,7 +103,7 @@ namespace Eye
 	{
 		Type conditionType = TypeCheckExpression(ctrlStmt->GetCondition());
 		if (conditionType != Type::Boolean && conditionType != Type::Integer)
-			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(conditionType) + " to " + TypeToString(Type::Boolean), ctrlStmt->GetSource());
+			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(conditionType) + " to " + TypeToString(Type::Boolean), Error::ErrorType::TypeCheckerBadTypeConversion, ctrlStmt->GetSource());
 		TypeCheckStatement(ctrlStmt->GetConsequent());
 		TypeCheckStatement(ctrlStmt->GetAlternate());
 	}
@@ -135,7 +127,7 @@ namespace Eye
 	{
 		Type conditionType = TypeCheckExpression(whileStmt->GetCondition());
 		if (conditionType != Type::Boolean && conditionType != Type::Integer)
-			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(conditionType) + " to " + TypeToString(Type::Boolean), whileStmt->GetSource());
+			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(conditionType) + " to " + TypeToString(Type::Boolean), Error::ErrorType::TypeCheckerBadTypeConversion, whileStmt->GetSource());
 		TypeCheckStatement(whileStmt->GetBody());
 	}
 
@@ -143,7 +135,7 @@ namespace Eye
 	{
 		Type conditionType = TypeCheckExpression(doStmt->GetCondition());
 		if (conditionType != Type::Boolean && conditionType != Type::Integer)
-			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(conditionType) + " to " + TypeToString(Type::Boolean), doStmt->GetSource());
+			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(conditionType) + " to " + TypeToString(Type::Boolean), Error::ErrorType::TypeCheckerBadTypeConversion, doStmt->GetSource());
 		TypeCheckStatement(doStmt->GetBody());
 	}
 
@@ -165,7 +157,7 @@ namespace Eye
 		{
 			Type conditionType = TypeCheckExpression(forStmt->GetCondition());
 			if (conditionType != Type::Boolean && conditionType != Type::Integer)
-				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(conditionType) + " to " + TypeToString(Type::Boolean), forStmt->GetSource());
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(conditionType) + " to " + TypeToString(Type::Boolean), Error::ErrorType::TypeCheckerBadTypeConversion, forStmt->GetSource());
 		}
 
 		if (forStmt->GetUpdate())
@@ -201,7 +193,7 @@ namespace Eye
 					if (funcType.Return == Type::Float && returnType == Type::Integer)
 						continue;
 					else if (funcType.Return != returnType)
-						throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(returnType) + " to " + TypeToString(funcType.Return), stmt->GetSource());
+						throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(returnType) + " to " + TypeToString(funcType.Return), Error::ErrorType::TypeCheckerBadTypeConversion, stmt->GetSource());
 				}
 			}
 		}
@@ -291,33 +283,33 @@ namespace Eye
 	Type TypeChecker::TypeCheckAssignmentExpressionAssignment(Type lhsType, Type rightType, const std::shared_ptr<AST::AssignmentExpression>& assignExpr)
 	{
 		if (lhsType == Type::String && rightType != Type::String)
-			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(lhsType), assignExpr->GetSource());
+			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(lhsType), Error::ErrorType::TypeCheckerBadTypeConversion, assignExpr->GetSource());
 		else if (lhsType == Type::Float && (rightType != Type::Float && rightType != Type::Integer))
-			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(lhsType), assignExpr->GetSource());
+			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(lhsType), Error::ErrorType::TypeCheckerBadTypeConversion, assignExpr->GetSource());
 		else if (lhsType == Type::Integer && rightType != Type::Integer)
-			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(lhsType), assignExpr->GetSource());
+			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(lhsType), Error::ErrorType::TypeCheckerBadTypeConversion, assignExpr->GetSource());
 		else if (lhsType == Type::Boolean && rightType != Type::Boolean)
-			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(lhsType), assignExpr->GetSource());
+			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(lhsType), Error::ErrorType::TypeCheckerBadTypeConversion, assignExpr->GetSource());
 		return lhsType;
 	}
 
 	Type TypeChecker::TypeCheckAssignmentExpressionAssignmentArithmetic(Type lhsType, Type rightType, const std::shared_ptr<AST::AssignmentExpression>& assignExpr)
 	{
 		if (lhsType == Type::Boolean || rightType == Type::Boolean)
-			throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (lhsType == Type::Boolean ? TypeToString(lhsType) : TypeToString(rightType)) + " for Assignment Operator '" + assignExpr->GetOperator()->GetValueString() + "'", assignExpr->GetSource());
+			throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (lhsType == Type::Boolean ? TypeToString(lhsType) : TypeToString(rightType)) + " for Assignment Operator '" + assignExpr->GetOperator()->GetValueString() + "'", Error::ErrorType::TypeCheckerBadOperandType, assignExpr->GetSource());
 
 		if (assignExpr->GetOperator()->GetType() != TokenType::OperatorAssignmentPlus)
 			if (lhsType == Type::String || rightType == Type::String)
-				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (lhsType == Type::String ? TypeToString(lhsType) : TypeToString(rightType)) + " for Assignment Operator '" + assignExpr->GetOperator()->GetValueString() + "'", assignExpr->GetSource());
+				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (lhsType == Type::String ? TypeToString(lhsType) : TypeToString(rightType)) + " for Assignment Operator '" + assignExpr->GetOperator()->GetValueString() + "'", Error::ErrorType::TypeCheckerBadOperandType, assignExpr->GetSource());
 
 		if (lhsType == Type::String && rightType != Type::String)
-			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(lhsType), assignExpr->GetSource());
+			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(lhsType), Error::ErrorType::TypeCheckerBadTypeConversion, assignExpr->GetSource());
 
 		if (lhsType == Type::Float && (rightType != Type::Float && rightType != Type::Integer))
-			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(lhsType), assignExpr->GetSource());
+			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(lhsType), Error::ErrorType::TypeCheckerBadTypeConversion, assignExpr->GetSource());
 
 		if (lhsType == Type::Integer && rightType != Type::Integer)
-			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(lhsType), assignExpr->GetSource());
+			throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(lhsType), Error::ErrorType::TypeCheckerBadTypeConversion, assignExpr->GetSource());
 
 		return lhsType;
 	}
@@ -325,7 +317,7 @@ namespace Eye
 	Type TypeChecker::TypeCheckAssignmentExpressionAssignmentBitwsie(Type lhsType, Type rightType, const std::shared_ptr<AST::AssignmentExpression>& assignExpr)
 	{
 		if (lhsType != Type::Integer || rightType != Type::Integer)
-			throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (lhsType != Type::Integer ? TypeToString(lhsType) : TypeToString(rightType)) + " for Assignment Operator '" + assignExpr->GetOperator()->GetValueString() + "'", assignExpr->GetSource());
+			throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (lhsType != Type::Integer ? TypeToString(lhsType) : TypeToString(rightType)) + " for Assignment Operator '" + assignExpr->GetOperator()->GetValueString() + "'", Error::ErrorType::TypeCheckerBadOperandType, assignExpr->GetSource());
 		return lhsType;
 	}
 
@@ -368,7 +360,7 @@ namespace Eye
 	Type TypeChecker::TypeCheckBinaryExpressionArithmetic(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
 	{
 		if (leftType == Type::Boolean || rightType == Type::Boolean)
-			throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (leftType == Type::Boolean ? TypeToString(leftType) : TypeToString(rightType)) + " for Binary Operator '" + binaryExpr->GetOperator()->GetValueString() + "'", binaryExpr->GetSource());
+			throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (leftType == Type::Boolean ? TypeToString(leftType) : TypeToString(rightType)) + " for Binary Operator '" + binaryExpr->GetOperator()->GetValueString() + "'", Error::ErrorType::TypeCheckerBadOperandType, binaryExpr->GetSource());
 
 		if (binaryExpr->GetOperator()->GetType() == TokenType::OperatorBinaryPlus)
 		{
@@ -376,12 +368,12 @@ namespace Eye
 				return Type::String;
 
 			if ((leftType == Type::String && rightType != Type::String) || (leftType != Type::String && rightType == Type::String))
-				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), binaryExpr->GetRight()->GetSource());
+				throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(rightType) + " to " + TypeToString(leftType), Error::ErrorType::TypeCheckerBadTypeConversion, binaryExpr->GetRight()->GetSource());
 		}
 		else
 		{
 			if (leftType == Type::String || rightType == Type::String)
-				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (leftType == Type::String ? TypeToString(leftType) : TypeToString(rightType)) + " for Binary Operator '" + binaryExpr->GetOperator()->GetValueString() + "'", binaryExpr->GetSource());
+				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (leftType == Type::String ? TypeToString(leftType) : TypeToString(rightType)) + " for Binary Operator '" + binaryExpr->GetOperator()->GetValueString() + "'", Error::ErrorType::TypeCheckerBadOperandType, binaryExpr->GetSource());
 		}
 
 		if (leftType == Type::Float || rightType == Type::Float)
@@ -396,17 +388,17 @@ namespace Eye
 	Type TypeChecker::TypeCheckBinaryExpressionRelational(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
 	{
 		if ((leftType == Type::String && rightType != Type::String) || (leftType != Type::String && rightType == Type::String))
-			throw Error::Exceptions::BadTypeCompareException("Incomparable Types: " + TypeToString(leftType) + " and " + TypeToString(rightType), binaryExpr->GetOperator()->GetSource());
+			throw Error::Exceptions::BadTypeCompareException("Incomparable Types: " + TypeToString(leftType) + " and " + TypeToString(rightType), Error::ErrorType::TypeCheckerBadTypeCompare, binaryExpr->GetOperator()->GetSource());
 
 		if (binaryExpr->GetOperator()->GetType() == TokenType::OperatorRelationalEquals || binaryExpr->GetOperator()->GetType() == TokenType::OperatorRelationalNotEquals)
 		{
 			if ((leftType == Type::Boolean && rightType != Type::Boolean) || (leftType != Type::Boolean && rightType == Type::Boolean))
-				throw Error::Exceptions::BadTypeCompareException("Incomparable Types: " + TypeToString(leftType) + " and " + TypeToString(rightType), binaryExpr->GetOperator()->GetSource());
+				throw Error::Exceptions::BadTypeCompareException("Incomparable Types: " + TypeToString(leftType) + " and " + TypeToString(rightType), Error::ErrorType::TypeCheckerBadTypeCompare, binaryExpr->GetOperator()->GetSource());
 		}
 		else
 		{
 			if (leftType == Type::Boolean || rightType == Type::Boolean)
-				throw Error::Exceptions::BadTypeCompareException("Incomparable Types: " + TypeToString(leftType) + " and " + TypeToString(rightType), binaryExpr->GetOperator()->GetSource());
+				throw Error::Exceptions::BadTypeCompareException("Incomparable Types: " + TypeToString(leftType) + " and " + TypeToString(rightType), Error::ErrorType::TypeCheckerBadTypeCompare, binaryExpr->GetOperator()->GetSource());
 		}
 
 		return Type::Boolean;
@@ -415,16 +407,16 @@ namespace Eye
 	Type TypeChecker::TypeCheckBinaryExpressionLogical(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
 	{
 		if (leftType != Type::Boolean && leftType != Type::Integer)
-			throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(leftType) + " for Binary Operator '" + binaryExpr->GetOperator()->GetValueString() + "'", binaryExpr->GetSource());
+			throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(leftType) + " for Binary Operator '" + binaryExpr->GetOperator()->GetValueString() + "'", Error::ErrorType::TypeCheckerBadOperandType, binaryExpr->GetSource());
 		else if (rightType != Type::Boolean && rightType != Type::Integer)
-			throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(rightType) + " for Binary Operator '" + binaryExpr->GetOperator()->GetValueString() + "'", binaryExpr->GetSource());
+			throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(rightType) + " for Binary Operator '" + binaryExpr->GetOperator()->GetValueString() + "'", Error::ErrorType::TypeCheckerBadOperandType, binaryExpr->GetSource());
 		return Type::Boolean;
 	}
 
 	Type TypeChecker::TypeCheckBinaryExpressionBitwise(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
 	{
 		if (leftType != Type::Integer || rightType != Type::Integer)
-			throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (leftType != Type::Integer ? TypeToString(leftType) : TypeToString(rightType)) + " for Binary Operator '" + binaryExpr->GetOperator()->GetValueString() + "'", binaryExpr->GetSource());
+			throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + (leftType != Type::Integer ? TypeToString(leftType) : TypeToString(rightType)) + " for Binary Operator '" + binaryExpr->GetOperator()->GetValueString() + "'", Error::ErrorType::TypeCheckerBadOperandType, binaryExpr->GetSource());
 		return Type::Integer;
 	}
 
@@ -440,7 +432,7 @@ namespace Eye
 				Type paramType = funcType.Parameters[i];
 				Type argType = TypeCheckExpression(callExpr->GetArguments()[i]);
 				if (argType != paramType)
-					throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(argType) + " to " + TypeToString(paramType), callExpr->GetSource());
+					throw Error::Exceptions::BadTypeConversionException("Invalid Conversion from " + TypeToString(argType) + " to " + TypeToString(paramType), Error::ErrorType::TypeCheckerBadTypeConversion, callExpr->GetSource());
 			}
 
 			return funcType.Return;
@@ -455,17 +447,17 @@ namespace Eye
 		if (unaryExpr->GetOperator()->GetType() == TokenType::OperatorBinaryPlus || unaryExpr->GetOperator()->GetType() == TokenType::OperatorBinaryMinus)
 		{
 			if (exprType != Type::Integer && exprType != Type::Float)
-				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Unary Operator '" + unaryExpr->GetOperator()->GetValueString() + "'", unaryExpr->GetSource());
+				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Unary Operator '" + unaryExpr->GetOperator()->GetValueString() + "'", Error::ErrorType::TypeCheckerBadOperandType, unaryExpr->GetSource());
 		}
 		else if (unaryExpr->GetOperator()->GetType() == TokenType::OperatorLogicalNOT)
 		{
 			if (exprType != Type::Boolean && exprType != Type::Integer)
-				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Unary Operator '" + unaryExpr->GetOperator()->GetValueString() + "'", unaryExpr->GetSource());
+				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Unary Operator '" + unaryExpr->GetOperator()->GetValueString() + "'", Error::ErrorType::TypeCheckerBadOperandType, unaryExpr->GetSource());
 		}
 		else if (unaryExpr->GetOperator()->GetType() == TokenType::OperatorBitwiseNOT)
 		{
 			if (exprType != Type::Integer)
-				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Unary Operator '" + unaryExpr->GetOperator()->GetValueString() + "'", unaryExpr->GetSource());
+				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Unary Operator '" + unaryExpr->GetOperator()->GetValueString() + "'", Error::ErrorType::TypeCheckerBadOperandType, unaryExpr->GetSource());
 		}
 		else
 		{
@@ -481,7 +473,7 @@ namespace Eye
 		{
 			Type exprType = TypeCheckExpression(postfixExpr->GetExpression());
 			if (exprType != Type::Integer && exprType != Type::Float)
-				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Postfix Operator '" + postfixExpr->GetOperator()->GetValueString() + "'", postfixExpr->GetSource());
+				throw Error::Exceptions::BadOperandTypeException("Bad Operand Type " + TypeToString(exprType) + " for Postfix Operator '" + postfixExpr->GetOperator()->GetValueString() + "'", Error::ErrorType::TypeCheckerBadOperandType, postfixExpr->GetSource());
 			return exprType;
 		}
 

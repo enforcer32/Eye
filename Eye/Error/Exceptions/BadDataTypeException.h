@@ -11,8 +11,8 @@ namespace Eye
 			class BadDataTypeException : public EyeException
 			{
 			public:
-				BadDataTypeException(const std::string& msg, const EyeSource& source)
-					: EyeException("BadDataTypeException: " + msg, source)
+				BadDataTypeException(const std::string& error, ErrorType errorType, const EyeSource& source)
+					: EyeException("BadDataTypeException: " + error, errorType, source)
 				{
 				}
 			};

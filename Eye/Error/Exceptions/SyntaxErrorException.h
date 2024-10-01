@@ -11,8 +11,8 @@ namespace Eye
 			class SyntaxErrorException : public EyeException
 			{
 			public:
-				SyntaxErrorException(const std::string& msg, const EyeSource& source)
-					: EyeException("SyntaxErrorException: " + msg, source)
+				SyntaxErrorException(const std::string& error, ErrorType errorType, const EyeSource& source)
+					: EyeException("SyntaxErrorException: " + error, errorType, source)
 				{
 				}
 			};

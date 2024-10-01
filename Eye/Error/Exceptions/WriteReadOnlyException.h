@@ -11,8 +11,8 @@ namespace Eye
 			class WriteReadOnlyException : public EyeException
 			{
 			public:
-				WriteReadOnlyException(const std::string& msg, const EyeSource& source)
-					: EyeException("WriteReadOnlyException: " + msg, source)
+				WriteReadOnlyException(const std::string& error, ErrorType errorType, const EyeSource& source)
+					: EyeException("WriteReadOnlyException: " + error, errorType, source)
 				{
 				}
 			};

@@ -14,9 +14,9 @@ namespace Eye
 			m_LookAhead = NextToken();
 			m_Program = Program();
 		}
-		catch (const Error::Exceptions::SyntaxErrorException& ex)
+		catch (const Error::Exceptions::EyeException& ex)
 		{
-			return std::unexpected(Error::Error(Error::ErrorType::ParserSyntaxError, ex.what()));
+			return std::unexpected(ex.GetError());
 		}
 		catch (...)
 		{
@@ -157,7 +157,7 @@ namespace Eye
 			typeQualifier = EatToken(m_LookAhead->GetType());
 
 		if (!IsDataTypeKeyword(m_LookAhead))
-			throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetSource());
+			throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 
 		std::shared_ptr<Token> dataType = EatToken(m_LookAhead->GetType());
 		const auto& varToken = (typeQualifier ? typeQualifier : dataType);
@@ -218,7 +218,7 @@ namespace Eye
 		EatToken(TokenType::OperatorLeftParenthesis);
 		std::shared_ptr<AST::Expression> condition = Expression();
 		if (!condition)
-			throw Error::Exceptions::SyntaxErrorException("Expected Expression", m_LookAhead->GetSource());
+			throw Error::Exceptions::SyntaxErrorException("Expected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 		EatToken(TokenType::SymbolRightParenthesis);
 		std::shared_ptr<AST::Statement> consequent = Statement();
 		std::shared_ptr<AST::Statement> alternate = nullptr;
@@ -284,7 +284,7 @@ namespace Eye
 		EatToken(TokenType::OperatorLeftParenthesis);
 		std::shared_ptr<AST::Expression> condition = Expression();
 		if (!condition)
-			throw Error::Exceptions::SyntaxErrorException("Expected Expression", m_LookAhead->GetSource());
+			throw Error::Exceptions::SyntaxErrorException("Expected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 		EatToken(TokenType::SymbolRightParenthesis);
 		std::shared_ptr<AST::Statement> body = Statement();
 		return std::make_shared<AST::WhileStatement>(whileToken->GetSource(), condition, body);
@@ -303,7 +303,7 @@ namespace Eye
 		EatToken(TokenType::OperatorLeftParenthesis);
 		std::shared_ptr<AST::Expression> condition = Expression();
 		if (!condition)
-			throw Error::Exceptions::SyntaxErrorException("Expected Expression", m_LookAhead->GetSource());
+			throw Error::Exceptions::SyntaxErrorException("Expected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 		EatToken(TokenType::SymbolRightParenthesis);
 		EatToken(TokenType::SymbolSemiColon);
 		return std::make_shared<AST::DoWhileStatement>(doToken->GetSource(), condition, body);
@@ -335,7 +335,7 @@ namespace Eye
 					typeQualifier = EatToken(m_LookAhead->GetType());
 
 				if (!IsDataTypeKeyword(m_LookAhead))
-					throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetSource());
+					throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 
 				std::shared_ptr<Token> dataType = EatToken(m_LookAhead->GetType());
 				const auto& varToken = (typeQualifier ? typeQualifier : dataType);
@@ -370,7 +370,7 @@ namespace Eye
 		const auto& functionToken = EatToken(TokenType::KeywordFunction);
 
 		if (!IsDataTypeKeyword(m_LookAhead))
-			throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetSource());
+			throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 
 		std::shared_ptr<Token> returnType = EatToken(m_LookAhead->GetType());
 		std::shared_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
@@ -413,7 +413,7 @@ namespace Eye
 			typeQualifier = EatToken(m_LookAhead->GetType());
 
 		if (!IsDataTypeKeyword(m_LookAhead))
-			throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetSource());
+			throw Error::Exceptions::SyntaxErrorException("Unexpected Datatype '" + m_LookAhead->GetValueString() + "'", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 
 		std::shared_ptr<Token> dataType = EatToken(m_LookAhead->GetType());
 		std::shared_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
@@ -458,7 +458,7 @@ namespace Eye
 			return left;
 
 		if (!IsLHSExpression(left))
-			throw Error::Exceptions::SyntaxErrorException("Unexpected LHSExpression '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetSource());
+			throw Error::Exceptions::SyntaxErrorException("Unexpected LHSExpression '" + m_LookAhead->GetValueString() + "'", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 
 		std::shared_ptr<Token> op = EatToken(m_LookAhead->GetType());
 		return std::make_shared<AST::AssignmentExpression>(op->GetSource(), op, left, AssignmentExpression());
@@ -805,7 +805,7 @@ namespace Eye
 		case TokenType::LiteralNull:
 			return NullLiteral();
 		default:
-			throw Error::Exceptions::SyntaxErrorException("Unexpected LiteralExpression '" + m_LookAhead->GetValueString() + "'", m_LookAhead->GetSource());
+			throw Error::Exceptions::SyntaxErrorException("Unexpected LiteralExpression '" + m_LookAhead->GetValueString() + "'", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 			break;
 		}
 
@@ -1093,7 +1093,7 @@ namespace Eye
 	{
 		std::shared_ptr<Token> token = m_LookAhead;
 		if (!token || token->GetType() != type)
-			throw Error::Exceptions::SyntaxErrorException("Unexpected " + std::string(token->GetTypeString()), token->GetSource());
+			throw Error::Exceptions::SyntaxErrorException("Unexpected " + std::string(token->GetTypeString()), Error::ErrorType::ParserSyntaxError, token->GetSource());
 		m_LookAhead = NextToken();
 		return token;
 	}

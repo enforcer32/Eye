@@ -20,25 +20,9 @@ namespace Eye
 			for (const auto& stmt : ast->GetStatementList())
 				ValidateStatement(stmt);
 		}
-		catch (const Error::Exceptions::NotDeclaredException& ex)
+		catch (const Error::Exceptions::EyeException& ex)
 		{
-			return std::unexpected(Error::Error(Error::ErrorType::SemanticNotDeclared, ex.what()));
-		}
-		catch (const Error::Exceptions::ReDeclarationException& ex)
-		{
-			return std::unexpected(Error::Error(Error::ErrorType::SemanticReDeclaration, ex.what()));
-		}
-		catch (const Error::Exceptions::BadDataTypeException& ex)
-		{
-			return std::unexpected(Error::Error(Error::ErrorType::SemanticBadDataType, ex.what()));
-		}
-		catch (const Error::Exceptions::WriteReadOnlyException& ex)
-		{
-			return std::unexpected(Error::Error(Error::ErrorType::SemanticWriteReadOnly, ex.what()));
-		}
-		catch (const Error::Exceptions::ReturnException& ex)
-		{
-			return std::unexpected(Error::Error(Error::ErrorType::SemanticReturnError, ex.what()));
+			return std::unexpected(ex.GetError());
 		}
 		catch (...)
 		{
@@ -91,7 +75,7 @@ namespace Eye
 	void Semantic::ValidateVariableStatement(const std::shared_ptr<AST::VariableStatement>& varStmt)
 	{
 		if (varStmt->GetDataType()->GetType() == TokenType::KeywordDataTypeVoid)
-			throw Error::Exceptions::BadDataTypeException("Variable Declared as void", varStmt->GetSource());
+			throw Error::Exceptions::BadDataTypeException("Variable Declared as void", Error::ErrorType::SemanticBadDataType, varStmt->GetSource());
 
 		VariableTypeQualifier typeQualifier = VariableTypeQualifier::None;
 		if (varStmt->GetTypeQualifier() && varStmt->GetTypeQualifier()->GetType() == TokenType::KeywordTypeQualifierConst)
@@ -100,7 +84,7 @@ namespace Eye
 		for (const auto& var : varStmt->GetVariableDeclarationList())
 		{
 			if (m_DeclarationEnvironment->Has(var->GetIdentifier()->GetValue(), false))
-				throw Error::Exceptions::ReDeclarationException("ReDeclaration of '" + var->GetIdentifier()->GetValue() + "'", var->GetIdentifier()->GetSource());
+				throw Error::Exceptions::ReDeclarationException("ReDeclaration of '" + var->GetIdentifier()->GetValue() + "'", Error::ErrorType::SemanticReDeclaration, var->GetIdentifier()->GetSource());
 
 			if (var->GetInitializer())
 				ValidateExpression(var->GetInitializer());
@@ -113,7 +97,7 @@ namespace Eye
 	void Semantic::ValidateFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt)
 	{
 		if (m_DeclarationEnvironment->Has(functionStmt->GetIdentifier()->GetValue()))
-			throw Error::Exceptions::ReDeclarationException("ReDeclaration of '" + functionStmt->GetIdentifier()->GetValue() + "'", functionStmt->GetIdentifier()->GetSource());
+			throw Error::Exceptions::ReDeclarationException("ReDeclaration of '" + functionStmt->GetIdentifier()->GetValue() + "'", Error::ErrorType::SemanticReDeclaration, functionStmt->GetIdentifier()->GetSource());
 	
 		m_DeclarationEnvironment->Define(functionStmt->GetIdentifier()->GetValue(), DeclarationType::Function);
 
@@ -140,10 +124,10 @@ namespace Eye
 					if (stmt->GetType() == AST::StatementType::ReturnStatement)
 					{
 						if (!functionReturns)
-							throw Error::Exceptions::ReturnException("Cannot Return From Void Function '" + functionStmt->GetIdentifier()->GetValue() + "()'", stmt->GetSource());
+							throw Error::Exceptions::ReturnException("Cannot Return From Void Function '" + functionStmt->GetIdentifier()->GetValue() + "()'", Error::ErrorType::SemanticReturnFromVoid, stmt->GetSource());
 
 						if (foundReturn)
-							throw Error::Exceptions::ReturnException("Cannot Return Multiple Times per Scope for Function '" + functionStmt->GetIdentifier()->GetValue() + "()'", stmt->GetSource());
+							throw Error::Exceptions::ReturnException("Cannot Return Multiple Times per Scope for Function '" + functionStmt->GetIdentifier()->GetValue() + "()'", Error::ErrorType::SemanticMultipleReturn, stmt->GetSource());
 
 						foundReturn = true;
 					}
@@ -154,7 +138,7 @@ namespace Eye
 				}
 
 				if (functionReturns && !foundReturn)
-					throw Error::Exceptions::ReturnException("Non-Void Functions Must Always Return '" + functionStmt->GetIdentifier()->GetValue() + "()'", functionStmt->GetSource());
+					throw Error::Exceptions::ReturnException("Non-Void Functions Must Always Return '" + functionStmt->GetIdentifier()->GetValue() + "()'", Error::ErrorType::SemanticNoReturn, functionStmt->GetSource());
 			};
 
 		validateReturn(functionStmt->GetBody());
@@ -194,7 +178,7 @@ namespace Eye
 	void Semantic::ValidateIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr)
 	{
 		if (!m_DeclarationEnvironment->Has(identifierExpr->GetValue()))
-			throw Error::Exceptions::NotDeclaredException("'" + identifierExpr->GetValue() + "' Was Not Declared in this Scope", identifierExpr->GetSource());
+			throw Error::Exceptions::NotDeclaredException("'" + identifierExpr->GetValue() + "' Was Not Declared in this Scope", Error::ErrorType::SemanticNotDeclared, identifierExpr->GetSource());
 	}
 
 	void Semantic::ValidateAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignExpr)
@@ -205,7 +189,7 @@ namespace Eye
 		{
 			const auto& astIdentifierExpr = std::static_pointer_cast<AST::IdentifierExpression>(assignExpr->GetLHSExpression());
 			if (m_VariableTypeQualifierEnvironment->Get(astIdentifierExpr->GetValue()) == VariableTypeQualifier::Const)
-				throw Error::Exceptions::WriteReadOnlyException("Assignment of Read-Only Variable: '" + astIdentifierExpr->GetValue() + "'", astIdentifierExpr->GetSource());
+				throw Error::Exceptions::WriteReadOnlyException("Assignment of Read-Only Variable: '" + astIdentifierExpr->GetValue() + "'", Error::ErrorType::SemanticWriteReadOnly, astIdentifierExpr->GetSource());
 		}
 
 		ValidateExpression(assignExpr->GetExpression());
@@ -217,7 +201,7 @@ namespace Eye
 		{
 			const auto& astIdentifierExpr = std::static_pointer_cast<AST::IdentifierExpression>(callExpr->GetCallee());
 			if (!m_DeclarationEnvironment->Has(astIdentifierExpr->GetValue()))
-				throw Error::Exceptions::NotDeclaredException("'" + astIdentifierExpr->GetValue() + "()' Was Not Declared in this Scope", astIdentifierExpr->GetSource());
+				throw Error::Exceptions::NotDeclaredException("'" + astIdentifierExpr->GetValue() + "()' Was Not Declared in this Scope", Error::ErrorType::SemanticNotDeclared, astIdentifierExpr->GetSource());
 		}
 	}
 

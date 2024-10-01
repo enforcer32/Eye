@@ -9,15 +9,19 @@ namespace Eye
 	{
 		namespace Exceptions
 		{
-			EyeException::EyeException(const std::string& msg, const EyeSource& source)
-				: std::exception()
+			EyeException::EyeException(const std::string& error, ErrorType errorType, const EyeSource& source)
+				: std::exception(), m_Error(errorType, (error + "\n\ton line " + std::to_string(source.Line) + ", col " + std::to_string(source.Col) + " in " + EyeSourceTypeToString(source.Type) + " " + source.Source + "\n\t" + GetErrorLine(source)))
 			{
-				m_What = msg + "\n\ton line " + std::to_string(source.Line) + ", col " + std::to_string(source.Col) + " in " + EyeSourceTypeToString(source.Type) + " " + source.Source + "\n\t" + GetErrorLine(source);
+			}
+
+			const Error& EyeException::GetError() const
+			{
+				return m_Error;
 			}
 
 			const char* EyeException::what() const noexcept
 			{
-				return m_What.c_str();
+				return m_Error.GetMessage().data();
 			}
 
 			std::string EyeException::GetErrorLine(const EyeSource& source)

@@ -11,8 +11,8 @@ namespace Eye
 			class UnexpectedTokenException : public EyeException
 			{
 			public:
-				UnexpectedTokenException(const std::string& msg, const EyeSource& source)
-					: EyeException("UnexpectedTokenException: '" + msg + "'", source)
+				UnexpectedTokenException(const std::string& error, ErrorType errorType, const EyeSource& source)
+					: EyeException("UnexpectedTokenException: '" + error + "'", errorType, source)
 				{
 				}
 			};

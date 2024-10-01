@@ -11,8 +11,8 @@ namespace Eye
 			class BadTypeConversionException : public EyeException
 			{
 			public:
-				BadTypeConversionException(const std::string& msg, const EyeSource& source)
-					: EyeException("BadTypeConversionException: " + msg, source)
+				BadTypeConversionException(const std::string& error, ErrorType errorType, const EyeSource& source)
+					: EyeException("BadTypeConversionException: " + error, errorType, source)
 				{
 				}
 			};

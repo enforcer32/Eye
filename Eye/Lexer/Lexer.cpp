@@ -23,9 +23,9 @@ namespace Eye
 				token = NextToken();
 			}
 		}
-		catch (const Error::Exceptions::UnexpectedTokenException& ex)
+		catch (const Error::Exceptions::EyeException& ex)
 		{
-			return std::unexpected(Error::Error(Error::ErrorType::LexerUnexpectedToken, ex.what()));
+			return std::unexpected(ex.GetError());
 		}
 		catch (...)
 		{
@@ -127,7 +127,7 @@ namespace Eye
 		default:
 			token = MakeSpecialToken();
 			if (!token)
-				throw Error::Exceptions::UnexpectedTokenException(std::string{ c }, m_Source);
+				throw Error::Exceptions::UnexpectedTokenException(std::string{ c }, Error::ErrorType::LexerUnexpectedToken, m_Source);
 			break;
 		}
 
@@ -220,7 +220,7 @@ namespace Eye
 		}
 
 		if (!IsBinaryNumber(binaryStr))
-			throw Error::Exceptions::UnexpectedTokenException(("0b" + binaryStr), tokenSource);
+			throw Error::Exceptions::UnexpectedTokenException(("0b" + binaryStr), Error::ErrorType::LexerUnexpectedToken, tokenSource);
 
 		tokenSource.End = m_Source.End - 1;
 		return std::make_shared<Token>((IntegerType)std::strtol(binaryStr.c_str(), 0, 2), tokenSource);
@@ -230,7 +230,7 @@ namespace Eye
 	{
 		EyeSource tokenSource(m_Source.Source, m_Source.Type, m_Source.Line, m_Source.Col, m_Source.End, m_Source.End);
 		if (NextChar() != sdelim)
-			throw Error::Exceptions::UnexpectedTokenException(std::string{ sdelim }, tokenSource);
+			throw Error::Exceptions::UnexpectedTokenException(std::string{ sdelim }, Error::ErrorType::LexerUnexpectedToken, tokenSource);
 
 		std::string str;
 		for (char c = NextChar(); c != edelim && c != EOF; c = NextChar())
@@ -280,7 +280,7 @@ namespace Eye
 		}
 
 		if (singleOperator && !IsValidOperator(opStr))
-			throw Error::Exceptions::UnexpectedTokenException(opStr, tokenSource);
+			throw Error::Exceptions::UnexpectedTokenException(opStr, Error::ErrorType::LexerUnexpectedToken, tokenSource);
 
 		tokenSource.End = m_Source.End - 1;
 		return std::make_shared<Token>(StringToTokenType(opStr), tokenSource);
@@ -379,7 +379,7 @@ namespace Eye
 
 			if (c == EOF)
 			{
-				throw Error::Exceptions::UnexpectedTokenException(comment, tokenSource);
+				throw Error::Exceptions::UnexpectedTokenException(comment, Error::ErrorType::LexerUnexpectedToken, tokenSource);
 			}
 			else if (c == '*')
 			{

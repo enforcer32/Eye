@@ -11,8 +11,8 @@ namespace Eye
 			class ReturnException : public EyeException
 			{
 			public:
-				ReturnException(const std::string& msg, const EyeSource& source)
-					: EyeException("ReturnException: " + msg, source)
+				ReturnException(const std::string& error, ErrorType errorType, const EyeSource& source)
+					: EyeException("ReturnException: " + error, errorType, source)
 				{
 				}
 			};

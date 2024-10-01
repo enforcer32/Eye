@@ -11,8 +11,8 @@ namespace Eye
 			class BadTypeCompareException : public EyeException
 			{
 			public:
-				BadTypeCompareException(const std::string& msg, const EyeSource& source)
-					: EyeException("BadTypeCompareException: " + msg, source)
+				BadTypeCompareException(const std::string& error, ErrorType errorType, const EyeSource& source)
+					: EyeException("BadTypeCompareException: " + error, errorType, source)
 				{
 				}
 			};

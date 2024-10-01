@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Eye/Utility/EyeSource.h"
+#include "Eye/Error/Error.h"
 
 #include <stdexcept>
 #include <string>
@@ -14,7 +15,9 @@ namespace Eye
 			class EyeException : public std::exception
 			{
 			public:
-				EyeException(const std::string& msg, const EyeSource& source);
+				EyeException(const std::string& error, ErrorType errorType, const EyeSource& source);
+
+				const Error& GetError() const;
 
 				virtual const char* what() const noexcept override;
 
@@ -22,7 +25,7 @@ namespace Eye
 				std::string GetErrorLine(const EyeSource& source);
 
 			private:
-				std::string m_What;
+				Error m_Error;
 			};
 		}
 	}
