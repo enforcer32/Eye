@@ -20,6 +20,7 @@ namespace Eye
 			SemanticNoReturn,
 			SemanticReturnFromVoid,
 			SemanticMultipleReturn,
+			SemanticCallVariable,
 		};
 
 		class Error

@@ -49,6 +49,7 @@ namespace Eye
 
 	private:
 		std::shared_ptr<MapEnvironment<DeclarationType>> m_DeclarationEnvironment;
+		std::shared_ptr<MapEnvironment<FunctionDeclaration>> m_FunctionDeclarationEnvironment;
 		std::shared_ptr<MapEnvironment<VariableTypeQualifier>> m_VariableTypeQualifierEnvironment;
 	};
 }

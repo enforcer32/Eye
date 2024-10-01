@@ -13,4 +13,15 @@ namespace Eye
 		Variable,
 		Function
 	};
+
+	enum FunctionParameterType
+	{
+		Required,
+		Default
+	};
+
+	struct FunctionDeclaration
+	{
+		std::vector<FunctionParameterType> Parameters;
+	};
 }

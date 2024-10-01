@@ -1,4 +1,2 @@
-function void getNumber(int x)
-{
-	x = 12;
-}
+int getNumber;
+getNumber();

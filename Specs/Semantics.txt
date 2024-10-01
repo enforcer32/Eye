@@ -10,7 +10,8 @@ Functions:
 +Functions with non-void return types must always return data
 +Functions Can Contain Only 1 Return Statement in 1 Scope
 +Call Undeclared Functions Error
--Number of FunctionParameters/Arguments Passed
++Call Variables Instead of Functions
+&Number of FunctionParameters/Arguments Passed
 -Parameters with Default Value
 
 Statements:

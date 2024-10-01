@@ -5,6 +5,7 @@
 #include "Eye/Error/Exceptions/BadDataTypeException.h"
 #include "Eye/Error/Exceptions/WriteReadOnlyException.h"
 #include "Eye/Error/Exceptions/ReturnException.h"
+#include "Eye/Error/Exceptions/CallException.h"
 
 #include <functional>
 
@@ -13,6 +14,7 @@ namespace Eye
 	std::expected<bool, Error::Error> Semantic::Validate(const std::shared_ptr<AST::Program>& ast)
 	{
 		m_DeclarationEnvironment = std::make_shared<MapEnvironment<DeclarationType>>();
+		m_FunctionDeclarationEnvironment = std::make_shared<MapEnvironment<FunctionDeclaration>>();
 		m_VariableTypeQualifierEnvironment = std::make_shared<MapEnvironment<VariableTypeQualifier>>();
 
 		try
@@ -99,7 +101,14 @@ namespace Eye
 		if (m_DeclarationEnvironment->Has(functionStmt->GetIdentifier()->GetValue()))
 			throw Error::Exceptions::ReDeclarationException("ReDeclaration of '" + functionStmt->GetIdentifier()->GetValue() + "'", Error::ErrorType::SemanticReDeclaration, functionStmt->GetIdentifier()->GetSource());
 	
+		FunctionDeclaration funcDec;
+		for (const auto& param : functionStmt->GetParameters())
+			funcDec.Parameters.push_back((param->GetInitializer() ? FunctionParameterType::Default : FunctionParameterType::Required));
+
+		// Validate Default/Required Params
+
 		m_DeclarationEnvironment->Define(functionStmt->GetIdentifier()->GetValue(), DeclarationType::Function);
+		m_FunctionDeclarationEnvironment->Define(functionStmt->GetIdentifier()->GetValue(), funcDec);
 
 		BeginBlockScope();
 		
@@ -209,18 +218,22 @@ namespace Eye
 			const auto& astIdentifierExpr = std::static_pointer_cast<AST::IdentifierExpression>(callExpr->GetCallee());
 			if (!m_DeclarationEnvironment->Has(astIdentifierExpr->GetValue()))
 				throw Error::Exceptions::NotDeclaredException("'" + astIdentifierExpr->GetValue() + "()' Was Not Declared in this Scope", Error::ErrorType::SemanticNotDeclared, astIdentifierExpr->GetSource());
+			else if (m_DeclarationEnvironment->Get(astIdentifierExpr->GetValue()) != DeclarationType::Function)
+				throw Error::Exceptions::CallException("Cannot Call Variable: '" + astIdentifierExpr->GetValue() + "'", Error::ErrorType::SemanticCallVariable, astIdentifierExpr->GetSource());
 		}
 	}
 
 	void Semantic::BeginBlockScope()
 	{
 		m_DeclarationEnvironment = std::make_shared<MapEnvironment<DeclarationType>>(m_DeclarationEnvironment);
+		m_FunctionDeclarationEnvironment = std::make_shared<MapEnvironment<FunctionDeclaration>>(m_FunctionDeclarationEnvironment);
 		m_VariableTypeQualifierEnvironment = std::make_shared<MapEnvironment<VariableTypeQualifier>>(m_VariableTypeQualifierEnvironment);
 	}
 
 	void Semantic::EndBlockScope()
 	{
 		m_VariableTypeQualifierEnvironment = m_VariableTypeQualifierEnvironment->GetParent();
+		m_FunctionDeclarationEnvironment = m_FunctionDeclarationEnvironment->GetParent();
 		m_DeclarationEnvironment = m_DeclarationEnvironment->GetParent();
 	}
 }

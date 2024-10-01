@@ -27,4 +27,17 @@ namespace Eye
 		ASSERT_EQ(!res.has_value(), true);
 		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticNotDeclared);
 	}
+
+	TEST(SemanticCallExpressionTest, CallVariable)
+	{
+		ASTGenerator astGenerator;
+		Semantic semanticValidator;
+
+		auto res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "function int getNumber() { return 10; } getNumber();", EyeSourceType::String }, false }));
+		ASSERT_EQ(res.has_value(), true);
+
+		res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "int getNumber = 12; getNumber();", EyeSourceType::String }, false }));
+		ASSERT_EQ(!res.has_value(), true);
+		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticCallVariable);
+	}
 }
