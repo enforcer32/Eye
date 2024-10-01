@@ -21,6 +21,8 @@ namespace Eye
 			SemanticReturnFromVoid,
 			SemanticMultipleReturn,
 			SemanticCallVariable,
+			SemanticTooFewArguments,
+			SemanticTooManyArguments,
 		};
 
 		class Error

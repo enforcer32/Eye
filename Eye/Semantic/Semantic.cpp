@@ -6,6 +6,7 @@
 #include "Eye/Error/Exceptions/WriteReadOnlyException.h"
 #include "Eye/Error/Exceptions/ReturnException.h"
 #include "Eye/Error/Exceptions/CallException.h"
+#include "Eye/Error/Exceptions/ArgumentException.h"
 
 #include <functional>
 
@@ -102,8 +103,23 @@ namespace Eye
 			throw Error::Exceptions::ReDeclarationException("ReDeclaration of '" + functionStmt->GetIdentifier()->GetValue() + "'", Error::ErrorType::SemanticReDeclaration, functionStmt->GetIdentifier()->GetSource());
 	
 		FunctionDeclaration funcDec;
+		FunctionParameterType paramType;
 		for (const auto& param : functionStmt->GetParameters())
-			funcDec.Parameters.push_back((param->GetInitializer() ? FunctionParameterType::Default : FunctionParameterType::Required));
+		{
+			if (param->GetInitializer())
+			{
+				ValidateExpression(param->GetInitializer());
+				funcDec.DefaultParameterCount++;
+				paramType = FunctionParameterType::Default;
+			}
+			else
+			{
+				funcDec.RequiredParameterCount++;
+				paramType = FunctionParameterType::Required;
+			}
+
+			funcDec.Parameters.push_back(paramType);
+		}
 
 		// Validate Default/Required Params
 
@@ -213,14 +229,24 @@ namespace Eye
 
 	void Semantic::ValidateCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr)
 	{
+		ValidateExpression(callExpr->GetCallee());
+
 		if (callExpr->GetCallee()->GetType() == AST::ExpressionType::IdentifierExpression)
 		{
 			const auto& astIdentifierExpr = std::static_pointer_cast<AST::IdentifierExpression>(callExpr->GetCallee());
-			if (!m_DeclarationEnvironment->Has(astIdentifierExpr->GetValue()))
-				throw Error::Exceptions::NotDeclaredException("'" + astIdentifierExpr->GetValue() + "()' Was Not Declared in this Scope", Error::ErrorType::SemanticNotDeclared, astIdentifierExpr->GetSource());
-			else if (m_DeclarationEnvironment->Get(astIdentifierExpr->GetValue()) != DeclarationType::Function)
+
+			if (m_DeclarationEnvironment->Get(astIdentifierExpr->GetValue()) == DeclarationType::Variable)
 				throw Error::Exceptions::CallException("Cannot Call Variable: '" + astIdentifierExpr->GetValue() + "'", Error::ErrorType::SemanticCallVariable, astIdentifierExpr->GetSource());
+
+			const auto& funcDec = m_FunctionDeclarationEnvironment->Get(astIdentifierExpr->GetValue());
+			if (callExpr->GetArguments().size() < funcDec.RequiredParameterCount)
+				throw Error::Exceptions::ArgumentException("Too Few Arguments for Function '" + astIdentifierExpr->GetValue() + "'", Error::ErrorType::SemanticTooFewArguments, astIdentifierExpr->GetSource());
+			else if (callExpr->GetArguments().size() > funcDec.Parameters.size())
+				throw Error::Exceptions::ArgumentException("Too Many Arguments for Function '" + astIdentifierExpr->GetValue() + "'", Error::ErrorType::SemanticTooManyArguments, astIdentifierExpr->GetSource());
 		}
+
+		for (const auto& arg : callExpr->GetArguments())
+			ValidateExpression(arg);
 	}
 
 	void Semantic::BeginBlockScope()

@@ -23,5 +23,7 @@ namespace Eye
 	struct FunctionDeclaration
 	{
 		std::vector<FunctionParameterType> Parameters;
+		size_t RequiredParameterCount = 0;
+		size_t DefaultParameterCount = 0;
 	};
 }
