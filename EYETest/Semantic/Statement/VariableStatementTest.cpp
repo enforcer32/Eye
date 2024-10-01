@@ -8,7 +8,7 @@
 
 namespace Eye
 {
-	TEST(SemanticVariableStatementTest, DeclareBeforeUse)
+	TEST(SemanticVariableStatementTest, UseBeforeDeclare)
 	{
 		ASTGenerator astGenerator;
 		Semantic semanticValidator;
