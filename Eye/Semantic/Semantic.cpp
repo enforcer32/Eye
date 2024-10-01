@@ -104,7 +104,14 @@ namespace Eye
 		BeginBlockScope();
 		
 		for (const auto& param : functionStmt->GetParameters())
+		{
+			VariableTypeQualifier typeQualifier = VariableTypeQualifier::None;
+			if (param->GetTypeQualifier() && param->GetTypeQualifier()->GetType() == TokenType::KeywordTypeQualifierConst)
+				typeQualifier = VariableTypeQualifier::Const;
+
 			m_DeclarationEnvironment->Define(param->GetIdentifier()->GetValue(), DeclarationType::Variable);
+			m_VariableTypeQualifierEnvironment->Define(param->GetIdentifier()->GetValue(), typeQualifier);
+		}
 
 		ValidateBlockStatement(functionStmt->GetBody(), false);
 		ValidateFunctionReturnStatement(functionStmt);

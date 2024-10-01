@@ -1,7 +1,4 @@
-function int getNumber()
+function void getNumber(int x)
 {
-	return 12;
+	x = 12;
 }
-
-getNumber();
-getNumber2();
