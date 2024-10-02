@@ -83,4 +83,27 @@ namespace Eye
 		ASSERT_EQ(!res.has_value(), true);
 		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticMultipleReturn);
 	}
+
+	TEST(SemanticFunctionStatementTest, DefaultParameterValue)
+	{
+		ASTGenerator astGenerator;
+		Semantic semanticValidator;
+
+		auto res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "function int getNumber(int x, int y = 10) { return 20; } ", EyeSourceType::String }, false }));
+		ASSERT_EQ(res.has_value(), true);
+
+		res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "function int getNumber(int x = 5, int y = 10, int z = 22) { return 20; } ", EyeSourceType::String }, false }));
+		ASSERT_EQ(res.has_value(), true);
+
+		res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "function int getNumber(int x, int y = 10, int z = 22) { return 20; } ", EyeSourceType::String }, false }));
+		ASSERT_EQ(res.has_value(), true);
+
+		res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "function int getNumber(int x = 10, int y, int z) { return 20; } ", EyeSourceType::String }, false }));
+		ASSERT_EQ(!res.has_value(), true);
+		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticMissingArgument);
+
+		res = semanticValidator.Validate(astGenerator.GenerateMemoryAST({ { "function int getNumber(int x, int y = 20, int z) { return 20; } ", EyeSourceType::String }, false }));
+		ASSERT_EQ(!res.has_value(), true);
+		ASSERT_EQ(res.error().GetType(), Error::ErrorType::SemanticMissingArgument);
+	}
 }

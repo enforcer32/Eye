@@ -35,6 +35,7 @@ namespace Eye
 		void ValidateVariableStatement(const std::shared_ptr<AST::VariableStatement>& varStmt);
 		void ValidateFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt);
 		void ValidateFunctionReturnStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt);
+		void ValidateFunctionParameters(const std::shared_ptr<AST::FunctionStatement>& functionStmt, const FunctionDeclaration& functionDec);
 		void ValidateReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt);
 
 		void ValidateExpression(const std::shared_ptr<AST::Expression>& expr);

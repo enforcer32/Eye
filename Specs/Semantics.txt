@@ -11,7 +11,7 @@ Functions:
 +Functions Can Contain Only 1 Return Statement in 1 Scope
 +Call Undeclared Functions Error
 +Call Variables Instead of Functions
--Parameters with Default Value
++Parameters with Default Value
 +Number of FunctionParameters/Arguments Passed
 
 Statements:

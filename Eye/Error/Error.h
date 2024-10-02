@@ -23,6 +23,7 @@ namespace Eye
 			SemanticCallVariable,
 			SemanticTooFewArguments,
 			SemanticTooManyArguments,
+			SemanticMissingArgument,
 		};
 
 		class Error

@@ -121,7 +121,7 @@ namespace Eye
 			funcDec.Parameters.push_back(paramType);
 		}
 
-		// Validate Default/Required Params
+		ValidateFunctionParameters(functionStmt, funcDec);
 
 		m_DeclarationEnvironment->Define(functionStmt->GetIdentifier()->GetValue(), DeclarationType::Function);
 		m_FunctionDeclarationEnvironment->Define(functionStmt->GetIdentifier()->GetValue(), funcDec);
@@ -174,6 +174,16 @@ namespace Eye
 			};
 
 		validateReturn(functionStmt->GetBody());
+	}
+
+	void Semantic::ValidateFunctionParameters(const std::shared_ptr<AST::FunctionStatement>& functionStmt, const FunctionDeclaration& functionDec)
+	{
+		if (functionDec.Parameters.size())
+		{
+			for (size_t i = functionDec.Parameters.size() - 1; i > 0; i--)
+				if (functionDec.Parameters[i] == FunctionParameterType::Required && functionDec.Parameters[i - 1] == FunctionParameterType::Default)
+					throw Error::Exceptions::ArgumentException("Default Argument Missing for Parameter " + std::to_string(i + 1) + " of '" + functionStmt->GetIdentifier()->GetValue() + "()'", Error::ErrorType::SemanticMissingArgument, functionStmt->GetSource());
+		}
 	}
 
 	void Semantic::ValidateReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt)

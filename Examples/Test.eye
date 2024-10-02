@@ -1,8 +1,6 @@
-int number = 12;
-
-function int add(int x, int y = number)
+function int add()
 {
 	return x;
 }
 
-add(1, 2);
+add(1, 2, 3);
