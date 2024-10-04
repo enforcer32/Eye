@@ -141,6 +141,35 @@ namespace Eye
 		CREATE_BINARY_ERROR_TEST("&&");
 		CREATE_BINARY_ERROR_TEST("||");
 	}
-}
 
-// 22+;
+	TEST(ParserExpressionErrorTest, UnaryExpression)
+	{
+		auto res = TestGenerateAST("+1;");
+		ASSERT_EQ(res.has_value(), true);
+
+		res = TestGenerateAST("+;");
+		ASSERT_EQ(!res.has_value(), true);
+		ASSERT_EQ(res.error().GetType(), Error::ErrorType::ParserSyntaxError);
+
+		res = TestGenerateAST("-number;");
+		ASSERT_EQ(res.has_value(), true);
+
+		res = TestGenerateAST("-;");
+		ASSERT_EQ(!res.has_value(), true);
+		ASSERT_EQ(res.error().GetType(), Error::ErrorType::ParserSyntaxError);
+	}
+
+	TEST(ParserExpressionErrorTest, PostfixPrefixExpression)
+	{
+		auto res = TestGenerateAST("++1;");
+		ASSERT_EQ(res.has_value(), true);
+
+		res = TestGenerateAST("++;");
+		ASSERT_EQ(!res.has_value(), true);
+		ASSERT_EQ(res.error().GetType(), Error::ErrorType::ParserSyntaxError);
+
+		res = TestGenerateAST("--;");
+		ASSERT_EQ(!res.has_value(), true);
+		ASSERT_EQ(res.error().GetType(), Error::ErrorType::ParserSyntaxError);
+	}
+}
