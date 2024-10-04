@@ -11,6 +11,7 @@ file(GLOB_RECURSE EYETestSources
 	#EYEParser
 	"${CMAKE_CURRENT_SOURCE_DIR}/Parser/StatementTest.cpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/Parser/ExpressionTest.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Parser/ExpressionErrorTest.cpp"
 
 	#EYETypeChecker
 	"${CMAKE_CURRENT_SOURCE_DIR}/TypeChecker/Statement/BlockStatementTest.cpp"

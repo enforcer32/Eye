@@ -453,6 +453,8 @@ namespace Eye
 	std::shared_ptr<AST::Expression> Parser::AssignmentExpression()
 	{
 		std::shared_ptr<AST::Expression> left = LogicalORExpression();
+		if (!left)
+			throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 
 		if (!IsAssignmentOperator(m_LookAhead))
 			return left;
@@ -473,10 +475,15 @@ namespace Eye
 	std::shared_ptr<AST::Expression> Parser::LogicalORExpression()
 	{
 		std::shared_ptr<AST::Expression> left = LogicalANDExpression();
+		if(!left)
+			throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
+
 		while (IsLookAhead(TokenType::OperatorLogicalOR))
 		{
 			std::shared_ptr<Token> op = EatToken(m_LookAhead->GetType());
 			std::shared_ptr<AST::Expression> right = LogicalANDExpression();
+			if (!right)
+				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 			left = std::make_shared<AST::BinaryExpression>(op->GetSource(), op, left, right);
 		}
 		return left;
@@ -491,10 +498,15 @@ namespace Eye
 	std::shared_ptr<AST::Expression> Parser::LogicalANDExpression()
 	{
 		std::shared_ptr<AST::Expression> left = BitwiseORExpression();
+		if (!left)
+			throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
+
 		while (IsLookAhead(TokenType::OperatorLogicalAND))
 		{
 			std::shared_ptr<Token> op = EatToken(m_LookAhead->GetType());
 			std::shared_ptr<AST::Expression> right = BitwiseORExpression();
+			if (!right)
+				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 			left = std::make_shared<AST::BinaryExpression>(op->GetSource(), op, left, right);
 		}
 		return left;
@@ -509,10 +521,15 @@ namespace Eye
 	std::shared_ptr<AST::Expression> Parser::BitwiseORExpression()
 	{
 		std::shared_ptr<AST::Expression> left = BitwiseXORExpression();
+		if (!left)
+			throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
+
 		while (IsLookAhead(TokenType::OperatorBitwiseBinaryOR))
 		{
 			std::shared_ptr<Token> op = EatToken(m_LookAhead->GetType());
 			std::shared_ptr<AST::Expression> right = BitwiseXORExpression();
+			if (!right)
+				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 			left = std::make_shared<AST::BinaryExpression>(op->GetSource(), op, left, right);
 		}
 		return left;
@@ -520,17 +537,22 @@ namespace Eye
 
 	/*
 		BitwiseXORExpression
-			: BitwiseANDExpression '|' BitwiseXORExpression
+			: BitwiseANDExpression '^' BitwiseXORExpression
 			| BitwiseANDExpression
 			;
 	*/
 	std::shared_ptr<AST::Expression> Parser::BitwiseXORExpression()
 	{
 		std::shared_ptr<AST::Expression> left = BitwiseANDExpression();
+		if (!left)
+			throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
+
 		while (IsLookAhead(TokenType::OperatorBitwiseBinaryXOR))
 		{
 			std::shared_ptr<Token> op = EatToken(m_LookAhead->GetType());
 			std::shared_ptr<AST::Expression> right = BitwiseANDExpression();
+			if (!right)
+				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 			left = std::make_shared<AST::BinaryExpression>(op->GetSource(), op, left, right);
 		}
 		return left;
@@ -545,10 +567,15 @@ namespace Eye
 	std::shared_ptr<AST::Expression> Parser::BitwiseANDExpression()
 	{
 		std::shared_ptr<AST::Expression> left = EqualityExpression();
+		if (!left)
+			throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
+
 		while (IsLookAhead(TokenType::OperatorBitwiseBinaryAND))
 		{
 			std::shared_ptr<Token> op = EatToken(m_LookAhead->GetType());
 			std::shared_ptr<AST::Expression> right = EqualityExpression();
+			if (!right)
+				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 			left = std::make_shared<AST::BinaryExpression>(op->GetSource(), op, left, right);
 		}
 		return left;
@@ -563,10 +590,15 @@ namespace Eye
 	std::shared_ptr<AST::Expression> Parser::EqualityExpression()
 	{
 		std::shared_ptr<AST::Expression> left = RelationalExpression();
+		if (!left)
+			throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
+
 		while (IsEqualityOperator(m_LookAhead))
 		{
 			std::shared_ptr<Token> op = EatToken(m_LookAhead->GetType());
 			std::shared_ptr<AST::Expression> right = RelationalExpression();
+			if (!right)
+				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 			left = std::make_shared<AST::BinaryExpression>(op->GetSource(), op, left, right);
 		}
 		return left;
@@ -581,10 +613,15 @@ namespace Eye
 	std::shared_ptr<AST::Expression> Parser::RelationalExpression()
 	{
 		std::shared_ptr<AST::Expression> left = BitwiseShiftExpression();
+		if (!left)
+			throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
+
 		while (IsRelationalOperator(m_LookAhead))
 		{
 			std::shared_ptr<Token> op = EatToken(m_LookAhead->GetType());
 			std::shared_ptr<AST::Expression> right = BitwiseShiftExpression();
+			if (!right)
+				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 			left = std::make_shared<AST::BinaryExpression>(op->GetSource(), op, left, right);
 		}
 		return left;
@@ -599,10 +636,15 @@ namespace Eye
 	std::shared_ptr<AST::Expression> Parser::BitwiseShiftExpression()
 	{
 		std::shared_ptr<AST::Expression> left = AdditiveBinaryExpression();
+		if (!left)
+			throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
+
 		while (IsBitwiseShiftOperator(m_LookAhead))
 		{
 			std::shared_ptr<Token> op = EatToken(m_LookAhead->GetType());
 			std::shared_ptr<AST::Expression> right = AdditiveBinaryExpression();
+			if (!right)
+				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 			left = std::make_shared<AST::BinaryExpression>(op->GetSource(), op, left, right);
 		}
 		return left;
@@ -617,10 +659,15 @@ namespace Eye
 	std::shared_ptr<AST::Expression> Parser::AdditiveBinaryExpression()
 	{
 		std::shared_ptr<AST::Expression> left = MultiplicativeBinaryExpression();
+		if (!left)
+			throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
+
 		while (IsAdditiveOperator(m_LookAhead))
 		{
 			std::shared_ptr<Token> op = EatToken(m_LookAhead->GetType());
 			std::shared_ptr<AST::Expression> right = MultiplicativeBinaryExpression();
+			if (!right)
+				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 			left = std::make_shared<AST::BinaryExpression>(op->GetSource(), op, left, right);
 		}
 		return left;
@@ -635,10 +682,15 @@ namespace Eye
 	std::shared_ptr<AST::Expression> Parser::MultiplicativeBinaryExpression()
 	{
 		std::shared_ptr<AST::Expression> left = UnaryExpression();
+		if (!left)
+			throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
+
 		while (IsMultiplicativeOperator(m_LookAhead))
 		{
 			std::shared_ptr<Token> op = EatToken(m_LookAhead->GetType());
 			std::shared_ptr<AST::Expression> right = UnaryExpression();
+			if (!right)
+				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 			left = std::make_shared<AST::BinaryExpression>(op->GetSource(), op, left, right);
 		}
 		return left;
@@ -655,7 +707,10 @@ namespace Eye
 		if (IsUnaryOperator(m_LookAhead))
 		{
 			std::shared_ptr<Token> op = EatToken(m_LookAhead->GetType());
-			return std::make_shared<AST::UnaryExpression>(op->GetSource(), op, UnaryExpression());
+			std::shared_ptr<AST::Expression> unaryExpr = UnaryExpression();
+			if (!unaryExpr)
+				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
+			return std::make_shared<AST::UnaryExpression>(op->GetSource(), op, unaryExpr);
 		}
 
 		return LHSExpression();
@@ -919,7 +974,8 @@ namespace Eye
 			| '/='
 			| '%='
 			| '&='
-			| '|='				| '^='
+			| '|='
+			| '^='
 			| '>>='
 			| '<<='
 			;
