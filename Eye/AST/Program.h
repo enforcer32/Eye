@@ -22,15 +22,15 @@ namespace Eye
 		class Program
 		{
 		public:
-			Program(const std::vector<std::shared_ptr<Statement>>& statementList)
+			Program(const std::vector<std::unique_ptr<Statement>>& statementList)
 				: m_StatementList(statementList)
 			{
 			}
 
-			inline const std::vector<std::shared_ptr<Statement>>& GetStatementList() const { return m_StatementList; }
+			inline const std::vector<std::unique_ptr<Statement>>& GetStatementList() const { return m_StatementList; }
 
 		private:
-			std::vector<std::shared_ptr<Statement>> m_StatementList;
+			std::vector<std::unique_ptr<Statement>> m_StatementList;
 		};
 	}
 }

@@ -23,17 +23,17 @@ namespace Eye
 		class VariableDeclaration
 		{
 		public:
-			VariableDeclaration(const std::shared_ptr<IdentifierExpression>& identifier, const std::shared_ptr<Expression>& initializer)
-				: m_Identifier(identifier), m_Initializer(initializer)
+			VariableDeclaration(std::unique_ptr<IdentifierExpression> identifier, std::unique_ptr<Expression> initializer)
+				: m_Identifier(std::move(identifier)), m_Initializer(std::move(initializer))
 			{
 			}
 
-			inline std::shared_ptr<IdentifierExpression> GetIdentifier() const { return m_Identifier; }
-			inline std::shared_ptr<Expression> GetInitializer() const { return m_Initializer; }
+			inline const IdentifierExpression* GetIdentifier() const { return m_Identifier.get(); }
+			inline Expression* GetInitializer() const { return m_Initializer.get(); }
 
 		private:
-			std::shared_ptr<IdentifierExpression> m_Identifier;
-			std::shared_ptr<Expression> m_Initializer;
+			std::unique_ptr<IdentifierExpression> m_Identifier;
+			std::unique_ptr<Expression> m_Initializer;
 		};
 
 		/*
@@ -60,19 +60,19 @@ namespace Eye
 		class VariableStatement : public Statement
 		{
 		public:
-			VariableStatement(const EyeSource& source, const std::shared_ptr<Token>& typeQualifier, const std::shared_ptr<Token>& dataType, const std::vector<std::shared_ptr<VariableDeclaration>>& variableDeclarationList)
-				: Statement(StatementType::VariableStatement, source), m_TypeQualifier(typeQualifier), m_DataType(dataType), m_VariableDeclarationList(variableDeclarationList)
+			VariableStatement(const EyeSource& source, std::unique_ptr<Token> typeQualifier, std::unique_ptr<Token> dataType, const std::vector<std::unique_ptr<VariableDeclaration>>& variableDeclarationList)
+				: Statement(StatementType::VariableStatement, source), m_TypeQualifier(std::move(typeQualifier)), m_DataType(std::move(dataType)), m_VariableDeclarationList(variableDeclarationList)
 			{
 			}
 
-			inline std::shared_ptr<Token> GetTypeQualifier() const { return m_TypeQualifier; }
-			inline std::shared_ptr<Token> GetDataType() const { return m_DataType; }
-			inline const std::vector<std::shared_ptr<VariableDeclaration>>& GetVariableDeclarationList() const { return m_VariableDeclarationList; }
+			inline const Token* GetTypeQualifier() const { return m_TypeQualifier.get(); }
+			inline const Token* GetDataType() const { return m_DataType.get(); }
+			inline const std::vector<std::unique_ptr<VariableDeclaration>>& GetVariableDeclarationList() const { return m_VariableDeclarationList; }
 
 		private:
-			std::shared_ptr<Token> m_TypeQualifier;
-			std::shared_ptr<Token> m_DataType;
-			std::vector<std::shared_ptr<VariableDeclaration>> m_VariableDeclarationList;
+			std::unique_ptr<Token> m_TypeQualifier;
+			std::unique_ptr<Token> m_DataType;
+			std::vector<std::unique_ptr<VariableDeclaration>> m_VariableDeclarationList;
 		};
 	}
 }

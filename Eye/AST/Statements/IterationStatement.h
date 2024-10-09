@@ -45,17 +45,17 @@ namespace Eye
 		class WhileStatement : public IterationStatement
 		{
 		public:
-			WhileStatement(const EyeSource& source, const std::shared_ptr<Expression>& condition, const std::shared_ptr<Statement>& body)
-				: IterationStatement(IterationStatementType::WhileStatement, source), m_Condition(condition), m_Body(body)
+			WhileStatement(const EyeSource& source, std::unique_ptr<Expression> condition, std::unique_ptr<Statement> body)
+				: IterationStatement(IterationStatementType::WhileStatement, source), m_Condition(std::move(condition)), m_Body(std::move(body))
 			{
 			}
 
-			inline std::shared_ptr<Expression> GetCondition() const { return m_Condition; }
-			inline std::shared_ptr<Statement> GetBody() const { return m_Body; }
+			inline const Expression* GetCondition() const { return m_Condition.get(); }
+			inline const Statement* GetBody() const { return m_Body.get(); }
 
 		private:
-			std::shared_ptr<Expression> m_Condition;
-			std::shared_ptr<Statement> m_Body;
+			std::unique_ptr<Expression> m_Condition;
+			std::unique_ptr<Statement> m_Body;
 		};
 
 		/*
@@ -66,17 +66,17 @@ namespace Eye
 		class DoWhileStatement : public IterationStatement
 		{
 		public:
-			DoWhileStatement(const EyeSource& source, const std::shared_ptr<Expression>& condition, const std::shared_ptr<Statement>& body)
-				: IterationStatement(IterationStatementType::DoWhileStatement, source), m_Condition(condition), m_Body(body)
+			DoWhileStatement(const EyeSource& source, std::unique_ptr<Expression> condition, std::unique_ptr<Statement> body)
+				: IterationStatement(IterationStatementType::DoWhileStatement, source), m_Condition(std::move(condition)), m_Body(std::move(body))
 			{
 			}
 
-			inline std::shared_ptr<Expression> GetCondition() const { return m_Condition; }
-			inline std::shared_ptr<Statement> GetBody() const { return m_Body; }
+			inline const Expression* GetCondition() const { return m_Condition.get(); }
+			inline const Statement* GetBody() const { return m_Body.get(); }
 
 		private:
-			std::shared_ptr<Expression> m_Condition;
-			std::shared_ptr<Statement> m_Body;
+			std::unique_ptr<Expression> m_Condition;
+			std::unique_ptr<Statement> m_Body;
 		};
 
 
@@ -100,29 +100,29 @@ namespace Eye
 		class ForStatement : public IterationStatement
 		{
 		public:
-			ForStatement(const EyeSource& source, const std::shared_ptr<void>& initializer, ForInitializerType initializerType, const std::shared_ptr<Expression>& condition, const std::shared_ptr<Expression>& update, const std::shared_ptr<Statement>& body)
-				: IterationStatement(IterationStatementType::ForStatement, source), m_Initializer(initializer), m_InitializerType(initializerType), m_Condition(condition), m_Update(update), m_Body(body)
+			ForStatement(const EyeSource& source, std::unique_ptr<void> initializer, ForInitializerType initializerType, std::unique_ptr<Expression> condition, std::unique_ptr<Expression> update, std::unique_ptr<Statement> body)
+				: IterationStatement(IterationStatementType::ForStatement, source), m_Initializer(std::move(initializer)), m_InitializerType(initializerType), m_Condition(std::move(condition)), m_Update(std::move(update)), m_Body(std::move(body))
 			{
 			}
 
 			template<typename T>
-			inline std::shared_ptr<T> GetInitializer() const
+			inline const T* GetInitializer() const
 			{
-				static_assert(std::is_same_v<T, VariableStatement> || std::is_same_v<T, Expression>, "Eye/AST->IterationStatement->ForStatement->Error GetInitializer() Invalid Typename");
-				return std::static_pointer_cast<T>(m_Initializer);
+				static_assert(std::is_same_v<T, VariableStatement> || std::is_same_v<T, Expression>, "Eye->AST->IterationStatement->ForStatement->Error GetInitializer() Invalid Typename");
+				return static_cast<T>(m_Initializer);
 			}
 
 			inline ForInitializerType GetInitializerType() const { return m_InitializerType; }
-			inline std::shared_ptr<Expression> GetCondition() const { return m_Condition; }
-			inline std::shared_ptr<Expression> GetUpdate() const { return m_Update; }
-			inline std::shared_ptr<Statement> GetBody() const { return m_Body; }
+			inline const Expression* GetCondition() const { return m_Condition.get(); }
+			inline const Expression* GetUpdate() const { return m_Update.get(); }
+			inline const Statement* GetBody() const { return m_Body.get(); }
 
 		private:
-			std::shared_ptr<void> m_Initializer;
+			std::unique_ptr<void> m_Initializer;
 			ForInitializerType m_InitializerType;
-			std::shared_ptr<Expression> m_Condition;
-			std::shared_ptr<Expression> m_Update;
-			std::shared_ptr<Statement> m_Body;
+			std::unique_ptr<Expression> m_Condition;
+			std::unique_ptr<Expression> m_Update;
+			std::unique_ptr<Statement> m_Body;
 		};
 	}
 }

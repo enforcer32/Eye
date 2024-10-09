@@ -1,4 +1,2 @@
-Parser->Handle Empty Binary Expression: 5+;
 Function Body Braces{} is not optional (Might Change, Function Definition/Declarations/Forward Declaring?)
 Function Parameters Do Not Have to Follow ParenthesizedExpressions Rules because func() is not an expression, its a statement list (int x1, int x2) etc...
-Functions cannot Contain Functions

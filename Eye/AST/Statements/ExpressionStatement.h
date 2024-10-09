@@ -15,15 +15,15 @@ namespace Eye
 		class ExpressionStatement : public Statement
 		{
 		public:
-			ExpressionStatement(const EyeSource& source, const std::shared_ptr<Expression>& expression)
-				: Statement(StatementType::ExpressionStatement, source), m_Expression(expression)
+			ExpressionStatement(const EyeSource& source, std::unique_ptr<Expression> expression)
+				: Statement(StatementType::ExpressionStatement, source), m_Expression(std::move(expression))
 			{
 			}
 
-			inline std::shared_ptr<Expression> GetExpression() const { return m_Expression; }
+			inline const Expression* GetExpression() const { return m_Expression.get(); }
 
 		private:
-			std::shared_ptr<Expression> m_Expression;
+			std::unique_ptr<Expression> m_Expression;
 		};
 	}
 }

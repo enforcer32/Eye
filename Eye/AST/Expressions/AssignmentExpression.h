@@ -18,19 +18,19 @@ namespace Eye
 		class AssignmentExpression : public Expression
 		{
 		public:
-			AssignmentExpression(const EyeSource& source, const std::shared_ptr<Token>& op, const std::shared_ptr<Expression>& lhsExpression, const std::shared_ptr<Expression>& expression)
-				: Expression(ExpressionType::AssignmentExpression, source), m_Operator(op), m_LHSExpression(lhsExpression), m_Expression(expression)
+			AssignmentExpression(const EyeSource& source, std::unique_ptr<Token> op, std::unique_ptr<Expression> lhsExpression, std::unique_ptr<Expression> expression)
+				: Expression(ExpressionType::AssignmentExpression, source), m_Operator(std::move(op)), m_LHSExpression(std::move(lhsExpression)), m_Expression(std::move(expression))
 			{
 			}
 
-			inline std::shared_ptr<Token> GetOperator() const { return m_Operator; }
-			inline std::shared_ptr<Expression> GetLHSExpression() const { return m_LHSExpression; }
-			inline std::shared_ptr<Expression> GetExpression() const { return m_Expression; }
+			inline const Token* GetOperator() const { return m_Operator.get(); }
+			inline const Expression* GetLHSExpression() const { return m_LHSExpression.get(); }
+			inline const Expression* GetExpression() const { return m_Expression.get(); }
 
 		private:
-			std::shared_ptr<Token> m_Operator;
-			std::shared_ptr<Expression> m_LHSExpression;
-			std::shared_ptr<Expression> m_Expression;
+			std::unique_ptr<Token> m_Operator;
+			std::unique_ptr<Expression> m_LHSExpression;
+			std::unique_ptr<Expression> m_Expression;
 		};
 	}
 }

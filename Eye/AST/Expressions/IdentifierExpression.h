@@ -15,15 +15,15 @@ namespace Eye
 		class IdentifierExpression : public Expression
 		{
 		public:
-			IdentifierExpression(const EyeSource& source, const std::shared_ptr<Token>& identifier)
-				: Expression(ExpressionType::IdentifierExpression, source), m_Identifier(identifier)
+			IdentifierExpression(const EyeSource& source, std::unique_ptr<Token> identifier)
+				: Expression(ExpressionType::IdentifierExpression, source), m_Identifier(std::move(identifier))
 			{
 			}
 
 			inline std::string GetValue() const { return m_Identifier->GetValue<StringType>(); }
 
 		private:
-			std::shared_ptr<Token> m_Identifier;
+			std::unique_ptr<Token> m_Identifier;
 		};
 	}
 }

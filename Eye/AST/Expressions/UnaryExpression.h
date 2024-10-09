@@ -22,17 +22,17 @@ namespace Eye
 		class UnaryExpression : public Expression
 		{
 		public:
-			UnaryExpression(const EyeSource& source, const std::shared_ptr<Token>& op, const std::shared_ptr<Expression>& expression)
-				: Expression(ExpressionType::UnaryExpression, source), m_Operator(op), m_Expression(expression)
+			UnaryExpression(const EyeSource& source, std::unique_ptr<Token> op, std::unique_ptr<Expression> expression)
+				: Expression(ExpressionType::UnaryExpression, source), m_Operator(std::move(op)), m_Expression(std::move(expression))
 			{
 			}
 
-			inline std::shared_ptr<Token> GetOperator() const { return m_Operator; }
-			inline std::shared_ptr<Expression> GetExpression() const { return m_Expression; }
+			inline const Token* GetOperator() const { return m_Operator.get(); }
+			inline const Expression* GetExpression() const { return m_Expression.get(); }
 
 		private:
-			std::shared_ptr<Token> m_Operator;
-			std::shared_ptr<Expression> m_Expression;
+			std::unique_ptr<Token> m_Operator;
+			std::unique_ptr<Expression> m_Expression;
 		};
 	}
 }

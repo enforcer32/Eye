@@ -32,17 +32,17 @@ namespace Eye
 		class CallExpression : public Expression
 		{
 		public:
-			CallExpression(const EyeSource& source, const std::shared_ptr<Expression>& callee, const std::vector<std::shared_ptr<Expression>>& arguments)
-				: Expression(ExpressionType::CallExpression, source), m_Callee(callee), m_Arguments(arguments)
+			CallExpression(const EyeSource& source, std::unique_ptr<Expression> callee, const std::vector<std::unique_ptr<Expression>>& arguments)
+				: Expression(ExpressionType::CallExpression, source), m_Callee(std::move(callee)), m_Arguments(arguments)
 			{
 			}
 
-			inline std::shared_ptr<Expression> GetCallee() const { return m_Callee; }
-			inline const std::vector<std::shared_ptr<Expression>>& GetArguments() const { return m_Arguments; }
+			inline const Expression* GetCallee() const { return m_Callee.get(); }
+			inline const std::vector<std::unique_ptr<Expression>>& GetArguments() const { return m_Arguments; }
 
 		private:
-			std::shared_ptr<Expression> m_Callee;
-			std::vector<std::shared_ptr<Expression>> m_Arguments;
+			std::unique_ptr<Expression> m_Callee;
+			std::vector<std::unique_ptr<Expression>> m_Arguments;
 		};
 	}
 }

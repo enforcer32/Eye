@@ -18,19 +18,19 @@ namespace Eye
 		class ControlStatement : public Statement
 		{
 		public:
-			ControlStatement(const EyeSource& source, const std::shared_ptr<Expression>& condition, const std::shared_ptr<Statement>& consequent, const std::shared_ptr<Statement>& alternate)
-				: Statement(StatementType::ControlStatement, source), m_Condition(condition), m_Consequent(consequent), m_Alternate(alternate)
+			ControlStatement(const EyeSource& source, std::unique_ptr<Expression> condition, std::unique_ptr<Statement> consequent, std::unique_ptr<Statement> alternate)
+				: Statement(StatementType::ControlStatement, source), m_Condition(std::move(condition)), m_Consequent(std::move(consequent)), m_Alternate(std::move(alternate))
 			{
 			}
 		
-			inline std::shared_ptr<Expression> GetCondition() const { return m_Condition; }
-			inline std::shared_ptr<Statement> GetConsequent() const { return m_Consequent; }
-			inline std::shared_ptr<Statement> GetAlternate() const { return m_Alternate; }
+			inline const Expression* GetCondition() const { return m_Condition.get(); }
+			inline const Statement* GetConsequent() const { return m_Consequent.get(); }
+			inline const Statement* GetAlternate() const { return m_Alternate.get(); }
 
 		private:
-			std::shared_ptr<Expression> m_Condition;
-			std::shared_ptr<Statement> m_Consequent;
-			std::shared_ptr<Statement> m_Alternate;
+			std::unique_ptr<Expression> m_Condition;
+			std::unique_ptr<Statement> m_Consequent;
+			std::unique_ptr<Statement> m_Alternate;
 		};
 	}
 }

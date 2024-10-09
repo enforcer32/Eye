@@ -17,15 +17,15 @@ namespace Eye
 		class BlockStatement : public Statement
 		{
 		public:
-			BlockStatement(const EyeSource& source, const std::vector<std::shared_ptr<Statement>>& statementList)
+			BlockStatement(const EyeSource& source, const std::vector<std::unique_ptr<Statement>>& statementList)
 				: Statement(StatementType::BlockStatement, source), m_StatementList(statementList)
 			{
 			}
 
-			inline const std::vector<std::shared_ptr<Statement>>& GetStatementList() const { return m_StatementList; }
+			inline const std::vector<std::unique_ptr<Statement>>& GetStatementList() const { return m_StatementList; }
 
 		private:
-			std::vector<std::shared_ptr<Statement>> m_StatementList;
+			std::vector<std::unique_ptr<Statement>> m_StatementList;
 		};
 	}
 }

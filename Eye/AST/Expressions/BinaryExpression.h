@@ -17,19 +17,19 @@ namespace Eye
 		class BinaryExpression : public Expression
 		{
 		public:
-			BinaryExpression(const EyeSource& source, const std::shared_ptr<Token>& op, const std::shared_ptr<Expression>& left, const std::shared_ptr<Expression>& right)
-				: Expression(ExpressionType::BinaryExpression, source), m_Operator(op), m_Left(left), m_Right(right)
+			BinaryExpression(const EyeSource& source, std::unique_ptr<Token> op, std::unique_ptr<Expression> left, std::unique_ptr<Expression> right)
+				: Expression(ExpressionType::BinaryExpression, source), m_Operator(std::move(op)), m_Left(std::move(left)), m_Right(std::move(right))
 			{
 			}
 
-			inline std::shared_ptr<Token> GetOperator() const { return m_Operator; }
-			inline std::shared_ptr<Expression> GetLeft() const { return m_Left; }
-			inline std::shared_ptr<Expression> GetRight() const { return m_Right; }
+			inline const Token* GetOperator() const { return m_Operator.get(); }
+			inline const Expression* GetLeft() const { return m_Left.get(); }
+			inline const Expression* GetRight() const { return m_Right.get(); }
 
 		private:
-			std::shared_ptr<Token> m_Operator;
-			std::shared_ptr<Expression> m_Left;
-			std::shared_ptr<Expression> m_Right;
+			std::unique_ptr<Token> m_Operator;
+			std::unique_ptr<Expression> m_Left;
+			std::unique_ptr<Expression> m_Right;
 		};
 	}
 }
