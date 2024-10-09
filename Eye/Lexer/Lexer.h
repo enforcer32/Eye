@@ -14,25 +14,25 @@ namespace Eye
 	{
 	public:
 		std::expected<bool, Error::Error> Tokenize(const EyeSource& source);
-		std::vector<std::shared_ptr<Token>> GetTokens() const;
+		std::vector<std::unique_ptr<Token>> GetTokens() const;
 
 	private:
-		std::shared_ptr<Token> NextToken();
-		std::shared_ptr<Token> HandleWhitespace();
-		std::shared_ptr<Token> HandleNewline();
-		std::shared_ptr<Token> MakeEOFToken();
-		std::shared_ptr<Token> MakeNumberToken();
-		std::shared_ptr<Token> MakeNumberBaseToken();
-		std::shared_ptr<Token> MakeHexNumberToken();
-		std::shared_ptr<Token> MakeBinaryNumberToken();
-		std::shared_ptr<Token> MakeStringToken(char sdelim, char edelim);
-		std::shared_ptr<Token> MakeOperatorToken();
-		std::shared_ptr<Token> MakeSymbolToken();
-		std::shared_ptr<Token> MakeSpecialToken();
-		std::shared_ptr<Token> MakeIdentifierToken();
-		std::shared_ptr<Token> HandleSlashOperator();
-		std::shared_ptr<Token> MakeSingleLineCommentToken();
-		std::shared_ptr<Token> MakeMultiLineCommentToken();
+		std::unique_ptr<Token> NextToken();
+		std::unique_ptr<Token> HandleWhitespace();
+		std::unique_ptr<Token> HandleNewline();
+		std::unique_ptr<Token> MakeEOFToken();
+		std::unique_ptr<Token> MakeNumberToken();
+		std::unique_ptr<Token> MakeNumberBaseToken();
+		std::unique_ptr<Token> MakeHexNumberToken();
+		std::unique_ptr<Token> MakeBinaryNumberToken();
+		std::unique_ptr<Token> MakeStringToken(char sdelim, char edelim);
+		std::unique_ptr<Token> MakeOperatorToken();
+		std::unique_ptr<Token> MakeSymbolToken();
+		std::unique_ptr<Token> MakeSpecialToken();
+		std::unique_ptr<Token> MakeIdentifierToken();
+		std::unique_ptr<Token> HandleSlashOperator();
+		std::unique_ptr<Token> MakeSingleLineCommentToken();
+		std::unique_ptr<Token> MakeMultiLineCommentToken();
 
 	private:
 		bool IsOperator(char op) const;
@@ -52,6 +52,6 @@ namespace Eye
 	private:
 		EyeSource m_Source;
 		std::istringstream m_BufferStream;
-		std::vector<std::shared_ptr<Token>> m_Tokens;
+		std::vector<std::unique_ptr<Token>> m_Tokens;
 	};
 }
