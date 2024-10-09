@@ -11,14 +11,14 @@ namespace Eye
 	{
 		Lexer lexer;
 		auto res = lexer.Tokenize(properties.Source);
-		if (!res)
+		if (!res.has_value())
 		{
 			EYE_LOG_ERROR(res.error().GetMessage());
 			EYE_LOG_CRITICAL("EYEASTGenerator->GenerateMemoryAST Lexer Failed to Tokenize!");
 		}
 
 		Parser parser;
-		res = parser.Parse(lexer.GetTokens());
+		res = parser.Parse(std::move(res.value()));
 		if (!res)
 		{
 			EYE_LOG_ERROR(res.error().GetMessage());

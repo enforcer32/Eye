@@ -32,87 +32,86 @@ namespace Eye
 	class Parser
 	{
 	public:
-		std::expected<bool, Error::Error> Parse(const std::vector<std::shared_ptr<Token>>& tokens);
-		std::shared_ptr<AST::Program> GetAST() const;
+		std::expected<std::unique_ptr<AST::Program>, Error::Error> Parse(std::vector<std::unique_ptr<Token>>&& tokens);
 
 	private:
-		std::shared_ptr<AST::Program> Program();
+		std::unique_ptr<AST::Program> Program();
 
 		// Statements
-		std::vector<std::shared_ptr<AST::Statement>> StatementList(TokenType stopAt = TokenType::Invalid);
-		std::shared_ptr<AST::Statement> Statement();
-		std::shared_ptr<AST::ExpressionStatement> ExpressionStatement();
-		std::shared_ptr<AST::BlockStatement> BlockStatement();
-		std::shared_ptr<AST::VariableStatement> VariableStatement();
-		std::vector<std::shared_ptr<AST::VariableDeclaration>> VariableDeclarationList();
-		std::shared_ptr<AST::VariableDeclaration> VariableDeclaration();
-		std::shared_ptr<AST::Expression> VariableInitializer();
-		std::shared_ptr<AST::ControlStatement> ControlStatement();
-		std::shared_ptr<AST::IterationStatement> IterationStatement();
-		std::shared_ptr<AST::ContinueStatement> ContinueStatement();
-		std::shared_ptr<AST::BreakStatement> BreakStatement();
-		std::shared_ptr<AST::WhileStatement> WhileStatement();
-		std::shared_ptr<AST::DoWhileStatement> DoWhileStatement();
-		std::shared_ptr<AST::ForStatement> ForStatement();
-		std::shared_ptr<AST::FunctionStatement> FunctionStatement();
-		std::vector<std::shared_ptr<AST::FunctionParameter>> FunctionParameterList();
-		std::shared_ptr<AST::FunctionParameter> FunctionParameter();
-		std::shared_ptr<AST::ReturnStatement> ReturnStatement();
+		std::vector<std::unique_ptr<AST::Statement>> StatementList(TokenType stopAt = TokenType::Invalid);
+		std::unique_ptr<AST::Statement> Statement();
+		std::unique_ptr<AST::ExpressionStatement> ExpressionStatement();
+		std::unique_ptr<AST::BlockStatement> BlockStatement();
+		std::unique_ptr<AST::VariableStatement> VariableStatement();
+		std::vector<std::unique_ptr<AST::VariableDeclaration>> VariableDeclarationList();
+		std::unique_ptr<AST::VariableDeclaration> VariableDeclaration();
+		std::unique_ptr<AST::Expression> VariableInitializer();
+		std::unique_ptr<AST::ControlStatement> ControlStatement();
+		std::unique_ptr<AST::IterationStatement> IterationStatement();
+		std::unique_ptr<AST::ContinueStatement> ContinueStatement();
+		std::unique_ptr<AST::BreakStatement> BreakStatement();
+		std::unique_ptr<AST::WhileStatement> WhileStatement();
+		std::unique_ptr<AST::DoWhileStatement> DoWhileStatement();
+		std::unique_ptr<AST::ForStatement> ForStatement();
+		std::unique_ptr<AST::FunctionStatement> FunctionStatement();
+		std::vector<std::unique_ptr<AST::FunctionParameter>> FunctionParameterList();
+		std::unique_ptr<AST::FunctionParameter> FunctionParameter();
+		std::unique_ptr<AST::ReturnStatement> ReturnStatement();
 
 		// Expressions
-		std::shared_ptr<AST::Expression> Expression();
-		std::shared_ptr<AST::Expression> AssignmentExpression();
-		std::shared_ptr<AST::Expression> LogicalORExpression();
-		std::shared_ptr<AST::Expression> LogicalANDExpression();
-		std::shared_ptr<AST::Expression> BitwiseORExpression();
-		std::shared_ptr<AST::Expression> BitwiseXORExpression();
-		std::shared_ptr<AST::Expression> BitwiseANDExpression();
-		std::shared_ptr<AST::Expression> EqualityExpression();
-		std::shared_ptr<AST::Expression> RelationalExpression();
-		std::shared_ptr<AST::Expression> BitwiseShiftExpression();
-		std::shared_ptr<AST::Expression> AdditiveBinaryExpression();
-		std::shared_ptr<AST::Expression> MultiplicativeBinaryExpression();
-		std::shared_ptr<AST::Expression> UnaryExpression();
-		std::shared_ptr<AST::Expression> LHSExpression();
-		std::shared_ptr<AST::Expression> MemberExpression();
-		std::shared_ptr<AST::Expression> CallExpression(const std::shared_ptr<AST::Expression>& callee);
-		std::vector<std::shared_ptr<AST::Expression>> CallArguments();
-		std::shared_ptr<AST::Expression> PostfixExpression();
-		std::shared_ptr<AST::Expression> PrimaryExpression();
-		std::shared_ptr<AST::LiteralExpression> LiteralExpression();
-		std::shared_ptr<AST::LiteralExpression> IntegerLiteral();
-		std::shared_ptr<AST::LiteralExpression> FloatLiteral();
-		std::shared_ptr<AST::LiteralExpression> StringLiteral();
-		std::shared_ptr<AST::LiteralExpression> BooleanLiteral();
-		std::shared_ptr<AST::LiteralExpression> NullLiteral();
-		std::shared_ptr<AST::Expression> ParenthesizedExpression();
-		std::shared_ptr<AST::IdentifierExpression> IdentifierExpression();
+		std::unique_ptr<AST::Expression> Expression();
+		std::unique_ptr<AST::Expression> AssignmentExpression();
+		std::unique_ptr<AST::Expression> LogicalORExpression();
+		std::unique_ptr<AST::Expression> LogicalANDExpression();
+		std::unique_ptr<AST::Expression> BitwiseORExpression();
+		std::unique_ptr<AST::Expression> BitwiseXORExpression();
+		std::unique_ptr<AST::Expression> BitwiseANDExpression();
+		std::unique_ptr<AST::Expression> EqualityExpression();
+		std::unique_ptr<AST::Expression> RelationalExpression();
+		std::unique_ptr<AST::Expression> BitwiseShiftExpression();
+		std::unique_ptr<AST::Expression> AdditiveBinaryExpression();
+		std::unique_ptr<AST::Expression> MultiplicativeBinaryExpression();
+		std::unique_ptr<AST::Expression> UnaryExpression();
+		std::unique_ptr<AST::Expression> LHSExpression();
+		std::unique_ptr<AST::Expression> MemberExpression();
+		std::unique_ptr<AST::Expression> CallExpression(std::unique_ptr<AST::Expression> callee);
+		std::vector<std::unique_ptr<AST::Expression>> CallArguments();
+		std::unique_ptr<AST::Expression> PostfixExpression();
+		std::unique_ptr<AST::Expression> PrimaryExpression();
+		std::unique_ptr<AST::LiteralExpression> LiteralExpression();
+		std::unique_ptr<AST::LiteralExpression> IntegerLiteral();
+		std::unique_ptr<AST::LiteralExpression> FloatLiteral();
+		std::unique_ptr<AST::LiteralExpression> StringLiteral();
+		std::unique_ptr<AST::LiteralExpression> BooleanLiteral();
+		std::unique_ptr<AST::LiteralExpression> NullLiteral();
+		std::unique_ptr<AST::Expression> ParenthesizedExpression();
+		std::unique_ptr<AST::IdentifierExpression> IdentifierExpression();
 
 	private:
 		bool IsLookAhead(TokenType type) const;
-		bool IsLiteral(const std::shared_ptr<Token>& token) const;
-		bool IsAssignmentOperator(const std::shared_ptr<Token>& token) const;
-		bool IsEqualityOperator(const std::shared_ptr<Token>& token) const;
-		bool IsRelationalOperator(const std::shared_ptr<Token>& token) const;
-		bool IsBitwiseShiftOperator(const std::shared_ptr<Token>& token) const;
-		bool IsAdditiveOperator(const std::shared_ptr<Token>& token) const;
-		bool IsMultiplicativeOperator(const std::shared_ptr<Token>& token) const;
-		bool IsUnaryOperator(const std::shared_ptr<Token>& token) const;
-		bool IsPostfixOperator(const std::shared_ptr<Token>& token) const;
-		bool IsTypeQualifierKeyword(const std::shared_ptr<Token>& token) const;
-		bool IsDataTypeKeyword(const std::shared_ptr<Token>& token) const;
-		bool IsLHSExpression(const std::shared_ptr<AST::Expression>& expression) const;
+		bool IsLiteral(const Token* token) const;
+		bool IsAssignmentOperator(const Token* token) const;
+		bool IsEqualityOperator(const Token* token) const;
+		bool IsRelationalOperator(const Token* token) const;
+		bool IsBitwiseShiftOperator(const Token* token) const;
+		bool IsAdditiveOperator(const Token* token) const;
+		bool IsMultiplicativeOperator(const Token* token) const;
+		bool IsUnaryOperator(const Token* token) const;
+		bool IsPostfixOperator(const Token* token) const;
+		bool IsTypeQualifierKeyword(const Token* token) const;
+		bool IsDataTypeKeyword(const Token* token) const;
+		bool IsLHSExpression(const AST::Expression* expression) const;
 
 	private:
 		bool HasToken() const;
-		std::shared_ptr<Token> NextToken();
-		std::shared_ptr<Token> PeekToken();
-		std::shared_ptr<Token> EatToken(TokenType type);
+		std::unique_ptr<Token> NextToken();
+		const Token* PeekToken();
+		std::unique_ptr<Token> EatToken(TokenType type);
 
 	private:
-		std::shared_ptr<AST::Program> m_Program;
-		std::vector<std::shared_ptr<Token>> m_Tokens;
+		std::unique_ptr<AST::Program> m_Program;
+		std::vector<std::unique_ptr<Token>> m_Tokens;
 		size_t m_CurrentTokenIndex;
-		std::shared_ptr<Token> m_LookAhead;
+		std::unique_ptr<Token> m_LookAhead;
 	};
 }

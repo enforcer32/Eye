@@ -13,8 +13,7 @@ namespace Eye
 	class Lexer
 	{
 	public:
-		std::expected<bool, Error::Error> Tokenize(const EyeSource& source);
-		std::vector<std::unique_ptr<Token>> GetTokens() const;
+		std::expected<std::vector<std::unique_ptr<Token>>, Error::Error> Tokenize(const EyeSource& source);
 
 	private:
 		std::unique_ptr<Token> NextToken();

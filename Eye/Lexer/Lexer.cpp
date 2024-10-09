@@ -5,7 +5,7 @@
 
 namespace Eye
 {
-	std::expected<bool, Error::Error> Lexer::Tokenize(const EyeSource& source)
+	std::expected<std::vector<std::unique_ptr<Token>>, Error::Error> Lexer::Tokenize(const EyeSource& source)
 	{
 		m_Source = source;
 
@@ -33,12 +33,7 @@ namespace Eye
 		}
 
 		m_Tokens.push_back(MakeEOFToken());
-		return true;
-	}
-
-	std::vector<std::unique_ptr<Token>> Lexer::GetTokens() const
-	{
-		return m_Tokens;
+		return std::move(m_Tokens);
 	}
 
 	std::unique_ptr<Token> Lexer::NextToken()
