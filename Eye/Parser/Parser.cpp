@@ -6,7 +6,7 @@ namespace Eye
 {
 	std::expected<std::unique_ptr<AST::Program>, Error::Error> Parser::Parse(std::vector<std::unique_ptr<Token>>&& tokens)
 	{
-		m_Tokens = tokens;
+		m_Tokens = std::move(tokens);
 		m_CurrentTokenIndex = 0;
 
 		try
@@ -33,7 +33,7 @@ namespace Eye
 	*/
 	std::unique_ptr<AST::Program> Parser::Program()
 	{
-		return std::make_unique<AST::Program>(StatementList());
+		return std::make_unique<AST::Program>(std::move(StatementList()));
 	}
 
 	/*
@@ -46,7 +46,7 @@ namespace Eye
 	{
 		std::vector<std::unique_ptr<AST::Statement>> statementList;
 		while (m_LookAhead && m_LookAhead->GetType() != TokenType::EndOfFile && m_LookAhead->GetType() != stopAt)
-			statementList.push_back(Statement());
+			statementList.push_back(std::move(Statement()));
 		return statementList;
 	}
 
@@ -111,7 +111,7 @@ namespace Eye
 
 		std::unique_ptr<AST::Expression> expression = Expression();
 		EatToken(TokenType::SymbolSemiColon);
-		return std::make_unique<AST::ExpressionStatement>(expression->GetSource(), expression); // MOVE
+		return std::make_unique<AST::ExpressionStatement>(expression->GetSource(), std::move(expression));
 	}
 
 	/*
@@ -126,7 +126,7 @@ namespace Eye
 		if (!IsLookAhead(TokenType::SymbolRightBrace))
 			statementList = StatementList(TokenType::SymbolRightBrace);
 		EatToken(TokenType::SymbolRightBrace);
-		return std::make_unique<AST::BlockStatement>(blockToken->GetSource(), statementList);
+		return std::make_unique<AST::BlockStatement>(blockToken->GetSource(), std::move(statementList));
 	}
 
 	/*
@@ -156,7 +156,7 @@ namespace Eye
 
 		std::unique_ptr<Token> dataType = EatToken(m_LookAhead->GetType());
 		const auto& varToken = (typeQualifier ? typeQualifier : dataType);
-		std::unique_ptr<AST::VariableStatement> variableStatement = std::make_unique<AST::VariableStatement>(varToken->GetSource(), typeQualifier, dataType, VariableDeclarationList());
+		std::unique_ptr<AST::VariableStatement> variableStatement = std::make_unique<AST::VariableStatement>(varToken->GetSource(), std::move(typeQualifier), std::move(dataType), std::move(VariableDeclarationList()));
 		EatToken(TokenType::SymbolSemiColon);
 		return variableStatement;
 	}
@@ -172,7 +172,7 @@ namespace Eye
 		std::vector<std::unique_ptr<AST::VariableDeclaration>> variableDeclarationList;
 		do
 		{
-			variableDeclarationList.push_back(VariableDeclaration());
+			variableDeclarationList.push_back(std::move(VariableDeclaration()));
 		} while (IsLookAhead(TokenType::OperatorComma) && EatToken(TokenType::OperatorComma));
 		return variableDeclarationList;
 	}
@@ -186,8 +186,8 @@ namespace Eye
 	{
 		std::unique_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
 		if (!IsLookAhead(TokenType::SymbolSemiColon) && !IsLookAhead(TokenType::OperatorComma))
-			return std::make_unique<AST::VariableDeclaration>(identifier, VariableInitializer());
-		return std::make_unique<AST::VariableDeclaration>(identifier, nullptr);
+			return std::make_unique<AST::VariableDeclaration>(std::move(identifier), VariableInitializer());
+		return std::make_unique<AST::VariableDeclaration>(std::move(identifier), nullptr);
 	}
 
 	/*
@@ -222,7 +222,7 @@ namespace Eye
 			EatToken(TokenType::KeywordControlElse);
 			alternate = Statement();
 		}
-		return std::make_unique<AST::ControlStatement>(ifToken->GetSource(), condition, consequent, alternate);
+		return std::make_unique<AST::ControlStatement>(ifToken->GetSource(), std::move(condition), std::move(consequent), std::move(alternate));
 	}
 
 	/*
@@ -282,7 +282,7 @@ namespace Eye
 			throw Error::Exceptions::SyntaxErrorException("Expected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 		EatToken(TokenType::SymbolRightParenthesis);
 		std::unique_ptr<AST::Statement> body = Statement();
-		return std::make_unique<AST::WhileStatement>(whileToken->GetSource(), condition, body);
+		return std::make_unique<AST::WhileStatement>(whileToken->GetSource(), std::move(condition), std::move(body));
 	}
 
 	/*
@@ -301,7 +301,7 @@ namespace Eye
 			throw Error::Exceptions::SyntaxErrorException("Expected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 		EatToken(TokenType::SymbolRightParenthesis);
 		EatToken(TokenType::SymbolSemiColon);
-		return std::make_unique<AST::DoWhileStatement>(doToken->GetSource(), condition, body);
+		return std::make_unique<AST::DoWhileStatement>(doToken->GetSource(), std::move(condition), std::move(body));
 	}
 
 	/*
@@ -319,7 +319,7 @@ namespace Eye
 		const auto& forToken = EatToken(TokenType::KeywordIterationFor);
 		EatToken(TokenType::OperatorLeftParenthesis);
 
-		std::unique_ptr<void> initializer = nullptr;
+		std::variant<std::unique_ptr<AST::VariableStatement>, std::unique_ptr<AST::Expression>> initializer;
 		AST::ForInitializerType initializerType = AST::ForInitializerType::Null;
 		if (!IsLookAhead(TokenType::SymbolSemiColon))
 		{
@@ -334,7 +334,7 @@ namespace Eye
 
 				std::unique_ptr<Token> dataType = EatToken(m_LookAhead->GetType());
 				const auto& varToken = (typeQualifier ? typeQualifier : dataType);
-				initializer = std::make_unique<AST::VariableStatement>(varToken->GetSource(), typeQualifier, dataType, VariableDeclarationList());
+				initializer = std::make_unique<AST::VariableStatement>(varToken->GetSource(), std::move(typeQualifier), std::move(dataType), std::move(VariableDeclarationList()));
 				initializerType = AST::ForInitializerType::VariableStatement;
 			}
 			else
@@ -352,7 +352,11 @@ namespace Eye
 		EatToken(TokenType::SymbolRightParenthesis);
 
 		std::unique_ptr<AST::Statement> body = Statement();
-		return std::make_unique<AST::ForStatement>(forToken->GetSource(), initializer, initializerType, condition, update, body);
+
+		if(initializerType == AST::ForInitializerType::VariableStatement)
+			return std::make_unique<AST::ForStatement>(forToken->GetSource(), std::move(std::get<std::unique_ptr<AST::VariableStatement>>(initializer)), initializerType, std::move(condition), std::move(update), std::move(body));
+		else
+			return std::make_unique<AST::ForStatement>(forToken->GetSource(), std::move(std::get<std::unique_ptr<AST::Expression>>(initializer)), initializerType, std::move(condition), std::move(update), std::move(body));
 	}
 
 	/*
@@ -377,7 +381,7 @@ namespace Eye
 		EatToken(TokenType::SymbolRightParenthesis);
 
 		std::unique_ptr<AST::BlockStatement> body = BlockStatement();
-		return std::make_unique<AST::FunctionStatement>(functionToken->GetSource(), returnType, identifier, parameters, body);
+		return std::make_unique<AST::FunctionStatement>(functionToken->GetSource(), std::move(returnType), std::move(identifier), std::move(parameters), std::move(body));
 	}
 
 	/*
@@ -391,7 +395,7 @@ namespace Eye
 		std::vector<std::unique_ptr<AST::FunctionParameter>> parameters;
 		do
 		{
-			parameters.push_back(FunctionParameter());
+			parameters.push_back(std::move(FunctionParameter()));
 		} while (IsLookAhead(TokenType::OperatorComma) && EatToken(TokenType::OperatorComma));
 		return parameters;
 	}
@@ -413,8 +417,8 @@ namespace Eye
 		std::unique_ptr<Token> dataType = EatToken(m_LookAhead->GetType());
 		std::unique_ptr<AST::IdentifierExpression> identifier = IdentifierExpression();
 		if (!IsLookAhead(TokenType::SymbolRightParenthesis) && !IsLookAhead(TokenType::OperatorComma))
-			return std::make_unique<AST::FunctionParameter>(typeQualifier, dataType, identifier, VariableInitializer());
-		return std::make_unique<AST::FunctionParameter>(typeQualifier, dataType, identifier, nullptr);
+			return std::make_unique<AST::FunctionParameter>(std::move(typeQualifier), std::move(dataType), std::move(identifier), VariableInitializer());
+		return std::make_unique<AST::FunctionParameter>(std::move(typeQualifier), std::move(dataType), std::move(identifier), nullptr);
 	}
 
 	/*
@@ -427,7 +431,7 @@ namespace Eye
 		const auto& returnToken = EatToken(TokenType::KeywordReturn);
 		std::unique_ptr<AST::Expression> expression = (!IsLookAhead(TokenType::SymbolSemiColon)) ? Expression() : nullptr;
 		EatToken(TokenType::SymbolSemiColon);
-		return std::make_unique<AST::ReturnStatement>(returnToken->GetSource(), expression);
+		return std::make_unique<AST::ReturnStatement>(returnToken->GetSource(), std::move(expression));
 	}
 
 	/*
@@ -457,8 +461,8 @@ namespace Eye
 		if (!IsLHSExpression(left.get()))
 			throw Error::Exceptions::SyntaxErrorException("Unexpected LHSExpression '" + m_LookAhead->GetValueString() + "'", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
 
-		std::shared_ptr<Token> op = EatToken(m_LookAhead->GetType());
-		return std::make_unique<AST::AssignmentExpression>(op->GetSource(), op, left, AssignmentExpression());
+		std::unique_ptr<Token> op = EatToken(m_LookAhead->GetType());
+		return std::make_unique<AST::AssignmentExpression>(op->GetSource(), std::move(op), std::move(left), AssignmentExpression());
 	}
 
 	/*
@@ -479,7 +483,7 @@ namespace Eye
 			std::unique_ptr<AST::Expression> right = LogicalANDExpression();
 			if (!right)
 				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
-			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), op, left, right);
+			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), std::move(op), std::move(left), std::move(right));
 		}
 		return left;
 	}
@@ -502,7 +506,7 @@ namespace Eye
 			std::unique_ptr<AST::Expression> right = BitwiseORExpression();
 			if (!right)
 				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
-			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), op, left, right);
+			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), std::move(op), std::move(left), std::move(right));
 		}
 		return left;
 	}
@@ -525,7 +529,7 @@ namespace Eye
 			std::unique_ptr<AST::Expression> right = BitwiseXORExpression();
 			if (!right)
 				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
-			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), op, left, right);
+			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), std::move(op), std::move(left), std::move(right));
 		}
 		return left;
 	}
@@ -548,7 +552,7 @@ namespace Eye
 			std::unique_ptr<AST::Expression> right = BitwiseANDExpression();
 			if (!right)
 				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
-			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), op, left, right);
+			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), std::move(op), std::move(left), std::move(right));
 		}
 		return left;
 	}
@@ -571,7 +575,7 @@ namespace Eye
 			std::unique_ptr<AST::Expression> right = EqualityExpression();
 			if (!right)
 				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
-			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), op, left, right);
+			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), std::move(op), std::move(left), std::move(right));
 		}
 		return left;
 	}
@@ -594,7 +598,7 @@ namespace Eye
 			std::unique_ptr<AST::Expression> right = RelationalExpression();
 			if (!right)
 				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
-			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), op, left, right);
+			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), std::move(op), std::move(left), std::move(right));
 		}
 		return left;
 	}
@@ -617,7 +621,7 @@ namespace Eye
 			std::unique_ptr<AST::Expression> right = BitwiseShiftExpression();
 			if (!right)
 				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
-			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), op, left, right);
+			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), std::move(op), std::move(left), std::move(right));
 		}
 		return left;
 	}
@@ -640,7 +644,7 @@ namespace Eye
 			std::unique_ptr<AST::Expression> right = AdditiveBinaryExpression();
 			if (!right)
 				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
-			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), op, left, right);
+			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), std::move(op), std::move(left), std::move(right));
 		}
 		return left;
 	}
@@ -663,7 +667,7 @@ namespace Eye
 			std::unique_ptr<AST::Expression> right = MultiplicativeBinaryExpression();
 			if (!right)
 				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
-			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), op, left, right);
+			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), std::move(op), std::move(left), std::move(right));
 		}
 		return left;
 	}
@@ -686,7 +690,7 @@ namespace Eye
 			std::unique_ptr<AST::Expression> right = UnaryExpression();
 			if (!right)
 				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
-			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), op, left, right);
+			left = std::make_unique<AST::BinaryExpression>(op->GetSource(), std::move(op), std::move(left), std::move(right));
 		}
 		return left;
 	}
@@ -705,7 +709,7 @@ namespace Eye
 			std::unique_ptr<AST::Expression> unaryExpr = UnaryExpression();
 			if (!unaryExpr)
 				throw Error::Exceptions::SyntaxErrorException("Unexpected Expression", Error::ErrorType::ParserSyntaxError, m_LookAhead->GetSource());
-			return std::make_unique<AST::UnaryExpression>(op->GetSource(), op, unaryExpr);
+			return std::make_unique<AST::UnaryExpression>(op->GetSource(), std::move(op), std::move(unaryExpr));
 		}
 
 		return LHSExpression();
@@ -740,14 +744,14 @@ namespace Eye
 			{
 				const auto& op = EatToken(TokenType::OperatorDot);
 				std::unique_ptr<AST::IdentifierExpression> prop = IdentifierExpression();
-				obj = std::make_unique<AST::MemberExpression>(op->GetSource(), obj, prop, false);
+				obj = std::make_unique<AST::MemberExpression>(op->GetSource(), std::move(obj), std::move(prop), false);
 			}
 			else if (IsLookAhead(TokenType::OperatorLeftBracket))
 			{
 				const auto& op = EatToken(TokenType::OperatorLeftBracket);
 				std::unique_ptr<AST::Expression> prop = Expression();
 				EatToken(TokenType::SymbolRightBracket);
-				obj = std::make_unique<AST::MemberExpression>(op->GetSource(), obj, prop, true);
+				obj = std::make_unique<AST::MemberExpression>(op->GetSource(), std::move(obj), std::move(prop), true);
 			}
 		}
 		return obj;
@@ -765,7 +769,7 @@ namespace Eye
 	*/
 	std::unique_ptr<AST::Expression> Parser::CallExpression(std::unique_ptr<AST::Expression> callee)
 	{
-		std::unique_ptr<AST::Expression> callExpression = std::make_unique<AST::CallExpression>(m_LookAhead->GetSource(), callee, CallArguments());
+		std::unique_ptr<AST::Expression> callExpression = std::make_unique<AST::CallExpression>(m_LookAhead->GetSource(), std::move(callee), std::move(CallArguments()));
 		if (IsLookAhead(TokenType::OperatorLeftParenthesis))
 			callExpression = CallExpression(std::move(callExpression));
 		return callExpression;
@@ -789,7 +793,7 @@ namespace Eye
 		{
 			do
 			{
-				arguments.push_back(AssignmentExpression());
+				arguments.push_back(std::move(AssignmentExpression()));
 			} while (IsLookAhead(TokenType::OperatorComma) && EatToken(TokenType::OperatorComma));
 		}
 		EatToken(TokenType::SymbolRightParenthesis);
@@ -808,7 +812,7 @@ namespace Eye
 		if (IsPostfixOperator(m_LookAhead.get()))
 		{
 			std::unique_ptr<Token> op = EatToken(m_LookAhead->GetType());
-			return std::make_unique<AST::PostfixExpression>(op->GetSource(), op, primaryExpression);
+			return std::make_unique<AST::PostfixExpression>(op->GetSource(), std::move(op), std::move(primaryExpression));
 		}
 		return primaryExpression;
 	}
@@ -937,8 +941,8 @@ namespace Eye
 	*/
 	std::unique_ptr<AST::IdentifierExpression> Parser::IdentifierExpression()
 	{
-		const auto& id = EatToken(TokenType::Identifier);
-		return std::make_unique<AST::IdentifierExpression>(id->GetSource(), id);
+		std::unique_ptr<Token> id = EatToken(TokenType::Identifier);
+		return std::make_unique<AST::IdentifierExpression>(id->GetSource(), std::move(id));
 	}
 
 	bool Parser::IsLookAhead(TokenType type) const

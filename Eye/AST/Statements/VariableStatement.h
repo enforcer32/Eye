@@ -60,8 +60,8 @@ namespace Eye
 		class VariableStatement : public Statement
 		{
 		public:
-			VariableStatement(const EyeSource& source, std::unique_ptr<Token> typeQualifier, std::unique_ptr<Token> dataType, const std::vector<std::unique_ptr<VariableDeclaration>>& variableDeclarationList)
-				: Statement(StatementType::VariableStatement, source), m_TypeQualifier(std::move(typeQualifier)), m_DataType(std::move(dataType)), m_VariableDeclarationList(variableDeclarationList)
+			VariableStatement(const EyeSource& source, std::unique_ptr<Token> typeQualifier, std::unique_ptr<Token> dataType, std::vector<std::unique_ptr<VariableDeclaration>>&& variableDeclarationList)
+				: Statement(StatementType::VariableStatement, source), m_TypeQualifier(std::move(typeQualifier)), m_DataType(std::move(dataType)), m_VariableDeclarationList(std::move(variableDeclarationList))
 			{
 			}
 

@@ -49,8 +49,8 @@ namespace Eye
 		class FunctionStatement : public Statement
 		{
 		public:
-			FunctionStatement(const EyeSource& source, std::unique_ptr<Token> returnType, std::unique_ptr<IdentifierExpression> identifier, const std::vector<std::unique_ptr<FunctionParameter>>& parameters, std::unique_ptr<BlockStatement> body)
-				: Statement(StatementType::FunctionStatement, source), m_ReturnType(std::move(returnType)), m_Identifier(std::move(identifier)), m_Parameters(parameters), m_Body(std::move(body))
+			FunctionStatement(const EyeSource& source, std::unique_ptr<Token> returnType, std::unique_ptr<IdentifierExpression> identifier, std::vector<std::unique_ptr<FunctionParameter>>&& parameters, std::unique_ptr<BlockStatement> body)
+				: Statement(StatementType::FunctionStatement, source), m_ReturnType(std::move(returnType)), m_Identifier(std::move(identifier)), m_Parameters(std::move(parameters)), m_Body(std::move(body))
 			{
 			}
 

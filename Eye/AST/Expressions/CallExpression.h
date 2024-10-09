@@ -32,8 +32,8 @@ namespace Eye
 		class CallExpression : public Expression
 		{
 		public:
-			CallExpression(const EyeSource& source, std::unique_ptr<Expression> callee, const std::vector<std::unique_ptr<Expression>>& arguments)
-				: Expression(ExpressionType::CallExpression, source), m_Callee(std::move(callee)), m_Arguments(arguments)
+			CallExpression(const EyeSource& source, std::unique_ptr<Expression> callee, std::vector<std::unique_ptr<Expression>>&& arguments)
+				: Expression(ExpressionType::CallExpression, source), m_Callee(std::move(callee)), m_Arguments(std::move(arguments))
 			{
 			}
 

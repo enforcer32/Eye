@@ -19,7 +19,7 @@ namespace Eye
 			std::unique_ptr<Token> token = NextToken();
 			while (token)
 			{
-				m_Tokens.push_back(token);
+				m_Tokens.push_back(std::move(token));
 				token = NextToken();
 			}
 		}

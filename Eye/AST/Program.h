@@ -22,8 +22,8 @@ namespace Eye
 		class Program
 		{
 		public:
-			Program(const std::vector<std::unique_ptr<Statement>>& statementList)
-				: m_StatementList(statementList)
+			Program(std::vector<std::unique_ptr<Statement>>&& statementList)
+				: m_StatementList(std::move(statementList))
 			{
 			}
 

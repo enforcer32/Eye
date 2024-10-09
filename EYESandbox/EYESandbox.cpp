@@ -1,10 +1,12 @@
 #include <Eye/Utility/Logger.h>
-#include <Eye/ASTGenerator/ASTGenerator.h>
-#include <Eye/Semantic/Semantic.h>
-
+//#include <Eye/ASTGenerator/ASTGenerator.h>
+//#include <Eye/Semantic/Semantic.h>
+//
 #include <Eye/Lexer/Lexer.h>
 #include <Eye/Parser/Parser.h>
-#include <Eye/ASTSerializer/StringSerializer.h>
+//#include <Eye/ASTSerializer/StringSerializer.h>
+
+#include <Eye/AST/Program.h>
 
 #include <iostream>
 #include <chrono>
@@ -37,24 +39,24 @@ int main(int argc, char** argv)
 	*/
 
 	Eye::EyeSource source("..\\..\\..\\..\\Examples\\Test.eye", Eye::EyeSourceType::File);
-	Eye::Lexer lexer;
+	/*Eye::Lexer lexer;
 	auto res = lexer.Tokenize(source);
-	if (!res)
+	if (!res.has_value())
 	{
 		EYE_LOG_ERROR(res.error().GetMessage());
 		EYE_LOG_CRITICAL("EYEASTGenerator->GenerateMemoryAST Lexer Failed to Tokenize!");
-	}
+	}*/
 
-	Eye::Parser parser;
-	res = parser.Parse(lexer.GetTokens());
-	if (!res)
+	/*Eye::Parser parser;
+	auto res2 = parser.Parse(std::move(res.value()));
+	if (!res2.has_value())
 	{
 		EYE_LOG_ERROR(res.error().GetMessage());
 		EYE_LOG_CRITICAL("EYEASTGenerator->GenerateMemoryAST Parser Failed to Parse!");
-	}
+	}*/
 
-	Eye::ASTSerializer::StringSerializer serialize;
-	std::cout << serialize.Serialize(parser.GetAST()) << std::endl;
+	/*Eye::ASTSerializer::StringSerializer serialize;
+	std::cout << serialize.Serialize(parser.GetAST()) << std::endl;*/
 
 	return 0;
 }
