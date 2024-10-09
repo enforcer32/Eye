@@ -30,36 +30,36 @@ namespace Eye
 	class TypeChecker
 	{
 	public:
-		std::expected<bool, Error::Error> TypeCheck(const std::shared_ptr<AST::Program>& ast);
+		std::expected<bool, Error::Error> TypeCheck(const AST::Program* ast);
 
 	private:
-		void TypeCheckStatement(const std::shared_ptr<AST::Statement>& stmt);
-		void TypeCheckExpressionStatement(const std::shared_ptr<AST::ExpressionStatement>& exprStmt);
-		void TypeCheckBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt, bool createScope = true);
-		void TypeCheckVariableStatement(const std::shared_ptr<AST::VariableStatement>& varStmt);
-		void TypeCheckControlStatement(const std::shared_ptr<AST::ControlStatement>& ctrlStmt);
-		void TypeCheckIterationStatement(const std::shared_ptr<AST::IterationStatement>& iterStmt);
-		void TypeCheckWhileStatement(const std::shared_ptr<AST::WhileStatement>& whileStmt);
-		void TypeCheckDoWhileStatement(const std::shared_ptr<AST::DoWhileStatement>& doStmt);
-		void TypeCheckForStatement(const std::shared_ptr<AST::ForStatement>& forStmt);
-		void TypeCheckFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt);
-		void TypeCheckReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt);
+		void TypeCheckStatement(const AST::Statement* stmt);
+		void TypeCheckExpressionStatement(const AST::ExpressionStatement* exprStmt);
+		void TypeCheckBlockStatement(const AST::BlockStatement* blockStmt, bool createScope = true);
+		void TypeCheckVariableStatement(const AST::VariableStatement* varStmt);
+		void TypeCheckControlStatement(const AST::ControlStatement* ctrlStmt);
+		void TypeCheckIterationStatement(const AST::IterationStatement* iterStmt);
+		void TypeCheckWhileStatement(const AST::WhileStatement* whileStmt);
+		void TypeCheckDoWhileStatement(const AST::DoWhileStatement* doStmt);
+		void TypeCheckForStatement(const AST::ForStatement* forStmt);
+		void TypeCheckFunctionStatement(const AST::FunctionStatement* functionStmt);
+		void TypeCheckReturnStatement(const AST::ReturnStatement* returnStmt);
 
-		Type TypeCheckExpression(const std::shared_ptr<AST::Expression>& expr);
-		Type TypeCheckLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);
-		Type TypeCheckIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr);
-		Type TypeCheckAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignExpr);
-		Type TypeCheckAssignmentExpressionAssignment(Type lhsType, Type rightType, const std::shared_ptr<AST::AssignmentExpression>& assignExpr);
-		Type TypeCheckAssignmentExpressionAssignmentArithmetic(Type lhsType, Type rightType, const std::shared_ptr<AST::AssignmentExpression>& assignExpr);
-		Type TypeCheckAssignmentExpressionAssignmentBitwsie(Type lhsType, Type rightType, const std::shared_ptr<AST::AssignmentExpression>& assignExpr);
-		Type TypeCheckBinaryExpression(const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
-		Type TypeCheckBinaryExpressionArithmetic(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
-		Type TypeCheckBinaryExpressionRelational(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
-		Type TypeCheckBinaryExpressionLogical(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
-		Type TypeCheckBinaryExpressionBitwise(Type leftType, Type rightType, const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
-		Type TypeCheckCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr);
-		Type TypeCheckUnaryExpression(const std::shared_ptr<AST::UnaryExpression>& unaryExpr);
-		Type TypeCheckPostfixExpression(const std::shared_ptr<AST::PostfixExpression>& postfixExpr);
+		Type TypeCheckExpression(const AST::Expression* expr);
+		Type TypeCheckLiteralExpression(const AST::LiteralExpression* literalExpr);
+		Type TypeCheckIdentifierExpression(const AST::IdentifierExpression* identifierExpr);
+		Type TypeCheckAssignmentExpression(const AST::AssignmentExpression* assignExpr);
+		Type TypeCheckAssignmentExpressionAssignment(Type lhsType, Type rightType, const AST::AssignmentExpression* assignExpr);
+		Type TypeCheckAssignmentExpressionAssignmentArithmetic(Type lhsType, Type rightType, const AST::AssignmentExpression* assignExpr);
+		Type TypeCheckAssignmentExpressionAssignmentBitwsie(Type lhsType, Type rightType, const AST::AssignmentExpression* assignExpr);
+		Type TypeCheckBinaryExpression(const AST::BinaryExpression* binaryExpr);
+		Type TypeCheckBinaryExpressionArithmetic(Type leftType, Type rightType, const AST::BinaryExpression* binaryExpr);
+		Type TypeCheckBinaryExpressionRelational(Type leftType, Type rightType, const AST::BinaryExpression* binaryExpr);
+		Type TypeCheckBinaryExpressionLogical(Type leftType, Type rightType, const AST::BinaryExpression* binaryExpr);
+		Type TypeCheckBinaryExpressionBitwise(Type leftType, Type rightType, const AST::BinaryExpression* binaryExpr);
+		Type TypeCheckCallExpression(const AST::CallExpression* callExpr);
+		Type TypeCheckUnaryExpression(const AST::UnaryExpression* unaryExpr);
+		Type TypeCheckPostfixExpression(const AST::PostfixExpression* postfixExpr);
 
 	private:
 		Type LexerToTypeCheckerType(TokenType type);

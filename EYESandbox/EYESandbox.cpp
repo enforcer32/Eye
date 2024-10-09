@@ -1,9 +1,9 @@
 #include <Eye/Utility/Logger.h>
 //#include <Eye/ASTGenerator/ASTGenerator.h>
-#include <Eye/Semantic/Semantic.h>
-//
 #include <Eye/Lexer/Lexer.h>
 #include <Eye/Parser/Parser.h>
+#include <Eye/Semantic/Semantic.h>
+#include <Eye/TypeChecker/TypeChecker.h>
 #include <Eye/ASTSerializer/StringSerializer.h>
 
 #include <Eye/AST/Program.h>
@@ -40,31 +40,36 @@ int main(int argc, char** argv)
 
 	Eye::EyeSource source("..\\..\\..\\..\\Examples\\Test.eye", Eye::EyeSourceType::File);
 	Eye::Lexer lexer;
-	auto res = lexer.Tokenize(source);
-	if (!res.has_value())
+	auto lexerRes = lexer.Tokenize(source);
+	if (!lexerRes.has_value())
 	{
-		EYE_LOG_ERROR(res.error().GetMessage());
+		EYE_LOG_ERROR(lexerRes.error().GetMessage());
 		EYE_LOG_CRITICAL("EYEASTGenerator->GenerateMemoryAST Lexer Failed to Tokenize!");
 	}
 
 	Eye::Parser parser;
-	auto res2 = parser.Parse(std::move(res.value()));
-	if (!res2.has_value())
+	auto parserRes = parser.Parse(std::move(lexerRes.value()));
+	if (!parserRes.has_value())
 	{
-		EYE_LOG_ERROR(res2.error().GetMessage());
+		EYE_LOG_ERROR(parserRes.error().GetMessage());
 		EYE_LOG_CRITICAL("EYEASTGenerator->GenerateMemoryAST Parser Failed to Parse!");
 	}
 
 	Eye::Semantic semanticValidator;
-	auto res3 = semanticValidator.Validate(res2.value().get());
-	if (!res3)
+	auto semanticRes = semanticValidator.Validate(parserRes.value().get());
+	if (!semanticRes)
 	{
-		EYE_LOG_ERROR(res3.error().GetMessage());
+		EYE_LOG_ERROR(semanticRes.error().GetMessage());
 		EYE_LOG_CRITICAL("EYESemantic->Validate Failed!");
 	}
 
-	Eye::ASTSerializer::StringSerializer serialize;
-	std::cout << serialize.Serialize(res2.value().get()) << std::endl;
+	Eye::TypeChecker tc;
+	auto tcRes = tc.TypeCheck(parserRes.value().get());
+	if (!tcRes)
+	{
+		EYE_LOG_ERROR(tcRes.error().GetMessage());
+		EYE_LOG_CRITICAL("EYETypeChecker->Validate Failed!");
+	}
 
 	return 0;
 }
