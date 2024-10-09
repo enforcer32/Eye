@@ -14,7 +14,7 @@ namespace Eye
 	class ASTGenerator
 	{
 	public:
-		std::shared_ptr<AST::Program> GenerateMemoryAST(const ASTGeneratorProperties& properties);
+		std::unique_ptr<AST::Program> GenerateMemoryAST(const ASTGeneratorProperties& properties);
 		std::string GenerateStringAST(const ASTGeneratorProperties& properties);
 	};
 }
