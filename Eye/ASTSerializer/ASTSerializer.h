@@ -11,7 +11,7 @@ namespace Eye
 		class ASTSerializer
 		{
 		public:
-			virtual std::string Serialize(const std::shared_ptr<AST::Program>& ast) = 0;
+			virtual std::string Serialize(const AST::Program* ast) = 0;
 		};
 	}
 }

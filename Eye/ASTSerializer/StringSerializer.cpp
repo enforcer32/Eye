@@ -7,7 +7,7 @@ namespace Eye
 {
 	namespace ASTSerializer
 	{
-		std::string StringSerializer::Serialize(const std::shared_ptr<AST::Program>& ast)
+		std::string StringSerializer::Serialize(const AST::Program* ast)
 		{
 			std::ostringstream oss;
 			oss << "{\"Program\": {\n";
@@ -17,7 +17,7 @@ namespace Eye
 			size_t i = 0;
 			for (const auto& stmt : ast->GetStatementList())
 			{
-				oss << SerializeStatement(stmt);
+				oss << SerializeStatement(stmt.get());
 				i++;
 				if ((i + 1) <= ast->GetStatementList().size())
 					oss << ",";
@@ -27,7 +27,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeStatement(const std::shared_ptr<AST::Statement>& stmt)
+		std::string StringSerializer::SerializeStatement(const AST::Statement* stmt)
 		{
 			if (!stmt)
 				return "null";
@@ -35,30 +35,30 @@ namespace Eye
 			switch (stmt->GetType())
 			{
 			case AST::StatementType::ExpressionStatement:
-				return SerializeExpressionStatement(std::static_pointer_cast<AST::ExpressionStatement>(stmt));
+				return SerializeExpressionStatement(static_cast<const AST::ExpressionStatement*>(stmt));
 			case AST::StatementType::BlockStatement:
-				return SerializeBlockStatement(std::static_pointer_cast<AST::BlockStatement>(stmt));
+				return SerializeBlockStatement(static_cast<const AST::BlockStatement*>(stmt));
 			case AST::StatementType::VariableStatement:
-				return SerializeVariableStatement(std::static_pointer_cast<AST::VariableStatement>(stmt));
+				return SerializeVariableStatement(static_cast<const AST::VariableStatement*>(stmt));
 			case AST::StatementType::ControlStatement:
-				return SerializeControlStatement(std::static_pointer_cast<AST::ControlStatement>(stmt));
+				return SerializeControlStatement(static_cast<const AST::ControlStatement*>(stmt));
 			case AST::StatementType::IterationStatement:
-				return SerializeIterationStatement(std::static_pointer_cast<AST::IterationStatement>(stmt));
+				return SerializeIterationStatement(static_cast<const AST::IterationStatement*>(stmt));
 			case AST::StatementType::ContinueStatement:
-				return SerializeContinueStatement(std::static_pointer_cast<AST::ContinueStatement>(stmt));
+				return SerializeContinueStatement(static_cast<const AST::ContinueStatement*>(stmt));
 			case AST::StatementType::BreakStatement:
-				return SerializeBreakStatement(std::static_pointer_cast<AST::BreakStatement>(stmt));
+				return SerializeBreakStatement(static_cast<const AST::BreakStatement*>(stmt));
 			case AST::StatementType::FunctionStatement:
-				return SerializeFunctionStatement(std::static_pointer_cast<AST::FunctionStatement>(stmt));
+				return SerializeFunctionStatement(static_cast<const AST::FunctionStatement*>(stmt));
 			case AST::StatementType::ReturnStatement:
-				return SerializeReturnStatement(std::static_pointer_cast<AST::ReturnStatement>(stmt));
+				return SerializeReturnStatement(static_cast<const AST::ReturnStatement*>(stmt));
 			default:
 				EYE_LOG_CRITICAL("ASTSerializer Unknown Statement Type!");
 				break;
 			}
 		}
 
-		std::string StringSerializer::SerializeExpressionStatement(const std::shared_ptr<AST::ExpressionStatement>& exprStmt)
+		std::string StringSerializer::SerializeExpressionStatement(const AST::ExpressionStatement* exprStmt)
 		{
 			std::ostringstream oss;
 			oss << "{\"ExpressionStatement\": {\n";
@@ -68,7 +68,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt)
+		std::string StringSerializer::SerializeBlockStatement(const AST::BlockStatement* blockStmt)
 		{
 			std::ostringstream oss;
 			oss << "{\"BlockStatement\": {\n";
@@ -78,7 +78,7 @@ namespace Eye
 			size_t i = 0;
 			for (const auto& stmt : blockStmt->GetStatementList())
 			{
-				oss << "" << SerializeStatement(stmt);
+				oss << "" << SerializeStatement(stmt.get());
 
 				i++;
 				if ((i + 1) <= blockStmt->GetStatementList().size())
@@ -89,7 +89,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeVariableStatement(const std::shared_ptr<AST::VariableStatement>& variableStmt)
+		std::string StringSerializer::SerializeVariableStatement(const AST::VariableStatement* variableStmt)
 		{
 			std::ostringstream oss;
 			oss << "{\"VariableStatement\": {\n";
@@ -104,7 +104,7 @@ namespace Eye
 			size_t i = 0;
 			for (const auto& variable : variableStmt->GetVariableDeclarationList())
 			{
-				oss << SerializeVariableDeclaration(variable);
+				oss << SerializeVariableDeclaration(variable.get());
 				i++;
 				if ((i + 1) <= variableStmt->GetVariableDeclarationList().size())
 					oss << ",";
@@ -114,7 +114,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeVariableDeclaration(const std::shared_ptr<AST::VariableDeclaration>& variableDeclaration)
+		std::string StringSerializer::SerializeVariableDeclaration(const AST::VariableDeclaration* variableDeclaration)
 		{
 			std::ostringstream oss;
 			oss << "{\"VariableDeclaration\": {\n";
@@ -125,7 +125,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeControlStatement(const std::shared_ptr<AST::ControlStatement>& controlStmt)
+		std::string StringSerializer::SerializeControlStatement(const AST::ControlStatement* controlStmt)
 		{
 			std::ostringstream oss;
 			oss << "{\"ControlStatement\": {\n";
@@ -137,22 +137,22 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeIterationStatement(const std::shared_ptr<AST::IterationStatement>& iterationStmt)
+		std::string StringSerializer::SerializeIterationStatement(const AST::IterationStatement* iterationStmt)
 		{
 			switch (iterationStmt->GetIterationType())
 			{
 			case AST::IterationStatementType::WhileStatement:
-				return SerializeWhileStatement(std::static_pointer_cast<AST::WhileStatement>(iterationStmt));
+				return SerializeWhileStatement(static_cast<const AST::WhileStatement*>(iterationStmt));
 			case AST::IterationStatementType::DoWhileStatement:
-				return SerializeDoWhileStatement(std::static_pointer_cast<AST::DoWhileStatement>(iterationStmt));
+				return SerializeDoWhileStatement(static_cast<const AST::DoWhileStatement*>(iterationStmt));
 			case AST::IterationStatementType::ForStatement:
-				return SerializeForStatement(std::static_pointer_cast<AST::ForStatement>(iterationStmt));
+				return SerializeForStatement(static_cast<const AST::ForStatement*>(iterationStmt));
 			default:
 				break;
 			}
 		}
 
-		std::string StringSerializer::SerializeContinueStatement(const std::shared_ptr<AST::ContinueStatement>& continueStmt)
+		std::string StringSerializer::SerializeContinueStatement(const AST::ContinueStatement* continueStmt)
 		{
 			std::ostringstream oss;
 			oss << "{\"ContinueStatement\": {\n";
@@ -161,7 +161,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeBreakStatement(const std::shared_ptr<AST::BreakStatement>& breakStmt)
+		std::string StringSerializer::SerializeBreakStatement(const AST::BreakStatement* breakStmt)
 		{
 			std::ostringstream oss;
 			oss << "{\"BreakStatement\": {\n";
@@ -170,7 +170,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeWhileStatement(const std::shared_ptr<AST::WhileStatement>& whileStmt)
+		std::string StringSerializer::SerializeWhileStatement(const AST::WhileStatement* whileStmt)
 		{
 			std::ostringstream oss;
 			oss << "{\"WhileStatement\": {\n";
@@ -181,7 +181,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeDoWhileStatement(const std::shared_ptr<AST::DoWhileStatement>& doWhileStmt)
+		std::string StringSerializer::SerializeDoWhileStatement(const AST::DoWhileStatement* doWhileStmt)
 		{
 			std::ostringstream oss;
 			oss << "{\"DoWhileStatement\": {\n";
@@ -192,7 +192,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeForStatement(const std::shared_ptr<AST::ForStatement>& forStmt)
+		std::string StringSerializer::SerializeForStatement(const AST::ForStatement* forStmt)
 		{
 			std::ostringstream oss;
 			oss << "{\"ForStatement\": {\n";
@@ -210,7 +210,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt)
+		std::string StringSerializer::SerializeFunctionStatement(const AST::FunctionStatement* functionStmt)
 		{
 			std::ostringstream oss;
 			oss << "{\"FunctionStatement\": {\n";
@@ -221,7 +221,7 @@ namespace Eye
 			size_t i = 0;
 			for (const auto& param : functionStmt->GetParameters())
 			{
-				oss << SerializeFunctionParameter(param);
+				oss << SerializeFunctionParameter(param.get());
 				i++;
 				if ((i + 1) <= functionStmt->GetParameters().size())
 					oss << ",";
@@ -232,7 +232,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeFunctionParameter(const std::shared_ptr<AST::FunctionParameter>& functionParam)
+		std::string StringSerializer::SerializeFunctionParameter(const AST::FunctionParameter* functionParam)
 		{
 			std::ostringstream oss;
 			oss << "{\"FunctionParameter\": {\n";
@@ -248,7 +248,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt)
+		std::string StringSerializer::SerializeReturnStatement(const AST::ReturnStatement* returnStmt)
 		{
 			std::ostringstream oss;
 			oss << "{\"ReturnStatement\": {\n";
@@ -258,7 +258,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeExpression(const std::shared_ptr<AST::Expression>& expr)
+		std::string StringSerializer::SerializeExpression(const AST::Expression* expr)
 		{
 			if (!expr)
 				return "null";
@@ -266,28 +266,28 @@ namespace Eye
 			switch (expr->GetType())
 			{
 			case AST::ExpressionType::LiteralExpression:
-				return SerializeLiteralExpression(std::static_pointer_cast<AST::LiteralExpression>(expr));
+				return SerializeLiteralExpression(static_cast<const AST::LiteralExpression*>(expr));
 			case AST::ExpressionType::BinaryExpression:
-				return SerializeBinaryExpression(std::static_pointer_cast<AST::BinaryExpression>(expr));
+				return SerializeBinaryExpression(static_cast<const AST::BinaryExpression*>(expr));
 			case AST::ExpressionType::IdentifierExpression:
-				return SerializeIdentifierExpression(std::static_pointer_cast<AST::IdentifierExpression>(expr));
+				return SerializeIdentifierExpression(static_cast<const AST::IdentifierExpression*>(expr));
 			case AST::ExpressionType::AssignmentExpression:
-				return SerializeAssignmentExpression(std::static_pointer_cast<AST::AssignmentExpression>(expr));
+				return SerializeAssignmentExpression(static_cast<const AST::AssignmentExpression*>(expr));
 			case AST::ExpressionType::UnaryExpression:
-				return SerializeUnaryExpression(std::static_pointer_cast<AST::UnaryExpression>(expr));
+				return SerializeUnaryExpression(static_cast<const AST::UnaryExpression*>(expr));
 			case AST::ExpressionType::MemberExpression:
-				return SerializeMemberExpression(std::static_pointer_cast<AST::MemberExpression>(expr));
+				return SerializeMemberExpression(static_cast<const AST::MemberExpression*>(expr));
 			case AST::ExpressionType::CallExpression:
-				return SerializeCallExpression(std::static_pointer_cast<AST::CallExpression>(expr));
+				return SerializeCallExpression(static_cast<const AST::CallExpression*>(expr));
 			case AST::ExpressionType::PostfixExpression:
-				return SerializePostfixExpression(std::static_pointer_cast<AST::PostfixExpression>(expr));
+				return SerializePostfixExpression(static_cast<const AST::PostfixExpression*>(expr));
 			default:
 				EYE_LOG_CRITICAL("ASTSerializer Unknown Expression Type!");
 				break;
 			}
 		}
 
-		std::string StringSerializer::SerializeLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr)
+		std::string StringSerializer::SerializeLiteralExpression(const AST::LiteralExpression* literalExpr)
 		{
 			std::ostringstream oss;
 			oss << "{\"LiteralExpression\": {\n";
@@ -320,7 +320,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeBinaryExpression(const std::shared_ptr<AST::BinaryExpression>& binaryExpr)
+		std::string StringSerializer::SerializeBinaryExpression(const AST::BinaryExpression* binaryExpr)
 		{
 			std::ostringstream oss;
 			oss << "{\"BinaryExpression\": {\n";
@@ -332,7 +332,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr)
+		std::string StringSerializer::SerializeIdentifierExpression(const AST::IdentifierExpression* identifierExpr)
 		{
 			std::ostringstream oss;
 			oss << "{\"IdentifierExpression\": {\n";
@@ -342,7 +342,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignmentExpr)
+		std::string StringSerializer::SerializeAssignmentExpression(const AST::AssignmentExpression* assignmentExpr)
 		{
 			std::ostringstream oss;
 			oss << "{\"AssignmentExpression\": {\n";
@@ -354,7 +354,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeUnaryExpression(const std::shared_ptr<AST::UnaryExpression>& unaryExpr)
+		std::string StringSerializer::SerializeUnaryExpression(const AST::UnaryExpression* unaryExpr)
 		{
 			std::ostringstream oss;
 			oss << "{\"UnaryExpression\": {\n";
@@ -365,7 +365,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeMemberExpression(const std::shared_ptr<AST::MemberExpression>& memberExpr)
+		std::string StringSerializer::SerializeMemberExpression(const AST::MemberExpression* memberExpr)
 		{
 			std::ostringstream oss;
 			oss << "{\"MemberExpression\": {\n";
@@ -377,7 +377,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializeCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr)
+		std::string StringSerializer::SerializeCallExpression(const AST::CallExpression* callExpr)
 		{
 			std::ostringstream oss;
 			oss << "{\"CallExpression\": {\n";
@@ -387,7 +387,7 @@ namespace Eye
 			size_t i = 0;
 			for (const auto& arg : callExpr->GetArguments())
 			{
-				oss << SerializeExpression(arg);
+				oss << SerializeExpression(arg.get());
 				i++;
 				if ((i + 1) <= callExpr->GetArguments().size())
 					oss << ",";
@@ -397,7 +397,7 @@ namespace Eye
 			return oss.str();
 		}
 
-		std::string StringSerializer::SerializePostfixExpression(const std::shared_ptr<AST::PostfixExpression>& postfixExpr)
+		std::string StringSerializer::SerializePostfixExpression(const AST::PostfixExpression* postfixExpr)
 		{
 			std::ostringstream oss;
 			oss << "{\"PostfixExpression\": {\n";

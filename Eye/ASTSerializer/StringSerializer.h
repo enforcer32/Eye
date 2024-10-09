@@ -30,34 +30,34 @@ namespace Eye
 		class StringSerializer : public ASTSerializer
 		{
 		public:
-			virtual std::string Serialize(const std::shared_ptr<AST::Program>& ast) override;
+			virtual std::string Serialize(const AST::Program* ast) override;
 
 		private:
-			std::string SerializeStatement(const std::shared_ptr<AST::Statement>& stmt);
-			std::string SerializeExpressionStatement(const std::shared_ptr<AST::ExpressionStatement>& exprStmt);
-			std::string SerializeBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt);
-			std::string SerializeVariableStatement(const std::shared_ptr<AST::VariableStatement>& variableStmt);
-			std::string SerializeVariableDeclaration(const std::shared_ptr<AST::VariableDeclaration>& variableDeclaration);
-			std::string SerializeControlStatement(const std::shared_ptr<AST::ControlStatement>& controlStmt);
-			std::string SerializeIterationStatement(const std::shared_ptr<AST::IterationStatement>& iterationStmt);
-			std::string SerializeContinueStatement(const std::shared_ptr<AST::ContinueStatement>& continueStmt);
-			std::string SerializeBreakStatement(const std::shared_ptr<AST::BreakStatement>& breakStmt);
-			std::string SerializeWhileStatement(const std::shared_ptr<AST::WhileStatement>& whileStmt);
-			std::string SerializeDoWhileStatement(const std::shared_ptr<AST::DoWhileStatement>& doWhileStmt);
-			std::string SerializeForStatement(const std::shared_ptr<AST::ForStatement>& forStmt);
-			std::string SerializeFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt);
-			std::string SerializeFunctionParameter(const std::shared_ptr<AST::FunctionParameter>& functionParam);
-			std::string SerializeReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt);
+			std::string SerializeStatement(const AST::Statement* stmt);
+			std::string SerializeExpressionStatement(const AST::ExpressionStatement* exprStmt);
+			std::string SerializeBlockStatement(const AST::BlockStatement* blockStmt);
+			std::string SerializeVariableStatement(const AST::VariableStatement* variableStmt);
+			std::string SerializeVariableDeclaration(const AST::VariableDeclaration* variableDeclaration);
+			std::string SerializeControlStatement(const AST::ControlStatement* controlStmt);
+			std::string SerializeIterationStatement(const AST::IterationStatement* iterationStmt);
+			std::string SerializeContinueStatement(const AST::ContinueStatement* continueStmt);
+			std::string SerializeBreakStatement(const AST::BreakStatement* breakStmt);
+			std::string SerializeWhileStatement(const AST::WhileStatement* whileStmt);
+			std::string SerializeDoWhileStatement(const AST::DoWhileStatement* doWhileStmt);
+			std::string SerializeForStatement(const AST::ForStatement* forStmt);
+			std::string SerializeFunctionStatement(const AST::FunctionStatement* functionStmt);
+			std::string SerializeFunctionParameter(const AST::FunctionParameter* functionParam);
+			std::string SerializeReturnStatement(const AST::ReturnStatement* returnStmt);
 
-			std::string SerializeExpression(const std::shared_ptr<AST::Expression>& expr);
-			std::string SerializeLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);
-			std::string SerializeBinaryExpression(const std::shared_ptr<AST::BinaryExpression>& binaryExpr);
-			std::string SerializeIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr);
-			std::string SerializeAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignmentExpr);
-			std::string SerializeUnaryExpression(const std::shared_ptr<AST::UnaryExpression>& unaryExpr);
-			std::string SerializeMemberExpression(const std::shared_ptr<AST::MemberExpression>& memberExpr);
-			std::string SerializeCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr);
-			std::string SerializePostfixExpression(const std::shared_ptr<AST::PostfixExpression>& postfixExpr);
+			std::string SerializeExpression(const AST::Expression* expr);
+			std::string SerializeLiteralExpression(const AST::LiteralExpression* literalExpr);
+			std::string SerializeBinaryExpression(const AST::BinaryExpression* binaryExpr);
+			std::string SerializeIdentifierExpression(const AST::IdentifierExpression* identifierExpr);
+			std::string SerializeAssignmentExpression(const AST::AssignmentExpression* assignmentExpr);
+			std::string SerializeUnaryExpression(const AST::UnaryExpression* unaryExpr);
+			std::string SerializeMemberExpression(const AST::MemberExpression* memberExpr);
+			std::string SerializeCallExpression(const AST::CallExpression* callExpr);
+			std::string SerializePostfixExpression(const AST::PostfixExpression* postfixExpr);
 		};
 	}
 }

@@ -115,7 +115,7 @@ namespace Eye
 			inline const T* GetInitializer() const
 			{
 				static_assert(std::is_same_v<T, VariableStatement> || std::is_same_v<T, Expression>, "Eye->AST->IterationStatement->ForStatement->Error GetInitializer() Invalid Typename");
-				return std::get<T>(m_Initializer);
+				return (std::get<std::unique_ptr<T>>(m_Initializer)).get();
 			}
 
 			inline ForInitializerType GetInitializerType() const { return m_InitializerType; }
