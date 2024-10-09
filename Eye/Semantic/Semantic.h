@@ -26,23 +26,23 @@ namespace Eye
 	class Semantic
 	{
 	public:
-		std::expected<bool, Error::Error> Validate(const std::shared_ptr<AST::Program>& ast);
+		std::expected<bool, Error::Error> Validate(const AST::Program* ast);
 
 	private:
-		void ValidateStatement(const std::shared_ptr<AST::Statement>& stmt);
-		void ValidateExpressionStatement(const std::shared_ptr<AST::ExpressionStatement>& exprStmt);
-		void ValidateBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt, bool createScope = true);
-		void ValidateVariableStatement(const std::shared_ptr<AST::VariableStatement>& varStmt);
-		void ValidateFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt);
-		void ValidateFunctionReturnStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt);
-		void ValidateFunctionParameters(const std::shared_ptr<AST::FunctionStatement>& functionStmt, const FunctionDeclaration& functionDec);
-		void ValidateReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt);
+		void ValidateStatement(const AST::Statement* stmt);
+		void ValidateExpressionStatement(const AST::ExpressionStatement* exprStmt);
+		void ValidateBlockStatement(const AST::BlockStatement* blockStmt, bool createScope = true);
+		void ValidateVariableStatement(const AST::VariableStatement* varStmt);
+		void ValidateFunctionStatement(const AST::FunctionStatement* functionStmt);
+		void ValidateFunctionReturnStatement(const AST::FunctionStatement* functionStmt);
+		void ValidateFunctionParameters(const AST::FunctionStatement* functionStmt, const FunctionDeclaration& functionDec);
+		void ValidateReturnStatement(const AST::ReturnStatement* returnStmt);
 
-		void ValidateExpression(const std::shared_ptr<AST::Expression>& expr);
-		void ValidateLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr);
-		void ValidateIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr);
-		void ValidateAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignExpr);
-		void ValidateCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr);
+		void ValidateExpression(const AST::Expression* expr);
+		void ValidateLiteralExpression(const AST::LiteralExpression* literalExpr);
+		void ValidateIdentifierExpression(const AST::IdentifierExpression* identifierExpr);
+		void ValidateAssignmentExpression(const AST::AssignmentExpression* assignExpr);
+		void ValidateCallExpression(const AST::CallExpression* callExpr);
 
 	private:
 		void BeginBlockScope();

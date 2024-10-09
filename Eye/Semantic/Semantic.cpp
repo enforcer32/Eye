@@ -12,7 +12,7 @@
 
 namespace Eye
 {
-	std::expected<bool, Error::Error> Semantic::Validate(const std::shared_ptr<AST::Program>& ast)
+	std::expected<bool, Error::Error> Semantic::Validate(const AST::Program* ast)
 	{
 		m_DeclarationEnvironment = std::make_shared<MapEnvironment<DeclarationType>>();
 		m_FunctionDeclarationEnvironment = std::make_shared<MapEnvironment<FunctionDeclaration>>();
@@ -21,7 +21,7 @@ namespace Eye
 		try
 		{
 			for (const auto& stmt : ast->GetStatementList())
-				ValidateStatement(stmt);
+				ValidateStatement(stmt.get());
 		}
 		catch (const Error::Exceptions::EyeException& ex)
 		{
@@ -35,24 +35,24 @@ namespace Eye
 		return true;
 	}
 
-	void Semantic::ValidateStatement(const std::shared_ptr<AST::Statement>& stmt)
+	void Semantic::ValidateStatement(const AST::Statement* stmt)
 	{
 		switch (stmt->GetType())
 		{
 		case AST::StatementType::ExpressionStatement:
-			ValidateExpressionStatement(std::static_pointer_cast<AST::ExpressionStatement>(stmt));
+			ValidateExpressionStatement(static_cast<const AST::ExpressionStatement*>(stmt));
 			break;
 		case AST::StatementType::BlockStatement:
-			ValidateBlockStatement(std::static_pointer_cast<AST::BlockStatement>(stmt));
+			ValidateBlockStatement(static_cast<const AST::BlockStatement*>(stmt));
 			break;
 		case AST::StatementType::VariableStatement:
-			ValidateVariableStatement(std::static_pointer_cast<AST::VariableStatement>(stmt));
+			ValidateVariableStatement(static_cast<const AST::VariableStatement*>(stmt));
 			break;
 		case AST::StatementType::FunctionStatement:
-			ValidateFunctionStatement(std::static_pointer_cast<AST::FunctionStatement>(stmt));
+			ValidateFunctionStatement(static_cast<const AST::FunctionStatement*>(stmt));
 			break;
 		case AST::StatementType::ReturnStatement:
-			ValidateReturnStatement(std::static_pointer_cast<AST::ReturnStatement>(stmt));
+			ValidateReturnStatement(static_cast<const AST::ReturnStatement*>(stmt));
 			break;
 		default:
 			EYE_LOG_CRITICAL("EYESemantic ValidateStatement Unsupported Statement Type!");
@@ -60,22 +60,22 @@ namespace Eye
 		}
 	}
 
-	void Semantic::ValidateExpressionStatement(const std::shared_ptr<AST::ExpressionStatement>& exprStmt)
+	void Semantic::ValidateExpressionStatement(const AST::ExpressionStatement* exprStmt)
 	{
 		ValidateExpression(exprStmt->GetExpression());
 	}
 
-	void Semantic::ValidateBlockStatement(const std::shared_ptr<AST::BlockStatement>& blockStmt, bool createScope)
+	void Semantic::ValidateBlockStatement(const AST::BlockStatement* blockStmt, bool createScope)
 	{
 		if (createScope)
 			BeginBlockScope();
 		for (const auto& stmt : blockStmt->GetStatementList())
-			ValidateStatement(stmt);
+			ValidateStatement(stmt.get());
 		if (createScope)
 			EndBlockScope();
 	}
 
-	void Semantic::ValidateVariableStatement(const std::shared_ptr<AST::VariableStatement>& varStmt)
+	void Semantic::ValidateVariableStatement(const AST::VariableStatement* varStmt)
 	{
 		if (varStmt->GetDataType()->GetType() == TokenType::KeywordDataTypeVoid)
 			throw Error::Exceptions::BadDataTypeException("Variable Declared as void", Error::ErrorType::SemanticBadDataType, varStmt->GetSource());
@@ -97,7 +97,7 @@ namespace Eye
 		}
 	}
 
-	void Semantic::ValidateFunctionStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt)
+	void Semantic::ValidateFunctionStatement(const AST::FunctionStatement* functionStmt)
 	{
 		if (m_DeclarationEnvironment->Has(functionStmt->GetIdentifier()->GetValue()))
 			throw Error::Exceptions::ReDeclarationException("ReDeclaration of '" + functionStmt->GetIdentifier()->GetValue() + "'", Error::ErrorType::SemanticReDeclaration, functionStmt->GetIdentifier()->GetSource());
@@ -144,12 +144,12 @@ namespace Eye
 		EndBlockScope();
 	}
 
-	void Semantic::ValidateFunctionReturnStatement(const std::shared_ptr<AST::FunctionStatement>& functionStmt)
+	void Semantic::ValidateFunctionReturnStatement(const AST::FunctionStatement* functionStmt)
 	{
 		bool functionReturns = (functionStmt->GetReturnType()->GetType() != TokenType::KeywordDataTypeVoid);
 		bool foundReturn = false;
 	
-		std::function<void(const std::shared_ptr<AST::BlockStatement>& block)> validateReturn = [&](const std::shared_ptr<AST::BlockStatement>& block) -> void
+		std::function<void(const AST::BlockStatement* block)> validateReturn = [&](const AST::BlockStatement* block) -> void
 			{
 				for (const auto& stmt : block->GetStatementList())
 				{
@@ -165,7 +165,7 @@ namespace Eye
 					}
 					else if (stmt->GetType() == AST::StatementType::BlockStatement)
 					{
-						validateReturn(std::static_pointer_cast<AST::BlockStatement>(stmt));
+						validateReturn(static_cast<const AST::BlockStatement*>(stmt.get()));
 					}
 				}
 
@@ -176,7 +176,7 @@ namespace Eye
 		validateReturn(functionStmt->GetBody());
 	}
 
-	void Semantic::ValidateFunctionParameters(const std::shared_ptr<AST::FunctionStatement>& functionStmt, const FunctionDeclaration& functionDec)
+	void Semantic::ValidateFunctionParameters(const AST::FunctionStatement* functionStmt, const FunctionDeclaration& functionDec)
 	{
 		if (functionDec.Parameters.size())
 		{
@@ -186,26 +186,26 @@ namespace Eye
 		}
 	}
 
-	void Semantic::ValidateReturnStatement(const std::shared_ptr<AST::ReturnStatement>& returnStmt)
+	void Semantic::ValidateReturnStatement(const AST::ReturnStatement* returnStmt)
 	{
 		ValidateExpression(returnStmt->GetExpression());
 	}
 
-	void Semantic::ValidateExpression(const std::shared_ptr<AST::Expression>& expr)
+	void Semantic::ValidateExpression(const AST::Expression* expr)
 	{
 		switch (expr->GetType())
 		{
 		case AST::ExpressionType::LiteralExpression:
-			ValidateLiteralExpression(std::static_pointer_cast<AST::LiteralExpression>(expr));
+			ValidateLiteralExpression(static_cast<const AST::LiteralExpression*>(expr));
 			break;
 		case AST::ExpressionType::IdentifierExpression:
-			ValidateIdentifierExpression(std::static_pointer_cast<AST::IdentifierExpression>(expr));
+			ValidateIdentifierExpression(static_cast<const AST::IdentifierExpression*>(expr));
 			break;
 		case AST::ExpressionType::AssignmentExpression:
-			ValidateAssignmentExpression(std::static_pointer_cast<AST::AssignmentExpression>(expr));
+			ValidateAssignmentExpression(static_cast<const AST::AssignmentExpression*>(expr));
 			break;
 		case AST::ExpressionType::CallExpression:
-			ValidateCallExpression(std::static_pointer_cast<AST::CallExpression>(expr));
+			ValidateCallExpression(static_cast<const AST::CallExpression*>(expr));
 			break;
 		default:
 			EYE_LOG_CRITICAL("EYESemantic ValidateExpression Unsupported Expression Type!");
@@ -213,23 +213,23 @@ namespace Eye
 		}
 	}
 
-	void Semantic::ValidateLiteralExpression(const std::shared_ptr<AST::LiteralExpression>& literalExpr)
+	void Semantic::ValidateLiteralExpression(const AST::LiteralExpression* literalExpr)
 	{
 	}
 
-	void Semantic::ValidateIdentifierExpression(const std::shared_ptr<AST::IdentifierExpression>& identifierExpr)
+	void Semantic::ValidateIdentifierExpression(const AST::IdentifierExpression* identifierExpr)
 	{
 		if (!m_DeclarationEnvironment->Has(identifierExpr->GetValue()))
 			throw Error::Exceptions::NotDeclaredException("'" + identifierExpr->GetValue() + "' Was Not Declared in this Scope", Error::ErrorType::SemanticNotDeclared, identifierExpr->GetSource());
 	}
 
-	void Semantic::ValidateAssignmentExpression(const std::shared_ptr<AST::AssignmentExpression>& assignExpr)
+	void Semantic::ValidateAssignmentExpression(const AST::AssignmentExpression* assignExpr)
 	{
 		ValidateExpression(assignExpr->GetLHSExpression());
 
 		if (assignExpr->GetLHSExpression()->GetType() == AST::ExpressionType::IdentifierExpression)
 		{
-			const auto& astIdentifierExpr = std::static_pointer_cast<AST::IdentifierExpression>(assignExpr->GetLHSExpression());
+			const auto& astIdentifierExpr = static_cast<const AST::IdentifierExpression*>(assignExpr->GetLHSExpression());
 			if (m_VariableTypeQualifierEnvironment->Get(astIdentifierExpr->GetValue()) == VariableTypeQualifier::Const)
 				throw Error::Exceptions::WriteReadOnlyException("Assignment of Read-Only Variable: '" + astIdentifierExpr->GetValue() + "'", Error::ErrorType::SemanticWriteReadOnly, astIdentifierExpr->GetSource());
 		}
@@ -237,13 +237,13 @@ namespace Eye
 		ValidateExpression(assignExpr->GetExpression());
 	}
 
-	void Semantic::ValidateCallExpression(const std::shared_ptr<AST::CallExpression>& callExpr)
+	void Semantic::ValidateCallExpression(const AST::CallExpression* callExpr)
 	{
 		ValidateExpression(callExpr->GetCallee());
 
 		if (callExpr->GetCallee()->GetType() == AST::ExpressionType::IdentifierExpression)
 		{
-			const auto& astIdentifierExpr = std::static_pointer_cast<AST::IdentifierExpression>(callExpr->GetCallee());
+			const auto& astIdentifierExpr = static_cast<const AST::IdentifierExpression*>(callExpr->GetCallee());
 
 			if (m_DeclarationEnvironment->Get(astIdentifierExpr->GetValue()) == DeclarationType::Variable)
 				throw Error::Exceptions::CallException("Cannot Call Variable: '" + astIdentifierExpr->GetValue() + "'", Error::ErrorType::SemanticCallVariable, astIdentifierExpr->GetSource());
@@ -256,7 +256,7 @@ namespace Eye
 		}
 
 		for (const auto& arg : callExpr->GetArguments())
-			ValidateExpression(arg);
+			ValidateExpression(arg.get());
 	}
 
 	void Semantic::BeginBlockScope()

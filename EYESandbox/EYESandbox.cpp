@@ -1,6 +1,6 @@
 #include <Eye/Utility/Logger.h>
 //#include <Eye/ASTGenerator/ASTGenerator.h>
-//#include <Eye/Semantic/Semantic.h>
+#include <Eye/Semantic/Semantic.h>
 //
 #include <Eye/Lexer/Lexer.h>
 #include <Eye/Parser/Parser.h>
@@ -51,8 +51,16 @@ int main(int argc, char** argv)
 	auto res2 = parser.Parse(std::move(res.value()));
 	if (!res2.has_value())
 	{
-		EYE_LOG_ERROR(res.error().GetMessage());
+		EYE_LOG_ERROR(res2.error().GetMessage());
 		EYE_LOG_CRITICAL("EYEASTGenerator->GenerateMemoryAST Parser Failed to Parse!");
+	}
+
+	Eye::Semantic semanticValidator;
+	auto res3 = semanticValidator.Validate(res2.value().get());
+	if (!res3)
+	{
+		EYE_LOG_ERROR(res3.error().GetMessage());
+		EYE_LOG_CRITICAL("EYESemantic->Validate Failed!");
 	}
 
 	Eye::ASTSerializer::StringSerializer serialize;
