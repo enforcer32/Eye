@@ -72,7 +72,7 @@ int main(int argc, char** argv)
 	}*/
 
 	Eye::ASTGenerator astGenerator;
-	std::cout << astGenerator.GenerateStringAST({ { "..\\..\\..\\..\\Examples\\Test.eye", Eye::EyeSourceType::File }, true }) << std::endl;
+	std::cout << astGenerator.GenerateStringAST({ { "..\\..\\..\\..\\Examples\\Test.eye", Eye::EyeSourceType::File }, true, false }) << std::endl;
 
 	return 0;
 }

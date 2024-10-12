@@ -10,22 +10,22 @@
 	TypeChecker typeChecker; \
 	ASTGenerator astGenerator; \
 	 \
-	auto res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST({ { "10 " testOperator " 20;", EyeSourceType::String }, false })); \
+	auto res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST({ { "10 " testOperator " 20;", EyeSourceType::String }, false, false }).get()); \
 	ASSERT_EQ(res.has_value(), true); \
 	 \
-	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST({ { "10 " testOperator " true;", EyeSourceType::String }, false })); \
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST({ { "10 " testOperator " true;", EyeSourceType::String }, false, false }).get()); \
 	ASSERT_EQ(!res.has_value(), true); \
 	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType); \
 	 \
-	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST({ { "25.12 " testOperator " 5;", EyeSourceType::String }, false })); \
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST({ { "25.12 " testOperator " 5;", EyeSourceType::String }, false, false }).get()); \
 	ASSERT_EQ(!res.has_value(), true); \
 	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType); \
 	 \
-	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST({ { "10 " testOperator " \"Hello\";", EyeSourceType::String }, false })); \
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST({ { "10 " testOperator " \"Hello\";", EyeSourceType::String }, false, false }).get()); \
 	ASSERT_EQ(!res.has_value(), true); \
 	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType); \
 	 \
-	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST({ { "true " testOperator " \"Bye\";", EyeSourceType::String }, false })); \
+	res = typeChecker.TypeCheck(astGenerator.GenerateMemoryAST({ { "true " testOperator " \"Bye\";", EyeSourceType::String }, false, false }).get()); \
 	ASSERT_EQ(!res.has_value(), true); \
 	ASSERT_EQ(res.error().GetType(), Error::ErrorType::TypeCheckerBadOperandType)
 

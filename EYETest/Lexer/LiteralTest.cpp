@@ -20,7 +20,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerLiteralTest->IntegerDecimal Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetValue<IntegerType>(), 12345);
 		ASSERT_EQ(tokens[2]->GetValue<IntegerType>(), 123);
@@ -40,7 +40,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerLiteralTest->IntegerHex Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetValue<IntegerType>(), 4660);
 		ASSERT_EQ(tokens[2]->GetValue<IntegerType>(), 1245);
@@ -60,7 +60,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerLiteralTest->IntegerBinary Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetValue<IntegerType>(), 6);
 		ASSERT_EQ(tokens[2]->GetValue<IntegerType>(), 51256);
@@ -80,7 +80,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerLiteralTest->Float Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetValue<FloatType>(), 123.456);
 		ASSERT_EQ(tokens[2]->GetValue<FloatType>(), 12.3356);
@@ -100,7 +100,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerLiteralTest->String Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(std::string(tokens[0]->GetValue<StringType>()), "Hello World");
 		ASSERT_EQ(std::string(tokens[2]->GetValue<StringType>()), "Test\\n");
@@ -120,7 +120,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerLiteralTest->Boolean Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetValue<BooleanType>(), true);
 		ASSERT_EQ(tokens[2]->GetValue<BooleanType>(), false);
@@ -141,7 +141,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerLiteralTest->Null Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetType(), TokenType::LiteralNull);
 		ASSERT_EQ(tokens[2]->GetType(), TokenType::LiteralNull);

@@ -7,7 +7,7 @@
 
 #include <gtest/gtest.h>
 
-std::expected<bool, Eye::Error::Error> gRes;
+std::expected<std::unique_ptr<Eye::AST::Program>, Eye::Error::Error> gRes;
 #define CREATE_BINARY_ERROR_TEST(testOperator) \
 	gRes = TestGenerateAST("number" testOperator "1;"); \
 	ASSERT_EQ(gRes.has_value(), true); \
@@ -46,18 +46,18 @@ std::expected<bool, Eye::Error::Error> gRes;
 
 namespace Eye
 {
-	std::expected<bool, Error::Error> TestGenerateAST(const std::string& str)
+	std::expected<std::unique_ptr<AST::Program>, Error::Error> TestGenerateAST(const std::string& str)
 	{
 		Lexer lexer;
-		auto res = lexer.Tokenize({ str, EyeSourceType::String });
-		if (!res)
+		auto lexerRes = lexer.Tokenize({ str, EyeSourceType::String });
+		if (!lexerRes.has_value())
 		{
-			EYE_LOG_ERROR(res.error().GetMessage());
-			EYE_LOG_CRITICAL("EYEASTGenerator->GenerateMemoryAST Lexer Failed to Tokenize!");
+			EYE_LOG_ERROR(lexerRes.error().GetMessage());
+			EYE_LOG_CRITICAL("EyeTest->ExpressionErrorTest->TestGenerateAST Lexer Failed to Tokenize!");
 		}
 
 		Parser parser;
-		return parser.Parse(lexer.GetTokens());
+		return parser.Parse(std::move(lexerRes.value()));
 	}
 
 	TEST(ParserExpressionErrorTest, AssignmentExpression)

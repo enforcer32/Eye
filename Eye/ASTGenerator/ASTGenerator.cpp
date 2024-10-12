@@ -26,12 +26,15 @@ namespace Eye
 			EYE_LOG_CRITICAL("EYEASTGenerator->GenerateMemoryAST Parser Failed to Parse!");
 		}
 
-		Eye::Semantic semanticValidator;
-		auto semanticRes = semanticValidator.Validate(parserRes.value().get());
-		if (!semanticRes)
+		if (properties.ValidateSemantics)
 		{
-			EYE_LOG_ERROR(semanticRes.error().GetMessage());
-			EYE_LOG_CRITICAL("EYEASTGenerator->GenerateMemoryAST Semantic Failed to Validate!");
+			Eye::Semantic semanticValidator;
+			auto semanticRes = semanticValidator.Validate(parserRes.value().get());
+			if (!semanticRes)
+			{
+				EYE_LOG_ERROR(semanticRes.error().GetMessage());
+				EYE_LOG_CRITICAL("EYEASTGenerator->GenerateMemoryAST Semantic Failed to Validate!");
+			}
 		}
 
 		if (properties.TypeCheck)

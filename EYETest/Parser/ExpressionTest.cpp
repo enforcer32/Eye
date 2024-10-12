@@ -20,17 +20,19 @@ namespace Eye
 		std::string testFilePath = "..\\..\\..\\..\\EyeTest\\Parser\\" + testType + "\\" + testFile;
 
 		Lexer lexer;
-		if (!lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File)))
+		auto lexerRes = lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File));
+		if (!lexerRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->LiteralExpression Failed to Tokenize()");
 
 		Parser parser;
-		if (!parser.Parse(lexer.GetTokens()))
+		auto parserRes = parser.Parse(std::move(lexerRes.value()));
+		if (!parserRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->LiteralExpression Failed to Parse()");
 
 		ASTSerializer::StringSerializer astSerializer;
 
 		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
-		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parserRes.value().get()));
 		ASSERT_EQ(testFileData, parserData);
 	}
 
@@ -43,17 +45,19 @@ namespace Eye
 		std::string testFilePath = "..\\..\\..\\..\\EyeTest\\Parser\\" + testType + "\\" + testFile;
 
 		Lexer lexer;
-		if (!lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File)))
+		auto lexerRes = lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File));
+		if (!lexerRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->AdditiveBinaryExpression Failed to Tokenize()");
 
 		Parser parser;
-		if (!parser.Parse(lexer.GetTokens()))
+		auto parserRes = parser.Parse(std::move(lexerRes.value()));
+		if (!parserRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->AdditiveBinaryExpression Failed to Parse()");
 
 		ASTSerializer::StringSerializer astSerializer;
 
 		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
-		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parserRes.value().get()));
 		ASSERT_EQ(testFileData, parserData);
 	}
 
@@ -66,17 +70,19 @@ namespace Eye
 		std::string testFilePath = "..\\..\\..\\..\\EyeTest\\Parser\\" + testType + "\\" + testFile;
 
 		Lexer lexer;
-		if (!lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File)))
+		auto lexerRes = lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File));
+		if (!lexerRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->MultiplicativeBinaryExpression Failed to Tokenize()");
 
 		Parser parser;
-		if (!parser.Parse(lexer.GetTokens()))
+		auto parserRes = parser.Parse(std::move(lexerRes.value()));
+		if (!parserRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->MultiplicativeBinaryExpression Failed to Parse()");
 
 		ASTSerializer::StringSerializer astSerializer;
 
 		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
-		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parserRes.value().get()));
 		ASSERT_EQ(testFileData, parserData);
 	}
 
@@ -89,17 +95,19 @@ namespace Eye
 		std::string testFilePath = "..\\..\\..\\..\\EyeTest\\Parser\\" + testType + "\\" + testFile;
 
 		Lexer lexer;
-		if (!lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File)))
+		auto lexerRes = lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File));
+		if (!lexerRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->BitwiseExpression Failed to Tokenize()");
 
 		Parser parser;
-		if (!parser.Parse(lexer.GetTokens()))
+		auto parserRes = parser.Parse(std::move(lexerRes.value()));
+		if (!parserRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->BitwiseExpression Failed to Parse()");
 
 		ASTSerializer::StringSerializer astSerializer;
 
 		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
-		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parserRes.value().get()));
 		ASSERT_EQ(testFileData, parserData);
 	}
 
@@ -112,17 +120,19 @@ namespace Eye
 		std::string testFilePath = "..\\..\\..\\..\\EyeTest\\Parser\\" + testType + "\\" + testFile;
 
 		Lexer lexer;
-		if (!lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File)))
+		auto lexerRes = lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File));
+		if (!lexerRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->BitwiseShiftExpression Failed to Tokenize()");
 
 		Parser parser;
-		if (!parser.Parse(lexer.GetTokens()))
+		auto parserRes = parser.Parse(std::move(lexerRes.value()));
+		if (!parserRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->BitwiseShiftExpression Failed to Parse()");
 
 		ASTSerializer::StringSerializer astSerializer;
 
 		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
-		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parserRes.value().get()));
 		ASSERT_EQ(testFileData, parserData);
 	}
 
@@ -135,17 +145,19 @@ namespace Eye
 		std::string testFilePath = "..\\..\\..\\..\\EyeTest\\Parser\\" + testType + "\\" + testFile;
 
 		Lexer lexer;
-		if (!lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File)))
+		auto lexerRes = lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File));
+		if (!lexerRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->IdentifierExpression Failed to Tokenize()");
 
 		Parser parser;
-		if (!parser.Parse(lexer.GetTokens()))
+		auto parserRes = parser.Parse(std::move(lexerRes.value()));
+		if (!parserRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->IdentifierExpression Failed to Parse()");
 
 		ASTSerializer::StringSerializer astSerializer;
 
 		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
-		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parserRes.value().get()));
 		ASSERT_EQ(testFileData, parserData);
 	}
 
@@ -158,17 +170,19 @@ namespace Eye
 		std::string testFilePath = "..\\..\\..\\..\\EyeTest\\Parser\\" + testType + "\\" + testFile;
 
 		Lexer lexer;
-		if (!lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File)))
+		auto lexerRes = lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File));
+		if (!lexerRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->AssignmentExpression Failed to Tokenize()");
 
 		Parser parser;
-		if (!parser.Parse(lexer.GetTokens()))
+		auto parserRes = parser.Parse(std::move(lexerRes.value()));
+		if (!parserRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->AssignmentExpression Failed to Parse()");
 
 		ASTSerializer::StringSerializer astSerializer;
 
 		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
-		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parserRes.value().get()));
 		ASSERT_EQ(testFileData, parserData);
 	}
 
@@ -181,17 +195,19 @@ namespace Eye
 		std::string testFilePath = "..\\..\\..\\..\\EyeTest\\Parser\\" + testType + "\\" + testFile;
 
 		Lexer lexer;
-		if (!lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File)))
+		auto lexerRes = lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File));
+		if (!lexerRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->RelationalExpression Failed to Tokenize()");
 
 		Parser parser;
-		if (!parser.Parse(lexer.GetTokens()))
+		auto parserRes = parser.Parse(std::move(lexerRes.value()));
+		if (!parserRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->RelationalExpression Failed to Parse()");
 
 		ASTSerializer::StringSerializer astSerializer;
 
 		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
-		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parserRes.value().get()));
 		ASSERT_EQ(testFileData, parserData);
 	}
 
@@ -204,17 +220,19 @@ namespace Eye
 		std::string testFilePath = "..\\..\\..\\..\\EyeTest\\Parser\\" + testType + "\\" + testFile;
 
 		Lexer lexer;
-		if (!lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File)))
+		auto lexerRes = lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File));
+		if (!lexerRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->EqualityExpression Failed to Tokenize()");
 
 		Parser parser;
-		if (!parser.Parse(lexer.GetTokens()))
+		auto parserRes = parser.Parse(std::move(lexerRes.value()));
+		if (!parserRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->EqualityExpression Failed to Parse()");
 
 		ASTSerializer::StringSerializer astSerializer;
 
 		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
-		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parserRes.value().get()));
 		ASSERT_EQ(testFileData, parserData);
 	}
 
@@ -227,17 +245,19 @@ namespace Eye
 		std::string testFilePath = "..\\..\\..\\..\\EyeTest\\Parser\\" + testType + "\\" + testFile;
 
 		Lexer lexer;
-		if (!lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File)))
+		auto lexerRes = lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File));
+		if (!lexerRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->LogicalExpression Failed to Tokenize()");
 
 		Parser parser;
-		if (!parser.Parse(lexer.GetTokens()))
+		auto parserRes = parser.Parse(std::move(lexerRes.value()));
+		if (!parserRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->LogicalExpression Failed to Parse()");
 
 		ASTSerializer::StringSerializer astSerializer;
 
 		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
-		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parserRes.value().get()));
 		ASSERT_EQ(testFileData, parserData);
 	}
 
@@ -250,17 +270,19 @@ namespace Eye
 		std::string testFilePath = "..\\..\\..\\..\\EyeTest\\Parser\\" + testType + "\\" + testFile;
 
 		Lexer lexer;
-		if (!lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File)))
+		auto lexerRes = lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File));
+		if (!lexerRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->UnaryExpression Failed to Tokenize()");
 
 		Parser parser;
-		if (!parser.Parse(lexer.GetTokens()))
+		auto parserRes = parser.Parse(std::move(lexerRes.value()));
+		if (!parserRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->UnaryExpression Failed to Parse()");
 
 		ASTSerializer::StringSerializer astSerializer;
 
 		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
-		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parserRes.value().get()));
 		ASSERT_EQ(testFileData, parserData);
 	}
 
@@ -273,17 +295,19 @@ namespace Eye
 		std::string testFilePath = "..\\..\\..\\..\\EyeTest\\Parser\\" + testType + "\\" + testFile;
 
 		Lexer lexer;
-		if (!lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File)))
+		auto lexerRes = lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File));
+		if (!lexerRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->ParenthesizedExpression Failed to Tokenize()");
 
 		Parser parser;
-		if (!parser.Parse(lexer.GetTokens()))
+		auto parserRes = parser.Parse(std::move(lexerRes.value()));
+		if (!parserRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->ParenthesizedExpression Failed to Parse()");
 
 		ASTSerializer::StringSerializer astSerializer;
 
 		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
-		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parserRes.value().get()));
 		ASSERT_EQ(testFileData, parserData);
 	}
 
@@ -296,17 +320,19 @@ namespace Eye
 		std::string testFilePath = "..\\..\\..\\..\\EyeTest\\Parser\\" + testType + "\\" + testFile;
 
 		Lexer lexer;
-		if (!lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File)))
+		auto lexerRes = lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File));
+		if (!lexerRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->MemberExpression Failed to Tokenize()");
 
 		Parser parser;
-		if (!parser.Parse(lexer.GetTokens()))
+		auto parserRes = parser.Parse(std::move(lexerRes.value()));
+		if (!parserRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->MemberExpression Failed to Parse()");
 
 		ASTSerializer::StringSerializer astSerializer;
 
 		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
-		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parserRes.value().get()));
 		ASSERT_EQ(testFileData, parserData);
 	}
 
@@ -319,17 +345,19 @@ namespace Eye
 		std::string testFilePath = "..\\..\\..\\..\\EyeTest\\Parser\\" + testType + "\\" + testFile;
 
 		Lexer lexer;
-		if (!lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File)))
+		auto lexerRes = lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File));
+		if (!lexerRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->CallExpression Failed to Tokenize()");
 
 		Parser parser;
-		if (!parser.Parse(lexer.GetTokens()))
+		auto parserRes = parser.Parse(std::move(lexerRes.value()));
+		if (!parserRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->CallExpression Failed to Parse()");
 
 		ASTSerializer::StringSerializer astSerializer;
 
 		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
-		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parserRes.value().get()));
 		ASSERT_EQ(testFileData, parserData);
 	}
 
@@ -342,17 +370,19 @@ namespace Eye
 		std::string testFilePath = "..\\..\\..\\..\\EyeTest\\Parser\\" + testType + "\\" + testFile;
 
 		Lexer lexer;
-		if (!lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File)))
+		auto lexerRes = lexer.Tokenize(EyeSource(eyeFilePath, EyeSourceType::File));
+		if (!lexerRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->PostfixPrefixExpression Failed to Tokenize()");
 
 		Parser parser;
-		if (!parser.Parse(lexer.GetTokens()))
+		auto parserRes = parser.Parse(std::move(lexerRes.value()));
+		if (!parserRes.has_value())
 			EYE_LOG_CRITICAL("EyeTest->Parser->ParserExpressionTest->PostfixPrefixExpression Failed to Parse()");
 
 		ASTSerializer::StringSerializer astSerializer;
 
 		nlohmann::json testFileData = nlohmann::json::parse(std::ifstream(testFilePath));
-		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parser.GetAST()));
+		nlohmann::json parserData = nlohmann::json::parse(astSerializer.Serialize(parserRes.value().get()));
 		ASSERT_EQ(testFileData, parserData);
 	}
 }

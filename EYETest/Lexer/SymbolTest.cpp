@@ -20,7 +20,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerSymbolTest->Regular Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetType(), TokenType::SymbolRightParenthesis);
 		ASSERT_EQ(tokens[2]->GetType(), TokenType::SymbolRightBracket);
@@ -44,7 +44,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerSymbolTest->MathExpr Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetType(), TokenType::SymbolLeftBrace);
 		ASSERT_EQ(tokens[6]->GetType(), TokenType::SymbolRightParenthesis);

@@ -8,7 +8,8 @@ namespace Eye
 	struct ASTGeneratorProperties
 	{
 		EyeSource Source;
-		bool TypeCheck;
+		bool TypeCheck = true;
+		bool ValidateSemantics = true;
 	};
 
 	class ASTGenerator

@@ -319,7 +319,7 @@ namespace Eye
 		const auto& forToken = EatToken(TokenType::KeywordIterationFor);
 		EatToken(TokenType::OperatorLeftParenthesis);
 
-		std::variant<std::unique_ptr<AST::VariableStatement>, std::unique_ptr<AST::Expression>> initializer;
+		std::variant<std::unique_ptr<AST::VariableStatement>, std::unique_ptr<AST::Expression>, std::monostate> initializer = std::monostate{};
 		AST::ForInitializerType initializerType = AST::ForInitializerType::Null;
 		if (!IsLookAhead(TokenType::SymbolSemiColon))
 		{
@@ -355,8 +355,10 @@ namespace Eye
 
 		if(initializerType == AST::ForInitializerType::VariableStatement)
 			return std::make_unique<AST::ForStatement>(forToken->GetSource(), std::move(std::get<std::unique_ptr<AST::VariableStatement>>(initializer)), initializerType, std::move(condition), std::move(update), std::move(body));
-		else
+		else if(initializerType == AST::ForInitializerType::Expression)
 			return std::make_unique<AST::ForStatement>(forToken->GetSource(), std::move(std::get<std::unique_ptr<AST::Expression>>(initializer)), initializerType, std::move(condition), std::move(update), std::move(body));
+		else
+			return std::make_unique<AST::ForStatement>(forToken->GetSource(), std::monostate{}, initializerType, std::move(condition), std::move(update), std::move(body));
 	}
 
 	/*

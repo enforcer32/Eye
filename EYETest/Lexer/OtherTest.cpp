@@ -20,7 +20,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerOtherTest->Comment Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(std::string(tokens[0]->GetValue<StringType>()), " Single Line Comment");
 		ASSERT_EQ(std::string(tokens[6]->GetValue<StringType>()), " 2 Second Comment");
@@ -39,7 +39,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerOtherTest->MultiLineComment Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[3]->GetType(), TokenType::Comment);
 	}
@@ -57,7 +57,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerOtherTest->NewLine Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[1]->GetType(), TokenType::Newline);
 		ASSERT_EQ(tokens[2]->GetType(), TokenType::Newline);
@@ -79,7 +79,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerOtherTest->EndOfFile Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[8]->GetType(), TokenType::EndOfFile);
 	}

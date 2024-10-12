@@ -20,7 +20,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerOperatorTest->Arithmetic Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetType(), TokenType::OperatorArithmeticIncrement);
 		ASSERT_EQ(tokens[3]->GetType(), TokenType::OperatorArithmeticDecrement);
@@ -39,7 +39,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerOperatorTest->Binary Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetType(), TokenType::OperatorBinaryPlus);
 		ASSERT_EQ(tokens[3]->GetType(), TokenType::OperatorBinaryMinus);
@@ -61,7 +61,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerOperatorTest->Assignment Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetType(), TokenType::OperatorAssignment);
 		ASSERT_EQ(tokens[3]->GetType(), TokenType::OperatorAssignmentPlus);
@@ -89,7 +89,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerOperatorTest->Relational Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetType(), TokenType::OperatorRelationalEquals);
 		ASSERT_EQ(tokens[3]->GetType(), TokenType::OperatorRelationalNotEquals);
@@ -112,7 +112,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerOperatorTest->Logical Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetType(), TokenType::OperatorLogicalAND);
 		ASSERT_EQ(tokens[3]->GetType(), TokenType::OperatorLogicalOR);
@@ -132,7 +132,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerOperatorTest->Bitwise Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetType(), TokenType::OperatorBitwiseBinaryAND);
 		ASSERT_EQ(tokens[3]->GetType(), TokenType::OperatorBitwiseBinaryOR);
@@ -155,7 +155,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerOperatorTest->Other Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetType(), TokenType::OperatorLeftParenthesis);
 		ASSERT_EQ(tokens[3]->GetType(), TokenType::OperatorLeftBracket);
@@ -177,7 +177,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerOperatorTest->Chained Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetType(), TokenType::OperatorAssignmentBitwiseLeftShift);
 		ASSERT_EQ(tokens[1]->GetType(), TokenType::OperatorArithmeticIncrement);

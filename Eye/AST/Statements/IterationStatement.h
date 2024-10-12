@@ -111,6 +111,11 @@ namespace Eye
 			{
 			}
 
+			ForStatement(const EyeSource& source, std::monostate initializer, ForInitializerType initializerType, std::unique_ptr<Expression> condition, std::unique_ptr<Expression> update, std::unique_ptr<Statement> body)
+				: IterationStatement(IterationStatementType::ForStatement, source), m_Initializer(initializer), m_InitializerType(initializerType), m_Condition(std::move(condition)), m_Update(std::move(update)), m_Body(std::move(body))
+			{
+			}
+
 			template<typename T>
 			inline const T* GetInitializer() const
 			{
@@ -124,7 +129,7 @@ namespace Eye
 			inline const Statement* GetBody() const { return m_Body.get(); }
 
 		private:
-			std::variant<std::unique_ptr<VariableStatement>, std::unique_ptr<Expression>> m_Initializer;
+			std::variant<std::unique_ptr<VariableStatement>, std::unique_ptr<Expression>, std::monostate> m_Initializer;
 			ForInitializerType m_InitializerType;
 			std::unique_ptr<Expression> m_Condition;
 			std::unique_ptr<Expression> m_Update;

@@ -20,7 +20,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerKeywordTest->Identifier Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(std::string(tokens[1]->GetValue<StringType>()), "test");
 		ASSERT_EQ(std::string(tokens[7]->GetValue<StringType>()), "num");
@@ -43,7 +43,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerKeywordTest->Datatype Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetType(), TokenType::KeywordDataTypeInt);
 		ASSERT_EQ(tokens[6]->GetType(), TokenType::KeywordDataTypeInt);
@@ -67,7 +67,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerKeywordTest->Control Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetType(), TokenType::KeywordControlIf);
 		ASSERT_EQ(tokens[9]->GetType(), TokenType::KeywordControlElse);
@@ -86,7 +86,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerKeywordTest->Iteration Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetType(), TokenType::KeywordIterationWhile);
 		ASSERT_EQ(tokens[7]->GetType(), TokenType::KeywordIterationBreak);
@@ -108,7 +108,7 @@ namespace Eye
 			EYE_LOG_ERROR(lexerRes.error().GetMessage());
 			EYE_LOG_CRITICAL("EyeTest->Lexer->LexerKeywordTest->Function Failed to Tokenize()");
 		}
-		auto tokens = lexerRes.value();
+		const auto& tokens = lexerRes.value();
 
 		ASSERT_EQ(tokens[0]->GetType(), TokenType::KeywordFunction);
 		ASSERT_EQ(tokens[1]->GetType(), TokenType::KeywordDataTypeInt);
